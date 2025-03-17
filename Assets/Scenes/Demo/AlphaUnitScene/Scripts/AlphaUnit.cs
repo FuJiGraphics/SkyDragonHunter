@@ -34,7 +34,12 @@ namespace SkyDragonHunter.Test
             double targetNumber = m_OriginNumber;
             while (targetNumber >= 1000.0)
             {
-                targetNumber /= 1000.0;
+                targetNumber *= 0.001;
+                this.IncreaseUnit();
+            }
+            if (targetNumber >= 999.9995)
+            {
+                targetNumber = 1.0;
                 this.IncreaseUnit();
             }
             m_StringNumber = targetNumber.ToString("G3");
@@ -44,7 +49,7 @@ namespace SkyDragonHunter.Test
         private void IncreaseUnit()
         {
             int index = 0;
-            while (index < m_Base.Length)
+            while (index <= m_Base.Length)
             {
                 this.Resize(index);
                 m_Base[index]++;
@@ -67,7 +72,7 @@ namespace SkyDragonHunter.Test
             if (m_Base == null || index < m_Base.Length)
                 return;
 
-            int newSize = index + 1;
+            int newSize = m_Base.Length + 1;
             char[] newBase = new char[newSize];
             for (int i = 0; i < newBase.Length; ++i)
             {

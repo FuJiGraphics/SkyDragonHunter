@@ -3,8 +3,8 @@ using System;
 
 namespace SkyDragonHunter.Utility
 {
-    public struct AlphaUnit 
-        : IComparable<AlphaUnit>
+    public struct AlphaUnit
+       : IComparable<AlphaUnit>
     {
         private double m_OriginNumber;
         private string m_StringNumber;
@@ -35,7 +35,12 @@ namespace SkyDragonHunter.Utility
             double targetNumber = m_OriginNumber;
             while (targetNumber >= 1000.0)
             {
-                targetNumber /= 1000.0;
+                targetNumber *= 0.001;
+                this.IncreaseUnit();
+            }
+            if (targetNumber >= 999.9995)
+            {
+                targetNumber = 1.0;
                 this.IncreaseUnit();
             }
             m_StringNumber = targetNumber.ToString("G3");
@@ -45,7 +50,7 @@ namespace SkyDragonHunter.Utility
         private void IncreaseUnit()
         {
             int index = 0;
-            while (index < m_Base.Length)
+            while (index <= m_Base.Length)
             {
                 this.Resize(index);
                 m_Base[index]++;
@@ -68,7 +73,7 @@ namespace SkyDragonHunter.Utility
             if (m_Base == null || index < m_Base.Length)
                 return;
 
-            int newSize = index + 1;
+            int newSize = m_Base.Length + 1;
             char[] newBase = new char[newSize];
             for (int i = 0; i < newBase.Length; ++i)
             {
@@ -153,7 +158,7 @@ namespace SkyDragonHunter.Utility
             return false;
         }
 
-        public override int GetHashCode() 
+        public override int GetHashCode()
             => m_OriginNumber.GetHashCode();
 
     } // class AlphaUnit
