@@ -3,8 +3,15 @@ using System;
 namespace SkyDragonHunter.Test
 {
     public struct AlphaUnit
-        : IComparable<AlphaUnit>
+        : IComparable<AlphaUnit>, IEquatable<AlphaUnit>
     {
+        public const double Epsilon = double.Epsilon;
+        public const double MaxValue = double.MaxValue;
+        public const double MinValue = double.MinValue;
+        public const double NaN = double.NaN;
+        public const double NegativeInfinity = double.NegativeInfinity;
+        public const double PositiveInfinity = double.PositiveInfinity;
+
         private double m_OriginNumber;
         private string m_StringNumber;
         private string m_StringBase;
@@ -28,13 +35,20 @@ namespace SkyDragonHunter.Test
             else
                 this.Normalize();
         }
-
+        public int CompareTo(AlphaUnit other)
+        {
+            return m_OriginNumber.CompareTo(other.m_OriginNumber);
+        }
+        public bool Equals(AlphaUnit other)
+            => m_OriginNumber.Equals(other.m_OriginNumber);
         private void Normalize()
         {
             double targetNumber = m_OriginNumber;
-            while (targetNumber >= 1000.0)
+
+            int unitShift = (int)(Math.Log10(targetNumber) / 3);
+            targetNumber *= Math.Pow(0.001, unitShift);
+            for (int i = 0; i < unitShift; ++i)
             {
-                targetNumber *= 0.001;
                 this.IncreaseUnit();
             }
             if (targetNumber >= 999.9995)
@@ -42,10 +56,10 @@ namespace SkyDragonHunter.Test
                 targetNumber = 1.0;
                 this.IncreaseUnit();
             }
-            m_StringNumber = targetNumber.ToString("G3");
+            targetNumber = Math.Truncate(targetNumber * 1000) / 1000;
+            m_StringNumber = targetNumber.ToString("F1");
             m_StringBase = this.GetBaseString();
         }
-
         private void IncreaseUnit()
         {
             int index = 0;
@@ -64,15 +78,12 @@ namespace SkyDragonHunter.Test
                 }
             }
         }
-
-        // 인덱스가 현재 할당된 크기보다 클 경우
-        // 새로운 크기를 할당 받습니다.
         private void Resize(int index)
         {
             if (m_Base == null || index < m_Base.Length)
                 return;
 
-            int newSize = m_Base.Length + 1;
+            int newSize = index + 1;
             char[] newBase = new char[newSize];
             for (int i = 0; i < newBase.Length; ++i)
             {
@@ -83,7 +94,6 @@ namespace SkyDragonHunter.Test
             }
             m_Base = newBase;
         }
-
         private string GetBaseString()
         {
             if (m_Base[0] < 'a')
@@ -110,29 +120,15 @@ namespace SkyDragonHunter.Test
             return new string(result);
         }
 
-        public int CompareTo(AlphaUnit other)
-        {
-            return m_OriginNumber.CompareTo(other.m_OriginNumber);
-        }
-
         public static implicit operator AlphaUnit(double number)
             => new AlphaUnit(number);
-
         public static explicit operator double(AlphaUnit a)
             => a.m_OriginNumber;
 
-        public static AlphaUnit operator +(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber + b.m_OriginNumber);
-
-        public static AlphaUnit operator -(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber - b.m_OriginNumber);
-
-        public static AlphaUnit operator *(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber * b.m_OriginNumber);
-
-        public static AlphaUnit operator /(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber / b.m_OriginNumber);
-
+        public static AlphaUnit operator +(AlphaUnit a, AlphaUnit b) => new AlphaUnit(a.m_OriginNumber + b.m_OriginNumber);
+        public static AlphaUnit operator -(AlphaUnit a, AlphaUnit b) => new AlphaUnit(a.m_OriginNumber - b.m_OriginNumber);
+        public static AlphaUnit operator *(AlphaUnit a, AlphaUnit b) => new AlphaUnit(a.m_OriginNumber * b.m_OriginNumber);
+        public static AlphaUnit operator /(AlphaUnit a, AlphaUnit b) => new AlphaUnit(a.m_OriginNumber / b.m_OriginNumber);
         public static bool operator <(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) < 0;
         public static bool operator >(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) > 0;
         public static bool operator <=(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) <= 0;
@@ -149,14 +145,12 @@ namespace SkyDragonHunter.Test
             else
                 return m_StringNumber + m_StringBase;
         }
-
         public override bool Equals(object obj)
         {
             if (obj is AlphaUnit other)
                 return this == other;
             return false;
         }
-
         public override int GetHashCode()
             => m_OriginNumber.GetHashCode();
 
