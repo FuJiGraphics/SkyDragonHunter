@@ -57,7 +57,7 @@ namespace SkyDragonHunter.Utility
                 this.IncreaseUnit();
             }
             targetNumber = Math.Truncate(targetNumber * 1000) / 1000;
-            m_StringNumber = targetNumber.ToString("F1");
+            m_StringNumber = this.GetString(targetNumber);
             m_StringBase = this.GetBaseString();
         }
         private void IncreaseUnit()
@@ -118,6 +118,44 @@ namespace SkyDragonHunter.Utility
                 result[i] = newStr[i];
             }
             return new string(result);
+        }
+        private string GetString(double d)
+        {
+            string result = "0";
+            string convert = d.ToString("F3");
+            var splits = convert.Split(".");
+            if (splits.Length > 1)
+            {
+                string tNums = splits[0];
+                string tBase = splits[1];
+                int baseCount = 4 - tNums.Length;
+                bool isAllZero = !HasInteger(tBase);
+                if (isAllZero)
+                    result = tNums;
+                else
+                {
+                    tBase = tBase.Substring(0, baseCount);
+                    result = tNums + "." + tBase;
+                }
+            }
+            else
+            {
+                result = splits[0];
+            }
+            return result;
+        }
+        private bool HasInteger(string str)
+        {
+            bool result = false;
+            foreach (var num in str)
+            {
+                if (num != '0')
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
         }
 
         public static implicit operator AlphaUnit(double number)
