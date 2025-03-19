@@ -15,7 +15,7 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         [Tooltip("CurrentHealth가 0f가 되었을 때 호출되는 이벤트")]
-        public UnityEvent OnHealthDepleted;
+        [SerializeField] private UnityEvent OnHealthDepleted;
 
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
