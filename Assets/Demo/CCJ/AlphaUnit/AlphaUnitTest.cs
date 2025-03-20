@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using SkyDragonHunter.Utility;
 
 namespace SkyDragonHunter.Test
 {

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8882755910448125340}
   - component: {fileID: 2953684395423648753}
-  - component: {fileID: 4313721771861141002}
+  - component: {fileID: 5914958419162255106}
   m_Layer: 3
   m_Name: BackGround
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4313721771861141002
+--- !u!114 &5914958419162255106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,10 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7145231687729148683}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21071ed24af16994e9e9fc90038a09cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundSpeed: 0.02
+  backGroundSpeed: 0.01
 --- !u!1 &7457298969398345058
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8486208616743973015}
   - component: {fileID: 6934130248380792624}
-  - component: {fileID: 3751860193744171114}
+  - component: {fileID: 4426676041347772598}
   m_Layer: 3
   m_Name: ForeGround
   m_TagString: Untagged
@@ -183,7 +183,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3751860193744171114
+--- !u!114 &4426676041347772598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7457298969398345058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21071ed24af16994e9e9fc90038a09cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   backGroundSpeed: 0.1
@@ -206,7 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7986372400484414980}
   - component: {fileID: 8369486237740500748}
-  - component: {fileID: 991296680295393278}
+  - component: {fileID: 4611422364287369504}
   m_Layer: 3
   m_Name: MidGround
   m_TagString: Untagged
@@ -281,7 +281,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &991296680295393278
+--- !u!114 &4611422364287369504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -290,7 +290,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7772408495474766353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21071ed24af16994e9e9fc90038a09cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   backGroundSpeed: 0.05

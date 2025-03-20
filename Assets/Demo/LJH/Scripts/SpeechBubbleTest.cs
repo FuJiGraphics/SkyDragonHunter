@@ -17,8 +17,7 @@ namespace SkyDragonHunter.Test {
         };
 
         private Vector3 m_cachedPos;
-        private int m_stringIndex;
-        // 속성 (Properties)
+        private int m_stringIndex;       // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
