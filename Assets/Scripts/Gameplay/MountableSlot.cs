@@ -1,4 +1,4 @@
-using SkyDragonHunter.Utility;
+using SkyDragonHunter.Structs;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {

@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using SkyDragonHunter.UI;
+using SkyDragonHunter.Utility;
 
 namespace SkyDragonHunter.Gameplay {
     public class CharacterStatus : MonoBehaviour
     {
         // 필드 (Fields)
-        public int maxHP;
-        public int currentHP;
-        public int damage;
-        public int armor;
+        public AlphaUnit maxHP;
+        public AlphaUnit currentHP;
+        public AlphaUnit damage;
+        public AlphaUnit armor;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

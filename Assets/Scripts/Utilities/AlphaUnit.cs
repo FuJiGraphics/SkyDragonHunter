@@ -19,6 +19,8 @@ namespace SkyDragonHunter.Utility
         private bool m_IsInfinity;
         private bool m_IsNaN;
 
+        public double Value { get => m_OriginNumber; } 
+
         public AlphaUnit(double number)
         {
             m_OriginNumber = number;
@@ -41,6 +43,7 @@ namespace SkyDragonHunter.Utility
         }
         public bool Equals(AlphaUnit other)
             => m_OriginNumber.Equals(other.m_OriginNumber);
+
         private void Normalize()
         {
             double targetNumber = m_OriginNumber;

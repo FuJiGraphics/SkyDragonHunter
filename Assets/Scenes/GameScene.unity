@@ -930,6 +930,7 @@ GameObject:
   - component: {fileID: 1706360474}
   - component: {fileID: 1706360476}
   - component: {fileID: 1706360477}
+  - component: {fileID: 1706360478}
   m_Layer: 0
   m_Name: Airship
   m_TagString: Untagged
@@ -1017,10 +1018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
-  currentHP: 0
-  damage: 0
-  armor: 0
 --- !u!114 &1706360477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,6 +1033,18 @@ MonoBehaviour:
   floatSpeed: 1
   floatSpeedOffset: 1
   floatAmount: 0.5
+--- !u!114 &1706360478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706360473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ab71fb4f5eca4478d7d61115d62ba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1950938311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4441508782989059035, guid: 019bc04e4b001c9408f85a709fe92123, type: 3}

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SkyDragonHunter.Utility
+namespace SkyDragonHunter.Structs
 {
     [System.Serializable]
     public struct TransformBackup
