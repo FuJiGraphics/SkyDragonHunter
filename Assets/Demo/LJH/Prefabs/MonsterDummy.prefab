@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8145279371225729078}
+  - component: {fileID: 2838592896125448336}
   - component: {fileID: 3481469565171269773}
   m_Layer: 0
   m_Name: MonsterDummy
@@ -32,6 +33,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2838592896125448336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebb015ef7e5debd4aae3cc57364c990b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AttackTarget: {fileID: 0}
 --- !u!212 &3481469565171269773
 SpriteRenderer:
   m_ObjectHideFlags: 0

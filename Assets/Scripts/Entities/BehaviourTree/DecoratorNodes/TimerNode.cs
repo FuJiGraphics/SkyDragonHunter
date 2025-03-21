@@ -4,22 +4,16 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 
-    public class TimerNode : MonoBehaviour
-    {    
-        private void Start()
+    public class TimerNode<T> : DecoratorNode<T> where T : MonoBehaviour
+    {
+        public TimerNode(T context) : base(context)
         {
-            
         }
-    
-        private void Update()
+
+        protected override NodeStatus ProcessChild()
         {
-            
+            throw new System.NotImplementedException();
         }
-    
-        // Public 메서드
-        // Private 메서드
-        // Others
-    
     } // Scope by class TimerNode
 
 } // namespace Root
