@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SkyDragonHunter.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
     public class CharacterStatus : MonoBehaviour
     {
         // 필드 (Fields)
