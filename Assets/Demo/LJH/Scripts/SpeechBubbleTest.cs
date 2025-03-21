@@ -1,3 +1,4 @@
+using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,12 @@ namespace SkyDragonHunter.Test {
         };
 
         private Vector3 m_cachedPos;
-        private int m_stringIndex;       // 속성 (Properties)
+
+        [SerializeField] private UISpeechBubble bubblePrefab;
+
+        // 속성 (Properties)
+        private int m_stringIndex;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -68,6 +74,8 @@ namespace SkyDragonHunter.Test {
             if(index == int.MinValue)
                 index = Random.Range(0, testStrings.Length);
 
+            var bubble = Instantiate(bubblePrefab);
+            bubble.SetText(testStrings[index], transform);
             
         }
 
