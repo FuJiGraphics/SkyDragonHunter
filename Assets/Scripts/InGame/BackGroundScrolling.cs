@@ -7,6 +7,7 @@ namespace SkyDragonHunter.Game {
     public class BackGroundScrolling : MonoBehaviour
     {
         // 필드 (Fields)
+        public float scrollSpeed = 1f;
         public float backGroundSpeed;
 
         private SpriteRenderer m_SpriteRenderer;
@@ -82,7 +83,7 @@ namespace SkyDragonHunter.Game {
 
         private void UpdateTextureOffset()
         {
-            m_Offset += new Vector2(backGroundSpeed * Time.deltaTime, 0);
+            m_Offset += new Vector2(backGroundSpeed * Time.deltaTime * scrollSpeed, 0);
             m_Mat.mainTextureOffset = m_Offset;
         }
 
