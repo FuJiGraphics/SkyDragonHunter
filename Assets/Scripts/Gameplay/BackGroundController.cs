@@ -13,6 +13,8 @@ namespace SkyDragonHunter.Game {
         private BackGroundScrolling[] m_Backgrounds;
 
         // 속성 (Properties)
+        public bool IsStopped { get => scrollSpeed.Equals(0f); }
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -28,6 +30,11 @@ namespace SkyDragonHunter.Game {
         }
 
         // Public 메서드
+        public void SetScrollSpeed(float speed)
+        {
+            scrollSpeed = speed;
+        }
+
         // Private 메서드
         private void UpdateScrollSpeed()
         {
@@ -41,7 +48,9 @@ namespace SkyDragonHunter.Game {
         {
             foreach (var obj in floatingObjects)
             {
-                if (scrollSpeed <= float.MaxValue && scrollSpeed >= 0f)
+                if (scrollSpeed.Equals(0f))
+                    obj.floatSpeedOffset = 0f;
+                else if (scrollSpeed <= float.MaxValue && scrollSpeed >= 0f)
                     obj.floatSpeedOffset = Mathf.Clamp(scrollSpeed, 1f, float.MaxValue);
                 else if (scrollSpeed <= 0f && scrollSpeed >= -1f * float.MaxValue)
                     obj.floatSpeedOffset = Mathf.Clamp(scrollSpeed * -1f, 1f, float.MaxValue);
