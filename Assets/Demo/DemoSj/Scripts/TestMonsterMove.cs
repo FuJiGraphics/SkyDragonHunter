@@ -19,7 +19,7 @@ namespace SkyDragonHunter
 
         private void Start()
         {
-            distroyTime = 4f;
+            distroyTime = 1f;
             currentDistroyTime = 0;
         }
 

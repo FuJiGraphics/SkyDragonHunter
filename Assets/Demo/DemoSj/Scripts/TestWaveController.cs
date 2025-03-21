@@ -1,5 +1,7 @@
+using SkyDragonHunter.Game;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +12,25 @@ namespace SkyDragonHunter
     {
         // 필드 (Fields)
         public Slider slider;
+        public TextMeshProUGUI waveLevelText;
+        public GameObject ClearPanel;
+        public GameObject backGround;
+        public BackGroundController backGroundController;
         public GameObject airship;
         public GameObject monster;
         public GameObject boss;
         public GameObject currentEnemy;
         public float maxWaveTime;
         private Vector3 spwanPosition;
+        private float oldAllSpeed;
         private float currentWaveTime;
         private float distance;
         private bool isStopped;
         private bool canSpwan;
 
         // 테스트용
+        private int smallLevel = 1;
+        private int mainLevel = 1;
         private TestMonsterMove testMonsterMove;
         // 테스트용
 
@@ -35,6 +44,9 @@ namespace SkyDragonHunter
             currentWaveTime = 0f;
             slider.maxValue = maxWaveTime;
             slider.minValue = 0;
+            ClearPanel.SetActive(false);
+            backGroundController = backGround.GetComponent<BackGroundController>();
+            oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
             spwanPosition = new Vector3(airship.transform.position.x + 15,
                 airship.transform.position.y, airship.transform.position.z);
             canSpwan = true;
@@ -48,17 +60,19 @@ namespace SkyDragonHunter
                 if (Vector3.Distance(airship.transform.position, currentEnemy.transform.position) <= 8f)
                 {
                     isStopped = true;
+                    backGroundController.SetScrollSpeed(0f);
                     testMonsterMove.OnStoppedMonster(true);
                 }
             }
             else
             {
                 isStopped = false;
+                backGroundController.SetScrollSpeed(oldAllSpeed);
             }
 
             if (!isStopped)
             {
-                currentWaveTime += Time.deltaTime;
+                currentWaveTime += Time.deltaTime * oldAllSpeed;
                 slider.value = currentWaveTime;
             }
 
@@ -71,7 +85,7 @@ namespace SkyDragonHunter
                 canSpwan = true;
             }
 
-            if (currentWaveTime >= 3f && currentWaveTime <= 4f && canSpwan
+            if (currentWaveTime >= 2f && currentWaveTime <= 4f && canSpwan
                 || currentWaveTime >= 6f && currentWaveTime <= 7f && canSpwan)
             {
                 OnSpwanMonster();
@@ -82,9 +96,38 @@ namespace SkyDragonHunter
                 OnSpwanBoss();
             }
 
+            if (currentWaveTime >= 10f && currentEnemy == null)
+            {
+                float currentOpenPanel;
+                currentOpenPanel = Time.deltaTime;
+
+                smallLevel++;
+                if (smallLevel > 10)
+                {
+                    smallLevel = 0;
+                    mainLevel++;
+                }
+                //OnActiveClearPanel();
+                waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
+                //if (currentOpenPanel > 2f)
+                //{
+                //    OnUnActiveClearPanel();
+                //    currentWaveTime = 0f;
+                //    canSpwan = true;
+                //}
+            }
+
         }
 
         // Public 메서드
+        public void ReStartAll()
+        {
+            ClearPanel.SetActive(false);
+            smallLevel = 1;
+            mainLevel = 1;
+            currentWaveTime = 0f;
+        }
+
         // Private 메서드
         private void OnSpwanMonster()
         {
@@ -98,6 +141,16 @@ namespace SkyDragonHunter
             currentEnemy = Instantiate(boss, spwanPosition, Quaternion.identity);
             testMonsterMove = currentEnemy.GetComponent<TestMonsterMove>();
             canSpwan = false;
+        }
+
+        private void OnActiveClearPanel()
+        {
+            ClearPanel.SetActive(true);
+        }
+
+        private void OnUnActiveClearPanel()
+        {
+            ClearPanel.SetActive(false);
         }
         // Others
 
