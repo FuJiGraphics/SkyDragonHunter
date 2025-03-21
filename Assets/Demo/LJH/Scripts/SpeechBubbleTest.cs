@@ -19,8 +19,6 @@ namespace SkyDragonHunter.Test {
 
         private Vector3 m_cachedPos;
 
-        [SerializeField] private UISpeechBubble bubblePrefab;
-
         // 속성 (Properties)
         private int m_stringIndex;
 
@@ -74,9 +72,7 @@ namespace SkyDragonHunter.Test {
             if(index == int.MinValue)
                 index = Random.Range(0, testStrings.Length);
 
-            var bubble = Instantiate(bubblePrefab);
-            bubble.SetText(testStrings[index], transform);
-            
+            SpeechGenerator.Text("Test Bubble", transform);
         }
 
         // Others
