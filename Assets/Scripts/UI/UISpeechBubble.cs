@@ -9,45 +9,32 @@ namespace SkyDragonHunter.UI {
     public class UISpeechBubble : MonoBehaviour
     {
         // 필드 (Fields)
-
         [SerializeField] private float lifeTime;
-
-        [SerializeField] private Canvas m_Canvas;
-        [SerializeField] private Image m_Image;
         [SerializeField] private TextMeshProUGUI m_Text;
-
-        private Transform m_OwnerTransform;
-        private Vector3 offset;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+
+        private void Awake()
         {
+            m_Text = GetComponent<TextMeshProUGUI>();
             Destroy(gameObject, lifeTime);
+            var position = transform.position;
+            position.y = 5f;
+            transform.position = position;
+            transform.rotation = Camera.main.transform.rotation;
         }
 
         private void Update()
         {
-            var newPos = m_OwnerTransform.position;
-            newPos += offset;
-            transform.position = newPos;
+            transform.rotation = Camera.main.transform.rotation;
         }
 
         // Public 메서드
-        public void SetText(string text, Transform owner)
-        {
-            m_Text.text = text;
-            m_OwnerTransform = owner;
-            var meshRenderer = m_OwnerTransform.GetComponent<MeshRenderer>();
-            var yOffset = 0.5f;
-            if (meshRenderer != null)
-            {
-                yOffset = meshRenderer.bounds.size.y * 0.5f + 0.5f;
-            }
-            offset = new Vector3(0, yOffset, 0);
-        }
+        public void SetText(string text)
+            => m_Text.text = text;
 
         // Private 메서드
         // Others
