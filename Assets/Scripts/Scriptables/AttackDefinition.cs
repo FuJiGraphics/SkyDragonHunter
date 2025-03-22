@@ -12,6 +12,9 @@ namespace SkyDragonHunter.Scriptables {
     public class AttackDefinition : ScriptableObject, IAttacker
     {
         // 필드 (Fields)
+        public GameObject prefab;        // 공격 스프라이트 오브젝트
+        public GameObject owner;         // 공격하는 오브젝트
+        public Transform dummy;          // 부착 위치
         public float coolDown;           // 쿨다운
         public float range;              // 공격 범위
         public AlphaUnit minDamage;      // 최소 데미지

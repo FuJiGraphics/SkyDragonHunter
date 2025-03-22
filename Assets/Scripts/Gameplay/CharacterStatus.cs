@@ -23,5 +23,5 @@ namespace SkyDragonHunter.Gameplay {
         // Private 메서드
         // Others
 
-    } // Scope by class CharacterStatus
+    } // Scope by class CQharacterStatus
 } // namespace Root

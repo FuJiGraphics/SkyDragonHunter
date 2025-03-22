@@ -9,4 +9,4 @@ namespace SkyDragonHunter.Structs {
         public AlphaUnit critical;     // Ä¡¸íÅ¸
     }; // struct Attack
 
-} // namespace SkyDragonHunter
+} // namespace SkyDragonHunter.Structs
