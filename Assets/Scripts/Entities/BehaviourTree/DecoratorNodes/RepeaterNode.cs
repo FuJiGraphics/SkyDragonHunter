@@ -12,6 +12,7 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public RepeaterNode(T context) : base(context)
         {
+            // NOT YET IMPLEMENTED           
             m_CurrentCount = 0;
             m_RepeatCount = -1;
         }
@@ -29,7 +30,9 @@ namespace SkyDragonHunter.Gameplay {
         // Protected 메서드
         protected override NodeStatus ProcessChild()
         {
-            if(m_CurrentCount >= m_RepeatCount)
+            throw new System.NotImplementedException();
+
+            if (m_CurrentCount >= m_RepeatCount)
             {
                 return NodeStatus.Success;
             }
