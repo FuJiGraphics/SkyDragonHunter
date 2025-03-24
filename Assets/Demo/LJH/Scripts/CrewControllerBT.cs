@@ -6,21 +6,21 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public enum EnemyType
+    public enum CrewType
     {
-        Melee,
-        Ranged,
-        Stationary // Boss
+        OnBoard,
+        OnField,
     }
 
-    public class EnemyControllerBT : MonoBehaviour
-    {        
+
+    public class CrewControllerBT : MonoBehaviour
+    {
         // 필드 (Fields)
-        [SerializeField] private EnemyType m_Type;
+        [SerializeField] private CrewType m_Type;
         [SerializeField] private float m_Speed;
         [SerializeField] private float m_AggroRange;
 
-        private BehaviourTree<EnemyControllerBT> m_BehaviourTree;
+        private BehaviourTree<CrewControllerBT> m_BehaviourTree;
 
         public AttackDefinition attackDefinition;
         public CharacterStatus status;
@@ -30,8 +30,7 @@ namespace SkyDragonHunter.Entities {
         [SerializeField] private Transform m_Target;
 
         private static readonly string s_PlayerTag = "Player";
-        private static readonly string s_CrewTag = "Crew";
-        private static readonly string s_CreatureTag = "Creature";
+        private static readonly string s_EnemyTag = "Enemy";
 
         public bool isMoving = false;
         public bool isChasing = false;
@@ -41,7 +40,7 @@ namespace SkyDragonHunter.Entities {
         public bool IsTargetInAttackRange
         {
             get
-            {                                
+            {
                 return TargetDistance < attackDefinition.range;
             }
         }
@@ -58,13 +57,13 @@ namespace SkyDragonHunter.Entities {
         {
             get
             {
-                if(m_Target == null)
+                if (m_Target == null)
                 {
                     return float.MaxValue;
                 }
-                                
+
                 var distance = m_Target.position.x - transform.position.x;
-                if(distance > 0)
+                if (distance > 0)
                 {
                     isDirectionToRight = true;
                 }
@@ -76,7 +75,7 @@ namespace SkyDragonHunter.Entities {
                 var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
                 var halfwidth = sr.bounds.size.x * 0.5f;
 
-                if(isDirectionToRight)
+                if (isDirectionToRight)
                 {
                     distance -= halfwidth;
                 }
@@ -92,7 +91,7 @@ namespace SkyDragonHunter.Entities {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Start()
-        {                       
+        {            
             InitBehaviourTree();
         }
 
@@ -109,10 +108,10 @@ namespace SkyDragonHunter.Entities {
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
 
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, attackDefinition.range);
         }
 
@@ -134,8 +133,12 @@ namespace SkyDragonHunter.Entities {
         public void ResetTarget()
         {
             bool resetRequired = false;
+            bool isPrevTargetNull = false;
             if (m_Target == null)
-                resetRequired = true;            
+            {
+                resetRequired = true;
+                isPrevTargetNull = true;
+            }
             else if (m_Target.gameObject.CompareTag(s_PlayerTag))
             {
                 resetRequired = true;
@@ -144,15 +147,15 @@ namespace SkyDragonHunter.Entities {
             if (!resetRequired)
                 return;
 
-            var onFieldObjectLayer = LayerMask.GetMask(s_CrewTag, s_CreatureTag);
-            var collider = Physics2D.OverlapCircle(transform.position, m_AggroRange, onFieldObjectLayer);
-            if (collider == null)
-            {
-                m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
-            }
-            else
+            var enemyLayer = LayerMask.GetMask(s_EnemyTag);
+            var collider = Physics2D.OverlapCircle(transform.position, m_AggroRange, enemyLayer);
+            if (collider != null)            
             {
                 m_Target = collider.transform;
+                if(isPrevTargetNull)
+                {
+                    ResetBehaviourTree();
+                }
             }
         }
 
@@ -166,44 +169,34 @@ namespace SkyDragonHunter.Entities {
         {
             switch (m_Type)
             {
-                case EnemyType.Melee:
-                    InitMeleeBT();
+                case CrewType.OnBoard:
                     break;
-                case EnemyType.Ranged:
-                    break;
-                case EnemyType.Stationary:
+                case CrewType.OnField:
                     break;
             }
         }
 
-        private void InitMeleeBT()
+        private void InitOnFieldCrewBT()
         {
-            m_BehaviourTree = new BehaviourTree<EnemyControllerBT>(this);
+            m_BehaviourTree = new BehaviourTree<CrewControllerBT>(this);
+            var rootSelector = new SelectorNode<CrewControllerBT>(this);
 
-            var rootSelector = new SelectorNode<EnemyControllerBT>(this);
-
-            var attackSequence = new SequenceNode<EnemyControllerBT>(this);
-            attackSequence.AddChild(new EnemyAttackableCondition(this));
-            attackSequence.AddChild(new EnemyAttackAction(this));
+            var attackSequence = new SequenceNode<CrewControllerBT>(this);            
             rootSelector.AddChild(attackSequence);
 
-            var chaseSequence = new SequenceNode<EnemyControllerBT>(this);
-            chaseSequence.AddChild(new EnemyChasableCondition(this));
-            chaseSequence.AddChild(new EnemyChaseAction(this));
+            var chaseSequence = new SequenceNode<CrewControllerBT>(this);            
             rootSelector.AddChild(chaseSequence);
 
-            var moveSequence = new SequenceNode<EnemyControllerBT>(this);
-            moveSequence.AddChild(new EnemyMoveCondition(this));
-            moveSequence.AddChild(new EnemyMoveAction(this));
-            rootSelector.AddChild(moveSequence);
+            var moveIdleSequence = new SequenceNode<CrewControllerBT>(this);            
+            rootSelector.AddChild(moveIdleSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
         }
-                
+
         private void UpdatePosition()
         {
             var newPos = transform.position;
-            
+
             //float newYPos = Mathf.Sin((Time.time + rand) * (2 * Mathf.PI / m_YaxisMovementPeriod)) * m_YaxisMovementAmplitude;
             //
             //newPos.y = m_InitialYPos + newYPos;                        
@@ -215,7 +208,7 @@ namespace SkyDragonHunter.Entities {
                     toRight *= 3;
                 if (!isDirectionToRight)
                     toRight *= -1;
-                newPos.x += Time.deltaTime * m_Speed * toRight;                
+                newPos.x += Time.deltaTime * m_Speed * toRight;
             }
 
             // Debug.Log($"new Position: {newPos}");
@@ -224,6 +217,6 @@ namespace SkyDragonHunter.Entities {
 
         // Others
 
-    } // Scope by class EnemyControllerBT
+    } // Scope by class OnFieldCrewControllerBT
 
 } // namespace Root

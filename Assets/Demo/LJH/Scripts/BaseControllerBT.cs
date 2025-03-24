@@ -4,23 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Entities {
-
-    public enum EnemyType
+namespace SkyDragonHunter.Entities
+{
+    public abstract class BaseControllerBT : MonoBehaviour
     {
-        Melee,
-        Ranged,
-        Stationary // Boss
-    }
-
-    public class EnemyControllerBT : MonoBehaviour
-    {        
         // 필드 (Fields)
         [SerializeField] private EnemyType m_Type;
         [SerializeField] private float m_Speed;
         [SerializeField] private float m_AggroRange;
 
-        private BehaviourTree<EnemyControllerBT> m_BehaviourTree;
+        private BehaviourTree<BaseControllerBT> m_BehaviourTree;
 
         public AttackDefinition attackDefinition;
         public CharacterStatus status;
@@ -29,19 +22,13 @@ namespace SkyDragonHunter.Entities {
 
         [SerializeField] private Transform m_Target;
 
-        private static readonly string s_PlayerTag = "Player";
-        private static readonly string s_CrewTag = "Crew";
-        private static readonly string s_CreatureTag = "Creature";
-
-        public bool isMoving = false;
-        public bool isChasing = false;
         public bool isDirectionToRight = false;
 
         // 속성 (Properties)
         public bool IsTargetInAttackRange
         {
             get
-            {                                
+            {
                 return TargetDistance < attackDefinition.range;
             }
         }
@@ -58,13 +45,13 @@ namespace SkyDragonHunter.Entities {
         {
             get
             {
-                if(m_Target == null)
+                if (m_Target == null)
                 {
                     return float.MaxValue;
                 }
-                                
+
                 var distance = m_Target.position.x - transform.position.x;
-                if(distance > 0)
+                if (distance > 0)
                 {
                     isDirectionToRight = true;
                 }
@@ -76,7 +63,7 @@ namespace SkyDragonHunter.Entities {
                 var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
                 var halfwidth = sr.bounds.size.x * 0.5f;
 
-                if(isDirectionToRight)
+                if (isDirectionToRight)
                 {
                     distance -= halfwidth;
                 }
@@ -92,7 +79,7 @@ namespace SkyDragonHunter.Entities {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Start()
-        {                       
+        {
             InitBehaviourTree();
         }
 
@@ -135,7 +122,7 @@ namespace SkyDragonHunter.Entities {
         {
             bool resetRequired = false;
             if (m_Target == null)
-                resetRequired = true;            
+                resetRequired = true;
             else if (m_Target.gameObject.CompareTag(s_PlayerTag))
             {
                 resetRequired = true;
@@ -199,11 +186,11 @@ namespace SkyDragonHunter.Entities {
 
             m_BehaviourTree.SetRoot(rootSelector);
         }
-                
+
         private void UpdatePosition()
         {
             var newPos = transform.position;
-            
+
             //float newYPos = Mathf.Sin((Time.time + rand) * (2 * Mathf.PI / m_YaxisMovementPeriod)) * m_YaxisMovementAmplitude;
             //
             //newPos.y = m_InitialYPos + newYPos;                        
@@ -215,7 +202,7 @@ namespace SkyDragonHunter.Entities {
                     toRight *= 3;
                 if (!isDirectionToRight)
                     toRight *= -1;
-                newPos.x += Time.deltaTime * m_Speed * toRight;                
+                newPos.x += Time.deltaTime * m_Speed * toRight;
             }
 
             // Debug.Log($"new Position: {newPos}");
@@ -224,6 +211,6 @@ namespace SkyDragonHunter.Entities {
 
         // Others
 
-    } // Scope by class EnemyControllerBT
+    } // Scope by class BaseControllerBT
 
 } // namespace Root
