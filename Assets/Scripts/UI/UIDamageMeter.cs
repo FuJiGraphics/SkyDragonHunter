@@ -8,7 +8,11 @@ namespace SkyDragonHunter {
     {
         // 필드 (Fields)
         [SerializeField] private string m_Text;
-        [SerializeField] private TextMeshProUGUI m_TextComponent; 
+        [SerializeField] private TextMeshProUGUI m_TextComponent;
+        [SerializeField] private Vector3 m_Offset;
+
+        private Vector3 m_LastPosition;
+        private bool m_IsFirstUpdate = false;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -18,6 +22,16 @@ namespace SkyDragonHunter {
         {
             m_TextComponent = GetComponentInChildren<TextMeshProUGUI>();
             m_TextComponent.text = m_Text;
+        }
+
+        private void Update()
+        {
+            if (!m_IsFirstUpdate)
+            {
+                m_IsFirstUpdate = true;
+                m_LastPosition = transform.position;
+            }
+            transform.position = m_LastPosition + m_Offset;
         }
 
         public void SetText(string text)
