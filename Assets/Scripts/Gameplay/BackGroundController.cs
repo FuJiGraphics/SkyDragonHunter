@@ -32,6 +32,7 @@ namespace SkyDragonHunter.Game {
         // Public 메서드
         public void SetScrollSpeed(float speed)
         {
+            Debug.Log($"[BackGroundController] SetScrollSpeed 호출됨: {speed}");
             scrollSpeed = speed;
         }
 
@@ -50,9 +51,9 @@ namespace SkyDragonHunter.Game {
             {
                 if (scrollSpeed.Equals(0f))
                     obj.floatSpeedOffset = 0f;
-                else if (scrollSpeed <= float.MaxValue && scrollSpeed >= 0f)
+                else if (scrollSpeed <= float.MaxValue && scrollSpeed > 0f)
                     obj.floatSpeedOffset = Mathf.Clamp(scrollSpeed, 1f, float.MaxValue);
-                else if (scrollSpeed <= 0f && scrollSpeed >= -1f * float.MaxValue)
+                else if (scrollSpeed < 0f && scrollSpeed >= -1f * float.MaxValue)
                     obj.floatSpeedOffset = Mathf.Clamp(scrollSpeed * -1f, 1f, float.MaxValue);
             }
         }

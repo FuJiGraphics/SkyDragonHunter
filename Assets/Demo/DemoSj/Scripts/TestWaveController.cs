@@ -2,6 +2,7 @@ using NPOI.POIFS.Properties;
 using SkyDragonHunter.Game;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,32 +13,34 @@ namespace SkyDragonHunter
     public class TestWaveController : MonoBehaviour
     {
         // 필드 (Fields)
-        public Slider               waveSlider;
-        public TextMeshProUGUI      waveLevelText;
-        public GameObject           ClearPanel;
-        public GameObject           FeildPanel;
-        public GameObject           backGround;
+        public Slider waveSlider;
+        public TextMeshProUGUI waveLevelText;
+        public GameObject ClearPanel;
+        public GameObject FeildPanel;
+        public GameObject backGround;
         public BackGroundController backGroundController;
-        public GameObject           airship;
-        public GameObject           monster;
-        public GameObject           boss;
-        public GameObject           currentEnemy;
-        public BoxCollider2D        spawnArea;
-        public float                maxWaveTime;
-        private float               oldAllSpeed;
-        private float               currentWaveTime;
-        private float               distance;
-        private bool                isStopped;
-        private bool                canSpwan;
+        public GameObject airship;
+        public GameObject monster;
+        public GameObject boss;
+        public BoxCollider2D spawnArea;
+        public float maxWaveTime;
+        private List<GameObject> currentEnemy;
+        private float oldAllSpeed;
+        private float currentWaveTime;
+        private float distance;
+        private bool isStopped;
+        private bool canSpawn;
 
         // 테스트용
-        public Sprite[]             TestBackGround;
-        public Sprite[]             TestBackGroundMid;
-        public Sprite[]             TestBackGroundFront;
-        private int                 backGroundIndex;
-        private int                 smallLevel = 1;
-        private int                 mainLevel = 1;
-        private float               currentOpenPanel = 0f;
+        public Sprite[] TestBackGround;
+        public Sprite[] TestBackGroundMid;
+        public Sprite[] TestBackGroundFront;
+        private int backGroundIndex;
+        private int smallLevel = 1;
+        private int mainLevel = 1;
+        private int currentSpawnMonsters = 0;
+        private int spawnableMonsters = 3;
+        private float currentOpenPanel = 0f;
         // 테스트용
 
         // 속성 (Properties)
@@ -53,28 +56,17 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            canSpwan = true;
-            currentEnemy = null;
+            canSpawn = true;
+            isStopped = false;
+            currentEnemy = new List<GameObject>();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
         }
 
         private void Update()
         {
-            if (currentEnemy != null)
-            {
-                if (Vector3.Distance(airship.transform.position, currentEnemy.transform.position) <= 8f)
-                {
-                    isStopped = true;
-                    backGroundController.SetScrollSpeed(0f);
-                    currentEnemy.GetComponent<TestMonsterMove>().OnStoppedMonster(true);
-                }
-            }
-            else
-            {
-                isStopped = false;
-                backGroundController.SetScrollSpeed(oldAllSpeed);
-            }
+            //backGroundController.SetScrollSpeed(1f);
+            OnBackGroundStop();
 
             if (!isStopped)
             {
@@ -82,51 +74,48 @@ namespace SkyDragonHunter
                 waveSlider.value = currentWaveTime;
             }
 
-            if (currentWaveTime > 4f && currentWaveTime < 6f && !canSpwan)
+            if (currentWaveTime > 2f && currentWaveTime < 4f && !canSpawn)
             {
-                canSpwan = true;
+                canSpawn = true;
             }
-            else if (currentWaveTime > 7f && currentWaveTime < 9f && !canSpwan)
+            else if (currentWaveTime > 7f && currentWaveTime < 8f && !canSpawn)
             {
-                canSpwan = true;
+                canSpawn = true;
             }
 
-            if (currentWaveTime >= 2f && currentWaveTime <= 4f && canSpwan
-                || currentWaveTime >= 6f && currentWaveTime <= 7f && canSpwan)
+            if (currentWaveTime >= 0f && currentWaveTime <= 1f && canSpawn
+                || currentWaveTime >= 5f && currentWaveTime <= 6f && canSpawn)
             {
                 OnSpwanMonster();
             }
 
-            if (currentWaveTime >= 10f && canSpwan)
+            if (currentWaveTime >= 10f && canSpawn)
             {
                 OnSpwanBoss();
             }
 
-            if (currentWaveTime >= 10f && currentEnemy == null)
+            if (currentWaveTime >= 10f && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
-                OnActiveClearPanel();
+                OnActiveClearPanel(); // 클리어 패널 활성화
                 currentOpenPanel += Time.deltaTime;
 
                 if (currentOpenPanel > 2f)
                 {
-                    OnUnActiveClearPanel();
+                    OnUnActiveClearPanel(); // 클리어 패널 종료
                     smallLevel++;
                     if (smallLevel > 10)
                     {
                         smallLevel = 1;
                         mainLevel++;
-                        OnTestWaveFailedActive();
+                        OnTestWaveFailedActive(); // 필드 패널 재활성화
                     }
 
                     waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
 
                     currentWaveTime = 0f;
-                    canSpwan = true;
+                    canSpawn = true;
                     currentOpenPanel = 0f;
-
                 }
-
-
             }
 
         }
@@ -145,16 +134,54 @@ namespace SkyDragonHunter
         }
 
         // Private 메서드
+        private void OnBackGroundStop()
+        {
+            bool shouldStop = false;
+
+            foreach (var monster in currentEnemy)
+            {
+                if (monster == null) continue;
+
+                if (!monster.CompareTag("Monster")) continue; // 몬스터 태그 필터링
+
+                float distance = Vector3.Distance(airship.transform.position, monster.transform.position);
+                if (distance <= 50f)
+                {
+                    shouldStop = true;
+                    break;
+                }
+            }
+
+            if (shouldStop && !isStopped)
+            {
+                isStopped = true;
+                backGroundController.SetScrollSpeed(0f);
+            }
+            else if (!shouldStop && isStopped)
+            {
+                isStopped = false;
+                backGroundController.SetScrollSpeed(oldAllSpeed);
+            }
+        }
+
         private void OnSpwanMonster()
         {
-            currentEnemy = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
-            canSpwan = false;
+            for (int i = 0; i < spawnableMonsters; i++)
+            {
+                GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
+                currentEnemy.Add(spawned);
+                currentSpawnMonsters++;
+            }
+
+            canSpawn = false;
         }
 
         private void OnSpwanBoss()
         {
-            currentEnemy = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
-            canSpwan = false;
+            GameObject spawned = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
+            currentEnemy.Add(spawned);
+            currentSpawnMonsters++;
+            canSpawn = false;
         }
 
         private void OnActiveClearPanel()
