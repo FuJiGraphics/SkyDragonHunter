@@ -105,7 +105,7 @@ namespace SkyDragonHunter.Scriptables
             Attack attack = new Attack();
             Vector2 targetVec = Vector2.zero;
             Vector2 targetDir = Vector2.zero;
-            Vector2 firePos = dummy.transform.position + dummy.transform.forward;
+            Vector3 firePos = dummy.transform.position + dummy.transform.forward;
             if (defender != null)
             {
                 CharacterStatus aStats = attacker.GetComponent<CharacterStatus>();
@@ -118,7 +118,7 @@ namespace SkyDragonHunter.Scriptables
                 instance.GetComponent<HitTriggerProjectile>().targetTags = targetTags;
                 attack = CreateAttack(aStats, dStats);
 
-                targetVec = defender.transform.position - attacker.transform.position;
+                targetVec = defender.transform.position - firePos;
                 if (targetVec.sqrMagnitude > range * range)
                 {
                     m_ProjectilePool.Release(instance);
