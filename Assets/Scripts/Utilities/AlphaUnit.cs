@@ -27,6 +27,9 @@ namespace SkyDragonHunter.Utility
 
         public AlphaUnit(double number)
         {
+            if (number <= 0.0)
+                number = 0.0;
+
             m_OriginNumber = number;
             m_StringNumber = "0";
             m_StringBase = "";
@@ -50,6 +53,9 @@ namespace SkyDragonHunter.Utility
 
         private void Normalize()
         {
+            if (m_OriginNumber <= 0.0)
+                return;
+
             double targetNumber = m_OriginNumber;
 
             int unitShift = (int)(Math.Log10(targetNumber) / 3);

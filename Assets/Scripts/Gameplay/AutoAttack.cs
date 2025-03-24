@@ -9,7 +9,8 @@ namespace SkyDragonHunter.Gameplay
     public class AutoAttack : MonoBehaviour
     {
         // 필드 (Fields)
-        [SerializeField] private CharacterInventory m_Inventory;
+        [SerializeField] public string[] targetTags;
+        private CharacterInventory m_Inventory;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -28,7 +29,11 @@ namespace SkyDragonHunter.Gameplay
                 return;
             }
 
-            m_Inventory.CurrentWeapon.Execute(gameObject, null);
+            foreach (string tag in  targetTags)
+            {
+                var findGo = GameObject.FindWithTag(tag);
+                m_Inventory.CurrentWeapon.Execute(gameObject, findGo);
+            }
         }
 
         // Public 메서드

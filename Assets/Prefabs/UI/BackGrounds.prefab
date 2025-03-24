@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 7145231687729148683}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.833308, y: 8.249807, z: 9.030229}
-  m_LocalScale: {x: 0.875, y: 0.9390244, z: 1}
+  m_LocalPosition: {x: -12.0428, y: 8.9344, z: 8.0925}
+  m_LocalScale: {x: 0.7756307, y: 0.6586355, z: 0.3748431}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1770326196730816652}
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 2141196365
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 30881181df6323d47a12790584a07dd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0f79f12485a9f4a49a51353df3759d0c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 30, y: 11}
+  m_Size: {x: 47.9, y: 12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 1
   backGroundSpeed: 0.01
 --- !u!1 &7457298969398345058
 GameObject:
@@ -125,8 +126,8 @@ Transform:
   m_GameObject: {fileID: 7457298969398345058}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.833308, y: 8.249807, z: 6.0302286}
-  m_LocalScale: {x: 0.875, y: 0.9390244, z: 1}
+  m_LocalPosition: {x: -12.0428, y: 8.9344, z: 4}
+  m_LocalScale: {x: 0.7756307, y: 0.6586355, z: 0.3748431}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1770326196730816652}
@@ -172,12 +173,12 @@ SpriteRenderer:
   m_SortingLayerID: 1123153057
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e17df7e148cc39d4c95ce5a0c3fa694a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3148ea60111777844b6738cb5806588e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 30, y: 11}
+  m_Size: {x: 47.9, y: 12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -195,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 1
   backGroundSpeed: 0.1
 --- !u!1 &7772408495474766353
 GameObject:
@@ -223,8 +225,8 @@ Transform:
   m_GameObject: {fileID: 7772408495474766353}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.833308, y: 8.249807, z: 7.0302286}
-  m_LocalScale: {x: 0.875, y: 0.9390244, z: 1}
+  m_LocalPosition: {x: -12.0428, y: 8.9344, z: 7.3428}
+  m_LocalScale: {x: 0.7756307, y: 0.6586355, z: 0.3748431}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1770326196730816652}
@@ -270,12 +272,12 @@ SpriteRenderer:
   m_SortingLayerID: -401923313
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 76a2fb4c13ea8284fb2381275fb18931, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9bc0ca521142c1946b4b132e8a65fc62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 30, y: 11}
+  m_Size: {x: 47.9, y: 12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -293,6 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086347a003f316f41a9aed59d8ad11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 1
   backGroundSpeed: 0.05
 --- !u!1 &8563928261202618365
 GameObject:
@@ -303,6 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1770326196730816652}
+  - component: {fileID: 349314887484817391}
   m_Layer: 3
   m_Name: BackGrounds
   m_TagString: Untagged
@@ -328,3 +332,17 @@ Transform:
   - {fileID: 8486208616743973015}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &349314887484817391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8563928261202618365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20a61bee69f451499d382264c500a17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollSpeed: 1
+  floatingObjects: []

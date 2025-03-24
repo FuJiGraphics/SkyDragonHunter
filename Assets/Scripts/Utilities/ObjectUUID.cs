@@ -19,13 +19,15 @@ namespace SkyDragonHunter
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-#if UNITY_EDITOR
             if (string.IsNullOrEmpty(uuid))
             {
                 this.ResetUUID();
-                EditorUtility.SetDirty(this);
             }
-#endif
+            else
+            {
+                GameMgr.UnregisterObject(gameObject);
+                GameMgr.RegisterObject(gameObject);
+            }
         }
 
         // Public 메서드

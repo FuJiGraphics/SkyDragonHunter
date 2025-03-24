@@ -38,6 +38,7 @@ namespace SkyDragonHunter {
             this.direction = direction;
             if (m_HitTrigger != null)
             {
+                m_HitTrigger.attackInfo = attack;
                 m_HitTrigger.OwnerShooter = owner;
                 m_HitTrigger.OwnerPool = ownerPool;
             }

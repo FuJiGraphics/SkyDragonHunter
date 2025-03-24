@@ -68,7 +68,11 @@ namespace SkyDragonHunter.Entities {
                 {
                     return float.MaxValue;
                 }
-                var distance = m_Target.position.x - transform.position.x;
+                var targetX = m_Target.position.x;
+                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
+                var halfwidth = sr.bounds.size.x * 0.5f;
+                                
+                var distance = m_Target.position.x + halfwidth - transform.position.x;
                 if(distance > 0)
                 {
                     isDirectionToRight = true;
@@ -122,7 +126,7 @@ namespace SkyDragonHunter.Entities {
         public void SetAnimTrigger(int triggerHash)
         {
             //m_Animator.SetTrigger(triggerHash);
-            Debug.Log($"Attacked! at {Time.time}");
+            //Debug.Log($"Attacked! at {Time.time}");
         }
 
         public void ResetTarget()
@@ -212,7 +216,7 @@ namespace SkyDragonHunter.Entities {
                 newPos.x += Time.deltaTime * m_Speed * toRight;                
             }
 
-            Debug.Log($"new Position: {newPos}");
+            // Debug.Log($"new Position: {newPos}");
             transform.position = newPos;
         }
 

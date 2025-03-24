@@ -36,6 +36,11 @@ namespace SkyDragonHunter.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            this.OnTriggerEnter2D(collision.collider);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
             if (m_HasAttacked && isSingleAttack)
                 return;
 
@@ -51,7 +56,6 @@ namespace SkyDragonHunter.Gameplay
             target.OnAttack(OwnerShooter, attackInfo);
             DestroyProjectile();
         }
-
         // Public 메서드
         // Private 메서드
         private bool CanAttack(string target)

@@ -15,6 +15,7 @@ namespace SkyDragonHunter
         public Slider waveSlider;
         public TextMeshProUGUI waveLevelText;
         public GameObject ClearPanel;
+        public GameObject FeildPanel;
         public GameObject backGround;
         public BackGroundController backGroundController;
         public GameObject airship;
@@ -52,7 +53,7 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            spwanPosition = new Vector3(airship.transform.position.x + 15,
+            spwanPosition = new Vector3(airship.transform.position.x + 50,
                 airship.transform.position.y, airship.transform.position.z);
             canSpwan = true;
             currentEnemy = null;
@@ -190,9 +191,14 @@ namespace SkyDragonHunter
             }
         }
 
-        private void OnTestWaveFailed()
+        private void OnTestWaveFailedActive()
         {
+            FeildPanel.SetActive(true);
+        }
 
+        private void OnTestWaveFailedUnActive()
+        {
+            FeildPanel.SetActive(false);
         }
         // Others
 
