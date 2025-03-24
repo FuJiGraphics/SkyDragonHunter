@@ -25,12 +25,14 @@ Shader "Custom/SpriteScrolling"
             {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
+                float4 color : COLOR;
             };
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
                 float2 texcoord : TEXCOORD0;
+                float4 color : COLOR;
             };
 
             sampler2D _MainTex;
@@ -42,12 +44,14 @@ Shader "Custom/SpriteScrolling"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex) + _Offset.xy;
+                o.color = v.color;
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target // 레스터화 이후 처리과정 (그리기)
             {
                 fixed4 col = tex2D(_MainTex, i.texcoord);
+                col *= i.color;
 
                 // Alpha가 0이면 투명하게 유지
                 if (col.a < 0.1) discard; // 날리기
