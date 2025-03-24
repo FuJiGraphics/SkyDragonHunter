@@ -387,6 +387,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1913371689 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 2483115227735810754, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+  m_PrefabInstance: {fileID: 4279380903264771771}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2123189625
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,9 +589,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 7434643913460656674, guid: d965ce7e20dbfe3418c712938345b5ec, type: 3}
+    - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
       propertyPath: airship
       value: 
       objectReference: {fileID: 2145036379}
+    - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: spawnArea
+      value: 
+      objectReference: {fileID: 1913371689}
     - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
       propertyPath: ClearPanel
       value: 
@@ -611,6 +624,18 @@ PrefabInstance:
       propertyPath: backGroundController
       value: 
       objectReference: {fileID: 1085594525}
+    - target: {fileID: 2483115227735810754, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: m_Size.x
+      value: 3.8475919
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483115227735810754, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: m_Size.y
+      value: 6.641876
+      objectReference: {fileID: 0}
+    - target: {fileID: 2483115227735810754, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7951261400370368363, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.12103635
