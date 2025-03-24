@@ -68,11 +68,8 @@ namespace SkyDragonHunter.Entities {
                 {
                     return float.MaxValue;
                 }
-                var targetX = m_Target.position.x;
-                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var halfwidth = sr.bounds.size.x * 0.5f;
                                 
-                var distance = m_Target.position.x + halfwidth - transform.position.x;
+                var distance = m_Target.position.x - transform.position.x;
                 if(distance > 0)
                 {
                     isDirectionToRight = true;
@@ -81,6 +78,19 @@ namespace SkyDragonHunter.Entities {
                 {
                     isDirectionToRight = false;
                 }
+
+                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
+                var halfwidth = sr.bounds.size.x * 0.5f;
+
+                if(isDirectionToRight)
+                {
+                    distance -= halfwidth;
+                }
+                else
+                {
+                    distance += halfwidth;
+                }
+
                 return Mathf.Abs(distance);
             }
         }
