@@ -6,30 +6,54 @@ using NPOI.XSSF.UserModel;
 using System.IO;
 using UnityEngine;
 
-static class XLoader
+public static class XLoader
 {
-    public static void Load(string filePath)
+    public static XSSFWorkbook Load(string filePath)
     {
         XSSFWorkbook book = XLoader.CreateBookWithLoad(filePath);
-        if (book != null)
+        return book;
+    }
+
+    public static void SaveFromExcelSheetToCSV(ISheet sheet, string csvFilePath)
+    {
+        using (StreamWriter sw = new StreamWriter(csvFilePath))
         {
-            for (int i = 0; i < book.NumberOfSheets; ++i)
+            for (int i = 0; i <= sheet.LastRowNum; i++)
             {
-                ISheet sheet = book.GetSheetAt(i);
+                IRow row = sheet.GetRow(i);
+                if (row == null) continue;
 
-                for (int rowIdx = 0; rowIdx <= sheet.LastRowNum; rowIdx++)
+                string line = "";
+                for (int j = 0; j < row.LastCellNum; j++)
                 {
-                    var row = sheet.GetRow(rowIdx);
-                    if (row == null) continue;
-
-                    var rowData = new List<string>();
-                    for (int cellIdx = 0; cellIdx < row.LastCellNum; cellIdx++)
+                    ICell cell = row.GetCell(j);
+                    if (cell != null)
                     {
-                        var cell = row.GetCell(cellIdx);
-                        Debug.Log(cell?.ToString());
+                        line += GetCellValue(cell) + ",";
+                    }
+                    else
+                    {
+                        line += ",";
                     }
                 }
+
+                line = line.TrimEnd(',');
+                sw.WriteLine(line);
             }
+        }
+
+        Debug.Log("CSV 저장 완료: " + csvFilePath);
+    }
+
+    private static string GetCellValue(ICell cell)
+    {
+        switch (cell.CellType)
+        {
+            case CellType.String: return cell.StringCellValue;
+            case CellType.Boolean: return cell.BooleanCellValue.ToString();
+            case CellType.Numeric: return cell.NumericCellValue.ToString();
+            case CellType.Formula: return cell.ToString(); // 계산값으로 출력하려면 Evaluate 사용
+            default: return "";
         }
     }
 

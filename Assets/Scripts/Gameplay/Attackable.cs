@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -29,6 +30,15 @@ namespace SkyDragonHunter {
         {
             Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
 
+            if (attack.IsCritical)
+            {
+                DrawableMgr.Text(transform.position, attack.damage.ToString(), Color.red);
+            }
+            else
+            {
+                DrawableMgr.Text(transform.position,  attack.damage.ToString());
+            }
+
             double takeDamage = m_Stats.currentShield.Value - attack.damage.Value;
             if (takeDamage >= 0.0)
             {
@@ -44,6 +54,7 @@ namespace SkyDragonHunter {
 
             takeDamage = m_Stats.currentHP.Value - takeDamage;
             m_Stats.SetHP(takeDamage);
+
             if (m_Stats.currentHP.Equals(0.0) || m_Stats.currentHP < 0.0)
             {
                 m_Stats.currentHP = 0.0;
