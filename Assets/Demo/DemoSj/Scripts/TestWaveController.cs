@@ -65,6 +65,7 @@ namespace SkyDragonHunter
 
         private void Update()
         {
+            //backGroundController.SetScrollSpeed(1f);
             OnBackGroundStop();
 
             if (!isStopped)
@@ -135,6 +136,8 @@ namespace SkyDragonHunter
         // Private 메서드
         private void OnBackGroundStop()
         {
+            bool shouldStop = false;
+
             foreach (var monster in currentEnemy)
             {
                 if (monster == null) continue;
@@ -142,16 +145,22 @@ namespace SkyDragonHunter
                 if (!monster.CompareTag("Monster")) continue; // 몬스터 태그 필터링
 
                 float distance = Vector3.Distance(airship.transform.position, monster.transform.position);
-                if (distance <= 8f)
+                if (distance <= 50f)
                 {
-                    isStopped = true;
-                    backGroundController.SetScrollSpeed(0f);
+                    shouldStop = true;
+                    break;
                 }
-                else
-                {
-                    isStopped = false;
-                    backGroundController.SetScrollSpeed(oldAllSpeed);
-                }
+            }
+
+            if (shouldStop && !isStopped)
+            {
+                isStopped = true;
+                backGroundController.SetScrollSpeed(0f);
+            }
+            else if (!shouldStop && isStopped)
+            {
+                isStopped = false;
+                backGroundController.SetScrollSpeed(oldAllSpeed);
             }
         }
 
