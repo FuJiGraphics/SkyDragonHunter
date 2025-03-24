@@ -34,6 +34,7 @@ namespace SkyDragonHunter
         public Sprite[] TestBackGround;
         public Sprite[] TestBackGroundMid;
         public Sprite[] TestBackGroundFront;
+        public float spawnDistance;
         private int backGroundIndex;
         private int smallLevel = 1;
         private int mainLevel = 1;
@@ -53,10 +54,11 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            spwanPosition = new Vector3(airship.transform.position.x + 50,
+            spwanPosition = new Vector3(airship.transform.position.x + spawnDistance,
                 airship.transform.position.y, airship.transform.position.z);
             canSpwan = true;
             currentEnemy = null;
+            OnTestWaveFailedUnActive();
         }
 
         private void Update()
@@ -67,6 +69,7 @@ namespace SkyDragonHunter
                 {
                     isStopped = true;
                     backGroundController.SetScrollSpeed(0f);
+                    currentEnemy.GetComponent<TestMonsterMove>().OnStoppedMonster(true);
                 }
             }
             else
@@ -112,8 +115,9 @@ namespace SkyDragonHunter
                     smallLevel++;
                     if (smallLevel > 10)
                     {
-                        smallLevel = 0;
+                        smallLevel = 1;
                         mainLevel++;
+                        OnTestWaveFailedActive();
                     }
 
                     waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
@@ -135,7 +139,9 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             smallLevel = 1;
             mainLevel = 1;
+            waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
             currentWaveTime = 0f;
+            OnTestWaveFailedUnActive();
         }
 
         // Private 메서드
