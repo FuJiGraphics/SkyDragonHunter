@@ -1,3 +1,4 @@
+using NPOI.POIFS.Properties;
 using SkyDragonHunter.Game;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace SkyDragonHunter
     public class TestWaveController : MonoBehaviour
     {
         // 필드 (Fields)
-        public Slider slider;
+        public Slider waveSlider;
         public TextMeshProUGUI waveLevelText;
         public GameObject ClearPanel;
         public GameObject backGround;
@@ -31,7 +32,7 @@ namespace SkyDragonHunter
         // 테스트용
         private int smallLevel = 1;
         private int mainLevel = 1;
-        private TestMonsterMove testMonsterMove;
+        private float currentOpenPanel = 0f;
         // 테스트용
 
         // 속성 (Properties)
@@ -42,8 +43,8 @@ namespace SkyDragonHunter
         {
             maxWaveTime = 10f;
             currentWaveTime = 0f;
-            slider.maxValue = maxWaveTime;
-            slider.minValue = 0;
+            waveSlider.maxValue = maxWaveTime;
+            waveSlider.minValue = 0;
             ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
@@ -61,7 +62,6 @@ namespace SkyDragonHunter
                 {
                     isStopped = true;
                     backGroundController.SetScrollSpeed(0f);
-                    testMonsterMove.OnStoppedMonster(true);
                 }
             }
             else
@@ -73,7 +73,7 @@ namespace SkyDragonHunter
             if (!isStopped)
             {
                 currentWaveTime += Time.deltaTime * oldAllSpeed;
-                slider.value = currentWaveTime;
+                waveSlider.value = currentWaveTime;
             }
 
             if (currentWaveTime > 4f && currentWaveTime < 6f && !canSpwan)
@@ -98,23 +98,28 @@ namespace SkyDragonHunter
 
             if (currentWaveTime >= 10f && currentEnemy == null)
             {
-                float currentOpenPanel;
-                currentOpenPanel = Time.deltaTime;
+                OnActiveClearPanel();
+                currentOpenPanel += Time.deltaTime;
 
-                smallLevel++;
-                if (smallLevel > 10)
+                if (currentOpenPanel > 2f)
                 {
-                    smallLevel = 0;
-                    mainLevel++;
+                    OnUnActiveClearPanel();
+                    smallLevel++;
+                    if (smallLevel > 10)
+                    {
+                        smallLevel = 0;
+                        mainLevel++;
+                    }
+
+                    waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
+
+                    currentWaveTime = 0f;
+                    canSpwan = true;
+                    currentOpenPanel = 0f;
+                    
                 }
-                //OnActiveClearPanel();
-                waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
-                //if (currentOpenPanel > 2f)
-                //{
-                //    OnUnActiveClearPanel();
-                //    currentWaveTime = 0f;
-                //    canSpwan = true;
-                //}
+
+
             }
 
         }
@@ -132,14 +137,12 @@ namespace SkyDragonHunter
         private void OnSpwanMonster()
         {
             currentEnemy = Instantiate(monster, spwanPosition, Quaternion.identity);
-            testMonsterMove = currentEnemy.GetComponent<TestMonsterMove>();
             canSpwan = false;
         }
 
         private void OnSpwanBoss()
         {
             currentEnemy = Instantiate(boss, spwanPosition, Quaternion.identity);
-            testMonsterMove = currentEnemy.GetComponent<TestMonsterMove>();
             canSpwan = false;
         }
 
@@ -151,6 +154,24 @@ namespace SkyDragonHunter
         private void OnUnActiveClearPanel()
         {
             ClearPanel.SetActive(false);
+            OnChangeBackGround();
+        }
+
+        private void OnChangeBackGround()
+        {
+            //foreach (Transform child in backGround.transform)
+            //{
+            //    SpriteRenderer ctrl = child.GetComponent<SpriteRenderer>();
+            //    if (ctrl != null)
+            //    {
+            //        ctrl.color = new Color(
+            //            Random.Range(0f, 1f),
+            //            Random.Range(0f, 1f),
+            //            Random.Range(0f, 1f),
+            //            1f // 알파값은 1로 설정 (완전히 불투명)
+            //        );
+            //    }
+            //}
         }
         // Others
 

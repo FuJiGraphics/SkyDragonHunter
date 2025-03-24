@@ -28,6 +28,10 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private Transform m_AttackTarget;
 
         private SpriteRenderer m_SpriteRenderer;
+        // 테스트용 나중에 삭제
+        private bool OnTestDestroy;
+        float testDestroyStartTime = 0f;
+        // 테스트용 나중에 삭제
 
         // 속성 (Properties)
         public AlphaUnit Damage => m_Damage;
@@ -58,9 +62,9 @@ namespace SkyDragonHunter.Entities
         private void Start()
         {
             m_Damage = 100;
-            m_HealthPoint = 500;
+            m_HealthPoint = 50;
             m_AttackDuration = 1.5f;
-            m_AttackTimer = m_AttackDuration;
+            m_AttackTimer = 0f;
             m_IsDead = false;
             m_DeathTimer = 1f;
             m_DamagedTimer = 0f;
@@ -68,6 +72,7 @@ namespace SkyDragonHunter.Entities
             m_AttackRange = 3f;
             m_SpriteRenderer = GetComponent<SpriteRenderer>();
             m_AttackTarget = GameObject.FindWithTag("Finish").transform;
+            OnTestDestroy = false;
         }
     
         private void Update()
@@ -81,6 +86,16 @@ namespace SkyDragonHunter.Entities
             if(m_IsAttackable && m_AttackTimer <= 0)
             {
                 Attack();
+                OnTestDestroy = true;
+            }
+
+            if (OnTestDestroy)
+            {
+                testDestroyStartTime += Time.deltaTime;
+                if (testDestroyStartTime > m_DeathTimer)
+                {
+                    Destroy(gameObject);
+                }
             }
 
             BlinkOnAttack();
@@ -132,6 +147,7 @@ namespace SkyDragonHunter.Entities
             if(Input.GetKeyDown(KeyCode.S))
             {
                 TakeDamage(10);
+                Debug.Log("s누름");
             }
         }
 
