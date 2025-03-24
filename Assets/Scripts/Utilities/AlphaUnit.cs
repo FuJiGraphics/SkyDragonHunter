@@ -5,23 +5,6 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Utility
 {
-    [CustomPropertyDrawer(typeof(AlphaUnit))]
-    public class AlphaUnitDrawer : PropertyDrawer
-    {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            var originProp = property.FindPropertyRelative("m_OriginNumber");
-            EditorGUI.BeginChangeCheck();
-            originProp.doubleValue = EditorGUI.DoubleField(position, label, originProp.doubleValue);
-            if (EditorGUI.EndChangeCheck())
-            {
-                AlphaUnit temp = (AlphaUnit)fieldInfo.GetValue(property.serializedObject.targetObject);
-                temp = new AlphaUnit(temp.Value);
-                fieldInfo.SetValue(property.serializedObject.targetObject, temp);
-            }
-        }
-    }
-
     [System.Serializable]
     public struct AlphaUnit
         : IComparable<AlphaUnit>, IEquatable<AlphaUnit>

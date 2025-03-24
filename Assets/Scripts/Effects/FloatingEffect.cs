@@ -27,7 +27,7 @@ public class FloatingEffect : MonoBehaviour
 
         float offset = Mathf.Cos(m_lastAngle) * floatAmount;
         var pos = transform.position;
-        pos.y = m_StartY * offset;
+        pos.y = m_StartY + offset;
         transform.position = pos;
     }
 
