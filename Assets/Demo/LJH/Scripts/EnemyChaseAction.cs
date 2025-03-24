@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyChaseAction : ActionNode<EnemyControllerBT>
+    public class EnemyChaseAction<T> : ActionNode<T> where T : BaseControllerBT<T>
     {
         // Public 메서드
-        public EnemyChaseAction(EnemyControllerBT context) : base(context)
+        public EnemyChaseAction(T context) : base(context)
         {
             
         }

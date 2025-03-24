@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyChasableCondition : ConditionNode<EnemyControllerBT>
+    public class EnemyChasableCondition<T> : ConditionNode<T> where T : BaseControllerBT<T>
     {
         // Public 메서드
-        public EnemyChasableCondition(EnemyControllerBT context) : base(context)
+        public EnemyChasableCondition(T context) : base(context)
         {
         }
 

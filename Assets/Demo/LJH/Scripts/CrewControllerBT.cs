@@ -13,97 +13,27 @@ namespace SkyDragonHunter.Entities {
     }
 
 
-    public class CrewControllerBT : MonoBehaviour
+    public class CrewControllerBT : BaseControllerBT<CrewControllerBT>
     {
         // 필드 (Fields)
         [SerializeField] private CrewType m_Type;
-        [SerializeField] private float m_Speed;
-        [SerializeField] private float m_AggroRange;
-
-        private BehaviourTree<CrewControllerBT> m_BehaviourTree;
-
-        public AttackDefinition attackDefinition;
-        public CharacterStatus status;
-
-        private Animator m_Animator;
-
-        [SerializeField] private Transform m_Target;
 
         private static readonly string s_PlayerTag = "Player";
         private static readonly string s_EnemyTag = "Enemy";
 
         public bool isMoving = false;
         public bool isChasing = false;
-        public bool isDirectionToRight = false;
 
-        // 속성 (Properties)
-        public bool IsTargetInAttackRange
-        {
-            get
-            {
-                return TargetDistance < attackDefinition.range;
-            }
-        }
-
-        public bool IsTargetInAggroRange
-        {
-            get
-            {
-                return TargetDistance < m_AggroRange;
-            }
-        }
-
-        public float TargetDistance
-        {
-            get
-            {
-                if (m_Target == null)
-                {
-                    return float.MaxValue;
-                }
-
-                var distance = m_Target.position.x - transform.position.x;
-                if (distance > 0)
-                {
-                    isDirectionToRight = true;
-                }
-                else
-                {
-                    isDirectionToRight = false;
-                }
-
-                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var halfwidth = sr.bounds.size.x * 0.5f;
-
-                if (isDirectionToRight)
-                {
-                    distance -= halfwidth;
-                }
-                else
-                {
-                    distance += halfwidth;
-                }
-
-                return Mathf.Abs(distance);
-            }
-        }
-
-        // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+        protected override void Start()
         {            
-            InitBehaviourTree();
+            base.Start();
         }
 
         private void Update()
         {
             UpdatePosition();
             m_BehaviourTree.Update();
-        }
-
-        private void FixedUpdate()
-        {
-            ResetTarget();
         }
 
         private void OnDrawGizmos()
@@ -117,20 +47,8 @@ namespace SkyDragonHunter.Entities {
 
 
         // Public 메서드
-        public void SetAnimTrigger(string triggerName)
-        {
-            var triggerHash = Animator.StringToHash(triggerName);
-            Debug.Log($"Recommended to use trigger hash({triggerHash}) instead of trigger name({triggerName})");
-            SetAnimTrigger(triggerHash);
-        }
 
-        public void SetAnimTrigger(int triggerHash)
-        {
-            //m_Animator.SetTrigger(triggerHash);
-            attackDefinition.Execute(gameObject, m_Target.gameObject);
-        }
-
-        public void ResetTarget()
+        public override void ResetTarget()
         {
             bool resetRequired = false;
             bool isPrevTargetNull = false;
@@ -159,19 +77,15 @@ namespace SkyDragonHunter.Entities {
             }
         }
 
-        public void ResetBehaviourTree()
-        {
-            m_BehaviourTree.Reset();
-        }
-
-        // Private 메서드
-        private void InitBehaviourTree()
+        // Protected 메서드
+        protected override void InitBehaviourTree()
         {
             switch (m_Type)
             {
                 case CrewType.OnBoard:
                     break;
                 case CrewType.OnField:
+                    InitOnFieldCrewBT();
                     break;
             }
         }
@@ -195,11 +109,7 @@ namespace SkyDragonHunter.Entities {
 
         private void UpdatePosition()
         {
-            var newPos = transform.position;
-
-            //float newYPos = Mathf.Sin((Time.time + rand) * (2 * Mathf.PI / m_YaxisMovementPeriod)) * m_YaxisMovementAmplitude;
-            //
-            //newPos.y = m_InitialYPos + newYPos;                        
+            var newPos = transform.position;                 
 
             if (isChasing || isMoving)
             {

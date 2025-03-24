@@ -13,88 +13,16 @@ namespace SkyDragonHunter.Entities {
         Stationary // Boss
     }
 
-    public class EnemyControllerBT : MonoBehaviour
+    public class EnemyControllerBT : BaseControllerBT<EnemyControllerBT>
     {        
         // 필드 (Fields)
-        [SerializeField] private EnemyType m_Type;
-        [SerializeField] private float m_Speed;
-        [SerializeField] private float m_AggroRange;
-
-        private BehaviourTree<EnemyControllerBT> m_BehaviourTree;
-
-        public AttackDefinition attackDefinition;
-        public CharacterStatus status;
-
-        private Animator m_Animator;
-
-        [SerializeField] private Transform m_Target;
+        [SerializeField] private EnemyType m_Type;        
 
         private static readonly string s_PlayerTag = "Player";
         private static readonly string s_CrewTag = "Crew";
         private static readonly string s_CreatureTag = "Creature";
 
-        public bool isMoving = false;
-        public bool isChasing = false;
-        public bool isDirectionToRight = false;
-
-        // 속성 (Properties)
-        public bool IsTargetInAttackRange
-        {
-            get
-            {                                
-                return TargetDistance < attackDefinition.range;
-            }
-        }
-
-        public bool IsTargetInAggroRange
-        {
-            get
-            {
-                return TargetDistance < m_AggroRange;
-            }
-        }
-
-        public float TargetDistance
-        {
-            get
-            {
-                if(m_Target == null)
-                {
-                    return float.MaxValue;
-                }
-                                
-                var distance = m_Target.position.x - transform.position.x;
-                if(distance > 0)
-                {
-                    isDirectionToRight = true;
-                }
-                else
-                {
-                    isDirectionToRight = false;
-                }
-
-                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var halfwidth = sr.bounds.size.x * 0.5f;
-
-                if(isDirectionToRight)
-                {
-                    distance -= halfwidth;
-                }
-                else
-                {
-                    distance += halfwidth;
-                }
-
-                return Mathf.Abs(distance);
-            }
-        }
-
-        // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
-        {                       
-            InitBehaviourTree();
-        }
 
         private void Update()
         {
@@ -102,10 +30,6 @@ namespace SkyDragonHunter.Entities {
             m_BehaviourTree.Update();
         }
 
-        private void FixedUpdate()
-        {
-            ResetTarget();
-        }
 
         private void OnDrawGizmos()
         {
@@ -118,20 +42,8 @@ namespace SkyDragonHunter.Entities {
 
 
         // Public 메서드
-        public void SetAnimTrigger(string triggerName)
-        {
-            var triggerHash = Animator.StringToHash(triggerName);
-            Debug.Log($"Recommended to use trigger hash({triggerHash}) instead of trigger name({triggerName})");
-            SetAnimTrigger(triggerHash);
-        }
 
-        public void SetAnimTrigger(int triggerHash)
-        {
-            //m_Animator.SetTrigger(triggerHash);
-            attackDefinition.Execute(gameObject, m_Target.gameObject);
-        }
-
-        public void ResetTarget()
+        public override void ResetTarget()
         {
             bool resetRequired = false;
             if (m_Target == null)
@@ -156,13 +68,8 @@ namespace SkyDragonHunter.Entities {
             }
         }
 
-        public void ResetBehaviourTree()
-        {
-            m_BehaviourTree.Reset();
-        }
-
-        // Private 메서드
-        private void InitBehaviourTree()
+        // Protected 메서드
+        protected override void InitBehaviourTree()
         {
             switch (m_Type)
             {
@@ -183,18 +90,18 @@ namespace SkyDragonHunter.Entities {
             var rootSelector = new SelectorNode<EnemyControllerBT>(this);
 
             var attackSequence = new SequenceNode<EnemyControllerBT>(this);
-            attackSequence.AddChild(new EnemyAttackableCondition(this));
-            attackSequence.AddChild(new EnemyAttackAction(this));
+            attackSequence.AddChild(new EntityAttackableCondition<EnemyControllerBT>(this));
+            attackSequence.AddChild(new EnemyAttackAction<EnemyControllerBT>(this));
             rootSelector.AddChild(attackSequence);
 
             var chaseSequence = new SequenceNode<EnemyControllerBT>(this);
-            chaseSequence.AddChild(new EnemyChasableCondition(this));
-            chaseSequence.AddChild(new EnemyChaseAction(this));
+            chaseSequence.AddChild(new EnemyChasableCondition<EnemyControllerBT>(this));
+            chaseSequence.AddChild(new EnemyChaseAction<EnemyControllerBT>(this));
             rootSelector.AddChild(chaseSequence);
 
             var moveSequence = new SequenceNode<EnemyControllerBT>(this);
-            moveSequence.AddChild(new EnemyMoveCondition(this));
-            moveSequence.AddChild(new EnemyMoveAction(this));
+            moveSequence.AddChild(new EnemyMoveCondition<EnemyControllerBT>(this));
+            moveSequence.AddChild(new EnemyMoveAction<EnemyControllerBT>(this));
             rootSelector.AddChild(moveSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);

@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyAttackableCondition : ConditionNode<EnemyControllerBT>
+    public class EntityAttackableCondition<T> : ConditionNode<T> where T : BaseControllerBT<T>
     {      
         // Public 메서드
-        public EnemyAttackableCondition(EnemyControllerBT context) : base(context)
+        public EntityAttackableCondition(T context) : base(context)
         {
         }
 
