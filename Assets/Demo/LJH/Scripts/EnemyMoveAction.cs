@@ -18,7 +18,6 @@ namespace SkyDragonHunter.Entities {
         {
             base.OnStart();
             m_Context.isMoving = true;
-            Debug.LogWarning($"Entered Move Action");
         }
 
         protected override NodeStatus OnUpdate()
@@ -34,7 +33,6 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            Debug.Log($"Ended Move Action");
             m_Context.isMoving = false;
             m_Context.ResetTarget();
         }

@@ -44,9 +44,6 @@ namespace SkyDragonHunter.Gameplay {
             currentDamage = maxDamage;
             currentArmor = maxArmor;
             currentReilient = maxReilient;
-
-            var go = GameMgr.FindObject("Player");
-            Debug.Log(go);
         }
 
         // Public 메서드

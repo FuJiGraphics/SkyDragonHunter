@@ -18,7 +18,6 @@ namespace SkyDragonHunter.Entities {
         {            
             base.OnStart();
             m_Context.isChasing = true;
-            Debug.LogWarning($"Entered Chase Action");
         }
 
         protected override NodeStatus OnUpdate()
@@ -36,7 +35,6 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            Debug.Log($"Ended Chase Action");
             m_Context.isChasing = false;
             m_Context.ResetTarget();
         }
