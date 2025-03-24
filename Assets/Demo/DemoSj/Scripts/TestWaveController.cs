@@ -239,7 +239,7 @@ namespace SkyDragonHunter
             float cameraHeight = Camera.main.orthographicSize * 2f;
             float cameraWidth = cameraHeight * Camera.main.aspect;
             spawnArea.transform.position = new Vector3(airship.transform.position.x + cameraWidth,
-                airship.transform.position.y, airship.transform.position.z);
+                Camera.main.orthographicSize * 0.5f, airship.transform.position.z);
         }
 
         public Vector2 GetRandomSpawnAreaInPosition()
