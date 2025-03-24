@@ -111,19 +111,25 @@ namespace SkyDragonHunter.Scriptables
                 CharacterStatus aStats = attacker.GetComponent<CharacterStatus>();
                 CharacterStatus dStats = defender.GetComponent<CharacterStatus>();
                 if (aStats == null || dStats == null)
-                    return;
+                {
+                    m_ProjectilePool.Release(instance);
+                }
 
                 instance.GetComponent<HitTriggerProjectile>().targetTags = targetTags;
                 attack = CreateAttack(aStats, dStats);
 
                 targetVec = defender.transform.position - attacker.transform.position;
                 if (targetVec.sqrMagnitude > range * range)
+                {
+                    m_ProjectilePool.Release(instance);
                     return;
+                }
                 targetDir = (targetVec).normalized;
             }
             else
             {
-                targetDir = dummy.transform.right;
+                m_ProjectilePool.Release(instance);
+                return;
             }
 
             projectile.Fire(firePos, targetDir, projectileSpeed, attack, owner, m_ProjectilePool);
