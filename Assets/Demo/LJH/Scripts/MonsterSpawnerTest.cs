@@ -7,7 +7,7 @@ namespace SkyDragonHunter {
 
     public class MonsterSpawnerTest : MonoBehaviour
     {
-        public Monster monsterPrefab;
+        public EnemyControllerBT monsterPrefab;
 
         private void Update()
         {
@@ -16,9 +16,6 @@ namespace SkyDragonHunter {
                 Instantiate(monsterPrefab, transform.position, transform.rotation);
             }
         }
-
-
-
 
     } // Scope by class MonsterSpawnerTest
 

@@ -15,6 +15,9 @@ namespace SkyDragonHunter.Entities {
         // Protected 메서드
         protected override NodeStatus OnUpdate()
         {
+            if (m_Context.IsTargetInAttackRange)
+                return NodeStatus.Failure;
+
             return m_Context.IsTargetInAggroRange ? NodeStatus.Success : NodeStatus.Failure;
         }
     } // Scope by class EnemyChasableCondition

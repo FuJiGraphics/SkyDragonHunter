@@ -60,7 +60,7 @@ namespace SkyDragonHunter.Entities
             m_Damage = 100;
             m_HealthPoint = 500;
             m_AttackDuration = 1.5f;
-            m_AttackTimer = m_AttackDuration;
+            m_AttackTimer = 0;
             m_IsDead = false;
             m_DeathTimer = 1f;
             m_DamagedTimer = 0f;
