@@ -12,33 +12,32 @@ namespace SkyDragonHunter
     public class TestWaveController : MonoBehaviour
     {
         // 필드 (Fields)
-        public Slider waveSlider;
-        public TextMeshProUGUI waveLevelText;
-        public GameObject ClearPanel;
-        public GameObject FeildPanel;
-        public GameObject backGround;
+        public Slider               waveSlider;
+        public TextMeshProUGUI      waveLevelText;
+        public GameObject           ClearPanel;
+        public GameObject           FeildPanel;
+        public GameObject           backGround;
         public BackGroundController backGroundController;
-        public GameObject airship;
-        public GameObject monster;
-        public GameObject boss;
-        public GameObject currentEnemy;
-        public float maxWaveTime;
-        private Vector3 spwanPosition;
-        private float oldAllSpeed;
-        private float currentWaveTime;
-        private float distance;
-        private bool isStopped;
-        private bool canSpwan;
+        public GameObject           airship;
+        public GameObject           monster;
+        public GameObject           boss;
+        public GameObject           currentEnemy;
+        public BoxCollider2D        spawnArea;
+        public float                maxWaveTime;
+        private float               oldAllSpeed;
+        private float               currentWaveTime;
+        private float               distance;
+        private bool                isStopped;
+        private bool                canSpwan;
 
         // 테스트용
-        public Sprite[] TestBackGround;
-        public Sprite[] TestBackGroundMid;
-        public Sprite[] TestBackGroundFront;
-        public float spawnDistance;
-        private int backGroundIndex;
-        private int smallLevel = 1;
-        private int mainLevel = 1;
-        private float currentOpenPanel = 0f;
+        public Sprite[]             TestBackGround;
+        public Sprite[]             TestBackGroundMid;
+        public Sprite[]             TestBackGroundFront;
+        private int                 backGroundIndex;
+        private int                 smallLevel = 1;
+        private int                 mainLevel = 1;
+        private float               currentOpenPanel = 0f;
         // 테스트용
 
         // 속성 (Properties)
@@ -54,11 +53,10 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            spwanPosition = new Vector3(airship.transform.position.x + spawnDistance,
-                airship.transform.position.y, airship.transform.position.z);
             canSpwan = true;
             currentEnemy = null;
             OnTestWaveFailedUnActive();
+            SpwanAreaPositionSet();
         }
 
         private void Update()
@@ -141,19 +139,21 @@ namespace SkyDragonHunter
             mainLevel = 1;
             waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
             currentWaveTime = 0f;
+            backGroundIndex = 0;
+            OnChangeBackGround();
             OnTestWaveFailedUnActive();
         }
 
         // Private 메서드
         private void OnSpwanMonster()
         {
-            currentEnemy = Instantiate(monster, spwanPosition, Quaternion.identity);
+            currentEnemy = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
             canSpwan = false;
         }
 
         private void OnSpwanBoss()
         {
-            currentEnemy = Instantiate(boss, spwanPosition, Quaternion.identity);
+            currentEnemy = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
             canSpwan = false;
         }
 
@@ -205,6 +205,37 @@ namespace SkyDragonHunter
         private void OnTestWaveFailedUnActive()
         {
             FeildPanel.SetActive(false);
+        }
+
+        private void SpwanAreaPositionSet()
+        {
+            float cameraHeight = Camera.main.orthographicSize * 2f;
+            float cameraWidth = cameraHeight * Camera.main.aspect;
+            spawnArea.transform.position = new Vector3(airship.transform.position.x + cameraWidth,
+                airship.transform.position.y, airship.transform.position.z);
+        }
+
+        public Vector2 GetRandomSpawnAreaInPosition()
+        {
+            if (spawnArea == null)
+            {
+                Debug.LogError("SpawnArea(BoxCollider2D)가 할당되지 않았습니다.");
+                return Vector2.zero;
+            }
+
+            Vector2 size = spawnArea.size;
+            Vector2 offset = spawnArea.offset;
+
+            // 로컬 기준 랜덤 위치
+            Vector2 localRandomPos = new Vector2(
+                Random.Range(-size.x * 0.5f, size.x * 0.5f),
+                Random.Range(-size.y * 0.5f, size.y * 0.5f)
+            );
+
+            // Offset 더하고, 월드 위치로 변환
+            Vector2 worldPos = (Vector2)spawnArea.transform.position + offset + localRandomPos;
+
+            return worldPos;
         }
         // Others
 
