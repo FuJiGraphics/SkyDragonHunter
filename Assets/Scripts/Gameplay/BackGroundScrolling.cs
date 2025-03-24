@@ -71,14 +71,46 @@ namespace SkyDragonHunter.Game {
 
         private void Repos()
         {
-            transform.position = m_LastCameraPos;
+            //transform.position = m_LastCameraPos;
+
+            // 위치 조정 // 스프라이트 원본 크기
+            Vector2 spriteLocalSize = m_SpriteRenderer.sprite.bounds.size;
+
+            // 카메라 높이
+            float cameraHeight = Camera.main.orthographicSize * 2f;
+            float cameraWidth = cameraHeight * Camera.main.aspect;
+
+            // 스케일 계산
+            float scaleX = cameraWidth / spriteLocalSize.x;
+            float scaleY = cameraHeight / spriteLocalSize.y;
+            transform.localScale = new Vector2(scaleX, scaleY);
+
+            // 바닥 위치 조정: pivot이 center이므로, 스프라이트 전체 높이의 절반만큼 내려야 함
+            float cameraBottomY = Camera.main.transform.position.y - (cameraHeight * 0.5f);
+            float halfScaledHeight = (spriteLocalSize.y * scaleY) * 0.5f;
+
+            transform.position = new Vector3(
+                Camera.main.transform.position.x,
+                cameraBottomY + halfScaledHeight,
+                transform.position.z
+            );
         }
 
         private void Resize()
         {
-            Vector2 spriteHalfSize = m_SpriteRenderer.size * 0.5f;
-            float scaledHeight = Mathf.Abs(m_LastCameraHeight / spriteHalfSize.y);
-            transform.localScale = new Vector2(m_OriginScaleY * scaledHeight, scaledHeight);
+            //Vector2 spriteHalfSize = m_SpriteRenderer.size * 0.5f;
+            //float scaledHeight = Mathf.Abs(m_LastCameraHeight / spriteHalfSize.y);
+            //transform.localScale = new Vector2(m_OriginScaleY * scaledHeight, scaledHeight);
+
+            Vector2 spriteLocalSize = m_SpriteRenderer.sprite.bounds.size;
+
+            float cameraHeight = m_LastCameraHeight;
+            float cameraWidth = cameraHeight * Camera.main.aspect;
+
+            float scaleX = cameraWidth / spriteLocalSize.x;
+            float scaleY = cameraHeight / spriteLocalSize.y;
+
+            transform.localScale = new Vector2(scaleX * 2, scaleY * 2);
         }
 
         private void UpdateTextureOffset()

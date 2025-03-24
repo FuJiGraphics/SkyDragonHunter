@@ -30,6 +30,10 @@ namespace SkyDragonHunter
         private bool canSpwan;
 
         // 테스트용
+        public Sprite[] TestBackGround;
+        public Sprite[] TestBackGroundMid;
+        public Sprite[] TestBackGroundFront;
+        private int backGroundIndex;
         private int smallLevel = 1;
         private int mainLevel = 1;
         private float currentOpenPanel = 0f;
@@ -116,7 +120,7 @@ namespace SkyDragonHunter
                     currentWaveTime = 0f;
                     canSpwan = true;
                     currentOpenPanel = 0f;
-                    
+
                 }
 
 
@@ -159,19 +163,36 @@ namespace SkyDragonHunter
 
         private void OnChangeBackGround()
         {
-            //foreach (Transform child in backGround.transform)
-            //{
-            //    SpriteRenderer ctrl = child.GetComponent<SpriteRenderer>();
-            //    if (ctrl != null)
-            //    {
-            //        ctrl.color = new Color(
-            //            Random.Range(0f, 1f),
-            //            Random.Range(0f, 1f),
-            //            Random.Range(0f, 1f),
-            //            1f // 알파값은 1로 설정 (완전히 불투명)
-            //        );
-            //    }
-            //}
+            backGroundIndex++;
+            if (backGroundIndex > 9)
+            {
+                backGroundIndex = 9;
+            }
+
+            foreach (Transform child in backGround.transform)
+            {
+                SpriteRenderer ctrl = child.GetComponent<SpriteRenderer>();
+                if (ctrl != null)
+                {
+                    if (ctrl.gameObject.name == "BackGround")
+                    {
+                        ctrl.sprite = TestBackGround[backGroundIndex];
+                    }
+                    else if (ctrl.gameObject.name == "MidGround")
+                    {
+                        ctrl.sprite = TestBackGroundMid[backGroundIndex];
+                    }
+                    else if (ctrl.gameObject.name == "ForeGround")
+                    {
+                        ctrl.sprite = TestBackGroundFront[backGroundIndex];
+                    }
+                }
+            }
+        }
+
+        private void OnTestWaveFailed()
+        {
+
         }
         // Others
 
