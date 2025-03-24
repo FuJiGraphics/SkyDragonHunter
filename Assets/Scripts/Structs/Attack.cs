@@ -5,7 +5,7 @@ namespace SkyDragonHunter.Structs {
 
     public struct Attack
     {
-        public AlphaUnit damage;       // 공격력
+        public AlphaUnit damage;       // 데미지
         public AlphaUnit critical;     // 치명타
     }; // struct Attack
 

@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Scriptables {
         protected Attack CreateAttack(CharacterStatus aStats, CharacterStatus dStats)
         {
             Attack attack = new Attack();
-            AlphaUnit damage = aStats.damage;
+            AlphaUnit damage = aStats.currentDamage;
             damage += DoubleRandom.Range(minDamage.Value, maxDamage.Value);
             if (criticalChance > UnityEngine.Random.value)
             {
@@ -48,7 +48,9 @@ namespace SkyDragonHunter.Scriptables {
             attack.damage = Math.Floor(damage.Value);
             if (dStats != null)
             {
-                attack.damage -= dStats.armor;
+                attack.damage -= dStats.currentArmor;
+                if (attack.damage <= 0.0)
+                    attack.damage = 0.0;
             }
             return attack;
         }

@@ -27,7 +27,14 @@ namespace SkyDragonHunter {
         // Others
         public void OnAttack(GameObject attacker, Attack attack)
         {
-            AlphaUnit takeDamage = (m_Stats.currentHP - attack.damage);
+            m_Stats.currentShield -= attack.damage;
+            if (m_Stats.currentShield.Equals(0.0) && m_Stats.currentShield > 0.0)
+                return;
+
+            AlphaUnit takeDamage = m_Stats.currentShield.Value;
+            if (takeDamage < 0.0)
+                takeDamage *= -1.0;
+
             m_Stats.currentHP -= takeDamage;
             if (m_Stats.currentHP.Equals(0.0) && m_Stats.currentHP < 0.0)
             {

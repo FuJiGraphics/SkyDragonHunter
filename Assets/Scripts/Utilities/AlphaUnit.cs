@@ -1,7 +1,11 @@
 using System;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
 namespace SkyDragonHunter.Utility
 {
+    [System.Serializable]
     public struct AlphaUnit
         : IComparable<AlphaUnit>, IEquatable<AlphaUnit>
     {
