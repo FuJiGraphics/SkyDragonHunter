@@ -12,6 +12,7 @@ namespace SkyDragonHunter.Gameplay
         public float lifeTime = 5f;
         public bool isSingleAttack = true;
         public string[] targetTags;
+        public bool perfectAimAttack = false;
 
         private bool m_HasAttacked = false;
         private float m_lastTime = 0f;
@@ -47,6 +48,9 @@ namespace SkyDragonHunter.Gameplay
             m_HasAttacked = true;
 
             if (!CanAttack(collision.gameObject.tag))
+                return;
+
+            if (perfectAimAttack && attackInfo.defender != collision.gameObject)
                 return;
 
             IAttackable target = collision.gameObject.GetComponent<IAttackable>();

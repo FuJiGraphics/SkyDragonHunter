@@ -1,10 +1,12 @@
 
+using UnityEngine;
 using SkyDragonHunter.Utility;
 
 namespace SkyDragonHunter.Structs {
 
     public struct Attack
     {
+        public GameObject defender;    // 공격 받는 대상
         public AlphaUnit damage;       // 데미지
         public AlphaUnit critical;     // 치명타
     }; // struct Attack
