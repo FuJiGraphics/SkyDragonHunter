@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 4381422749695507041}
   - component: {fileID: -6102419851012319264}
   - component: {fileID: -7276501981709863167}
+  - component: {fileID: 2487396878678482411}
   - component: {fileID: 5654016661433389589}
   - component: {fileID: 9183804614297337809}
-  - component: {fileID: 2487396878678482411}
   - component: {fileID: 6644804902964632778}
   m_Layer: 0
   m_Name: MonsterDummy
@@ -152,6 +152,7 @@ MonoBehaviour:
   floatSpeed: 1
   floatSpeedOffset: 1
   floatAmount: 0.5
+  m_StartY: 0
 --- !u!114 &-6102419851012319264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,8 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 10
-  m_AggroRange: 20
-  m_CharacterInventory: {fileID: 0}
+  m_AggroRange: 30
+  m_CharacterInventory: {fileID: 2487396878678482411}
   status: {fileID: -7276501981709863167}
   floatingEffect: {fileID: 0}
   m_Target: {fileID: 0}
@@ -186,6 +187,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2487396878678482411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
+  weaponDummy: {fileID: 8145279371225729078}
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,21 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2487396878678482411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapons:
-  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
-  weaponDummy: {fileID: 8145279371225729078}
 --- !u!50 &6644804902964632778
 Rigidbody2D:
   serializedVersion: 4

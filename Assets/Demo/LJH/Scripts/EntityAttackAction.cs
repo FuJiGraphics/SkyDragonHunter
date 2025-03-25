@@ -22,6 +22,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnStart()
         {
             base.OnStart();
+            Debug.Log($"{m_Context.name} entered AttackAction");
         }
 
         protected override NodeStatus OnUpdate()
@@ -46,6 +47,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
+            Debug.Log($"{m_Context.name} exited AttackAction");
         }
     } // Scope by class AttackAction
 

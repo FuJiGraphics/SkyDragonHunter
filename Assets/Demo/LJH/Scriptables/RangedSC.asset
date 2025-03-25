@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329e046758dd5fc44a41ebfdb541156e, type: 3}
   m_Name: RangedSC
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  owner: {fileID: 0}
-  dummy: {fileID: 0}
+  weaponPrefab: {fileID: 0}
   coolDown: 1
-  range: 10
+  range: 15
   criticalChance: 0.1
   projectilePrefab: {fileID: 7792928297466845846, guid: 03086fec70393a748a8fc5333629e147, type: 3}
   projectileSpeed: 5
   targetTags:
   - Player
   - Crew
+  lookAtTarget: 0
+  m_FireDummyName: 

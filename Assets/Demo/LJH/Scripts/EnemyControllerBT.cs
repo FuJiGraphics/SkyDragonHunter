@@ -78,10 +78,9 @@ namespace SkyDragonHunter.Entities {
         {
             switch (m_Type)
             {
-                case EnemyType.Melee:
-                    InitMeleeBT();
-                    break;
+                case EnemyType.Melee:     
                 case EnemyType.Ranged:
+                    InitMeleeBT();
                     break;
                 case EnemyType.Stationary:
                     break;

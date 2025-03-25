@@ -114,11 +114,11 @@ namespace SkyDragonHunter.Entities {
             }
             else if (m_CharacterInventory.CurrentWeapon == null)
             {
-                Debug.LogWarning($"CurrentWeapon Null of {gameObject.name}");
+                //Debug.LogWarning($"CurrentWeapon Null of {gameObject.name}");
             }
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
+            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.weapons[0].range);            
         }
 
         // Public 메서드
