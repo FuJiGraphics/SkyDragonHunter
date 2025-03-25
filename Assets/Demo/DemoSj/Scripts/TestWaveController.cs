@@ -1,5 +1,7 @@
 using NPOI.POIFS.Properties;
 using SkyDragonHunter.Game;
+using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,13 @@ using UnityEngine.UI;
 
 namespace SkyDragonHunter
 {
+
+    public struct StageInfo
+    {
+        public int missionLevel;
+        public int zoneLevel;
+    }
+
 
     public class TestWaveController : MonoBehaviour
     {
@@ -27,6 +36,7 @@ namespace SkyDragonHunter
         private List<GameObject> currentEnemy;
         private float oldAllSpeed;
         private float currentWaveTime;
+        private float inpiniteModSpawnDelay = 3;
         private float distance;
         private bool isStopped;
         private bool canSpawn;
@@ -35,13 +45,19 @@ namespace SkyDragonHunter
         public Sprite[] TestBackGround;
         public Sprite[] TestBackGroundMid;
         public Sprite[] TestBackGroundFront;
+        public int spawnableMonsters = 10;
         private int backGroundIndex;
-        private int smallLevel = 1;
-        private int mainLevel = 1;
+        private int currentZonelLevel = 1;
+        private int currentMissionLevel = 1;
         private int currentSpawnMonsters = 0;
-        private int spawnableMonsters = 3;
         private float currentOpenPanel = 0f;
+        private StageInfo stageInfo;
+
+        private bool isInfiniteMode = false;
+        private bool changeSuccess = true;
         // 테스트용
+        private double currentHealth;
+        private CharacterStatus playerStatus;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -59,16 +75,84 @@ namespace SkyDragonHunter
             canSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
+            currentMissionLevel = 1;
+            currentZonelLevel = 1;
+            OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
+
+            // TODO: 테스트 코드
+            playerStatus = airship.GetComponent<CharacterStatus>();
+            playerStatus.maxHP = 100000;
+            playerStatus.SetHP(100000);
+            currentHealth = playerStatus.currentHP.Value;
         }
 
         private void Update()
         {
             //backGroundController.SetScrollSpeed(1f);
             OnBackGroundStop();
+            if (!isInfiniteMode)
+            {
+                NormalWaveUpdate();
+            }
+            else
+            {
+                infiniteWaveUpdate();
+            }
 
-            if (!isStopped)
+            if (currentHealth != playerStatus.currentHP.Value)
+            {
+                currentHealth = playerStatus.currentHP.Value;
+            }
+
+            if (currentHealth <= 0)
+            {
+                OnTestWaveFailedActive(); // 필드 패널 재활성화
+            }
+        }
+
+        // Public 메서드
+        public void OnInfiniteMod()
+        {
+            isInfiniteMode = true;
+            OnSetCurrentWave();
+        }
+        public void OffInfiniteMod()
+        {
+            isInfiniteMode = false;
+        }
+
+
+        public void OnTestWaveFailedActive()
+        {
+            FeildPanel.SetActive(true);
+            isInfiniteMode = true;
+            OnSetCurrentWave();
+        }
+
+        public void OnTestWaveFailedUnActive()
+        {
+            FeildPanel.SetActive(false);
+        }
+
+        public void ReStartAll()
+        {
+            ClearPanel.SetActive(false);
+            currentZonelLevel = 1;
+            currentMissionLevel = 1;
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+            currentWaveTime = 0f;
+            backGroundIndex = 0;
+            OnChangeBackGround(currentZonelLevel - 1);
+            OnTestWaveFailedUnActive();
+        }
+
+        // Private 메서드
+
+        private void NormalWaveUpdate()
+        {
+            if (!isStopped && changeSuccess)
             {
                 currentWaveTime += Time.deltaTime * oldAllSpeed;
                 waveSlider.value = currentWaveTime;
@@ -97,43 +181,61 @@ namespace SkyDragonHunter
             if (currentWaveTime >= 10f && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 OnActiveClearPanel(); // 클리어 패널 활성화
+                OnSaveLastClearWave();
                 currentOpenPanel += Time.deltaTime;
-
                 if (currentOpenPanel > 2f)
                 {
                     OnUnActiveClearPanel(); // 클리어 패널 종료
-                    smallLevel++;
-                    if (smallLevel > 10)
+                    currentZonelLevel++;
+                    if (currentZonelLevel > 10)
                     {
-                        smallLevel = 1;
-                        mainLevel++;
-                        OnTestWaveFailedActive(); // 필드 패널 재활성화
+                        currentZonelLevel = 1;
+                        currentMissionLevel++;
                     }
 
-                    waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
+                    waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
 
                     currentWaveTime = 0f;
                     canSpawn = true;
                     currentOpenPanel = 0f;
                 }
             }
-
         }
 
-        // Public 메서드
-        public void ReStartAll()
+        private void infiniteWaveUpdate()
         {
-            ClearPanel.SetActive(false);
-            smallLevel = 1;
-            mainLevel = 1;
-            waveLevelText.text = string.Format("{0} - {1}", mainLevel, smallLevel);
-            currentWaveTime = 0f;
-            backGroundIndex = 0;
-            OnChangeBackGround();
-            OnTestWaveFailedUnActive();
+            if (!isStopped)
+            {
+                currentWaveTime += Time.deltaTime * oldAllSpeed;
+                waveSlider.value = maxWaveTime;
+            }
+
+            if (!canSpawn && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
+            {
+                canSpawn = true;
+                currentWaveTime = 0f;
+            }
+
+            if (currentWaveTime > inpiniteModSpawnDelay && canSpawn)
+            {
+                OnSpwanMonster();
+            }
         }
 
-        // Private 메서드
+        private void OnSetCurrentWave()
+        {
+            currentMissionLevel = stageInfo.missionLevel;
+            currentZonelLevel = stageInfo.zoneLevel;
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+            OnChangeBackGround(currentZonelLevel - 1);
+        }
+
+        private void OnSaveLastClearWave()
+        {
+            stageInfo.missionLevel = currentMissionLevel;
+            stageInfo.zoneLevel = currentZonelLevel;
+        }
+
         private void OnBackGroundStop()
         {
             bool shouldStop = false;
@@ -192,12 +294,13 @@ namespace SkyDragonHunter
         private void OnUnActiveClearPanel()
         {
             ClearPanel.SetActive(false);
-            OnChangeBackGround();
+            OnChangeBackGround(currentZonelLevel);
+
         }
 
-        private void OnChangeBackGround()
+        private void OnChangeBackGround(int bgIndex)
         {
-            backGroundIndex++;
+            backGroundIndex = bgIndex;
             if (backGroundIndex > 9)
             {
                 backGroundIndex = 9;
@@ -210,28 +313,18 @@ namespace SkyDragonHunter
                 {
                     if (ctrl.gameObject.name == "BackGround")
                     {
-                        ctrl.sprite = TestBackGround[backGroundIndex];
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "MidGround")
                     {
-                        ctrl.sprite = TestBackGroundMid[backGroundIndex];
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "ForeGround")
                     {
-                        ctrl.sprite = TestBackGroundFront[backGroundIndex];
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                 }
             }
-        }
-
-        private void OnTestWaveFailedActive()
-        {
-            FeildPanel.SetActive(true);
-        }
-
-        private void OnTestWaveFailedUnActive()
-        {
-            FeildPanel.SetActive(false);
         }
 
         private void SpwanAreaPositionSet()
@@ -264,7 +357,53 @@ namespace SkyDragonHunter
 
             return worldPos;
         }
+
         // Others
+        IEnumerator ChangeBackgroundWithFade(SpriteRenderer ctrl, int backGroundIndex)
+        {
+            if (ctrl == null) yield break;
+            changeSuccess = false;
+
+            Color from = new Color(1, 1, 1, 1); // 밝은 상태 (흰색)
+            Color to = new Color(0, 0, 0, 1);   // 검정색
+            float duration = 1.5f;
+
+            // 1. 페이드 아웃
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                ctrl.color = Color.Lerp(from, to, t);
+                yield return null;
+            }
+
+            // 2. 배경 이미지 변경
+            if (ctrl.gameObject.name == "BackGround")
+            {
+                ctrl.sprite = TestBackGround[backGroundIndex];
+            }
+            else if (ctrl.gameObject.name == "MidGround")
+            {
+                ctrl.sprite = TestBackGroundMid[backGroundIndex];
+            }
+            else if (ctrl.gameObject.name == "ForeGround")
+            {
+                ctrl.sprite = TestBackGroundFront[backGroundIndex];
+            }
+
+            // 3. 페이드 인
+            t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                ctrl.color = Color.Lerp(to, from, t);
+                yield return null;
+            }
+
+            ctrl.color = from;
+            changeSuccess = true;
+        }
+
 
     } // Scope by class TestWaveController
 

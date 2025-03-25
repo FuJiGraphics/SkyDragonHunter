@@ -14,12 +14,10 @@ namespace SkyDragonHunter.Entities
 
         protected BehaviourTree<T> m_BehaviourTree;
 
-        public CharacterInventory m_CharacterInventory;
-        //public AttackDefinition attackDefinition;
+        public AttackDefinition attackDefinition;
         public CharacterStatus status;
 
         protected Animator m_Animator;
-        public FloatingEffect floatingEffect;
 
         [SerializeField] protected Transform m_Target;
 
@@ -32,7 +30,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < attackDefinition.range;
             }
         }
 
@@ -80,18 +78,8 @@ namespace SkyDragonHunter.Entities
         }
 
         // 유니티 (MonoBehaviour 기본 메서드)
-        protected virtual void Awake()
-        {
-            m_CharacterInventory = GetComponent<CharacterInventory>();
-            floatingEffect = GetComponent<FloatingEffect>();
-        }
-
         protected virtual void Start()
         {
-            if(m_CharacterInventory == null)
-            {
-                Debug.LogError($"Character Inventory null in {gameObject.name}");
-            }
             InitBehaviourTree();
         }
 
@@ -111,23 +99,19 @@ namespace SkyDragonHunter.Entities
         public virtual void SetAnimTrigger(int triggerHash)
         {
             //m_Animator.SetTrigger(triggerHash);
-            Debug.Log($"{gameObject.name} attacked {m_Target.gameObject.name}");
-
-            if(m_CharacterInventory != null)
+            if (m_Target != null)
             {
-                Debug.Log($"{gameObject.name} Character Inventory assigned!");
-                m_CharacterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
-                m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                var inven = gameObject.GetComponent<CharacterInventory>();
+                if (inven != null)
+                {
+                    inven.CurrentWeapon.SetActivePrefabInstance(gameObject);
+                    inven.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                }
             }
-            else
-            {
-                Debug.LogWarning($"{gameObject.name} Character inventory null");
-            }
-
-            
         }
 
         public abstract void ResetTarget();
+
         public virtual void ResetBehaviourTree()
         {
             m_BehaviourTree.Reset();

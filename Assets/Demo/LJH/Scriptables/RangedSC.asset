@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 0}
   coolDown: 1
-  range: 15
+  range: 50.7
   criticalChance: 0.1
   projectilePrefab: {fileID: 7792928297466845846, guid: 03086fec70393a748a8fc5333629e147, type: 3}
-  projectileSpeed: 5
+  projectileSpeed: 20
   targetTags:
   - Player
-  - Crew
   lookAtTarget: 0
-  m_FireDummyName: 
+  m_FireDummyName: AttackDummy

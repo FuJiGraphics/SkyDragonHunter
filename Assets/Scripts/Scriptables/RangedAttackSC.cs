@@ -129,7 +129,10 @@ namespace SkyDragonHunter.Scriptables
             else
             {
                 firePos = m_ActivePrefabInstance.transform.position;
-                Math2DHelper.LookAt(m_ActivePrefabInstance.transform, m_ActivePrefabInstance.transform, defender.transform);
+                if (lookAtTarget && m_ActivePrefabInstance != null)
+                {
+                    Math2DHelper.LookAt(m_ActivePrefabInstance.transform, m_ActivePrefabInstance.transform, defender.transform);
+                }
             }
 
 
@@ -146,7 +149,7 @@ namespace SkyDragonHunter.Scriptables
                 attack = CreateAttack(aStats, dStats);
 
                 targetVec = defender.transform.position - firePos;
-                if (targetVec.sqrMagnitude > range * range)
+                if (Vector3.Distance(defender.transform.position, firePos) > range)
                 {
                     m_ProjectilePool.Release(instance);
                     return;
