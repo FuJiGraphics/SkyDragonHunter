@@ -186,17 +186,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd25bb772179c804c823939fb3825865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 0
   m_Speed: 10
-  m_AggroRange: 20
+  m_AggroRange: 30
   attackDefinition: {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
   status: {fileID: -7276501981709863167}
   m_Target: {fileID: 0}
+  isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
-  isDirectionToRight: 0
-  m_YaxisMovementAmplitude: 1
-  m_YaxisMovementPeriod: 3
+  m_Type: 0
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0

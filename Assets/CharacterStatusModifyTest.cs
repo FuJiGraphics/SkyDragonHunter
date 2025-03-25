@@ -9,7 +9,7 @@ public class CharacterStatusModifyTest : MonoBehaviour
     void Start()
     {
         var stats = GetComponent<CharacterStatus>();
-        stats.maxHP = 500;
+        stats.maxHP = 50;
         stats.currentHP = stats.maxHP;
     }
 
