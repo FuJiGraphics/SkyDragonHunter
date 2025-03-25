@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6873027583999143960}
   - component: {fileID: 3481469565171269773}
   - component: {fileID: 4381422749695507041}
+  - component: {fileID: 6774418640923581978}
   - component: {fileID: -6102419851012319264}
   - component: {fileID: -7276501981709863167}
   - component: {fileID: 5654016661433389589}
@@ -32,10 +33,11 @@ Transform:
   m_GameObject: {fileID: 7434643913460656674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1830254, y: 0.50682104, z: 0.078116655}
+  m_LocalPosition: {x: 1.1830254, y: 0.50682104, z: 0}
   m_LocalScale: {x: 2.336906, y: 2.336906, z: 2.336906}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 9082493999201264193}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &-6873027583999143960
@@ -150,6 +152,21 @@ MonoBehaviour:
   floatSpeed: 1
   floatSpeedOffset: 1
   floatAmount: 0.5
+--- !u!114 &6774418640923581978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
+  weaponDummy: {fileID: 9082493999201264193}
 --- !u!114 &-6102419851012319264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,17 +179,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd25bb772179c804c823939fb3825865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 0
   m_Speed: 10
   m_AggroRange: 20
   attackDefinition: {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
   status: {fileID: -7276501981709863167}
   m_Target: {fileID: 0}
+  isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
-  isDirectionToRight: 0
-  m_YaxisMovementAmplitude: 1
-  m_YaxisMovementPeriod: 3
+  m_Type: 0
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +224,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8630467147813645504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9082493999201264193}
+  m_Layer: 0
+  m_Name: AttackDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9082493999201264193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8630467147813645504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8145279371225729078}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

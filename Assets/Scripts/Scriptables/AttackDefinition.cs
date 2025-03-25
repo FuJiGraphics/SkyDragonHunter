@@ -12,9 +12,7 @@ namespace SkyDragonHunter.Scriptables {
     public class AttackDefinition : ScriptableObject, IAttacker
     {
         // 필드 (Fields)
-        public GameObject prefab;        // 공격 스프라이트 오브젝트
-        public GameObject owner;         // 공격하는 오브젝트
-        public Transform dummy;          // 부착 위치
+        public GameObject weaponPrefab;  // 공격 스프라이트 오브젝트
         public float coolDown;           // 쿨다운
         public float range;              // 공격 범위
         public AlphaUnit minDamage;      // 최소 데미지
@@ -22,7 +20,15 @@ namespace SkyDragonHunter.Scriptables {
         public float criticalChance;     // 크리티컬 확률
         public AlphaUnit criticalDamage; // 크리티컬 데미지
 
+        protected GameObject m_ActivePrefabInstance;    // 현재 활성화된 프리팹 인스턴스
+        protected GameObject m_Owner;                   // 공격하는 오브젝트
+        protected Transform m_Dummy;                    // 부착 위치
+
         // 속성 (Properties)
+        public void SetOwner(GameObject owner) => m_Owner = owner;
+        public void SetDummy(Transform transform) => m_Dummy = transform;
+        public void SetActivePrefabInstance(GameObject instance) => m_ActivePrefabInstance = instance;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (ScriptableObject 기본 메서드)

@@ -8,12 +8,13 @@ namespace SkyDragonHunter.Gameplay
     {
         // 필드 (Fields)
         public AttackDefinition[] weapons;
-        public AttackDefinition CurrentWeapon { get; private set; }
         public Transform weaponDummy;
 
         private GameObject m_WeaponGo;
 
         // 속성 (Properties)
+        public AttackDefinition CurrentWeapon { get; private set; }
+        public GameObject WeaponPrefabInstance { get; private set; }
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -37,12 +38,14 @@ namespace SkyDragonHunter.Gameplay
             UnequipWeapon();
 
             CurrentWeapon = weapons[index];
-            CurrentWeapon.owner = gameObject;
-            CurrentWeapon.dummy = weaponDummy;
-            if (weapons[index].prefab != null)
+            CurrentWeapon.SetOwner(gameObject);
+            CurrentWeapon.SetDummy(weaponDummy);
+            if (weapons[index].weaponPrefab != null)
             {
-                m_WeaponGo = Instantiate(weapons[index].prefab);
+                m_WeaponGo = Instantiate(weapons[index].weaponPrefab);
                 m_WeaponGo.transform.SetParent(weaponDummy);
+                m_WeaponGo.transform.localPosition = Vector3.zero;
+                weapons[index].SetActivePrefabInstance(m_WeaponGo);
             }
         }
 

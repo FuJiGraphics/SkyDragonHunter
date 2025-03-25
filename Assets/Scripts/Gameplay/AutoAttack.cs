@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,7 +10,7 @@ namespace SkyDragonHunter.Gameplay
     public class AutoAttack : MonoBehaviour
     {
         // 필드 (Fields)
-        [SerializeField] public string[] targetTags;
+        public string[] targetTags;
         private CharacterInventory m_Inventory;
 
         // 속성 (Properties)
@@ -29,10 +30,13 @@ namespace SkyDragonHunter.Gameplay
                 return;
             }
 
-            foreach (string tag in  targetTags)
+            foreach (string tag in targetTags)
             {
                 var findGo = GameObject.FindWithTag(tag);
-                m_Inventory.CurrentWeapon.Execute(gameObject, findGo);
+                if (findGo != null)
+                {
+                    m_Inventory.CurrentWeapon.Execute(gameObject, findGo);
+                }
             }
         }
 
