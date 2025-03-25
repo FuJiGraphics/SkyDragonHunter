@@ -12,15 +12,15 @@ GameObject:
   - component: {fileID: -6873027583999143960}
   - component: {fileID: 3481469565171269773}
   - component: {fileID: 4381422749695507041}
-  - component: {fileID: -6102419851012319264}
+  - component: {fileID: -9173894449427069888}
   - component: {fileID: -7276501981709863167}
+  - component: {fileID: -7082953031541118418}
   - component: {fileID: 5654016661433389589}
   - component: {fileID: 9183804614297337809}
-  - component: {fileID: 2487396878678482411}
-  - component: {fileID: 6644804902964632778}
+  - component: {fileID: -4470082774018705904}
   m_Layer: 0
-  m_Name: MonsterDummy
-  m_TagString: Monster
+  m_Name: CrewDummy
+  m_TagString: Crew
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.2120986, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -151,8 +151,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatSpeed: 1
   floatSpeedOffset: 1
-  floatAmount: 0.5
---- !u!114 &-6102419851012319264
+  floatAmount: 1
+  m_StartY: 0
+--- !u!114 &-9173894449427069888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,11 +162,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7434643913460656674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd25bb772179c804c823939fb3825865, type: 3}
+  m_Script: {fileID: 11500000, guid: 836bfeef84c5f784d9744ae7aff29f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: 10
-  m_AggroRange: 20
+  m_Speed: 5
+  m_AggroRange: 18
   m_CharacterInventory: {fileID: 0}
   status: {fileID: -7276501981709863167}
   floatingEffect: {fileID: 0}
@@ -173,7 +174,10 @@ MonoBehaviour:
   isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
-  m_Type: 0
+  m_Type: 1
+  isIdle: 0
+  lastIdleTime: 0
+  targetYPos: 3.4028235e+38
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +190,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7082953031541118418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons:
+  - {fileID: 11400000, guid: 3e4eed9c8c76a734db58d790fe601a9f, type: 2}
+  weaponDummy: {fileID: 8145279371225729078}
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,22 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2487396878678482411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapons:
-  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
-  weaponDummy: {fileID: 8145279371225729078}
---- !u!50 &6644804902964632778
+--- !u!50 &-4470082774018705904
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

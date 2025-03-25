@@ -1,3 +1,4 @@
+using NPOI.SS.Formula.Functions;
 using SkyDragonHunter.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,24 +6,31 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyChaseAction<T> : ActionNode<T> where T : BaseControllerBT<T>
+    public class OnFieldCrewIdleAction : ActionNode<CrewControllerBT>
     {
+        // 필드 (Fields)
+        private float idleTime;
+
         // Public 메서드
-        public EnemyChaseAction(T context) : base(context)
+        public OnFieldCrewIdleAction(CrewControllerBT context) : base(context)
         {
-            
+            idleTime = 2f;
         }
 
         // Protected 메서드
         protected override void OnStart()
-        {            
+        {
             base.OnStart();
-            m_Context.isChasing = true;
+            m_Context.isIdle = true;
+            m_Context.lastIdleTime = Time.time;
         }
 
         protected override NodeStatus OnUpdate()
         {
-            if (!m_Context.IsTargetInAttackRange)
+            if (m_Context.IsTargetInAggroRange)
+                return NodeStatus.Failure;
+
+            if (Time.time < m_Context.lastIdleTime + idleTime)
             {
                 return NodeStatus.Running;
             }
@@ -35,10 +43,10 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            m_Context.isChasing = false;
+            m_Context.isIdle = false;
             m_Context.ResetTarget();
         }
 
-    } // Scope by class EnemyChaseAction
+    } // Scope by class OnFieldCrewMoveAction
 
 } // namespace Root

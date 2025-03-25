@@ -9,10 +9,23 @@ public class FloatingEffect : MonoBehaviour
     public float floatSpeedOffset = 1f; 
     public float floatAmount = 0.5f;
 
-    private float m_StartY;
+    [SerializeField] private float m_StartY;
     private float m_lastAngle;
 
     // 속성 (Properties)
+    public float StartY
+    {
+        get
+        {
+            return m_StartY;
+        }
+        set
+        {
+            m_StartY = value;
+        }
+    }
+    public float SetStartY(float y) => m_StartY = y;
+
     // 외부 종속성 필드 (External dependencies field)
     // 이벤트 (Events)
     // 유니티 (MonoBehaviour 기본 메서드)

@@ -14,10 +14,12 @@ namespace SkyDragonHunter.Entities
 
         protected BehaviourTree<T> m_BehaviourTree;
 
-        public AttackDefinition attackDefinition;
+        public CharacterInventory m_CharacterInventory;
+        //public AttackDefinition attackDefinition;
         public CharacterStatus status;
 
         protected Animator m_Animator;
+        public FloatingEffect floatingEffect;
 
         [SerializeField] protected Transform m_Target;
 
@@ -30,7 +32,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < attackDefinition.range;
+                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
             }
         }
 
@@ -78,8 +80,18 @@ namespace SkyDragonHunter.Entities
         }
 
         // 유니티 (MonoBehaviour 기본 메서드)
+        protected virtual void Awake()
+        {
+            m_CharacterInventory = GetComponent<CharacterInventory>();
+            floatingEffect = GetComponent<FloatingEffect>();
+        }
+
         protected virtual void Start()
         {
+            if(m_CharacterInventory == null)
+            {
+                Debug.LogError($"Character Inventory null in {gameObject.name}");
+            }
             InitBehaviourTree();
         }
 
@@ -99,11 +111,11 @@ namespace SkyDragonHunter.Entities
         public virtual void SetAnimTrigger(int triggerHash)
         {
             //m_Animator.SetTrigger(triggerHash);
-            attackDefinition.Execute(gameObject, m_Target.gameObject);
+            Debug.Log($"{gameObject.name} attacked {m_Target.gameObject.name}");
+            m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
         }
 
         public abstract void ResetTarget();
-
         public virtual void ResetBehaviourTree()
         {
             m_BehaviourTree.Reset();

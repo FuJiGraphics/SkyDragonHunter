@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyAttackAction<T> : ActionNode<T> where T : BaseControllerBT<T>
+    public class EntityAttackAction<T> : ActionNode<T> where T : BaseControllerBT<T>
     {
         // 필드 (Fields)
         private static readonly int s_AttackHash = Animator.StringToHash("Attack");
         private float lastAttackTime;
 
         // Public 메서드
-        public EnemyAttackAction(T context) : base(context)
+        public EntityAttackAction(T context) : base(context)
         {
             lastAttackTime = 0f;
         }
@@ -31,7 +31,7 @@ namespace SkyDragonHunter.Entities {
                 return NodeStatus.Failure;
             }
 
-            if(Time.time < lastAttackTime + m_Context.attackDefinition.coolDown)
+            if(Time.time < lastAttackTime + m_Context.m_CharacterInventory.CurrentWeapon.coolDown)
             {
                 return NodeStatus.Running;
             }

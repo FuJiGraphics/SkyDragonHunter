@@ -5,37 +5,40 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EnemyMoveAction<T> : ActionNode<T> where T : BaseControllerBT<T>
+    public class EntityChaseAction<T> : ActionNode<T> where T : BaseControllerBT<T>
     {
         // Public 메서드
-        public EnemyMoveAction(T context) : base(context)
+        public EntityChaseAction(T context) : base(context)
         {
-
+            
         }
 
         // Protected 메서드
         protected override void OnStart()
-        {
+        {            
             base.OnStart();
-            m_Context.isMoving = true;
+            m_Context.isChasing = true;
         }
 
         protected override NodeStatus OnUpdate()
         {
-            if(m_Context.IsTargetInAggroRange)
+            if (!m_Context.IsTargetInAttackRange)
             {
-                return NodeStatus.Failure; 
+                return NodeStatus.Running;
             }
-
-            return NodeStatus.Running;
+            else
+            {
+                return NodeStatus.Success;
+            }
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
-            m_Context.isMoving = false;
+            m_Context.isChasing = false;
             m_Context.ResetTarget();
         }
-    } // Scope by class EnemyMove
+
+    } // Scope by class EnemyChaseAction
 
 } // namespace Root

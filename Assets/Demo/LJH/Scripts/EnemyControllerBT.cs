@@ -14,22 +14,20 @@ namespace SkyDragonHunter.Entities {
     }
 
     public class EnemyControllerBT : BaseControllerBT<EnemyControllerBT>
-    {        
+    {
         // 필드 (Fields)
-        [SerializeField] private EnemyType m_Type;        
+        [SerializeField] private EnemyType m_Type;
 
         private static readonly string s_PlayerTag = "Player";
         private static readonly string s_CrewTag = "Crew";
         private static readonly string s_CreatureTag = "Creature";
 
         // 유니티 (MonoBehaviour 기본 메서드)
-
         private void Update()
         {
             UpdatePosition();
             m_BehaviourTree.Update();
         }
-
 
         private void OnDrawGizmos()
         {
@@ -37,9 +35,8 @@ namespace SkyDragonHunter.Entities {
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, attackDefinition.range);
+            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
         }
-
 
         // Public 메서드
 
@@ -57,14 +54,22 @@ namespace SkyDragonHunter.Entities {
                 return;
 
             var onFieldObjectLayer = LayerMask.GetMask(s_CrewTag, s_CreatureTag);
-            var collider = Physics2D.OverlapCircle(transform.position, m_AggroRange, onFieldObjectLayer);
-            if (collider == null)
+            var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
+            if (colliders.Length == 0)
             {
                 m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
             }
             else
             {
-                m_Target = collider.transform;
+                foreach(var collider in colliders)
+                {
+                    if(collider.CompareTag(s_CrewTag) || collider.CompareTag(s_CreatureTag))
+                    {
+                        m_Target = collider.transform;
+                        return;
+                    }
+                }
+                m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
             }
         }
 
@@ -91,17 +96,17 @@ namespace SkyDragonHunter.Entities {
 
             var attackSequence = new SequenceNode<EnemyControllerBT>(this);
             attackSequence.AddChild(new EntityAttackableCondition<EnemyControllerBT>(this));
-            attackSequence.AddChild(new EnemyAttackAction<EnemyControllerBT>(this));
+            attackSequence.AddChild(new EntityAttackAction<EnemyControllerBT>(this));
             rootSelector.AddChild(attackSequence);
 
             var chaseSequence = new SequenceNode<EnemyControllerBT>(this);
-            chaseSequence.AddChild(new EnemyChasableCondition<EnemyControllerBT>(this));
-            chaseSequence.AddChild(new EnemyChaseAction<EnemyControllerBT>(this));
+            chaseSequence.AddChild(new EntityChasableCondition<EnemyControllerBT>(this));
+            chaseSequence.AddChild(new EntityChaseAction<EnemyControllerBT>(this));
             rootSelector.AddChild(chaseSequence);
 
             var moveSequence = new SequenceNode<EnemyControllerBT>(this);
-            moveSequence.AddChild(new EnemyMoveCondition<EnemyControllerBT>(this));
-            moveSequence.AddChild(new EnemyMoveAction<EnemyControllerBT>(this));
+            moveSequence.AddChild(new EntityMoveCondition<EnemyControllerBT>(this));
+            moveSequence.AddChild(new EntityMoveAction<EnemyControllerBT>(this));
             rootSelector.AddChild(moveSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
@@ -128,9 +133,7 @@ namespace SkyDragonHunter.Entities {
             // Debug.Log($"new Position: {newPos}");
             transform.position = newPos;
         }
-
         // Others
-
     } // Scope by class EnemyControllerBT
 
 } // namespace Root
