@@ -61,7 +61,7 @@ namespace SkyDragonHunter.Entities
                     isDirectionToRight = false;
                 }
 
-                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
+                var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
                 var halfwidth = sr.bounds.size.x * 0.5f;
 
                 if (isDirectionToRight)
@@ -99,7 +99,15 @@ namespace SkyDragonHunter.Entities
         public virtual void SetAnimTrigger(int triggerHash)
         {
             //m_Animator.SetTrigger(triggerHash);
-            attackDefinition.Execute(gameObject, m_Target.gameObject);
+            if (m_Target != null)
+            {
+                var inven = gameObject.GetComponent<CharacterInventory>();
+                if (inven != null)
+                {
+                    inven.CurrentWeapon.SetActivePrefabInstance(gameObject);
+                    inven.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                }
+            }
         }
 
         public abstract void ResetTarget();

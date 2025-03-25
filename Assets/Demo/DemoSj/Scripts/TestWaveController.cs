@@ -1,5 +1,7 @@
 using NPOI.POIFS.Properties;
 using SkyDragonHunter.Game;
+using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +56,8 @@ namespace SkyDragonHunter
         private bool isInfiniteMode = false;
         private bool changeSuccess = true;
         // 테스트용
+        private double currentHealth;
+        private CharacterStatus playerStatus;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -76,6 +80,12 @@ namespace SkyDragonHunter
             OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
+
+            // TODO: 테스트 코드
+            playerStatus = airship.GetComponent<CharacterStatus>();
+            playerStatus.maxHP = 100000;
+            playerStatus.SetHP(100000);
+            currentHealth = playerStatus.currentHP.Value;
         }
 
         private void Update()
@@ -91,8 +101,15 @@ namespace SkyDragonHunter
                 infiniteWaveUpdate();
             }
 
-            
+            if (currentHealth != playerStatus.currentHP.Value)
+            {
+                currentHealth = playerStatus.currentHP.Value;
+            }
 
+            if (currentHealth <= 0)
+            {
+                OnTestWaveFailedActive(); // 필드 패널 재활성화
+            }
         }
 
         // Public 메서드
@@ -174,7 +191,6 @@ namespace SkyDragonHunter
                     {
                         currentZonelLevel = 1;
                         currentMissionLevel++;
-                        OnTestWaveFailedActive(); // 필드 패널 재활성화
                     }
 
                     waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
