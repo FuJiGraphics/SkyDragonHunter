@@ -18,7 +18,7 @@ namespace SkyDragonHunter.Gameplay
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+        private void Awake()
         {
             if (weapons != null && weapons.Length >= 1)
             {

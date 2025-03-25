@@ -30,7 +30,7 @@ namespace SkyDragonHunter.Entities {
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < m_CharacterInventory.weapons[0].range;
             }
         }
 

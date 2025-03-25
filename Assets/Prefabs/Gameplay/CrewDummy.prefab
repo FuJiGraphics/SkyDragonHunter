@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1785919337115676473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7239640952799064919}
+  m_Layer: 0
+  m_Name: AttackDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7239640952799064919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785919337115676473}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8145279371225729078}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7434643913460656674
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,7 +68,8 @@ Transform:
   m_LocalPosition: {x: 1.1830254, y: 0.50682104, z: 0}
   m_LocalScale: {x: 2.336906, y: 2.336906, z: 2.336906}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7239640952799064919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &-6873027583999143960
@@ -167,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Speed: 5
   m_AggroRange: 18
-  m_CharacterInventory: {fileID: 0}
+  m_CharacterInventory: {fileID: -7082953031541118418}
   status: {fileID: -7276501981709863167}
   floatingEffect: {fileID: 0}
   m_Target: {fileID: 0}
@@ -178,6 +210,7 @@ MonoBehaviour:
   isIdle: 0
   lastIdleTime: 0
   targetYPos: 3.4028235e+38
+  m_MountSlot: {fileID: 0}
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0
