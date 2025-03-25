@@ -45,8 +45,6 @@ namespace SkyDragonHunter.Gameplay
             if (m_HasAttacked && isSingleAttack)
                 return;
 
-            m_HasAttacked = true;
-
             if (!CanAttack(collision.gameObject.tag))
                 return;
 
@@ -58,6 +56,7 @@ namespace SkyDragonHunter.Gameplay
                 return;
 
             target.OnAttack(OwnerShooter, attackInfo);
+            m_HasAttacked = true;
             DestroyProjectile();
         }
         // Public ¸Þ¼­µå

@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using SkyDraonHunter.Utility;
@@ -12,17 +13,22 @@ using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Scriptables
 {
-    [CreateAssetMenu(fileName = "CanonSC.asset", menuName = "Weapon/CanonSC")]
-    public class CanonSC : AttackDefinition
+    [CreateAssetMenu(fileName = "AttackRangeSC.asset", menuName = "Weapon/AttackRangeSC")]
+    public class RangedAttackSC : AttackDefinition
     {
-        // �ʵ� (Fields)
+        // 필드 (Fields)
         public GameObject projectilePrefab;
         public float projectileSpeed = 5f;
         public string[] targetTags;
+        public bool lookAtTarget;
+        [Tooltip("발사 위치에 대한 더미 오브젝트의 이름")]
+        [SerializeField] private string m_FireDummyName;
 
         private ObjectPool<GameObject> m_ProjectilePool;
         private List<GameObject> m_GenList;
         private float m_LastCooldown;
+        private GameObject m_FireDummy;
+        private bool m_IsFirstExcute = true;
 
         public void OnEnable()
         {
@@ -34,10 +40,10 @@ namespace SkyDragonHunter.Scriptables
             this.Release();
         }
 
-        // �Ӽ� (Properties)
-        // �ܺ� ���Ӽ� �ʵ� (External dependencies field)
-        // �̺�Ʈ (Events)
-        // Public �޼���
+        // 속성 (Properties)
+        // 외부 종속성 필드 (External dependencies field)
+        // 이벤트 (Events)
+        // Public 메서드
         public void Initialized()
         {
             if (m_GenList != null)
@@ -59,6 +65,7 @@ namespace SkyDragonHunter.Scriptables
             );
             m_GenList = new List<GameObject>();
             m_LastCooldown = Time.time;
+            m_IsFirstExcute = true;
         }
 
         public void Release()
@@ -70,9 +77,10 @@ namespace SkyDragonHunter.Scriptables
                     m_ProjectilePool.Release(gen);
                 }
             }
+            m_IsFirstExcute = false;
         }
 
-        // Private �޼���
+        // Private 메서드
         private GameObject OnCreateObject()
             => Instantiate(projectilePrefab);
 
@@ -85,6 +93,8 @@ namespace SkyDragonHunter.Scriptables
         // Others
         public override void Execute(GameObject attacker, GameObject defender)
         {
+            FirstExcute();
+
             if (Time.time < m_LastCooldown)
                 return;
             if (attacker == null)
@@ -105,7 +115,24 @@ namespace SkyDragonHunter.Scriptables
             Attack attack = new Attack();
             Vector2 targetVec = Vector2.zero;
             Vector2 targetDir = Vector2.zero;
-            Vector3 firePos = dummy.transform.position + dummy.transform.forward;
+            Vector3 firePos = Vector3.zero;
+
+
+            if (m_FireDummy != null)
+            {
+                firePos = m_FireDummy.transform.position;
+                if (lookAtTarget && m_ActivePrefabInstance != null)
+                {
+                    Math2DHelper.LookAt(m_ActivePrefabInstance.transform, m_FireDummy.transform, defender.transform);
+                }
+            }
+            else
+            {
+                firePos = m_ActivePrefabInstance.transform.position;
+                Math2DHelper.LookAt(m_ActivePrefabInstance.transform, m_ActivePrefabInstance.transform, defender.transform);
+            }
+
+
             if (defender != null)
             {
                 CharacterStatus aStats = attacker.GetComponent<CharacterStatus>();
@@ -132,7 +159,23 @@ namespace SkyDragonHunter.Scriptables
                 return;
             }
 
-            projectile.Fire(firePos, targetDir, projectileSpeed, attack, owner, m_ProjectilePool);
+            projectile.Fire(firePos, targetDir, projectileSpeed, attack, m_Owner, m_ProjectilePool);
+        }
+
+        private void FirstExcute()
+        {
+            if (!m_IsFirstExcute)
+                return;
+
+            m_IsFirstExcute = false;
+            if (m_FireDummyName.Length > 0 && m_ActivePrefabInstance != null)
+            {
+                m_FireDummy = m_ActivePrefabInstance.transform.Find(m_FireDummyName).gameObject;
+                if (m_FireDummy == null)
+                {
+                    Debug.LogWarning($"Warnning: {weaponPrefab.name}/{m_FireDummyName} 더미 오브젝트를 찾을 수 없습니다.");
+                }
+            }
         }
 
     } // Scope by class NewScript
