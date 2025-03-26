@@ -3,6 +3,7 @@ using SkyDragonHunter.Scriptables;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace SkyDragonHunter.Entities {
 
@@ -23,9 +24,30 @@ namespace SkyDragonHunter.Entities {
         public float lastIdleTime;
 
         [SerializeField] private float targetYPos = float.MaxValue;
-        [SerializeField] private MountableSlot m_MountSlot;
+        public MountableSlot m_MountSlot;
+        public bool isMounted;
+        [SerializeField] public Vector3 onFieldOriginPosition;
+
+        // Test용도 임시 필드
+        private float initialDelay_TEMP = 1f;
 
         // 속성 (Properties)
+        public float Speed => m_Speed;
+
+        public float DistanceToOrigin
+        {
+            get
+            {
+                var currentPos = Vector3.zero;
+                currentPos.x = transform.position.x;
+                currentPos.y = floatingEffect.StartY;
+
+                var distance = Vector3.Distance(onFieldOriginPosition, currentPos);
+
+                return distance;
+            }
+        }
+
         public override bool IsTargetInAttackRange
         {
             get
@@ -38,6 +60,7 @@ namespace SkyDragonHunter.Entities {
         {
             get
             {
+                //Debug.LogError($"Crew Controller D/A: {TargetDistance} / {m_AggroRange} // y : {targetYPos}");
                 return TargetDistance < m_AggroRange;
             }
         }
@@ -91,16 +114,33 @@ namespace SkyDragonHunter.Entities {
         }
 
         // 유니티 (MonoBehaviour 기본 메서드)
-        //protected override void Start()
-        //{
-        //   
-        //    InitBehaviourTree();
-        //}
-
         private void Update()
-        {
+        {            
             UpdatePosition();
-            m_BehaviourTree.Update();
+
+            // TEMP FROM ~
+            if (initialDelay_TEMP <= 0f)
+            {
+                if (initialDelay_TEMP < 0f)
+                {
+                    floatingEffect.enabled = true;
+                    initialDelay_TEMP = 0f;
+                }
+                m_BehaviourTree.Update();
+            }
+            else
+            {
+                initialDelay_TEMP -= Time.deltaTime;
+            }
+            // ~ TEMP TO
+
+            //m_BehaviourTree.Update();
+        }
+
+        protected override void Start()
+        {
+            InitMountSlot();        
+            base.Start();
         }
 
         private void OnDrawGizmos()
@@ -124,36 +164,37 @@ namespace SkyDragonHunter.Entities {
         // Public 메서드
         public override void ResetTarget()
         {            
-            bool resetRequired = false;
-            bool isPrevTargetNull = false;
             if (m_Target == null)
             {
-                targetYPos = float.MaxValue;
-                resetRequired = true;
-                isPrevTargetNull = true;
+                targetYPos = float.MaxValue;                
             }
-
-            if (!resetRequired)
+            else
+            {
                 return;
+            }           
 
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
-            { 
+            {                 
                 foreach(var collider in colliders)
                 {
                     if(collider.CompareTag(s_EnemyTag))
                     {
-                        Debug.Log($"found Target {collider.name}");
-                        if(!m_Target.Equals(collider.transform))
+                        if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
-                            targetYPos = collider.GetComponent<FloatingEffect>().StartY;
-                        }
-                        m_Target = collider.transform;
-                        if (isPrevTargetNull)
-                        {
-                            ResetBehaviourTree();
-                            return;
-                        }                        
+                            m_Target = collider.transform;
+                            var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
+                            if (floatingEffectComp != null)
+                            {
+                                targetYPos = floatingEffectComp.StartY;
+                                //Debug.LogError($"target Y pos reassigned {targetYPos}");
+                            }
+                            else
+                            {
+                                Debug.LogError($"no floatingEffect Comp");
+                            }
+                            //ResetBehaviourTree();
+                        }                                                
                     }
                 }                
             }
@@ -161,6 +202,24 @@ namespace SkyDragonHunter.Entities {
             {
                 Debug.Log($"crew target None");
             }
+        }
+
+        public void MountAction(bool mounted)
+        {            
+            if(isMounted != mounted)
+            {
+                if(mounted)
+                {
+                    floatingEffect.enabled = false;
+                    m_MountSlot.Mounting(gameObject);
+                }
+                else
+                {
+                    floatingEffect.enabled = true;
+                    m_MountSlot.Dismounting();
+                }
+            }
+            isMounted = mounted;
         }
 
         // Protected 메서드
@@ -177,6 +236,12 @@ namespace SkyDragonHunter.Entities {
             }
         }
 
+        public override void SetAnimTrigger(string triggerName)
+        {
+            base.SetAnimTrigger(triggerName);
+        }
+
+        // Private 메서드
         private void InitOnBoardCrewBT()
         {
             m_BehaviourTree = new BehaviourTree<CrewControllerBT>(this);
@@ -210,10 +275,20 @@ namespace SkyDragonHunter.Entities {
             chaseSequence.AddChild(new EntityChaseAction<CrewControllerBT>(this));
             rootSelector.AddChild(chaseSequence);
 
-            var IdleSequence = new SequenceNode<CrewControllerBT>(this);
-            IdleSequence.AddChild(new OnFieldCrewIdleCondition(this));
-            IdleSequence.AddChild(new OnFieldCrewIdleAction(this));
-            rootSelector.AddChild(IdleSequence);
+            //var idleSequence = new SequenceNode<CrewControllerBT>(this);
+            //idleSequence.AddChild(new OnFieldCrewIdleCondition(this));
+            //idleSequence.AddChild(new OnFieldCrewIdleAction(this));
+            //rootSelector.AddChild(idleSequence);
+
+            var returnSequence = new SequenceNode<CrewControllerBT>(this);
+            returnSequence.AddChild(new CrewReturnCondition(this));
+            returnSequence.AddChild(new CrewReturnAction(this));
+            rootSelector.AddChild(returnSequence);
+
+            var mountSequence = new SequenceNode<CrewControllerBT>(this);
+            mountSequence.AddChild(new CrewMountCondition(this));
+            mountSequence.AddChild(new CrewMountAction(this));
+            rootSelector.AddChild(mountSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
         }
@@ -221,27 +296,15 @@ namespace SkyDragonHunter.Entities {
         private void UpdatePosition()
         {
             var newPos = transform.position;
-            var direction = Vector3.zero;
-
-            //if (isChasing || isMoving)
-            //{
-            //    int toRight = 1;
-            //    if (isChasing)
-            //        toRight *= 3;
-            //    if (!isDirectionToRight)
-            //        toRight *= -1;                
-            //    newPos.x += Time.deltaTime * m_Speed * toRight;
-            //}                       
+            var direction = Vector3.zero;            
 
             if (m_Target != null && isChasing)
             {
-                float multiplier = 3f;
-                //if (isChasing)
-                //    multiplier = 3f;
+                float multiplier = 3f;                
 
                 direction.y = targetYPos - floatingEffect.StartY;
 
-                if (targetYPos == float.MaxValue || direction.y < 0.1)
+                if (targetYPos == float.MaxValue || Mathf.Abs(direction.y) < 0.1)
                     direction.y = 0;
 
                 if (isDirectionToRight)
@@ -253,18 +316,27 @@ namespace SkyDragonHunter.Entities {
                     direction.x = base.TargetDistance * -1;
                 }
 
-                direction.Normalize();
-                newPos.x += Time.deltaTime * m_Speed * direction.x * multiplier;
-                floatingEffect.StartY += Time.deltaTime * m_Speed * direction.y * multiplier;
+                var normal = direction.normalized;
+                newPos.x += Time.deltaTime * m_Speed * normal.x * multiplier;
+                floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
 
                 transform.position = newPos;
             }
-            //else
-            //{
-            //    targetYPos = float.MaxValue;
-            //}           
-
-            // Debug.Log($"new Position: {newPos}");            
+                                   
+        }
+        
+        private void InitMountSlot()
+        {           
+            if (m_MountSlot == null)
+            {
+                throw new System.NullReferenceException("MountSlot cannot be found, please assign Mountslot on inspector");
+            }
+            isMounted = false;
+            //onFieldOriginPosition = m_MountSlot.transform.position;
+            onFieldOriginPosition = Vector3.zero;
+            m_MountSlot.Mounting(gameObject);
+            floatingEffect.StartY = transform.position.y;
+            floatingEffect.enabled = false;
         }
         // Others
 

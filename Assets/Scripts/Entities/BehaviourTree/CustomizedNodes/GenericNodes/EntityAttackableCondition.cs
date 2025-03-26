@@ -15,7 +15,7 @@ namespace SkyDragonHunter.Entities {
 
         // Protected 메서드
         protected override NodeStatus OnUpdate()
-        {
+        {            
             return m_Context.IsTargetInAttackRange ? NodeStatus.Success : NodeStatus.Failure;
         }
     } // Scope by class AttackableCondition

@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class CharacterStatusModifyTest : MonoBehaviour
 {
-   // TEMPORARY SCRIPT FOR TEST ONLY, CAN BE DELETED FREELY ANYTIME WITHOUT PERMISSION
+    // TEMPORARY SCRIPT FOR TEST ONLY, CAN BE DELETED FREELY ANYTIME WITHOUT PERMISSION
+    [SerializeField] private double HP = 50;
+
     void Start()
     {
         var stats = GetComponent<CharacterStatus>();
-        stats.maxHP = 50;
+        stats.maxHP = HP;
         stats.currentHP = stats.maxHP;
     }
 

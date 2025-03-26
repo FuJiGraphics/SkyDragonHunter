@@ -4,13 +4,10 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 
-    public class SequenceNode<T> : CompositeNode<T> where T : MonoBehaviour
+    public class SelectorNode<T> : CompositeNode<T> where T : MonoBehaviour
     {
-        // 필드 (Fields)
-        private int m_currentChild;
-
-        // Public 메서드
-        public SequenceNode(T context) : base(context)
+        // Public 메서드 
+        public SelectorNode(T context) : base(context)
         {
             m_currentChild = 0;
         }
@@ -21,7 +18,7 @@ namespace SkyDragonHunter.Gameplay {
             m_currentChild = 0;
         }
 
-        // Protected 메서드
+        // Protected 메서드 
         protected override void OnStart()
         {
             base.OnStart();
@@ -30,23 +27,23 @@ namespace SkyDragonHunter.Gameplay {
 
         protected override NodeStatus OnUpdate()
         {
-            if(m_ChildNodes.Count == 0)
+            if (m_ChildNodes.Count == 0)
             {
-                return NodeStatus.Success;
+                return NodeStatus.Failure;
             }
 
-            while (m_currentChild < m_ChildNodes.Count)
+            while(m_currentChild < m_ChildNodes.Count)
             {
                 var childStatus = m_ChildNodes[m_currentChild].Execute();
-                if(childStatus != NodeStatus.Success)
+                if(childStatus != NodeStatus.Failure)
                 {
                     return childStatus;
                 }
                 ++m_currentChild;
             }
 
-            return NodeStatus.Success;
+            return NodeStatus.Failure;
         }
-    } // Scope by class SequenceNode
+    } // Scope by class SelectorNode
 
 } // namespace Root

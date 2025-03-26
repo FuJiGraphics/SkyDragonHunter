@@ -17,7 +17,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnStart()
         {            
             base.OnStart();
-            m_Context.isChasing = true;
+            m_Context.isChasing = true;            
         }
 
         protected override NodeStatus OnUpdate()
@@ -36,7 +36,7 @@ namespace SkyDragonHunter.Entities {
         {
             base.OnEnd();
             m_Context.isChasing = false;
-            m_Context.ResetTarget();
+            m_Context.ResetTarget();           
         }
 
     } // Scope by class EnemyChaseAction

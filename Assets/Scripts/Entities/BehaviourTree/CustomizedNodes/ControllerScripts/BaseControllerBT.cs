@@ -28,6 +28,8 @@ namespace SkyDragonHunter.Entities
         public bool isChasing = false;
 
         // 속성 (Properties)
+        public Transform Target => m_Target;
+
         public virtual bool IsTargetInAttackRange
         {
             get
@@ -47,13 +49,13 @@ namespace SkyDragonHunter.Entities
         public virtual float TargetDistance
         {
             get
-            {
+            {                
                 if (m_Target == null)
                 {
                     return float.MaxValue;
-                }
+                }                
 
-                var distance = m_Target.position.x - transform.position.x;
+                var distance = m_Target.position.x - transform.position.x;                
                 if (distance > 0)
                 {
                     isDirectionToRight = true;
@@ -74,8 +76,12 @@ namespace SkyDragonHunter.Entities
                 {
                     distance += halfwidth;
                 }
+                distance = Mathf.Abs(distance);
 
-                return Mathf.Abs(distance);
+                if (distance < halfwidth)                
+                    distance = 0f;
+
+                return distance;
             }
         }
 
@@ -111,11 +117,9 @@ namespace SkyDragonHunter.Entities
         public virtual void SetAnimTrigger(int triggerHash)
         {
             //m_Animator.SetTrigger(triggerHash);
-            Debug.Log($"{gameObject.name} attacked {m_Target.gameObject.name}");
 
             if(m_CharacterInventory != null)
             {
-                Debug.Log($"{gameObject.name} Character Inventory assigned!");
                 m_CharacterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
                 m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
             }
@@ -123,8 +127,6 @@ namespace SkyDragonHunter.Entities
             {
                 Debug.LogWarning($"{gameObject.name} Character inventory null");
             }
-
-            
         }
 
         public abstract void ResetTarget();

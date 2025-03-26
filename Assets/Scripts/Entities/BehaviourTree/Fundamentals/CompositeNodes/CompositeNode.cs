@@ -8,6 +8,7 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         protected readonly List<BehaviourNode<T>> m_ChildNodes;
+        protected int m_currentChild;
 
         // Public 메서드
         public void AddChild(BehaviourNode<T> child)

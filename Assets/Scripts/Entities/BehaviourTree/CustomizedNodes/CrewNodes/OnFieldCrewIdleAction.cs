@@ -23,6 +23,7 @@ namespace SkyDragonHunter.Entities {
             base.OnStart();
             m_Context.isIdle = true;
             m_Context.lastIdleTime = Time.time;
+            Debug.LogError($"{m_Context.gameObject} entered IdleAction");
         }
 
         protected override NodeStatus OnUpdate()
@@ -45,6 +46,7 @@ namespace SkyDragonHunter.Entities {
             base.OnEnd();
             m_Context.isIdle = false;
             m_Context.ResetTarget();
+            Debug.LogError($"{m_Context.gameObject} exited IdleAction");
         }
 
     } // Scope by class OnFieldCrewMoveAction
