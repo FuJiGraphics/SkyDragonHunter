@@ -113,16 +113,11 @@ namespace SkyDragonHunter
         }
 
         // Public 메서드
-        public void OnInfiniteMod()
+        public void OnOffInfiniteMod()
         {
-            isInfiniteMode = true;
+            isInfiniteMode = !isInfiniteMode;
             OnSetCurrentWave();
         }
-        public void OffInfiniteMod()
-        {
-            isInfiniteMode = false;
-        }
-
 
         public void OnTestWaveFailedActive()
         {
