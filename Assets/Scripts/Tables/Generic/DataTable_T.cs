@@ -1,4 +1,5 @@
 using CsvHelper;
+using CsvHelper.Configuration;
 using SkyDragonHunter.Utility;
 using System;
 using System.Collections;
@@ -14,13 +15,13 @@ namespace SkyDragonHunter.Tables.Generic
 {
     public abstract class DataTableData
     {
-        public ID ID { get; set; }
+        public int ID { get; set; }
     }
 
     public abstract class DataTable<T> : DataTable where T : DataTableData
     {   
         // 필드 (Fields)
-        private Dictionary<ID, T> m_dict = new Dictionary<ID, T>();
+        private Dictionary<int, T> m_dict = new Dictionary<int, T>();
 
         // Public 메서드        
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
@@ -36,6 +37,17 @@ namespace SkyDragonHunter.Tables.Generic
             {
                 return csvReader.GetRecords<T>().ToList();
             }
+        }
+
+        public virtual T Get(int ID)
+        {
+            if(!m_dict.ContainsKey(ID))
+            {
+                Debug.Log($"Key {ID} does not exist in Table");
+                return null;
+            }
+
+            return m_dict[ID];                        
         }
 
         public override void LoadFromText(string text)

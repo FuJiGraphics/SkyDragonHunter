@@ -10,14 +10,14 @@ namespace SkyDragonHunter.Managers
     {
         // 속성 (Properties)
         public static Dictionary<string, DataTable> Tables {  get; private set; }
-        public static SampleDataTable SampleTable => Get<SampleDataTable>(DataTableIds.Sample);
+        public static SampleGenericDataTable SampleTable => Get<SampleGenericDataTable>(DataTableIds.Sample);
 
         // Static Constructor
         static DataTableManager()
         {
             Tables = new Dictionary<string, DataTable>();
 
-            var sampleTable = new SampleDataTable();
+            var sampleTable = new SampleGenericDataTable();
             var sampleTableId = DataTableIds.Sample;
             sampleTable.Load(sampleTableId);
             Tables.Add(sampleTableId, sampleTable);
