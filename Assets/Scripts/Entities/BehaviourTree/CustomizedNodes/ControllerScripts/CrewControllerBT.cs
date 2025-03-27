@@ -158,7 +158,8 @@ namespace SkyDragonHunter.Entities {
             }
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.weapons[0].range);            
+            if(m_CharacterInventory != null && m_CharacterInventory.weapons[0] != null)
+                Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.weapons[0].range);            
         }
 
         // Public 메서드
