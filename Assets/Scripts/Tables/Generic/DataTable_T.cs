@@ -1,0 +1,60 @@
+using CsvHelper;
+using SkyDragonHunter.Utility;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
+namespace SkyDragonHunter.Tables.Generic 
+{
+    public abstract class DataTableData
+    {
+        public ID ID { get; set; }
+    }
+
+    public abstract class DataTable<T> : DataTable where T : DataTableData
+    {   
+        // 필드 (Fields)
+        private Dictionary<ID, T> m_dict = new Dictionary<ID, T>();
+
+        // Public 메서드        
+        [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
+        new public static List<U> LoadCSV<U>(string csvFile)
+        {
+            return null;
+        }
+
+        public static List<T> LoadCSV(string csvFile)
+        {
+            using (var reader = new StringReader(csvFile))
+            using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                return csvReader.GetRecords<T>().ToList();
+            }
+        }
+
+        public override void LoadFromText(string text)
+        {
+            var list = LoadCSV(text);
+            m_dict.Clear();
+
+            foreach (var item in list)
+            {
+                if(!m_dict.ContainsKey(item.ID))
+                {
+                    m_dict.Add(item.ID, item);
+                }
+                else
+                {
+                    Debug.LogError($"Key {item.ID} exists already");
+                }
+            }
+        }
+    } // Scope by class DataTable_T
+
+} // namespace Root

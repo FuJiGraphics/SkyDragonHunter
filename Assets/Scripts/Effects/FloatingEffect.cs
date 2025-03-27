@@ -13,18 +13,10 @@ public class FloatingEffect : MonoBehaviour
     private float m_lastAngle;
 
     // 속성 (Properties)
-    public float StartY
-    {
-        get
-        {
-            return m_StartY;
-        }
-        set
-        {
-            m_StartY = value;
-        }
-    }
-    public float SetStartY(float y) => m_StartY = y;
+    public float StartY { get { return m_StartY; } set { m_StartY = value; } }
+       
+    public float SetStartY(float y) 
+        => m_StartY = y;
 
     // 외부 종속성 필드 (External dependencies field)
     // 이벤트 (Events)
