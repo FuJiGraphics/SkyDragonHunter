@@ -30,8 +30,7 @@ namespace SkyDragonHunter.Gameplay {
         // Protected 메서드
         protected override NodeStatus ProcessChild()
         {
-            throw new System.NotImplementedException();
-
+            Debug.LogError($"Repeater Node Not Implemented yet");
             if (m_CurrentCount >= m_RepeatCount)
             {
                 return NodeStatus.Success;
