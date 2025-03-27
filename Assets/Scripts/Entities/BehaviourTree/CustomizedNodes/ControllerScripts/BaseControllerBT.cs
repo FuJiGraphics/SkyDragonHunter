@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,8 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities
 {
-    public abstract class BaseControllerBT<T> : MonoBehaviour where T : BaseControllerBT<T>
+    public abstract class BaseControllerBT<T> : MonoBehaviour, ISlowable 
+        where T : BaseControllerBT<T>
     {
         // 필드 (Fields)
         [SerializeField] protected float m_Speed;
@@ -138,6 +140,14 @@ namespace SkyDragonHunter.Entities
         // Protected 메서드
         protected abstract void InitBehaviourTree();
 
+        public void OnSlowBegin(float slowMultiplier)
+        {
+            m_Speed *= slowMultiplier;
+        }
+        public void OnSlowEnd(float slowMultiplier)
+        {
+            m_Speed *= (1 / slowMultiplier);
+        }
         // Others
 
     } // Scope by class BaseControllerBT

@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables
 {
-    [CreateAssetMenu(fileName = "StatusAilmentBurnSC.asset", menuName = "StatusAilments/StatusAilmentBurnSC")]
-    public class StatusAilmentBurnSC : StatusAilmentDefinition
+    [CreateAssetMenu(fileName = "StatusAilmentFreezeSC.asset", menuName = "StatusAilments/StatusAilmentFreezeSC")]
+    public class StatusAilmentFreezeSC : StatusAilmentDefinition
     {
         // 필드 (Fields)
-        [Tooltip("화상 데미지 배율")]
-        public float burnMultiplier = 1.0f;
-        [Tooltip("화상 지속 시간")]
+        [Tooltip("빙결 지속 시간")]
         public float duration = 5f;
+        [Tooltip("빙결 내성 배율")]
+        public float immunityMultiplier = 2f;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -20,13 +20,13 @@ namespace SkyDragonHunter.Scriptables
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
         // Private 메서드
-        private BurnStatusAilment CreateBurnStatusAliment(CharacterStatus aStats, CharacterStatus dStats)
+        private FreezeStatusAilment CreateFreezeStatusAliment(CharacterStatus aStats, CharacterStatus dStats)
         {
-            BurnStatusAilment ailment = new BurnStatusAilment();
+            FreezeStatusAilment ailment = new FreezeStatusAilment();
             ailment.attacker = aStats.gameObject;
             ailment.defender = dStats.gameObject;
-            ailment.damagePerSeconds = (aStats.currentDamage * burnMultiplier) / duration;
             ailment.duration = duration;
+            ailment.immunityMultiplier = duration * immunityMultiplier;
             return ailment;
         }
 
@@ -42,12 +42,12 @@ namespace SkyDragonHunter.Scriptables
             if (aStats == null || dStats == null)
                 return;
 
-            var burnStatusAliment = CreateBurnStatusAliment(aStats, dStats);
+            var burnStatusAliment = CreateFreezeStatusAliment(aStats, dStats);
             IAilmentAffectable target = defender.GetComponent<IAilmentAffectable>();
             if (target == null)
                 return;
 
-            target.OnBurn(burnStatusAliment);
+            target.OnFreeze(burnStatusAliment);
         }
 
     } // Scope by class StatusAlimentBurnSC
