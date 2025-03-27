@@ -57,6 +57,7 @@ namespace SkyDragonHunter {
                 yield return m_BurningStride;
             }
             m_BurnCoroutine = null;
+            m_CashingSprite.color = m_CashingSpriteColor;
         }
 
         private void TestRunAffectEffect(Color color)
@@ -137,6 +138,9 @@ namespace SkyDragonHunter {
         {
             if (m_BurnCoroutine != null)
                 StopCoroutine(m_BurnCoroutine);
+
+            DrawableMgr.Text(transform.position, "Burn!!!!!", Color.red);
+            TestRunAffectEffect(Color.red); // TODO: 테스트용
             m_BurnCoroutine = StartCoroutine(CoBurning(status));
         }
 

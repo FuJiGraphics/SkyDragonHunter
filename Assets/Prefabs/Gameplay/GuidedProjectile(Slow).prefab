@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8211323344056459635}
   - component: {fileID: 5751877565858891873}
   m_Layer: 0
-  m_Name: GuidedProjectile
+  m_Name: GuidedProjectile(Slow)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 5
   isSingleAttack: 1
-  statusAliments: []
+  statusAliments:
+  - {fileID: 11400000, guid: 4a8664d4cd12b48418dee19878dfae19, type: 2}
   targetTags: []
   perfectAimAttack: 0
 --- !u!1 &9220689610014251117

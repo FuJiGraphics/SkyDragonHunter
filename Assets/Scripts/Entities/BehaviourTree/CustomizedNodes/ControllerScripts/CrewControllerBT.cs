@@ -286,11 +286,13 @@ namespace SkyDragonHunter.Entities {
             //IdleSequence.AddChild(new OnFieldCrewIdleAction(this));
             //rootSelector.AddChild(IdleSequence);
 
+            // TODO: 임시
             m_BehaviourTree.SetRoot(rootSelector);
         }
 
         private void InitOnFieldCrewBT()
         {
+            floatingEffect.enabled = true;
             m_BehaviourTree = new BehaviourTree<CrewControllerBT>(this);
             var rootSelector = new SelectorNode<CrewControllerBT>(this);
 
@@ -362,7 +364,7 @@ namespace SkyDragonHunter.Entities {
             }
             isMounted = false;
             //onFieldOriginPosition = m_MountSlot.transform.position;
-            onFieldOriginPosition = Vector3.zero;
+            //onFieldOriginPosition = Vector3.zero;
             //m_MountSlot.Mounting(gameObject);
             floatingEffect.StartY = transform.position.y;
             floatingEffect.enabled = false;

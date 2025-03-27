@@ -38,7 +38,6 @@ namespace SkyDragonHunter.Entities {
             else
             {
                 lastAttackTime = Time.time;
-                Debug.LogError($"{m_Context.gameObject.name} ATTACKED");
                 m_Context.SetAnimTrigger(s_AttackHash);
                 return NodeStatus.Success;
             }

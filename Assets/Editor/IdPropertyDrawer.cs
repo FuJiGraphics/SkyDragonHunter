@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using SkyDragonHunter.Utility;
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ID))]
 public class IDPropertyDrawer : PropertyDrawer
 {
@@ -19,3 +20,4 @@ public class IDPropertyDrawer : PropertyDrawer
         return EditorGUIUtility.singleLineHeight;
     }
 }
+#endif

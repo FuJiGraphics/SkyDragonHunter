@@ -75,8 +75,8 @@ namespace SkyDragonHunter.Entities {
                         var crewBT = collider.GetComponent<CrewControllerBT>();
                         if (crewBT != null)
                         {
-                            var exhausted = crewBT.isOnBoard;
-                            if (exhausted)
+                            var onBoard = crewBT.isOnBoard;
+                            if (onBoard)
                             {                                
                                 continue;
                             }
@@ -88,6 +88,7 @@ namespace SkyDragonHunter.Entities {
                         }
                     }
                     m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
+                    return;
                 }
                 if (m_Target == null)
                 {
