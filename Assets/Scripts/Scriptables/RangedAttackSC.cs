@@ -117,7 +117,6 @@ namespace SkyDragonHunter.Scriptables
             Vector2 targetDir = Vector2.zero;
             Vector3 firePos = Vector3.zero;
 
-
             if (m_FireDummy != null)
             {
                 firePos = m_FireDummy.transform.position;
@@ -134,7 +133,6 @@ namespace SkyDragonHunter.Scriptables
                     Math2DHelper.LookAt(m_ActivePrefabInstance.transform, m_ActivePrefabInstance.transform, defender.transform);
                 }
             }
-
 
             if (defender != null)
             {

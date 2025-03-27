@@ -7,6 +7,7 @@ namespace SkyDragonHunter.Gameplay {
     public class PassiveAbility : MonoBehaviour
     {
         // 필드 (Fields)
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

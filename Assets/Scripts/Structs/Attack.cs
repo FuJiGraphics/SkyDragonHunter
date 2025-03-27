@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using SkyDragonHunter.Utility;
+using SkyDragonHunter.Interfaces;
 
 namespace SkyDragonHunter.Structs {
 
@@ -12,5 +13,11 @@ namespace SkyDragonHunter.Structs {
 
         public bool IsCritical => critical > 0.0;
     }; // struct Attack
+
+    public struct SkillAttack
+    {
+
+
+    }
 
 } // namespace SkyDragonHunter.Structs
