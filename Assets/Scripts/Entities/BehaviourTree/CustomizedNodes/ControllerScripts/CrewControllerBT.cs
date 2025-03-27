@@ -26,10 +26,14 @@ namespace SkyDragonHunter.Entities {
         [SerializeField] private float targetYPos = float.MaxValue;
         public MountableSlot m_MountSlot;
         public bool isMounted;
-        [SerializeField] public Vector3 onFieldOriginPosition;
+        [SerializeField] public Vector3 onFieldOriginPosition;        
 
         // Test용도 임시 필드
         private float initialDelay_TEMP = 1f;
+        public bool isExhausted = false;
+        public readonly float exhaustionTime = 30f;
+        public float exhaustionRemainingTime;
+        private CharacterStatus characterStatus;
 
         // 속성 (Properties)
         public float Speed => m_Speed;
@@ -80,7 +84,7 @@ namespace SkyDragonHunter.Entities {
                     if(isDirectionToRight == false)
                     {
                         var newScale = transform.localScale;
-                        newScale.y *= -1;
+                        newScale.z *= -1;
                         transform.localScale = newScale;
                     }
                     isDirectionToRight = true;                    
@@ -90,7 +94,7 @@ namespace SkyDragonHunter.Entities {
                     if (isDirectionToRight == true)
                     {
                         var newScale = transform.localScale;
-                        newScale.y *= -1;
+                        newScale.z *= -1;
                         transform.localScale = newScale;
                     }
                     isDirectionToRight = false;                    
@@ -114,9 +118,30 @@ namespace SkyDragonHunter.Entities {
         }
 
         // 유니티 (MonoBehaviour 기본 메서드)
+        protected override void Awake()
+        {
+            base.Awake();
+            characterStatus = GetComponent<CharacterStatus>();
+        }
+
         private void Update()
-        {            
-            UpdatePosition();
+        {
+            if (isExhausted)
+            {
+                exhaustionRemainingTime -= Time.deltaTime;
+                if(exhaustionRemainingTime <= 0)
+                {
+                    exhaustionRemainingTime = exhaustionTime;
+                    isExhausted = false;
+                    characterStatus.currentHP = characterStatus.maxHP;
+                    MountAction(false);
+                    ResetBehaviourTree();
+                }
+            }
+            else
+            {
+                UpdatePosition();
+            }
 
             // TEMP FROM ~
             if (initialDelay_TEMP <= 0f)
@@ -206,7 +231,7 @@ namespace SkyDragonHunter.Entities {
         }
 
         public void MountAction(bool mounted)
-        {            
+        {
             if(isMounted != mounted)
             {
                 if(mounted)
@@ -286,10 +311,10 @@ namespace SkyDragonHunter.Entities {
             returnSequence.AddChild(new CrewReturnAction(this));
             rootSelector.AddChild(returnSequence);
 
-            var mountSequence = new SequenceNode<CrewControllerBT>(this);
-            mountSequence.AddChild(new CrewMountCondition(this));
-            mountSequence.AddChild(new CrewMountAction(this));
-            rootSelector.AddChild(mountSequence);
+            //var mountSequence = new SequenceNode<CrewControllerBT>(this);
+            //mountSequence.AddChild(new CrewMountCondition(this));
+            //mountSequence.AddChild(new CrewMountAction(this));
+            //rootSelector.AddChild(mountSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
         }
@@ -335,7 +360,7 @@ namespace SkyDragonHunter.Entities {
             isMounted = false;
             //onFieldOriginPosition = m_MountSlot.transform.position;
             onFieldOriginPosition = Vector3.zero;
-            m_MountSlot.Mounting(gameObject);
+            //m_MountSlot.Mounting(gameObject);
             floatingEffect.StartY = transform.position.y;
             floatingEffect.enabled = false;
         }

@@ -1,3 +1,4 @@
+using NPOI.SS.Formula.Functions;
 using SkyDragonHunter.Structs;
 using UnityEngine;
 
@@ -39,6 +40,7 @@ namespace SkyDragonHunter.Gameplay {
 
         public void Dismounting()
         {
+            Debug.LogError($"Apply / pos : {m_BackupPos.position}\nscale : {m_BackupPos.scale}");
             slot.transform.SetParent(null);
             m_BackupPos.ApplyTo(slot.transform);
             slot = null;

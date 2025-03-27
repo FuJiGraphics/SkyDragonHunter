@@ -31,15 +31,14 @@ namespace SkyDragonHunter.Entities {
 
         private void OnDrawGizmos()
         {
-            // Gizmos.color = Color.red;
-            // Gizmos.DrawWireSphere(transform.position, m_AggroRange);
-            // 
-            // Gizmos.color = Color.blue;
-            // Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, m_AggroRange);
+            
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
         }
 
         // Public 메서드
-
         public override void ResetTarget()
         {
             bool resetRequired = false;
@@ -49,27 +48,52 @@ namespace SkyDragonHunter.Entities {
             {
                 resetRequired = true;
             }
+            else if (m_Target.gameObject.CompareTag(s_CrewTag))
+            {
+                var crewBT = m_Target.GetComponent<CrewControllerBT>();
+                if (crewBT.isExhausted)
+                    resetRequired = true;
+            }
 
             if (!resetRequired)
                 return;
 
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
-            if (colliders.Length == 0)
-            {
-                m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
-            }
-            else
+            if (colliders.Length > 0)
             {
                 foreach(var collider in colliders)
                 {
-                    if(collider.CompareTag(s_CrewTag) || collider.CompareTag(s_CreatureTag))
+                    if (collider.CompareTag(s_CreatureTag))
                     {
                         m_Target = collider.transform;
                         return;
                     }
+                    if (collider.CompareTag(s_CrewTag))
+                    {
+                        var crewBT = collider.GetComponent<CrewControllerBT>();
+                        var exhausted = crewBT.isExhausted;
+                        if (exhausted)
+                        {
+                            continue;
+                        }
+                        m_Target = collider.transform;
+                    }
                 }
+                if (m_Target == null)
+                {
+                    m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
+                    return;
+                }
+            }
+            else
+            {
                 m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
             }
+        }
+
+        public void NullTarget()
+        {
+            m_Target = null;
         }
 
         // Protected 메서드

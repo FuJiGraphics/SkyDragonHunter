@@ -89,6 +89,7 @@ namespace SkyDragonHunter {
                 }
 
                 Debug.Log("죽었다");
+                if(destructibles.Length == 0)
                 GameObject.Destroy(gameObject);
             }
         }

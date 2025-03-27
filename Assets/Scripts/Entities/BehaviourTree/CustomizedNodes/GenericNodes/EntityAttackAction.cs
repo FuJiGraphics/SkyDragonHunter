@@ -21,7 +21,8 @@ namespace SkyDragonHunter.Entities {
         // Protected 메서드
         protected override void OnStart()
         {
-            base.OnStart();            
+            base.OnStart();
+            Debug.LogWarning($"{m_Context.gameObject.name} entered Attack Action");
         }
 
         protected override NodeStatus OnUpdate()
@@ -38,6 +39,7 @@ namespace SkyDragonHunter.Entities {
             else
             {
                 lastAttackTime = Time.time;
+                Debug.LogError($"{m_Context.gameObject.name} ATTACKED");
                 m_Context.SetAnimTrigger(s_AttackHash);
                 return NodeStatus.Success;
             }
@@ -45,7 +47,8 @@ namespace SkyDragonHunter.Entities {
 
         protected override void OnEnd()
         {
-            base.OnEnd();            
+            base.OnEnd();
+            Debug.LogWarning($"{m_Context.gameObject.name} exited Attack Action");
         }
     } // Scope by class AttackAction
 
