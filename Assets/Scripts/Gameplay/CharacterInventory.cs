@@ -7,8 +7,9 @@ namespace SkyDragonHunter.Gameplay
     public class CharacterInventory : MonoBehaviour
     {
         // 필드 (Fields)
-        public AttackDefinition[] weapons;
         public Transform weaponDummy;
+
+        [SerializeField] private AttackDefinition[] weapons;
 
         private GameObject m_WeaponGo;
 
@@ -37,7 +38,7 @@ namespace SkyDragonHunter.Gameplay
 
             UnequipWeapon();
 
-            CurrentWeapon = weapons[index];
+            CurrentWeapon = Instantiate(weapons[index]);
             CurrentWeapon.SetOwner(gameObject);
             CurrentWeapon.SetDummy(weaponDummy);
             if (weapons[index].weaponPrefab != null)
@@ -45,13 +46,13 @@ namespace SkyDragonHunter.Gameplay
                 m_WeaponGo = Instantiate(weapons[index].weaponPrefab);
                 m_WeaponGo.transform.SetParent(weaponDummy);
                 m_WeaponGo.transform.localPosition = Vector3.zero;
-                weapons[index].SetActivePrefabInstance(m_WeaponGo);
+                CurrentWeapon.SetActivePrefabInstance(m_WeaponGo);
             }
         }
 
         public void UnequipWeapon()
         {
-            CurrentWeapon = null;
+            Destroy(CurrentWeapon);
             Destroy(m_WeaponGo);
         }
 

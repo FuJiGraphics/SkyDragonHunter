@@ -1,4 +1,5 @@
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Structs;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -11,6 +12,7 @@ namespace SkyDragonHunter.Gameplay
         public Attack attackInfo;
         public float lifeTime = 5f;
         public bool isSingleAttack = true;
+        public StatusAilmentDefinition[] statusAliments;
         public string[] targetTags;
         public bool perfectAimAttack = false;
 
@@ -55,6 +57,10 @@ namespace SkyDragonHunter.Gameplay
             if (target == null)
                 return;
 
+            if (statusAliments != null && statusAliments.Length > 0)
+            {
+                ApplyStatusAliments(OwnerShooter, collision.gameObject);
+            }
             target.OnAttack(OwnerShooter, attackInfo);
             m_HasAttacked = true;
             DestroyProjectile();
@@ -90,6 +96,14 @@ namespace SkyDragonHunter.Gameplay
                 OwnerPool.Release(gameObject);
             else
                 GameObject.Destroy(this);
+        }
+
+        private void ApplyStatusAliments(GameObject attacker, GameObject defender)
+        {
+            foreach (var status in statusAliments)
+            {
+                status.Execute(attacker, defender);
+            }
         }
 
         // Others

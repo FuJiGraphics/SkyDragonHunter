@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using SkyDragonHunter.Utility;
+using SkyDragonHunter.Interfaces;
 
 namespace SkyDragonHunter.Structs {
 

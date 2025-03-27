@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Gameplay
                 var findGo = GameObject.FindWithTag(tag);
                 if (findGo != null)
                 {
-                    m_Inventory.CurrentWeapon.Execute(gameObject, findGo);
+                    m_Inventory.CurrentWeapon?.Execute(gameObject, findGo);
                 }
             }
         }

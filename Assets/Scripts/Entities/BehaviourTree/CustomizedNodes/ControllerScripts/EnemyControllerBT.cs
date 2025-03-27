@@ -31,11 +31,11 @@ namespace SkyDragonHunter.Entities {
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, m_AggroRange);
-
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
+            // Gizmos.color = Color.red;
+            // Gizmos.DrawWireSphere(transform.position, m_AggroRange);
+            // 
+            // Gizmos.color = Color.blue;
+            // Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
         }
 
         // Public 메서드
@@ -53,7 +53,6 @@ namespace SkyDragonHunter.Entities {
             if (!resetRequired)
                 return;
 
-            var onFieldObjectLayer = LayerMask.GetMask(s_CrewTag, s_CreatureTag);
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length == 0)
             {
