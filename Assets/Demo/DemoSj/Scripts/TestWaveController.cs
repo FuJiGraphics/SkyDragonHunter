@@ -21,6 +21,8 @@ namespace SkyDragonHunter
 
     public class TestWaveController : MonoBehaviour
     {
+        public static int instanceNo = 0;
+
         // 필드 (Fields)
         public Slider waveSlider;
         public TextMeshProUGUI waveLevelText;
@@ -266,6 +268,7 @@ namespace SkyDragonHunter
             for (int i = 0; i < spawnableMonsters; i++)
             {
                 GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
+                spawned.name = $"Monster({instanceNo++})";
                 currentEnemy.Add(spawned);
                 currentSpawnMonsters++;
             }

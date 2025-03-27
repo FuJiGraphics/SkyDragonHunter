@@ -53,7 +53,6 @@ namespace SkyDragonHunter.Entities {
             if (!resetRequired)
                 return;
 
-            var onFieldObjectLayer = LayerMask.GetMask(s_CrewTag, s_CreatureTag);
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length == 0)
             {

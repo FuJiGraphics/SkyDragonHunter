@@ -93,6 +93,7 @@ namespace SkyDragonHunter.Scriptables
         // Others
         public override void Execute(GameObject attacker, GameObject defender)
         {
+            SetOwner(attacker);
             FirstExcute();
 
             if (Time.time < m_LastCooldown)
