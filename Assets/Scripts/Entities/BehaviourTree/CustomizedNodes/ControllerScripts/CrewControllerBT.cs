@@ -13,7 +13,7 @@ namespace SkyDragonHunter.Entities {
         OnField,
     }
 
-    public class CrewControllerBT : BaseControllerBT<CrewControllerBT>
+    public class CrewControllerBT :  BaseControllerBT<CrewControllerBT>
     {
         // 필드 (Fields)
         [SerializeField] private CrewType m_Type;
