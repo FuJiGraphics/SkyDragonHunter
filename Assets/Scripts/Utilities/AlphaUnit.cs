@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using System;
 using System.Reflection;
 using UnityEditor;
@@ -48,8 +49,9 @@ namespace SkyDragonHunter.Utility
         {
             return m_OriginNumber.CompareTo(other.m_OriginNumber);
         }
+
         public bool Equals(AlphaUnit other)
-            => m_OriginNumber.Equals(other.m_OriginNumber);
+            => Math2DHelper.Equals(m_OriginNumber, other.m_OriginNumber);
 
         private void Normalize()
         {

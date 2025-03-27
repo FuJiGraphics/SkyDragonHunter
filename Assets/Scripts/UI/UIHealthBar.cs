@@ -7,8 +7,8 @@ namespace SkyDragonHunter.UI {
     public class UIHealthBar : MonoBehaviour
     {
         // 필드 (Fields)
-        public float maxHealth;
-        public float currentHealth;
+        public double maxHealth;
+        public double currentHealth;
         private Slider m_Slider;
 
         // 속성 (Properties)
@@ -26,8 +26,8 @@ namespace SkyDragonHunter.UI {
 
         private void Update()
         {
-            UpdateSlider();
         }
+
 
         private void Reset()
         {
@@ -37,41 +37,44 @@ namespace SkyDragonHunter.UI {
         // Public 메서드
         public void ResetHP()
         {
-            UpdateSlider();
             currentHealth = maxHealth;
             SetHP(currentHealth);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(double damage)
         {
+            Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
             SetHP(currentHealth - damage);
+            UpdateSlider();
         }
 
-        public void SetHP(float health)
+        public void SetHP(double health)
         {
             if (m_Slider == null)
             {
-                Debug.LogError("Did not found Slider Component!");
+                Debug.LogError("Did not find Slider Component!");
+                return;
             }
-            currentHealth = Mathf.Clamp(health, 0f, maxHealth);
-            m_Slider.value = currentHealth;
-            if (currentHealth <= 0f)
+
+            currentHealth = System.Math.Max(0.0, System.Math.Min(health, maxHealth));
+            UpdateSlider();
+
+            if (currentHealth <= 0.0)
             {
-                currentHealth = 0f;
+                currentHealth = 0.0;
                 OnHealthDepleted.Invoke();
             }
         }
 
         private void UpdateSlider()
         {
-            if (m_Slider.maxValue != maxHealth)
-            {
-                m_Slider.maxValue = maxHealth;
-            }
-            if (m_Slider.value != currentHealth)
-            {
-                m_Slider.value = currentHealth;
-            }
+            if (m_Slider == null || maxHealth <= 0.0) 
+                return;
+
+            m_Slider.minValue = 0f;
+            m_Slider.maxValue = 1f;
+
+            m_Slider.value = (float)(currentHealth / maxHealth);
         }
 
         // Private 메서드
