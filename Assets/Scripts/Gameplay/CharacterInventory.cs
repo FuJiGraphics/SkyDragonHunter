@@ -7,8 +7,9 @@ namespace SkyDragonHunter.Gameplay
     public class CharacterInventory : MonoBehaviour
     {
         // 필드 (Fields)
-        public AttackDefinition[] weapons;
         public Transform weaponDummy;
+
+        [SerializeField] private AttackDefinition[] weapons;
 
         private GameObject m_WeaponGo;
 

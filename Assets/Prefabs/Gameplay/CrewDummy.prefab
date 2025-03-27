@@ -49,6 +49,8 @@ GameObject:
   - component: {fileID: 5654016661433389589}
   - component: {fileID: 9183804614297337809}
   - component: {fileID: -4470082774018705904}
+  - component: {fileID: -826813146072343489}
+  - component: {fileID: 4373007434216992575}
   m_Layer: 0
   m_Name: CrewDummy
   m_TagString: Crew
@@ -226,6 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freezeMultiplier: 1
+  poisonMultiplier: 1
 --- !u!114 &-7082953031541118418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,9 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponDummy: {fileID: 8145279371225729078}
   weapons:
   - {fileID: 11400000, guid: 3e4eed9c8c76a734db58d790fe601a9f, type: 2}
-  weaponDummy: {fileID: 8145279371225729078}
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,6 +297,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-826813146072343489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52bd17e7f2e4eb4f8c0968ca1317494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4373007434216992575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3123079408781212544
 PrefabInstance:
   m_ObjectHideFlags: 0
