@@ -9,10 +9,12 @@ namespace SkyDragonHunter.Test
     public class UiManager : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideCharacterInfoPanel = true;
         private bool isHideQuestPanel;
         private bool isHideOptionsPanel = true;
         // 속성 (Properties)
@@ -25,6 +27,23 @@ namespace SkyDragonHunter.Test
         }
 
         // Public 메서드
+        public void OnOffCharacterInfoPanel()
+        {
+            if (characterInfoPanel != null)
+            {
+                if (!isHideCharacterInfoPanel)
+                {
+                    characterInfoPanel.SetActive(false);
+                    isHideCharacterInfoPanel = true;
+                }
+                else
+                {
+                    characterInfoPanel.SetActive(true);
+                    isHideCharacterInfoPanel = false;
+                }
+            }
+        }
+
         public void OnOffHideOptionsPanel()
         {
             if (optionsPanel != null)
