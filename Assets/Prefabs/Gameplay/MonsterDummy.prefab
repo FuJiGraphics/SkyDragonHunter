@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 5654016661433389589}
   - component: {fileID: 9183804614297337809}
   - component: {fileID: 4381422749695507041}
+  - component: {fileID: 1701353589846277976}
+  - component: {fileID: -1063117355461685042}
   m_Layer: 0
   m_Name: MonsterDummy
   m_TagString: Monster
@@ -150,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponDummy: {fileID: 8145279371225729078}
   weapons:
   - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
-  weaponDummy: {fileID: 8145279371225729078}
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freezeMultiplier: 1
+  poisonMultiplier: 1
 --- !u!114 &-6102419851012319264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 50
+  HP: 300
 --- !u!114 &4381422749695507041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +232,30 @@ MonoBehaviour:
   floatSpeedOffset: 1
   floatAmount: 0.5
   m_StartY: 0
+--- !u!114 &1701353589846277976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52bd17e7f2e4eb4f8c0968ca1317494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1063117355461685042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8630467147813645504
 GameObject:
   m_ObjectHideFlags: 0

@@ -135,6 +135,8 @@ GameObject:
   - component: {fileID: 8987211082387931004}
   - component: {fileID: 4875637612473353622}
   - component: {fileID: 3631966690247035673}
+  - component: {fileID: 966227625455563308}
+  - component: {fileID: 5095273400762740551}
   m_Layer: 0
   m_Name: Airship
   m_TagString: Player
@@ -230,6 +232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freezeMultiplier: 1
+  poisonMultiplier: 1
 --- !u!114 &5197037042930864690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,9 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponDummy: {fileID: 2147619844493493132}
   weapons:
   - {fileID: 11400000, guid: fca89fba8b2d5f6409029dd1bef0e813, type: 2}
-  weaponDummy: {fileID: 2147619844493493132}
 --- !u!114 &8987211082387931004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +264,7 @@ MonoBehaviour:
   floatSpeed: 1
   floatSpeedOffset: 1
   floatAmount: 0.5
+  m_StartY: 0
 --- !u!114 &4875637612473353622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +291,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTags:
   - Monster
+--- !u!114 &966227625455563308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566452352409628216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5095273400762740551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566452352409628216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52bd17e7f2e4eb4f8c0968ca1317494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6605894443642278277
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,14 +13,17 @@ namespace SkyDragonHunter.Gameplay {
         public AlphaUnit maxShield = 100.0;        // 최대 방어막
         public AlphaUnit currentShield = 100.0;    // 현재 방어막
 
-        public AlphaUnit maxDamage = 50.0;         // 최대 공격력
-        public AlphaUnit currentDamage = 50.0;     // 현재 공격력
+        public AlphaUnit maxDamage = 30.0;         // 최대 공격력
+        public AlphaUnit currentDamage = 30.0;     // 현재 공격력
 
         public AlphaUnit maxArmor = 10.0;          // 최대 방어력
         public AlphaUnit currentArmor = 10.0;      // 현재 방어력
 
         public AlphaUnit maxReilient;              // 최대 회복력
         public AlphaUnit currentReilient;          // 현재 회복력
+        
+        public float freezeMultiplier = 1.0f;      // 빙결 속도 배율
+        public float poisonMultiplier = 1.0f;      // 독 데미지 배율
 
         // 속성 (Properties)
         public bool IsFullHP => currentHP.Equals(maxHP);

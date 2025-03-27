@@ -30,6 +30,10 @@ namespace SkyDragonHunter.Scriptables
         private GameObject m_FireDummy;
         private bool m_IsFirstExcute = true;
 
+        // 속성 (Properties)
+        // 외부 종속성 필드 (External dependencies field)
+        // 이벤트 (Events)
+        // 유니티 (MonoBehaviour 기본 메서드)
         public void OnEnable()
         {
             this.Initialized();
@@ -40,9 +44,6 @@ namespace SkyDragonHunter.Scriptables
             this.Release();
         }
 
-        // 속성 (Properties)
-        // 외부 종속성 필드 (External dependencies field)
-        // 이벤트 (Events)
         // Public 메서드
         public void Initialized()
         {

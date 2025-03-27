@@ -14,10 +14,4 @@ namespace SkyDragonHunter.Structs {
         public bool IsCritical => critical > 0.0;
     }; // struct Attack
 
-    public struct SkillAttack
-    {
-
-
-    }
-
 } // namespace SkyDragonHunter.Structs
