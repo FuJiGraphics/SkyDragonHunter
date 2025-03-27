@@ -124,6 +124,7 @@ namespace SkyDragonHunter.Entities
             {
                 m_CharacterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
                 m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                Debug.LogError($"{gameObject.name} attacked {m_Target.gameObject.name}");
             }
             else
             {
