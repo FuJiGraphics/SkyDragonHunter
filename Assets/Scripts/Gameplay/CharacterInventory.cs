@@ -37,6 +37,7 @@ namespace SkyDragonHunter.Gameplay
 
             UnequipWeapon();
 
+            Debug.Log($"owner = {gameObject}");
             CurrentWeapon = weapons[index];
             CurrentWeapon.SetOwner(gameObject);
             CurrentWeapon.SetDummy(weaponDummy);
