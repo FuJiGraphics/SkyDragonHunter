@@ -84,6 +84,5 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
         // Others
-
     } // Scope by class CQharacterStatus
 } // namespace Root
