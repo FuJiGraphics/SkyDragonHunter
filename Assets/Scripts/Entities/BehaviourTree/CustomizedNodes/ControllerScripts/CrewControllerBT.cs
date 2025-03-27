@@ -150,7 +150,7 @@ namespace SkyDragonHunter.Entities {
 
             if(m_CharacterInventory == null)
             {
-                Debug.LogWarning($"Character inventory Null of {gameObject.name}");
+                //Debug.LogWarning($"Character inventory Null of {gameObject.name}");
             }
             else if (m_CharacterInventory.CurrentWeapon == null)
             {
@@ -158,6 +158,7 @@ namespace SkyDragonHunter.Entities {
             }
 
             Gizmos.color = Color.green;
+            if(m_CharacterInventory != null &&  m_CharacterInventory.weapons[0] != null)
             Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.weapons[0].range);            
         }
 
