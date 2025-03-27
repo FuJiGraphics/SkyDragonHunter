@@ -32,7 +32,7 @@ namespace SkyDragonHunter {
         // Others
         public void OnAttack(GameObject attacker, Attack attack)
         {
-            Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
+            //Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
 
             if (attack.IsCritical)
             {

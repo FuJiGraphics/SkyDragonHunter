@@ -21,7 +21,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnStart()
         {
             base.OnStart();            
-            Debug.Log($"{m_Context.name} entered Return Action");            
+            //Debug.Log($"{m_Context.name} entered Return Action");            
         }
 
         protected override NodeStatus OnUpdate()
@@ -47,7 +47,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            Debug.Log($"{m_Context} exited Return Action");
+            //Debug.Log($"{m_Context} exited Return Action");
         }
 
         // Private 메서드

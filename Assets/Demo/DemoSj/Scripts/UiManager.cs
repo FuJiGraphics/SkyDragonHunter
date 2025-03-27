@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter.Test
@@ -9,16 +10,20 @@ namespace SkyDragonHunter.Test
     public class UiManager : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject waveControler;
         public GameObject waveSelectInfoPanel;
         public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
+        private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
         private bool isHideCharacterInfoPanel = true;
         private bool isHideOptionsPanel = true;
         private bool isHideWaveSelectPanel = true;
         private bool isHideQuestPanel;
+        private int currentMissionLevel = 1;
+        private int currentZoneLevel = 1;
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -26,9 +31,50 @@ namespace SkyDragonHunter.Test
         private void Start()
         {
             rectTransform = questPanel.GetComponent<RectTransform>();
+            waveControlerScript = waveControler.GetComponent<TestWaveController>();
         }
 
         // Public 메서드
+        public void OnSelectWaveToGO()
+        {
+            waveSelectInfoPanel.SetActive(false);
+            waveControlerScript.OnSelectWave(currentMissionLevel, currentZoneLevel);
+        }
+
+        public void OnMissionButtonClicked()
+        {
+            GameObject clicked = EventSystem.current.currentSelectedGameObject;
+            if (clicked == null) return;
+
+            string name = clicked.name; // 예: "Zone3"
+            if (name.StartsWith("Mission"))
+            {
+                string numStr = name.Substring(7);
+                if (int.TryParse(numStr, out int level))
+                {
+                    currentMissionLevel = level;
+                    Debug.Log($"Mission selected: {currentMissionLevel}");
+                }
+            }
+        }
+
+        public void OnZoneButtonClicked()
+        {
+            GameObject clicked = EventSystem.current.currentSelectedGameObject;
+            if (clicked == null) return;
+
+            string name = clicked.name; // 예: "Zone3"
+            if (name.StartsWith("Zone"))
+            {
+                string numStr = name.Substring(4);
+                if (int.TryParse(numStr, out int level))
+                {
+                    currentZoneLevel = level;
+                    Debug.Log($"Zone selected: {currentZoneLevel}");
+                }
+            }
+        }
+
         public void OnOffWaveSelectPanel()
         {
             if (waveSelectInfoPanel != null)
