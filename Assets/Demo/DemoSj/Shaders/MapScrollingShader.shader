@@ -54,7 +54,7 @@ Shader "Custom/SpriteScrolling"
                 col *= i.color;
 
                 // Alpha가 0이면 투명하게 유지
-                if (col.a < 0.01) discard; // 날리기
+                if (col.a < 0.005) discard; // 날리기
 
                 return col;
             }

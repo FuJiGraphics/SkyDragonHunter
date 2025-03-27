@@ -9,14 +9,16 @@ namespace SkyDragonHunter.Test
     public class UiManager : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject waveSelectInfoPanel;
         public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
         private bool isHideCharacterInfoPanel = true;
-        private bool isHideQuestPanel;
         private bool isHideOptionsPanel = true;
+        private bool isHideWaveSelectPanel = true;
+        private bool isHideQuestPanel;
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -27,6 +29,23 @@ namespace SkyDragonHunter.Test
         }
 
         // Public 메서드
+        public void OnOffWaveSelectPanel()
+        {
+            if (waveSelectInfoPanel != null)
+            {
+                if (!isHideWaveSelectPanel)
+                {
+                    waveSelectInfoPanel.SetActive(false);
+                    isHideWaveSelectPanel = true;
+                }
+                else
+                {
+                    waveSelectInfoPanel.SetActive(true);
+                    isHideWaveSelectPanel = false;
+                }
+            }
+        }
+
         public void OnOffCharacterInfoPanel()
         {
             if (characterInfoPanel != null)
