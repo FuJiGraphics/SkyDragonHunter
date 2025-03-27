@@ -30,8 +30,8 @@ namespace SkyDragonHunter.Entities {
 
         // Test용도 임시 필드
         private float initialDelay_TEMP = 1f;
-        public bool isExhausted = false;
-        public readonly float exhaustionTime = 30f;
+        public bool isOnBoard = false;
+        public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
         private CharacterStatus characterStatus;
 
@@ -125,14 +125,14 @@ namespace SkyDragonHunter.Entities {
         }
 
         private void Update()
-        {
-            if (isExhausted)
+        {            
+            if (m_Type == CrewType.OnField && isOnBoard)
             {
                 exhaustionRemainingTime -= Time.deltaTime;
                 if(exhaustionRemainingTime <= 0)
                 {
                     exhaustionRemainingTime = exhaustionTime;
-                    isExhausted = false;
+                    isOnBoard = false;
                     characterStatus.currentHP = characterStatus.maxHP;
                     MountAction(false);
                     ResetBehaviourTree();
@@ -140,24 +140,26 @@ namespace SkyDragonHunter.Entities {
             }
             else
             {
+                m_BehaviourTree.Update();
                 UpdatePosition();
             }
+            
 
-            // TEMP FROM ~
-            if (initialDelay_TEMP <= 0f)
-            {
-                if (initialDelay_TEMP < 0f)
-                {
-                    floatingEffect.enabled = true;
-                    initialDelay_TEMP = 0f;
-                }
-                m_BehaviourTree.Update();
-            }
-            else
-            {
-                initialDelay_TEMP -= Time.deltaTime;
-            }
-            // ~ TEMP TO
+            //// TEMP FROM ~
+            //if (initialDelay_TEMP <= 0f)
+            //{
+            //    if (initialDelay_TEMP < 0f)
+            //    {
+            //        floatingEffect.enabled = true;
+            //        initialDelay_TEMP = 0f;
+            //    }
+            //    m_BehaviourTree.Update();
+            //}
+            //else
+            //{
+            //    initialDelay_TEMP -= Time.deltaTime;
+            //}
+            //// ~ TEMP TO
 
             //m_BehaviourTree.Update();
         }
@@ -270,6 +272,7 @@ namespace SkyDragonHunter.Entities {
         // Private 메서드
         private void InitOnBoardCrewBT()
         {
+            MountAction(true);
             m_BehaviourTree = new BehaviourTree<CrewControllerBT>(this);
             var rootSelector = new SelectorNode<CrewControllerBT>(this);
 
@@ -278,10 +281,10 @@ namespace SkyDragonHunter.Entities {
             attackSequence.AddChild(new EntityAttackAction<CrewControllerBT>(this));
             rootSelector.AddChild(attackSequence);
 
-            var IdleSequence = new SequenceNode<CrewControllerBT>(this);
-            IdleSequence.AddChild(new OnFieldCrewIdleCondition(this));
-            IdleSequence.AddChild(new OnFieldCrewIdleAction(this));
-            rootSelector.AddChild(IdleSequence);
+            //var IdleSequence = new SequenceNode<CrewControllerBT>(this);
+            //IdleSequence.AddChild(new OnFieldCrewIdleCondition(this));
+            //IdleSequence.AddChild(new OnFieldCrewIdleAction(this));
+            //rootSelector.AddChild(IdleSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
         }

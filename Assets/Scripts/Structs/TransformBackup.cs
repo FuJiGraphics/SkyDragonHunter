@@ -19,7 +19,6 @@ namespace SkyDragonHunter.Structs
 
         public static TransformBackup FromTransform(Transform t)
         {
-            Debug.LogError($"Save / pos : {t.position}\nscale : {t.localScale}");
             return new TransformBackup
             {
                 position = t.position,

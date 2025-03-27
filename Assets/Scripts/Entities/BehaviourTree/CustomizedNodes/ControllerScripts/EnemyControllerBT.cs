@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace SkyDragonHunter.Entities {
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
             
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);
+            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);                        
         }
 
         // Public 메서드
@@ -51,7 +52,7 @@ namespace SkyDragonHunter.Entities {
                 var crewBT = m_Target.GetComponent<CrewControllerBT>();
                 if (crewBT != null)
                 {
-                    if (crewBT.isExhausted)
+                    if (crewBT.isOnBoard)
                         resetRequired = true;
                 }                
             }
@@ -74,7 +75,7 @@ namespace SkyDragonHunter.Entities {
                         var crewBT = collider.GetComponent<CrewControllerBT>();
                         if (crewBT != null)
                         {
-                            var exhausted = crewBT.isExhausted;
+                            var exhausted = crewBT.isOnBoard;
                             if (exhausted)
                             {                                
                                 continue;
