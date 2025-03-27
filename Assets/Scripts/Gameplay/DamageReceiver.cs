@@ -60,9 +60,12 @@ namespace SkyDragonHunter {
                     destructible.OnDestruction(attacker);
                 }
 
-                Debug.Log("죽었다");
-                StopAllCoroutines();
-                GameObject.Destroy(gameObject);
+                if (destructibles.Length == 0)
+                { 
+                    Debug.Log("죽었다");
+                    StopAllCoroutines();
+                    GameObject.Destroy(gameObject);
+                }
             }
         }
 

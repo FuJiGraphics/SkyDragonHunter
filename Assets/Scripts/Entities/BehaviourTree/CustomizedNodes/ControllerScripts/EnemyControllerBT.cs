@@ -42,17 +42,18 @@ namespace SkyDragonHunter.Entities {
         public override void ResetTarget()
         {
             bool resetRequired = false;
-            if (m_Target == null)
-                resetRequired = true;            
-            else if (m_Target.gameObject.CompareTag(s_PlayerTag))
+            if (m_Target == null || m_Target.gameObject.CompareTag(s_PlayerTag))
             {
                 resetRequired = true;
             }
             else if (m_Target.gameObject.CompareTag(s_CrewTag))
             {
                 var crewBT = m_Target.GetComponent<CrewControllerBT>();
-                if (crewBT.isExhausted)
-                    resetRequired = true;
+                if (crewBT != null)
+                {
+                    if (crewBT.isExhausted)
+                        resetRequired = true;
+                }                
             }
 
             if (!resetRequired)
@@ -71,13 +72,21 @@ namespace SkyDragonHunter.Entities {
                     if (collider.CompareTag(s_CrewTag))
                     {
                         var crewBT = collider.GetComponent<CrewControllerBT>();
-                        var exhausted = crewBT.isExhausted;
-                        if (exhausted)
+                        if (crewBT != null)
                         {
-                            continue;
+                            var exhausted = crewBT.isExhausted;
+                            if (exhausted)
+                            {                                
+                                continue;
+                            }
+                            else
+                            {                                
+                                m_Target = collider.transform;
+                                return;
+                            }
                         }
-                        m_Target = collider.transform;
                     }
+                    m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
                 }
                 if (m_Target == null)
                 {

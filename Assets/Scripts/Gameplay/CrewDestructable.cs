@@ -27,12 +27,7 @@ namespace SkyDragonHunter {
             m_CrewController.transform.position = m_CrewController.onFieldOriginPosition;
             m_CrewController.isExhausted = true;
             m_CrewController.exhaustionRemainingTime = m_CrewController.exhaustionTime;
-            m_CrewController.MountAction(true);
-            var attackerBt = attacker.GetComponent<EnemyControllerBT>();
-            if (attackerBt.Target.Equals(transform))
-            {
-                attackerBt.NullTarget();
-            }
+            m_CrewController.MountAction(true);            
         }
 
     } // Scope by class CrewDestructable
