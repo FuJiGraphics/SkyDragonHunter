@@ -43,7 +43,7 @@ namespace SkyDragonHunter.UI {
 
         public void TakeDamage(double damage)
         {
-            Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
+            //Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
             SetHP(currentHealth - damage);
             UpdateSlider();
         }

@@ -51,8 +51,9 @@ GameObject:
   - component: {fileID: -4470082774018705904}
   - component: {fileID: -826813146072343489}
   - component: {fileID: 4373007434216992575}
+  - component: {fileID: 8133153531741176976}
   m_Layer: 0
-  m_Name: CrewDummy
+  m_Name: OnBoardCrewDummy
   m_TagString: Crew
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,8 +201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836bfeef84c5f784d9744ae7aff29f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: 0
-  m_AggroRange: 0
+  m_Speed: 10
+  m_AggroRange: 25
   m_CharacterInventory: {fileID: 0}
   status: {fileID: 0}
   floatingEffect: {fileID: 0}
@@ -216,6 +217,8 @@ MonoBehaviour:
   m_MountSlot: {fileID: 0}
   isMounted: 0
   onFieldOriginPosition: {x: 0, y: 0, z: 0}
+  isOnBoard: 0
+  exhaustionRemainingTime: 0
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponDummy: {fileID: 8145279371225729078}
   weapons:
-  - {fileID: 11400000, guid: 3e4eed9c8c76a734db58d790fe601a9f, type: 2}
+  - {fileID: 11400000, guid: 84fe8a02c77014e468011f186cb5beff, type: 2}
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
+  HP: 50
 --- !u!50 &-4470082774018705904
 Rigidbody2D:
   serializedVersion: 4
@@ -319,6 +322,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8133153531741176976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3123079408781212544

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 329e046758dd5fc44a41ebfdb541156e, type: 3}
-  m_Name: WeakCanonSC
+  m_Name: OnBoardCrewSC
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  owner: {fileID: 7434643913460656674, guid: b6d49863a61735e499aa4090c6e453c4, type: 3}
-  dummy: {fileID: 8145279371225729078, guid: b6d49863a61735e499aa4090c6e453c4, type: 3}
+  weaponPrefab: {fileID: 0}
   coolDown: 0.5
-  range: 5
+  range: 35
   criticalChance: 0.5
   projectilePrefab: {fileID: 7792928297466845846, guid: 14165f439e49d634d85399960fdcd0c0, type: 3}
   projectileSpeed: 40
   targetTags:
   - Monster
+  lookAtTarget: 0
+  m_FireDummyName: 

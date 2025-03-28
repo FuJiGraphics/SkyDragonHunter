@@ -115,6 +115,13 @@ namespace SkyDragonHunter
         }
 
         // Public 메서드
+        public void OnSelectWave(int misson, int zone)
+        {
+            currentMissionLevel = misson;
+            currentZonelLevel = zone;
+            OnGoSelectCurrentWave();
+        }
+
         public void OnOffInfiniteMod()
         {
             isInfiniteMode = !isInfiniteMode;
@@ -138,10 +145,9 @@ namespace SkyDragonHunter
             ClearPanel.SetActive(false);
             currentZonelLevel = 1;
             currentMissionLevel = 1;
-            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             currentWaveTime = 0f;
             backGroundIndex = 0;
-            OnChangeBackGround(currentZonelLevel - 1);
+            OnSetCurrentWave();
             OnTestWaveFailedUnActive();
         }
 
@@ -223,6 +229,12 @@ namespace SkyDragonHunter
         {
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+            OnChangeBackGround(currentZonelLevel - 1);
+        }
+
+        private void OnGoSelectCurrentWave()
+        {
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
         }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329e046758dd5fc44a41ebfdb541156e, type: 3}
+  m_Name: OnBoardCrewSC(Slow)
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 0}
+  coolDown: 0.5
+  range: 35
+  criticalChance: 0.5
+  projectilePrefab: {fileID: 7792928297466845846, guid: c41ab33bfffbbd048bf23ce2683b74b1, type: 3}
+  projectileSpeed: 40
+  targetTags:
+  - Monster
+  lookAtTarget: 0
+  m_FireDummyName: 

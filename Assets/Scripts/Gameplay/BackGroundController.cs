@@ -32,7 +32,7 @@ namespace SkyDragonHunter.Game {
         // Public 메서드
         public void SetScrollSpeed(float speed)
         {
-            Debug.Log($"[BackGroundController] SetScrollSpeed 호출됨: {speed}");
+            //Debug.Log($"[BackGroundController] SetScrollSpeed 호출됨: {speed}");
             scrollSpeed = speed;
         }
 

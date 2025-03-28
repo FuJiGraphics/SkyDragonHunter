@@ -1,14 +1,6 @@
-using NPOI.SS.Formula.Functions;
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
-using SkyDragonHunter.UI;
-using SkyDragonHunter.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -32,7 +24,7 @@ namespace SkyDragonHunter {
         // Others
         public void OnAttack(GameObject attacker, Attack attack)
         {
-            Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
+            //Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
 
             if (attack.IsCritical)
             {

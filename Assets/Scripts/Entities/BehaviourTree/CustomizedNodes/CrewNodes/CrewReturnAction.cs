@@ -21,7 +21,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnStart()
         {
             base.OnStart();            
-            Debug.Log($"{m_Context.name} entered Return Action");            
+            //Debug.Log($"{m_Context.name} entered Return Action");            
         }
 
         protected override NodeStatus OnUpdate()
@@ -29,14 +29,12 @@ namespace SkyDragonHunter.Entities {
             if (m_Context.Target != null)
             {
                 //m_Context.ResetBehaviourTree();
-                //Debug.Log($"Crew Return Action Failure");
                 return NodeStatus.Failure;
             }
 
             if (m_Context.DistanceToOrigin < m_threshold)
             {
-                //Debug.Log($"Crew Return Action Success");
-                return NodeStatus.Success;
+                return NodeStatus.Failure;
             }
 
             UpdatePos();
@@ -47,7 +45,7 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            Debug.Log($"{m_Context} exited Return Action");
+            //Debug.Log($"{m_Context} exited Return Action");
         }
 
         // Private 메서드

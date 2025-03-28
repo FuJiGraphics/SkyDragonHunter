@@ -21,7 +21,7 @@ namespace SkyDragonHunter.Entities {
         // Protected 메서드
         protected override void OnStart()
         {
-            base.OnStart();            
+            base.OnStart();
         }
 
         protected override NodeStatus OnUpdate()
@@ -45,7 +45,7 @@ namespace SkyDragonHunter.Entities {
 
         protected override void OnEnd()
         {
-            base.OnEnd();            
+            base.OnEnd();
         }
     } // Scope by class AttackAction
 
