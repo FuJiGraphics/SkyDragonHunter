@@ -22,7 +22,7 @@ namespace SkyDragonHunter {
         private Queue<float> m_CashingAnimatorSpeeds;
 
         private bool m_IsSlow;
-
+        private float m_LastSlowImmunityDuration = 0f;
         // 테스트 코드
         private SpriteRenderer m_CashingSprite; // TODO: 테스트용
         private Color m_CashingSpriteColor; // TODO: 테스트용
@@ -136,6 +136,7 @@ namespace SkyDragonHunter {
             }
             m_IsSlow = false;
             m_CashingSprite.color = m_CashingSpriteColor;
+            m_LastSlowImmunityDuration = 0f;
         }
 
         // Others
@@ -174,11 +175,11 @@ namespace SkyDragonHunter {
             if (m_Immunity != null && m_Immunity.isSlowImmune)
                 return;
 
-            if (m_IsSlow || Time.time < m_LastFrozenImmunityDuration)
+            if (m_IsSlow || Time.time < m_LastSlowImmunityDuration)
                 return;
 
-            m_IsFrozen = true;
-            m_LastFrozenImmunityDuration = Time.time + status.duration + status.immunityMultiplier;
+            m_IsSlow = true;
+            m_LastSlowImmunityDuration = Time.time + status.duration + status.immunityMultiplier;
 
             DrawableMgr.Text(transform.position, "Slow!!!!!", Color.yellow);
             TestRunAffectEffect(Color.yellow); // TODO: 테스트용
