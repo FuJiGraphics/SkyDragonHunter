@@ -33,7 +33,7 @@ namespace SkyDragonHunter.Entities {
         public bool isOnBoard = false;
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
-        private CharacterStatus characterStatus;
+        private CharacterStatus m_CharacterStatus;
 
         // 속성 (Properties)
         public float Speed => m_Speed;
@@ -121,7 +121,7 @@ namespace SkyDragonHunter.Entities {
         protected override void Awake()
         {
             base.Awake();
-            characterStatus = GetComponent<CharacterStatus>();
+            m_CharacterStatus = GetComponent<CharacterStatus>();
         }
 
         private void Update()
@@ -133,7 +133,7 @@ namespace SkyDragonHunter.Entities {
                 {
                     exhaustionRemainingTime = exhaustionTime;
                     isOnBoard = false;
-                    characterStatus.currentHP = characterStatus.maxHP;
+                    m_CharacterStatus.ResetAll();
                     MountAction(false);
                     ResetBehaviourTree();
                 }
