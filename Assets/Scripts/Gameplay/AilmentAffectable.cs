@@ -15,13 +15,13 @@ namespace SkyDragonHunter {
         // 필드 (Fields)
         private Coroutine m_BurnCoroutine;
         private WaitForSeconds m_BurningStride;
+        private float m_BurnLastTime;
 
         private bool m_IsFrozen;
         private float m_LastFrozenImmunityDuration = 0f;
         private Queue<float> m_CashingAnimatorSpeeds;
 
         private bool m_IsSlow;
-        private float m_LastSlowImmunityDuration = 0f;
 
         // 테스트 코드
         private SpriteRenderer m_CashingSprite; // TODO: 테스트용
@@ -30,6 +30,7 @@ namespace SkyDragonHunter {
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         private DamageReceiver m_DamageReceiver;
+        private StatusAilmentFilter m_Immunity;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -45,17 +46,18 @@ namespace SkyDragonHunter {
             m_DamageReceiver = GetComponent<DamageReceiver>();
             m_BurnCoroutine = null;
             m_BurningStride = new WaitForSeconds(1f);
+            m_Immunity = GetComponent<StatusAilmentFilter>();
         }
 
         private IEnumerator CoBurning(BurnStatusAilment status)
         {
-            float endTime = Time.time + status.duration;
-            while (Time.time < endTime)
+            while (Time.time < m_BurnLastTime)
             {
                 m_DamageReceiver.TakeDamage(status.attacker, status.damagePerSeconds);
                 DrawableMgr.Text(transform.position, status.damagePerSeconds.ToString(), Color.green);
                 yield return m_BurningStride;
             }
+            m_BurnLastTime = 0f;
             m_BurnCoroutine = null;
             m_CashingSprite.color = m_CashingSpriteColor;
         }
@@ -129,23 +131,29 @@ namespace SkyDragonHunter {
                 slowable.OnSlowEnd(slowMultiplier);
             }
             m_IsSlow = false;
-            m_LastSlowImmunityDuration = 0f;
             m_CashingSprite.color = m_CashingSpriteColor;
         }
 
         // Others
         public void OnBurn(BurnStatusAilment status)
         {
+            if (m_Immunity != null && m_Immunity.isBurnImmune)
+                return;
+
+            m_BurnLastTime = Time.time + status.duration;
             if (m_BurnCoroutine != null)
-                StopCoroutine(m_BurnCoroutine);
+                return;
 
             DrawableMgr.Text(transform.position, "Burn!!!!!", Color.red);
             TestRunAffectEffect(Color.red); // TODO: 테스트용
-            m_BurnCoroutine = StartCoroutine(CoBurning(status));
+            m_BurnCoroutine = StartCoroutine(CoBurning(status));    
         }
 
         public void OnFreeze(FreezeStatusAilment status)
         {
+            if (m_Immunity != null && m_Immunity.isFreezeImmune)
+                return;
+
             if (m_IsFrozen || Time.time < m_LastFrozenImmunityDuration)
                 return;
 
@@ -159,6 +167,9 @@ namespace SkyDragonHunter {
 
         public void OnSlow(SlowStatusAilment status)
         {
+            if (m_Immunity != null && m_Immunity.isSlowImmune)
+                return;
+
             if (m_IsSlow || Time.time < m_LastFrozenImmunityDuration)
                 return;
 
