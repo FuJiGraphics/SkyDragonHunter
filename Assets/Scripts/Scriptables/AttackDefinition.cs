@@ -12,13 +12,13 @@ namespace SkyDragonHunter.Scriptables {
     public class AttackDefinition : ScriptableObject, IAttacker
     {
         // 필드 (Fields)
-        public GameObject weaponPrefab;  // 공격 스프라이트 오브젝트
-        public float coolDown;           // 쿨다운
-        public float range;              // 공격 범위
-        public AlphaUnit minDamage;      // 최소 데미지
-        public AlphaUnit maxDamage;      // 최고 데미지
-        public float criticalChance;     // 크리티컬 확률
-        public AlphaUnit criticalDamage; // 크리티컬 데미지
+        public GameObject weaponPrefab;             // 공격 스프라이트 오브젝트
+        public float coolDown;                      // 쿨다운
+        public float range;                         // 공격 범위
+        public double damage;                       // 데미지
+        public float criticalChance = 0.0f;         // 크리티컬 확률
+        public float criticalMultiplier = 1.0f;     // 크리티컬 피해 배율
+        public float bossDamageMultiplier = 1.0f;   // 보스 피해량 증가 배율
 
         protected GameObject m_ActivePrefabInstance;    // 현재 활성화된 프리팹 인스턴스
         protected GameObject m_Owner;                   // 공격하는 오브젝트
@@ -42,22 +42,23 @@ namespace SkyDragonHunter.Scriptables {
         {
             Attack attack = new Attack();
             attack.defender = dStats.gameObject;
-            AlphaUnit damage = aStats.currentDamage;
-            damage += DoubleRandom.Range(minDamage.Value, maxDamage.Value);
-            if (criticalChance > UnityEngine.Random.value)
+            double newDamage = damage + aStats.Damage.Value;
+            float newCriticalChance = Mathf.Clamp01(criticalChance + aStats.CriticalChance);
+            float newCriticalMultiplier = criticalMultiplier + aStats.CriticalMultiplier;
+            if (newCriticalChance > UnityEngine.Random.value)
             {
-                attack.critical = criticalDamage;
+                newDamage *= newCriticalMultiplier;
             }
-            else
+            if (dStats.gameObject.tag == "Boss")
             {
-                attack.critical = 0.0;
+                newDamage *= bossDamageMultiplier;
             }
-            attack.damage = Math.Floor(damage.Value);
+            attack.damage = Math.Floor(newDamage);
             if (dStats != null)
             {
-                attack.damage -= dStats.currentArmor;
-                if (attack.damage <= 0.0)
-                    attack.damage = 0.0;
+                attack.damage -= dStats.Armor;
+                if (attack.damage <= 1.0)
+                    attack.damage = 1.0;
             }
             return attack;
         }

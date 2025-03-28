@@ -43,11 +43,10 @@ GameObject:
   - component: {fileID: 852608348216678719}
   - component: {fileID: 3481469565171269773}
   - component: {fileID: -6860440072148329640}
+  - component: {fileID: -3548480993830963735}
   - component: {fileID: 2870753279803480994}
   - component: {fileID: 4381422749695507041}
   - component: {fileID: -6102419851012319264}
-  - component: {fileID: -7276501981709863167}
-  - component: {fileID: -3548480993830963735}
   - component: {fileID: 7145011849598956032}
   - component: {fileID: -5015490716612036505}
   m_Layer: 0
@@ -183,8 +182,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freezeMultiplier: 1
-  poisonMultiplier: 1
+  damage: 10
+  health: 100
+  shield: 50
+  armor: 5
+  resilient: 0
+  criticalChance: 0
+  criticalMultiplier: 2
+  bossDamageMultiplier: 1
+  skillEffectMultiplier: 1
+--- !u!114 &-3548480993830963735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponDummy: {fileID: 8145279371225729078}
+  weapons:
+  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
 --- !u!114 &2870753279803480994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,42 +249,13 @@ MonoBehaviour:
   m_Speed: 10
   m_AggroRange: 30
   m_CharacterInventory: {fileID: 0}
-  status: {fileID: -7276501981709863167}
+  status: {fileID: 0}
   floatingEffect: {fileID: 0}
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
   m_Type: 0
---- !u!114 &-7276501981709863167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  freezeMultiplier: 1
-  poisonMultiplier: 1
---- !u!114 &-3548480993830963735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponDummy: {fileID: 8145279371225729078}
-  weapons:
-  - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
 --- !u!114 &7145011849598956032
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,9 +1,7 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.UI;
-using SkyDragonHunter.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -11,8 +9,6 @@ namespace SkyDragonHunter {
     {
         // 필드 (Fields)
         private CharacterStatus m_Stats;
-        private UIHealthBar m_ShieldBarUI;
-        private UIHealthBar m_HealthBarUI;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -26,23 +22,20 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void TakeDamage(GameObject attacker, AlphaUnit damage)
         {
-            m_ShieldBarUI?.TakeDamage(damage.Value);
-            double takeDamage = m_Stats.currentShield.Value - damage.Value;
+            double takeDamage = m_Stats.Shield.Value - damage.Value;
             if (takeDamage >= 0.0)
             {
-                m_Stats.SetShield(takeDamage);
+                m_Stats.Shield = takeDamage;
                 return;
             }
             else
             {
-                m_Stats.SetShield(0.0);
+                m_Stats.Shield = 0.0;
             }
 
             takeDamage = System.Math.Abs(takeDamage);
-            m_HealthBarUI?.TakeDamage(takeDamage);
-
-            takeDamage = System.Math.Clamp(m_Stats.currentHP.Value - takeDamage, 0.0, double.MaxValue);
-            m_Stats?.SetHP(takeDamage);
+            takeDamage = System.Math.Clamp(m_Stats.Health.Value - takeDamage, 0.0, double.MaxValue);
+            m_Stats.Health = takeDamage;
 
             // 죽음 
             UpdateDestructions(attacker);
@@ -50,9 +43,9 @@ namespace SkyDragonHunter {
 
         private void UpdateDestructions(GameObject attacker)
         {
-            if (m_Stats.currentHP.Equals(0.0) || m_Stats.currentHP < 0.0)
+            if (m_Stats.Health.Equals(0.0) || m_Stats.Health < 0.0)
             {
-                m_Stats.currentHP = 0.0;
+                m_Stats.Health = 0.0;
                 // 죽는거 호출
                 IDestructible[] destructibles = GetComponentsInChildren<IDestructible>();
                 foreach (IDestructible destructible in destructibles)
@@ -73,18 +66,6 @@ namespace SkyDragonHunter {
         private void Init()
         {
             m_Stats = GetComponent<CharacterStatus>();
-            var bars = GetComponentsInChildren<UIHealthBar>();
-            foreach (var bar in bars)
-            {
-                if (bar.name == "UIShieldBar")
-                {
-                    m_ShieldBarUI = bar;
-                }
-                else if (bar.name == "UIHealthBar")
-                {
-                    m_HealthBarUI = bar;
-                }
-            }
         }
 
         // Others

@@ -25,7 +25,7 @@ namespace SkyDragonHunter.Scriptables
             BurnStatusAilment ailment = new BurnStatusAilment();
             ailment.attacker = aStats.gameObject;
             ailment.defender = dStats.gameObject;
-            ailment.damagePerSeconds = (aStats.currentDamage * burnMultiplier) / duration;
+            ailment.damagePerSeconds = (aStats.Damage * burnMultiplier) / duration;
             ailment.duration = duration;
             return ailment;
         }

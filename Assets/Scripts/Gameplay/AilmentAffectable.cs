@@ -78,12 +78,16 @@ namespace SkyDragonHunter {
             // 비활성화할 대상들 가져오기
             MonoBehaviour[] componentsToDisable = GetComponents<MonoBehaviour>();
 
+            // TODO: 임시로 Status 비활성화 제외
+            CharacterStatus statusComp = GetComponent<CharacterStatus>();
+
             // 이 스크립트 제외하고 비활성화
             foreach (var comp in componentsToDisable)
             {
                 if (comp != this)
                     comp.enabled = false;
             }
+            statusComp.enabled = true;
 
             m_CashingAnimatorSpeeds = new Queue<float>();
             Animator[] animators = GetComponentsInChildren<Animator>();
@@ -153,7 +157,7 @@ namespace SkyDragonHunter {
         {
             if (m_Immunity != null && m_Immunity.isFreezeImmune)
                 return;
-
+            
             if (m_IsFrozen || Time.time < m_LastFrozenImmunityDuration)
                 return;
 

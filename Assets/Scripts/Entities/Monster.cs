@@ -1,8 +1,5 @@
-using SkyDragonHunter.Utility;
-using System.Collections;
-using System.Collections.Generic;
+using SkyDragonHunter.Structs;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SkyDragonHunter.Entities 
 {

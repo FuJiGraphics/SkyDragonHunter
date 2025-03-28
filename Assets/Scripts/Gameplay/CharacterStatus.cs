@@ -1,93 +1,114 @@
 using UnityEngine;
-using SkyDragonHunter.Utility;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.UI;
+using SkyDragonHunter.Structs;
 
 namespace SkyDragonHunter.Gameplay {
     public class CharacterStatus : MonoBehaviour
     {
         // 필드 (Fields)
-        public AlphaUnit maxHP = 100.0;            // 최대 HP
-        public AlphaUnit currentHP = 100.0;        // 현재 HP
-
-        public AlphaUnit maxShield = 100.0;        // 최대 방어막
-        public AlphaUnit currentShield = 100.0;    // 현재 방어막
-
-        public AlphaUnit maxDamage = 30.0;         // 최대 공격력
-        public AlphaUnit currentDamage = 30.0;     // 현재 공격력
-
-        public AlphaUnit maxArmor = 10.0;          // 최대 방어력
-        public AlphaUnit currentArmor = 10.0;      // 현재 방어력
-
-        public AlphaUnit maxReilient;              // 최대 회복력
-        public AlphaUnit currentReilient;          // 현재 회복력
-        
-        public float freezeMultiplier = 1.0f;      // 빙결 속도 배율
-        public float poisonMultiplier = 1.0f;      // 독 데미지 배율
+        [SerializeField] private double damage = CommonStats.c_DefaultDamage;
+        [SerializeField] private double health = CommonStats.c_DefaultHealth;
+        [SerializeField] private double shield = CommonStats.c_DefaultShield;
+        [SerializeField] private double armor = CommonStats.c_DefaultArmor;
+        [SerializeField] private double resilient = CommonStats.c_DefaultResilient;
+        [SerializeField] private float criticalChance = CommonStats.c_DefaultCriticalChance;
+        [SerializeField] private float criticalMultiplier = CommonStats.c_DefaultCriticalMultiplier;
+        [SerializeField] private float bossDamageMultiplier = CommonStats.c_DefaultBossDamageMultiplier;
+        [SerializeField] private float skillEffectMultiplier = CommonStats.c_DefaultSkillEffectMultiplier;
 
         // 속성 (Properties)
-        public bool IsFullHP => currentHP.Equals(maxHP);
-        public bool IsFullShield => currentShield.Equals(currentShield);
-        public bool IsFullDamage => currentDamage.Equals(currentDamage);
-        public bool IsFullArmor => currentArmor.Equals(currentArmor);
-        public bool IsFullReilient => currentReilient.Equals(currentReilient);
+        public AlphaUnit MaxDamage { get => m_CommonStats.MaxDamage; set => m_CommonStats.SetMaxDamage(value.Value); }
+        public AlphaUnit MaxHealth { get => m_CommonStats.MaxHealth; set => m_CommonStats.SetMaxHealth(value.Value); }
+        public AlphaUnit MaxShield { get => m_CommonStats.MaxShield; set => m_CommonStats.SetMaxShield(value.Value); }
+        public AlphaUnit MaxArmor { get => m_CommonStats.MaxArmor; set => m_CommonStats.SetMaxArmor(value.Value); }
+        public AlphaUnit MaxResilient { get => m_CommonStats.MaxResilient; set => m_CommonStats.SetMaxResilient(value.Value); }
 
-        public void SetHP(AlphaUnit value) => currentHP = (value.Value > maxHP) ? maxHP : (value.Value <= 0.0) ? 0.0 : value.Value;
-        public void SetShield(AlphaUnit value) => currentShield = (value.Value > maxShield) ? maxShield : (value.Value <= 0.0) ? 0.0 : value.Value;
-        public void SetDamage(AlphaUnit value) => currentDamage = (value.Value > maxDamage) ? maxDamage : (value.Value <= 0.0) ? 0.0 : value.Value;
-        public void SetArmor(AlphaUnit value) => currentArmor = (value.Value > maxArmor) ? maxArmor : (value.Value <= 0.0) ? 0.0 : value.Value;
-        public void SetReilient(AlphaUnit value) => currentReilient = (value.Value > maxReilient) ? maxReilient : (value.Value <= 0.0) ? 0.0 : value.Value;
+        public AlphaUnit Damage { get => m_CommonStats.Damage; set => m_CommonStats.SetDamage(value.Value); }
+        public AlphaUnit Health { get => m_CommonStats.Health; set => m_CommonStats.SetHealth(value.Value); }
+        public AlphaUnit Shield { get => m_CommonStats.Shield; set => m_CommonStats.SetShield(value.Value); }
+        public AlphaUnit Armor { get => m_CommonStats.Armor; set => m_CommonStats.SetArmor(value.Value); }
+        public AlphaUnit Resilient { get => m_CommonStats.Resilient; set => m_CommonStats.SetResilient(value.Value); }
+        public float CriticalChance { get => m_CommonStats.CriticalChance; set => m_CommonStats.SetCriticalChance(value); }
+        public float CriticalMultiplier { get => m_CommonStats.CriticalMultiplier; set => m_CommonStats.SetCriticalMultiplier(value); }
+        public float BossDamageMultiplier { get => m_CommonStats.BossDamageMultiplier; set => m_CommonStats.SetBossDamageMultiplier(value); }
+        public float SkillEffectMultiplier { get => m_CommonStats.SkillEffectMultiplier; set => m_CommonStats.SetSkillEffectMultiplier(value); }
+
+        public bool IsFullHealth => m_CommonStats.IsFullHealth;
+        public bool IsFullShield => m_CommonStats.IsFullShield;
+        public bool IsFullDamage => m_CommonStats.IsFullDamage;
+        public bool IsFullArmor => m_CommonStats.IsFullArmor;
+        public bool IsFullResilient => m_CommonStats.IsFullResilient;
 
         // 외부 종속성 필드 (External dependencies field)
+        private CommonStats m_CommonStats = new CommonStats();
         private UIHealthBar m_ShieldBarUI;
         private UIHealthBar m_HealthBarUI;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
+        private void Start()
         {
             Init();
+            InitUIBars();
+        }
+
+        private void Update()
+        {
+            UpdateUIBars();
         }
 
         // Public 메서드
-        public void ResetAll()
-        {
-            ResetShield();
-            ResetHP();
-        }
-
-        public void ResetShield(double maxShield = -1.0)
-        {
-            double newmaxShield = (maxShield < 0) ? this.maxShield.Value : maxShield;
-            currentHP = maxHP;
-            currentShield = newmaxShield;
-            currentDamage = maxDamage;
-            currentArmor = maxArmor;
-            currentReilient = maxReilient;
-            m_ShieldBarUI.maxHealth = newmaxShield;
-            m_ShieldBarUI.ResetHP();
-        }
-
-        public void ResetHP(double maxHP = -1.0)
-        {
-            double newMaxHP = (maxHP < 0) ? this.maxHP.Value : maxHP;
-            currentHP = newMaxHP;
-            currentShield = maxShield;
-            currentDamage = maxDamage;
-            currentArmor = maxArmor;
-            currentReilient = maxReilient;
-            m_HealthBarUI.maxHealth = newMaxHP;
-            m_HealthBarUI.ResetHP();
-        }
+        public void ResetAll() => m_CommonStats.ResetAll();
+        public void ResetDamage() => m_CommonStats.ResetDamage();
+        public void ResetHealth() => m_CommonStats.ResetHealth();
+        public void ResetShield() => m_CommonStats.ResetShield();
+        public void ResetArmor() => m_CommonStats.ResetArmor();
+        public void ResetResilient() => m_CommonStats.ResetResilient();
 
         // Private 메서드
+        public void UpdateUIBars()
+        {
+            if (m_ShieldBarUI != null)
+            {
+                if (!Math2DHelper.Equals(m_ShieldBarUI.maxHealth, m_CommonStats.MaxShield.Value))
+                {
+                    m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
+                }
+                if (!Math2DHelper.Equals(m_ShieldBarUI.currentHealth, m_CommonStats.Shield.Value))
+                {
+                    m_ShieldBarUI.SetHP(m_CommonStats.Shield.Value);
+                }
+            }
+            if (m_HealthBarUI != null)
+            {
+                if (!Math2DHelper.Equals(m_HealthBarUI.maxHealth, m_CommonStats.MaxHealth.Value))
+                {
+                    m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
+                }
+                if (!Math2DHelper.Equals(m_HealthBarUI.currentHealth, m_CommonStats.Health.Value))
+                {
+                    m_HealthBarUI.SetHP(m_CommonStats.Health.Value);
+                }
+            }
+        }
+
         private void Init()
         {
-            currentHP = maxHP;
-            currentShield = maxShield;
-            currentDamage = maxDamage;
-            currentArmor = maxArmor;
-            currentReilient = maxReilient;
+            m_CommonStats.SetDamage(damage);
+            m_CommonStats.SetHealth(health);
+            m_CommonStats.SetShield(shield);
+            m_CommonStats.SetArmor(armor);
+            m_CommonStats.SetResilient(resilient);
+            m_CommonStats.SetCriticalChance(criticalChance);
+            m_CommonStats.SetCriticalMultiplier(criticalMultiplier);
+            m_CommonStats.SetBossDamageMultiplier(bossDamageMultiplier);
+            m_CommonStats.SetSkillEffectMultiplier(skillEffectMultiplier);
+            InitUIBars();
+        }
+
+        private void InitUIBars()
+        {
             var bars = GetComponentsInChildren<UIHealthBar>();
             foreach (var bar in bars)
             {
@@ -95,9 +116,9 @@ namespace SkyDragonHunter.Gameplay {
                 {
                     m_ShieldBarUI = bar;
                     if (m_ShieldBarUI != null &&
-                        !Math2DHelper.Equals(m_ShieldBarUI.maxHealth, maxShield.Value))
+                        !Math2DHelper.Equals(m_ShieldBarUI.maxHealth, m_CommonStats.MaxShield.Value))
                     {
-                        m_ShieldBarUI.maxHealth = maxShield.Value;
+                        m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
                         m_ShieldBarUI.ResetHP();
                     }
                 }
@@ -105,16 +126,17 @@ namespace SkyDragonHunter.Gameplay {
                 {
                     m_HealthBarUI = bar;
                     if (m_HealthBarUI != null &&
-                        !Math2DHelper.Equals(m_HealthBarUI.maxHealth, maxHP.Value))
+                        !Math2DHelper.Equals(m_HealthBarUI.maxHealth, m_CommonStats.MaxHealth.Value))
                     {
-                        m_HealthBarUI.maxHealth = maxHP.Value;
+                        m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
                         m_HealthBarUI.ResetHP();
                     }
                 }
             }
         }
+
         // Others
 
 
-    } // Scope by class CQharacterStatus
+    } // Scope by class CharacterStatus
 } // namespace Root

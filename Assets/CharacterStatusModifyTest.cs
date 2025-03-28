@@ -27,8 +27,8 @@ public class CharacterStatusModifyTest : MonoBehaviour
                 bar.ResetHP();
             }
         }
-        stats.maxHP = HP;
-        stats.currentHP = stats.maxHP;
+        stats.MaxHealth = HP;
+        stats.Health = stats.MaxHealth;
     }
 
     // Update is called once per frame

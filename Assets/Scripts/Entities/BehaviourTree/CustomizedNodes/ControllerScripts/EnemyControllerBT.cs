@@ -30,14 +30,14 @@ namespace SkyDragonHunter.Entities {
             m_BehaviourTree.Update();
         }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, m_AggroRange);
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawWireSphere(transform.position, m_AggroRange);
             
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);                        
-        }
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);                        
+        //}
 
         // Public 메서드
         public override void ResetTarget()

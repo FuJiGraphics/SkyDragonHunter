@@ -24,11 +24,6 @@ namespace SkyDragonHunter.UI {
             ResetHP();
         }
 
-        private void Update()
-        {
-        }
-
-
         private void Reset()
         {
             ResetHP();
@@ -52,7 +47,7 @@ namespace SkyDragonHunter.UI {
         {
             if (m_Slider == null)
             {
-                Debug.LogError("Did not find Slider Component!");
+                Debug.LogError("Did not found Slider Component!");
                 return;
             }
 

@@ -26,7 +26,7 @@ namespace SkyDragonHunter {
         {
             //Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
 
-            if (attack.IsCritical)
+            if (attack.isCritical)
             {
                 DrawableMgr.Text(transform.position, attack.damage.ToString(), Color.red);
             }
@@ -35,7 +35,7 @@ namespace SkyDragonHunter {
                 DrawableMgr.Text(transform.position,  attack.damage.ToString());
             }
 
-            m_DamageReceiver.TakeDamage(attacker, attack.damage + attack.critical);
+            m_DamageReceiver.TakeDamage(attacker, attack.damage);
         }
 
     } // Scope by class Attackable

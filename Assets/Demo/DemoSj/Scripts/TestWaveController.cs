@@ -1,7 +1,5 @@
-using NPOI.POIFS.Properties;
 using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,9 +83,9 @@ namespace SkyDragonHunter
 
             // TODO: 테스트 코드
             playerStatus = airship.GetComponent<CharacterStatus>();
-            playerStatus.maxHP = 100000;
-            playerStatus.SetHP(100000);
-            currentHealth = playerStatus.currentHP.Value;
+            playerStatus.MaxHealth = 100000.0;
+            playerStatus.Health = 100000.0;
+            currentHealth = playerStatus.Health.Value;
         }
 
         private void Update()
@@ -103,9 +101,9 @@ namespace SkyDragonHunter
                 infiniteWaveUpdate();
             }
 
-            if (currentHealth != playerStatus.currentHP.Value)
+            if (currentHealth != playerStatus.Health.Value)
             {
-                currentHealth = playerStatus.currentHP.Value;
+                currentHealth = playerStatus.Health.Value;
             }
 
             if (currentHealth <= 0)

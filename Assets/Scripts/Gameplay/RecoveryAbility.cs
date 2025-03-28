@@ -1,5 +1,5 @@
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Utility;
+using SkyDragonHunter.Structs;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -34,7 +34,7 @@ namespace SkyDragonHunter {
             if (Time.time > m_LastTime)
             {
                 m_LastTime = Time.time + 1f;
-                Recover(m_Stats.currentReilient);
+                Recover(m_Stats.Resilient);
             }
         }
 
@@ -43,14 +43,13 @@ namespace SkyDragonHunter {
         {
             if (!m_Stats.IsFullShield)
             {
-                m_Stats.SetShield(m_Stats.currentShield + inc);
+                m_Stats.Shield = (m_Stats.Shield + inc).Value;
             }
-            else if (!m_Stats.IsFullHP)
+            else if (!m_Stats.IsFullHealth)
             {
-                m_Stats.SetHP(m_Stats.currentHP + inc);
+                m_Stats.Shield = (m_Stats.Health + inc).Value;
             }
         }
-
 
         // Private 메서드
         // Others
