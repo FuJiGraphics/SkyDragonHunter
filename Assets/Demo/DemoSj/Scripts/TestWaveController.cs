@@ -46,14 +46,16 @@ namespace SkyDragonHunter
         public Sprite[] TestBackGroundMid;
         public Sprite[] TestBackGroundFront;
         public int spawnableMonsters = 10;
+        public bool isInfiniteMode { get; private set; } = false;
         private int backGroundIndex;
         private int currentZonelLevel = 1;
         private int currentMissionLevel = 1;
+        private int lastTriedZonelLevel = 1;
+        private int lastTriedMissionLevel = 1;
         private int currentSpawnMonsters = 0;
         private float currentOpenPanel = 0f;
         private StageInfo stageInfo;
 
-        private bool isInfiniteMode = false;
         private bool changeSuccess = true;
         // 테스트용
         private double currentHealth;
@@ -120,8 +122,16 @@ namespace SkyDragonHunter
 
         public void OnOffInfiniteMod()
         {
-            isInfiniteMode = !isInfiniteMode;
-            OnSetCurrentWave();
+            if (isInfiniteMode)
+            {
+                isInfiniteMode = false;
+                OnSetLastTriedtWave();
+            }
+            else
+            {
+                isInfiniteMode = true;
+                OnSetCurrentWave();
+            }
         }
 
         public void OnTestWaveFailedActive()
@@ -148,6 +158,16 @@ namespace SkyDragonHunter
         }
 
         // Private 메서드
+        private void OnClearMonster()
+        {
+            GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+            foreach (GameObject monster in monsters)
+            {
+                Destroy(monster);
+            }
+        }
+
 
         private void NormalWaveUpdate()
         {
@@ -166,8 +186,8 @@ namespace SkyDragonHunter
                 canSpawn = true;
             }
 
-            if (currentWaveTime >= 0f && currentWaveTime <= 1f && canSpawn
-                || currentWaveTime >= 5f && currentWaveTime <= 6f && canSpawn)
+            if (currentWaveTime >= 1f && currentWaveTime <= 2f && canSpawn
+                || currentWaveTime >= 6f && currentWaveTime <= 7f && canSpawn)
             {
                 OnSpwanMonster();
             }
@@ -197,6 +217,8 @@ namespace SkyDragonHunter
                     currentWaveTime = 0f;
                     canSpawn = true;
                     currentOpenPanel = 0f;
+                    lastTriedMissionLevel = currentMissionLevel;
+                    lastTriedZonelLevel = currentZonelLevel;
                 }
             }
         }
@@ -221,8 +243,22 @@ namespace SkyDragonHunter
             }
         }
 
+        private void OnSetLastTriedtWave()
+        {
+            OnClearMonster();
+            canSpawn = true;
+            currentWaveTime = 0f;
+            currentMissionLevel = lastTriedMissionLevel;
+            currentZonelLevel = lastTriedZonelLevel;
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+            OnChangeBackGround(currentZonelLevel - 1);
+        }
+
         private void OnSetCurrentWave()
         {
+            OnClearMonster();
+            canSpawn = true;
+            currentWaveTime = 0f;
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
@@ -336,7 +372,7 @@ namespace SkyDragonHunter
         private void SpwanAreaPositionSet()
         {
             float cameraHeight = Camera.main.orthographicSize * 2f;
-            float cameraWidth = cameraHeight * Camera.main.aspect;
+            float cameraWidth = cameraHeight * 2f;
             spawnArea.transform.position = new Vector3(airship.transform.position.x + cameraWidth,
                 Camera.main.orthographicSize * 0.5f, airship.transform.position.z);
         }

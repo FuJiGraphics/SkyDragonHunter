@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4381422749695507041}
   - component: {fileID: 1701353589846277976}
   - component: {fileID: -1063117355461685042}
+  - component: {fileID: -2885725324869327300}
   m_Layer: 0
   m_Name: MonsterDummy
   m_TagString: Monster
@@ -78,7 +79,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.28866667}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -129,7 +130,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -250,6 +251,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2885725324869327300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78da1e7b128023647b77caf2fd400d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems:
+  - {fileID: 1427866813230450268, guid: 62f9fa27261b810459e83483386e3a85, type: 3}
+  - {fileID: 1427866813230450268, guid: 26d92420aaac1134bbfba3e06d56b9a7, type: 3}
+  - {fileID: 1427866813230450268, guid: 7aa1ad94fdb2fef4d82006202da02fb1, type: 3}
+  - {fileID: 1427866813230450268, guid: c8048c998babdce4c8812ef9a204cca6, type: 3}
 --- !u!1 &7540244396284621886
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +340,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3efeace5dd9162a4d826477e2f21b0bb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

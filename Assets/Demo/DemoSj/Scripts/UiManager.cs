@@ -10,17 +10,26 @@ namespace SkyDragonHunter.Test
     public class UiManager : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject inGameButtonPanel;
+        public GameObject inGameWaveInfoPanel;
+        public GameObject fortressEquipmentPanel;
         public GameObject waveControler;
+        public GameObject summonPanel;
+        public GameObject[] pickPanels;
         public GameObject waveSelectInfoPanel;
         public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
+        public GameObject waveSlider;
+        public GameObject waveRetryButton;
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideSummonPanel = true;
         private bool isHideCharacterInfoPanel = true;
         private bool isHideOptionsPanel = true;
         private bool isHideWaveSelectPanel = true;
+        private bool isHideFortressEquipmentPanel;
         private bool isHideQuestPanel;
         private int currentMissionLevel = 1;
         private int currentZoneLevel = 1;
@@ -34,7 +43,39 @@ namespace SkyDragonHunter.Test
             waveControlerScript = waveControler.GetComponent<TestWaveController>();
         }
 
+        private void Update()
+        {
+            if (waveControlerScript.isInfiniteMode)
+            {
+                waveRetryButton.SetActive(true);
+                waveSlider.SetActive(false);
+            }
+            else
+            {
+                waveRetryButton.SetActive(false);
+                waveSlider.SetActive(true);
+            }
+        }
+
         // Public 메서드
+        public void OnOffFortressEquipmentPanel()
+        {
+            if (isHideFortressEquipmentPanel)
+            {
+                inGameWaveInfoPanel.SetActive(true);
+                inGameButtonPanel.SetActive(true);
+                fortressEquipmentPanel.SetActive(false);
+                isHideFortressEquipmentPanel = false;
+            }
+            else
+            {
+                inGameWaveInfoPanel.SetActive(false);
+                inGameButtonPanel.SetActive(false);
+                fortressEquipmentPanel.SetActive(true);
+                isHideFortressEquipmentPanel = true;
+            }
+        }
+
         public void OnSelectWaveToGO()
         {
             waveSelectInfoPanel.SetActive(false);
@@ -46,7 +87,7 @@ namespace SkyDragonHunter.Test
             GameObject clicked = EventSystem.current.currentSelectedGameObject;
             if (clicked == null) return;
 
-            string name = clicked.name; // 예: "Zone3"
+            string name = clicked.name;
             if (name.StartsWith("Mission"))
             {
                 string numStr = name.Substring(7);
@@ -71,6 +112,45 @@ namespace SkyDragonHunter.Test
                 {
                     currentZoneLevel = level;
                     Debug.Log($"Zone selected: {currentZoneLevel}");
+                }
+            }
+        }
+
+        public void OnPickPanel0()
+        {
+            pickPanels[0].SetActive(true);
+            pickPanels[1].SetActive(false);
+            pickPanels[2].SetActive(false);
+        }
+
+        public void OnPickPanel1()
+        {
+            pickPanels[0].SetActive(false);
+            pickPanels[1].SetActive(true);
+            pickPanels[2].SetActive(false);
+        }
+
+        public void OnPickPanel2()
+        {
+            pickPanels[0].SetActive(false);
+            pickPanels[1].SetActive(false);
+            pickPanels[2].SetActive(true);
+        }
+
+        public void OnOffSummonPanel()
+        {
+            if (summonPanel != null)
+            {
+                if (!isHideSummonPanel)
+                {
+                    summonPanel.SetActive(false);
+                    isHideSummonPanel = true;
+                }
+                else
+                {
+                    summonPanel.SetActive(true);
+                    OnPickPanel0();
+                    isHideSummonPanel = false;
                 }
             }
         }
