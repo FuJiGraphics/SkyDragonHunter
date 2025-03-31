@@ -23,6 +23,8 @@ namespace SkyDragonHunter.Entities {
         private static readonly string s_CrewTag = "Crew";
         private static readonly string s_CreatureTag = "Creature";
 
+        private CrewControllerBT m_CrewTarget;
+
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Update()
         {
@@ -41,65 +43,43 @@ namespace SkyDragonHunter.Entities {
 
         // Public 메서드
         public override void ResetTarget()
-        {
-            bool resetRequired = false;
-            if (m_Target == null || m_Target.gameObject.CompareTag(s_PlayerTag))
+        {            
+            if(m_CrewTarget != null && !m_CrewTarget.isMounted)
             {
-                resetRequired = true;
-            }
-            else if (m_Target.gameObject.CompareTag(s_CrewTag))
-            {
-                var crewBT = m_Target.GetComponent<CrewControllerBT>();
-                if (crewBT != null)
-                {
-                    if (crewBT.isOnBoard)
-                        resetRequired = true;
-                }                
-            }
-
-            if (!resetRequired)
+                m_Target = m_CrewTarget.transform;
                 return;
+            }
+            else
+            {
+                m_Target = GameObject.FindWithTag($"Player").transform;
+            }
 
-            var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
+                var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
             {
-                foreach(var collider in colliders)
-                {
-                    if (collider.CompareTag(s_CreatureTag))
-                    {
-                        m_Target = collider.transform;
-                        return;
-                    }
+                foreach (var collider in colliders)
+                {                    
                     if (collider.CompareTag(s_CrewTag))
                     {
                         var crewBT = collider.GetComponent<CrewControllerBT>();
                         if (crewBT != null)
                         {
-                            var onBoard = crewBT.isOnBoard;
+                            var onBoard = crewBT.isMounted;
                             if (onBoard)
-                            {                                
+                            {
                                 continue;
                             }
                             else
-                            {                                
-                                m_Target = collider.transform;
+                            {
+                                m_CrewTarget = crewBT;
                                 return;
                             }
                         }
                     }
-                    m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
+                    m_CrewTarget = null;
                     return;
-                }
-                if (m_Target == null)
-                {
-                    m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
-                    return;
-                }
-            }
-            else
-            {
-                m_Target = GameObject.FindWithTag(s_PlayerTag).transform;
-            }
+                }                
+            }            
         }
 
         public void NullTarget()

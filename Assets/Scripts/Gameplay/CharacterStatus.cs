@@ -50,6 +50,36 @@ namespace SkyDragonHunter.Gameplay {
         }
 
         // Public 메서드
+        public void ResetAll()
+        {
+            ResetShield();
+            ResetHP();
+        }
+
+        public void ResetShield(double maxShield = -1.0)
+        {
+            double newmaxShield = (maxShield < 0) ? this.maxShield.Value : maxShield;
+            currentHP = maxHP;
+            currentShield = newmaxShield;
+            currentDamage = maxDamage;
+            currentArmor = maxArmor;
+            currentReilient = maxReilient;
+            m_ShieldBarUI.maxHealth = newmaxShield;
+            m_ShieldBarUI.ResetHP();
+        }
+
+        public void ResetHP(double maxHP = -1.0)
+        {
+            double newMaxHP = (maxHP < 0) ? this.maxHP.Value : maxHP;
+            currentHP = newMaxHP;
+            currentShield = maxShield;
+            currentDamage = maxDamage;
+            currentArmor = maxArmor;
+            currentReilient = maxReilient;
+            m_HealthBarUI.maxHealth = newMaxHP;
+            m_HealthBarUI.ResetHP();
+        }
+
         // Private 메서드
         private void Init()
         {
@@ -67,8 +97,8 @@ namespace SkyDragonHunter.Gameplay {
                     if (m_ShieldBarUI != null &&
                         !Math2DHelper.Equals(m_ShieldBarUI.maxHealth, maxShield.Value))
                     {
-                        m_HealthBarUI.maxHealth = maxShield.Value;
-                        m_HealthBarUI.ResetHP();
+                        m_ShieldBarUI.maxHealth = maxShield.Value;
+                        m_ShieldBarUI.ResetHP();
                     }
                 }
                 else if (bar.name == "UIHealthBar")
@@ -84,5 +114,7 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
         // Others
+
+
     } // Scope by class CQharacterStatus
 } // namespace Root
