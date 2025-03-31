@@ -150,6 +150,16 @@ namespace SkyDragonHunter
         }
 
         // Private 메서드
+        private void OnClearMonster()
+        {
+            GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+            foreach (GameObject monster in monsters)
+            {
+                Destroy(monster);
+            }
+        }
+
 
         private void NormalWaveUpdate()
         {
@@ -168,8 +178,8 @@ namespace SkyDragonHunter
                 canSpawn = true;
             }
 
-            if (currentWaveTime >= 0f && currentWaveTime <= 1f && canSpawn
-                || currentWaveTime >= 5f && currentWaveTime <= 6f && canSpawn)
+            if (currentWaveTime >= 1f && currentWaveTime <= 2f && canSpawn
+                || currentWaveTime >= 6f && currentWaveTime <= 7f && canSpawn)
             {
                 OnSpwanMonster();
             }
@@ -225,6 +235,9 @@ namespace SkyDragonHunter
 
         private void OnSetCurrentWave()
         {
+            OnClearMonster();
+            canSpawn = true;
+            currentWaveTime = 0f;
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);

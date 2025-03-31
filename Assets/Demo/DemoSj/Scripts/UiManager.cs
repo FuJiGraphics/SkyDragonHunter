@@ -11,6 +11,8 @@ namespace SkyDragonHunter.Test
     {
         // 필드 (Fields)
         public GameObject waveControler;
+        public GameObject summonPanel;
+        public GameObject[] pickPanels;
         public GameObject waveSelectInfoPanel;
         public GameObject characterInfoPanel;
         public GameObject questPanel;
@@ -18,6 +20,7 @@ namespace SkyDragonHunter.Test
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideSummonPanel = true;
         private bool isHideCharacterInfoPanel = true;
         private bool isHideOptionsPanel = true;
         private bool isHideWaveSelectPanel = true;
@@ -46,7 +49,7 @@ namespace SkyDragonHunter.Test
             GameObject clicked = EventSystem.current.currentSelectedGameObject;
             if (clicked == null) return;
 
-            string name = clicked.name; // 예: "Zone3"
+            string name = clicked.name;
             if (name.StartsWith("Mission"))
             {
                 string numStr = name.Substring(7);
@@ -71,6 +74,45 @@ namespace SkyDragonHunter.Test
                 {
                     currentZoneLevel = level;
                     Debug.Log($"Zone selected: {currentZoneLevel}");
+                }
+            }
+        }
+
+        public void OnPickPanel0()
+        {
+            pickPanels[0].SetActive(true);
+            pickPanels[1].SetActive(false);
+            pickPanels[2].SetActive(false);
+        }
+
+        public void OnPickPanel1()
+        {
+            pickPanels[0].SetActive(false);
+            pickPanels[1].SetActive(true);
+            pickPanels[2].SetActive(false);
+        }
+
+        public void OnPickPanel2()
+        {
+            pickPanels[0].SetActive(false);
+            pickPanels[1].SetActive(false);
+            pickPanels[2].SetActive(true);
+        }
+
+        public void OnOffSummonPanel()
+        {
+            if (summonPanel != null)
+            {
+                if (!isHideSummonPanel)
+                {
+                    summonPanel.SetActive(false);
+                    isHideSummonPanel = true;
+                }
+                else
+                {
+                    summonPanel.SetActive(true);
+                    OnPickPanel0();
+                    isHideSummonPanel = false;
                 }
             }
         }
