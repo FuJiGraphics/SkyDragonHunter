@@ -10,7 +10,7 @@ namespace SkyDragonHunter {
     {
         public virtual void OnDestruction(GameObject attacker)
         {
-            throw new System.NotImplementedException();
+
         }
 
         // 필드 (Fields)
