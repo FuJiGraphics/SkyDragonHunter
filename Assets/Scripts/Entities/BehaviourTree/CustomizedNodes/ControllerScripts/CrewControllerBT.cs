@@ -28,6 +28,7 @@ namespace SkyDragonHunter.Entities {
         public bool isMounted;
         [SerializeField] public Vector3 onFieldOriginPosition;        
 
+        // TODO
         // Test용도 임시 필드
         private float initialDelay_TEMP = 1f;
         public bool isOnBoard = false;
@@ -126,7 +127,7 @@ namespace SkyDragonHunter.Entities {
 
         private void Update()
         {            
-            if (m_Type == CrewType.OnField && isOnBoard)
+            if (m_Type == CrewType.OnField && isMounted)
             {
                 exhaustionRemainingTime -= Time.deltaTime;
                 if(exhaustionRemainingTime <= 0)
@@ -142,26 +143,7 @@ namespace SkyDragonHunter.Entities {
             {
                 m_BehaviourTree.Update();
                 UpdatePosition();
-            }
-            
-
-            //// TEMP FROM ~
-            //if (initialDelay_TEMP <= 0f)
-            //{
-            //    if (initialDelay_TEMP < 0f)
-            //    {
-            //        floatingEffect.enabled = true;
-            //        initialDelay_TEMP = 0f;
-            //    }
-            //    m_BehaviourTree.Update();
-            //}
-            //else
-            //{
-            //    initialDelay_TEMP -= Time.deltaTime;
-            //}
-            //// ~ TEMP TO
-
-            //m_BehaviourTree.Update();
+            }            
         }
 
         protected override void Start()
@@ -327,7 +309,7 @@ namespace SkyDragonHunter.Entities {
         private void UpdatePosition()
         {
             var newPos = transform.position;
-            var direction = Vector3.zero;            
+            var direction = Vector3.zero;
 
             if (m_Target != null && isChasing)
             {
