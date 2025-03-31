@@ -19,6 +19,7 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             Debug.Log("GameMgr Init");
+            AccountMgr.Init();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
@@ -33,6 +34,7 @@ namespace SkyDragonHunter.Managers
         {
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects = null;
+            AccountMgr.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 

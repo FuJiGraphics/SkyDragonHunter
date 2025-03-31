@@ -11,6 +11,7 @@ namespace SkyDragonHunter.Managers
         // 속성 (Properties)
         public static Dictionary<string, DataTable> Tables {  get; private set; }
         public static SampleGenericDataTable SampleTable => Get<SampleGenericDataTable>(DataTableIds.Sample);
+        public static CrystalLevelTable CrystalLevelTable => Get<CrystalLevelTable>(DataTableIds.CrystalLevel);
 
         // Static Constructor
         static DataTableManager()
@@ -21,7 +22,13 @@ namespace SkyDragonHunter.Managers
             var sampleTableId = DataTableIds.Sample;
             sampleTable.Load(sampleTableId);
             Tables.Add(sampleTableId, sampleTable);
+
+            var crystalLevelTable = new CrystalLevelTable();
+            var crystalLevelId = DataTableIds.CrystalLevel;
+            crystalLevelTable.Load(crystalLevelId);
+            Tables.Add(crystalLevelId, crystalLevelTable);
         }
+
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
         {

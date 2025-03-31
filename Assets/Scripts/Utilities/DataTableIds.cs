@@ -14,7 +14,7 @@ namespace SkyDragonHunter.Utility {
 
         public static readonly string Sample = "SampleTable";
         public static readonly string Monster = "MonsterTable";
-        
+        public static readonly string CrystalLevel = "CrystalLevelTable";
 
     } // Scope by class DataTableIds
 

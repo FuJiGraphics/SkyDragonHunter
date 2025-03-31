@@ -42,12 +42,13 @@ namespace SkyDragonHunter.Scriptables {
         {
             Attack attack = new Attack();
             attack.defender = dStats.gameObject;
-            double newDamage = damage + aStats.Damage.Value;
+            double newDamage = damage + aStats.MaxDamage.Value;
             float newCriticalChance = Mathf.Clamp01(criticalChance + aStats.CriticalChance);
             float newCriticalMultiplier = criticalMultiplier + aStats.CriticalMultiplier;
             if (newCriticalChance > UnityEngine.Random.value)
             {
                 newDamage *= newCriticalMultiplier;
+                attack.isCritical = true;
             }
             if (dStats.gameObject.tag == "Boss")
             {

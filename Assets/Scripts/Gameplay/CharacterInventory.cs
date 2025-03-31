@@ -8,7 +8,6 @@ namespace SkyDragonHunter.Gameplay
     {
         // 필드 (Fields)
         public Transform weaponDummy;
-
         [SerializeField] private AttackDefinition[] weapons;
 
         private GameObject m_WeaponGo;

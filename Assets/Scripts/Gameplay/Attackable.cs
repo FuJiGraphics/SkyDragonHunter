@@ -28,7 +28,7 @@ namespace SkyDragonHunter {
 
             if (attack.isCritical)
             {
-                DrawableMgr.Text(transform.position, attack.damage.ToString(), Color.red);
+                DrawableMgr.Text(transform.position, "Cri:" + attack.damage.ToString(), Color.red);
             }
             else
             {

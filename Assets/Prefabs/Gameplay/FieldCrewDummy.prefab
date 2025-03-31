@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: -7276501981709863167}
   - component: {fileID: -7082953031541118418}
   - component: {fileID: 5654016661433389589}
-  - component: {fileID: 9183804614297337809}
   - component: {fileID: -4470082774018705904}
   - component: {fileID: -826813146072343489}
   - component: {fileID: 4373007434216992575}
@@ -231,8 +230,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freezeMultiplier: 1
-  poisonMultiplier: 1
+  damage: 10
+  health: 100
+  shield: 50
+  armor: 5
+  resilient: 0
+  criticalChance: 0
+  criticalMultiplier: 2
+  bossDamageMultiplier: 1
+  skillEffectMultiplier: 1
 --- !u!114 &-7082953031541118418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,19 +266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ab71fb4f5eca4478d7d61115d62ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9183804614297337809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa04c7af11d5cdb45a4afc1b3f4d8de0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HP: 50
 --- !u!50 &-4470082774018705904
 Rigidbody2D:
   serializedVersion: 4

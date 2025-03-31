@@ -32,7 +32,7 @@ namespace SkyDragonHunter.Game {
 
         private void Start()
         {
-            m_SpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+             m_SpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             m_Mat = m_SpriteRenderer.material;
             m_OriginScaleY = transform.localScale.y;
             m_LastCameraPos = Camera.main.transform.position;

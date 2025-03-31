@@ -83,8 +83,6 @@ namespace SkyDragonHunter
 
             // TODO: 테스트 코드
             playerStatus = airship.GetComponent<CharacterStatus>();
-            playerStatus.MaxHealth = 100000.0;
-            playerStatus.Health = 100000.0;
             currentHealth = playerStatus.Health.Value;
         }
 

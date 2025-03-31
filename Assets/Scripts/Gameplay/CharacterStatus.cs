@@ -2,6 +2,8 @@ using UnityEngine;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.UI;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Utility;
+using System.Text;
 
 namespace SkyDragonHunter.Gameplay {
     public class CharacterStatus : MonoBehaviour
@@ -55,6 +57,10 @@ namespace SkyDragonHunter.Gameplay {
 
         private void Update()
         {
+#if UNITY_EDITOR
+            UpdateParams();
+#endif
+
             UpdateUIBars();
         }
 
@@ -93,8 +99,28 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+#if UNITY_EDITOR
+        public void UpdateParams()
+        {
+            damage = m_CommonStats.Damage.Value;
+            health = m_CommonStats.Health.Value;
+            shield = m_CommonStats.Shield.Value;
+            armor = m_CommonStats.Armor.Value;
+            resilient = m_CommonStats.Resilient.Value;
+            criticalChance = m_CommonStats.CriticalChance;
+            criticalMultiplier = m_CommonStats.CriticalMultiplier;
+            bossDamageMultiplier = m_CommonStats.BossDamageMultiplier;
+            skillEffectMultiplier = m_CommonStats.SkillEffectMultiplier;
+        }
+#endif
+
         private void Init()
         {
+            m_CommonStats.SetMaxDamage(damage);
+            m_CommonStats.SetMaxHealth(health);
+            m_CommonStats.SetMaxShield(shield);
+            m_CommonStats.SetMaxArmor(armor);
+            m_CommonStats.SetMaxResilient(resilient);
             m_CommonStats.SetDamage(damage);
             m_CommonStats.SetHealth(health);
             m_CommonStats.SetShield(shield);
@@ -104,6 +130,7 @@ namespace SkyDragonHunter.Gameplay {
             m_CommonStats.SetCriticalMultiplier(criticalMultiplier);
             m_CommonStats.SetBossDamageMultiplier(bossDamageMultiplier);
             m_CommonStats.SetSkillEffectMultiplier(skillEffectMultiplier);
+            m_CommonStats.ResetAll();
             InitUIBars();
         }
 
@@ -136,7 +163,14 @@ namespace SkyDragonHunter.Gameplay {
         }
 
         // Others
-
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Damage: {Damage} Health: {Health} Shield: {Shield} Armor: {Armor} Resilient: {Resilient}");
+            sb.Append($"CriticalChance: {CriticalChance}, CriticalMultiplier: {CriticalMultiplier}");
+            sb.Append($"BossDamageMultiplier: {BossDamageMultiplier}, SkillEffectMultiplier: {SkillEffectMultiplier}");
+            return sb.ToString();
+        }
 
     } // Scope by class CharacterStatus
 } // namespace Root

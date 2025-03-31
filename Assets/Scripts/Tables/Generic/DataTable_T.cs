@@ -19,9 +19,11 @@ namespace SkyDragonHunter.Tables.Generic
     }
 
     public abstract class DataTable<T> : DataTable where T : DataTableData
-    {   
+    {
         // 필드 (Fields)
         private Dictionary<int, T> m_dict = new Dictionary<int, T>();
+
+        public T First => m_dict.First().Value;
 
         // Public 메서드        
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
