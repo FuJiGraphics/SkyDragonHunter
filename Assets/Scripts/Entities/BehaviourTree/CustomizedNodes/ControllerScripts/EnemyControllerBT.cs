@@ -51,14 +51,18 @@ namespace SkyDragonHunter.Entities {
             }
             else
             {
-                m_Target = GameObject.FindWithTag($"Player").transform;
+                m_CrewTarget = null;
+                if (!m_Target.CompareTag(s_PlayerTag))
+                {
+                    m_Target = GameObject.FindWithTag($"Player").transform;
+                }
             }
 
-                var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
+            var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
             {
                 foreach (var collider in colliders)
-                {                    
+                {
                     if (collider.CompareTag(s_CrewTag))
                     {
                         var crewBT = collider.GetComponent<CrewControllerBT>();
@@ -78,8 +82,8 @@ namespace SkyDragonHunter.Entities {
                     }
                     m_CrewTarget = null;
                     return;
-                }                
-            }            
+                }
+            }
         }
 
         public void NullTarget()

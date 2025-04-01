@@ -14,8 +14,6 @@ namespace SkyDragonHunter.Utility {
 
         public static readonly string Sample = "SampleTable";
         public static readonly string Monster = "MonsterTable";
-        
-
     } // Scope by class DataTableIds
 
 } // namespace Root

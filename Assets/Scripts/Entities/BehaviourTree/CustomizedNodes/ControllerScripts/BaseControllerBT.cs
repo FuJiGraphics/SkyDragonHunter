@@ -133,6 +133,7 @@ namespace SkyDragonHunter.Entities
         }
 
         public abstract void ResetTarget();
+
         public virtual void ResetBehaviourTree()
         {
             m_BehaviourTree.Reset();
