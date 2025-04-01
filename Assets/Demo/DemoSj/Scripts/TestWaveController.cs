@@ -1,5 +1,6 @@
 using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,8 @@ namespace SkyDragonHunter
         // 필드 (Fields)
         public Slider waveSlider;
         public TextMeshProUGUI waveLevelText;
-        public GameObject ClearPanel;
-        public GameObject FeildPanel;
+        public GameObject clearPanel;
+        public GameObject feildPanel;
         public GameObject backGround;
         public BackGroundController backGroundController;
         public GameObject airship;
@@ -39,7 +40,7 @@ namespace SkyDragonHunter
         private float inpiniteModSpawnDelay = 3;
         private float distance;
         private bool isStopped;
-        private bool canSpawn;
+        private bool isCanSpawn;
 
         // 테스트용
         public Sprite[] TestBackGround;
@@ -47,6 +48,7 @@ namespace SkyDragonHunter
         public Sprite[] TestBackGroundFront;
         public int spawnableMonsters = 10;
         public bool isInfiniteMode { get; private set; } = false;
+        public bool isRewardSet { get; private set; } = false;
         private int backGroundIndex;
         private int currentZonelLevel = 1;
         private int currentMissionLevel = 1;
@@ -58,6 +60,11 @@ namespace SkyDragonHunter
 
         private bool changeSuccess = true;
         // 테스트용
+        // Test drop
+        
+
+        // Test drop
+
         private double currentHealth;
         private CharacterStatus playerStatus;
 
@@ -71,10 +78,9 @@ namespace SkyDragonHunter
             currentWaveTime = 0f;
             waveSlider.maxValue = maxWaveTime;
             waveSlider.minValue = 0;
-            ClearPanel.SetActive(false);
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            canSpawn = true;
+            isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
             currentMissionLevel = 1;
@@ -136,19 +142,19 @@ namespace SkyDragonHunter
 
         public void OnTestWaveFailedActive()
         {
-            FeildPanel.SetActive(true);
+            feildPanel.SetActive(true);
             isInfiniteMode = true;
             OnSetCurrentWave();
         }
 
         public void OnTestWaveFailedUnActive()
         {
-            FeildPanel.SetActive(false);
+            feildPanel.SetActive(false);
         }
 
         public void ReStartAll()
         {
-            ClearPanel.SetActive(false);
+            clearPanel.SetActive(false);
             currentZonelLevel = 1;
             currentMissionLevel = 1;
             currentWaveTime = 0f;
@@ -177,22 +183,22 @@ namespace SkyDragonHunter
                 waveSlider.value = currentWaveTime;
             }
 
-            if (currentWaveTime > 2f && currentWaveTime < 4f && !canSpawn)
+            if (currentWaveTime > 2f && currentWaveTime < 4f && !isCanSpawn)
             {
-                canSpawn = true;
+                isCanSpawn = true;
             }
-            else if (currentWaveTime > 7f && currentWaveTime < 8f && !canSpawn)
+            else if (currentWaveTime > 7f && currentWaveTime < 8f && !isCanSpawn)
             {
-                canSpawn = true;
+                isCanSpawn = true;
             }
 
-            if (currentWaveTime >= 1f && currentWaveTime <= 2f && canSpawn
-                || currentWaveTime >= 6f && currentWaveTime <= 7f && canSpawn)
+            if (currentWaveTime >= 1f && currentWaveTime <= 2f && isCanSpawn
+                || currentWaveTime >= 6f && currentWaveTime <= 7f && isCanSpawn)
             {
                 OnSpwanMonster();
             }
 
-            if (currentWaveTime >= 10f && canSpawn)
+            if (currentWaveTime >= 10f && isCanSpawn)
             {
                 OnSpwanBoss();
             }
@@ -215,7 +221,7 @@ namespace SkyDragonHunter
                     waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
 
                     currentWaveTime = 0f;
-                    canSpawn = true;
+                    isCanSpawn = true;
                     currentOpenPanel = 0f;
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
@@ -231,13 +237,13 @@ namespace SkyDragonHunter
                 waveSlider.value = maxWaveTime;
             }
 
-            if (!canSpawn && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
+            if (!isCanSpawn && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
-                canSpawn = true;
+                isCanSpawn = true;
                 currentWaveTime = 0f;
             }
 
-            if (currentWaveTime > inpiniteModSpawnDelay && canSpawn)
+            if (currentWaveTime > inpiniteModSpawnDelay && isCanSpawn)
             {
                 OnSpwanMonster();
             }
@@ -246,7 +252,7 @@ namespace SkyDragonHunter
         private void OnSetLastTriedtWave()
         {
             OnClearMonster();
-            canSpawn = true;
+            isCanSpawn = true;
             currentWaveTime = 0f;
             currentMissionLevel = lastTriedMissionLevel;
             currentZonelLevel = lastTriedZonelLevel;
@@ -257,7 +263,7 @@ namespace SkyDragonHunter
         private void OnSetCurrentWave()
         {
             OnClearMonster();
-            canSpawn = true;
+            isCanSpawn = true;
             currentWaveTime = 0f;
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
@@ -317,7 +323,7 @@ namespace SkyDragonHunter
                 currentSpawnMonsters++;
             }
 
-            canSpawn = false;
+            isCanSpawn = false;
         }
 
         private void OnSpwanBoss()
@@ -325,19 +331,21 @@ namespace SkyDragonHunter
             GameObject spawned = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
             currentEnemy.Add(spawned);
             currentSpawnMonsters++;
-            canSpawn = false;
+            isCanSpawn = false;
         }
 
         private void OnActiveClearPanel()
         {
-            ClearPanel.SetActive(true);
+            clearPanel.SetActive(true);
+            isRewardSet = true;
         }
 
         private void OnUnActiveClearPanel()
         {
-            ClearPanel.SetActive(false);
+            clearPanel.SetActive(false);
             OnChangeBackGround(currentZonelLevel);
-
+            isRewardSet = false;
+            ItemMgr.Reset();
         }
 
         private void OnChangeBackGround(int bgIndex)

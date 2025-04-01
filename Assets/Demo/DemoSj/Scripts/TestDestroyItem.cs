@@ -1,3 +1,4 @@
+using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace SkyDragonHunter {
     public class TestDestroyItem : MonoBehaviour
     {
         // 필드 (Fields)
+        public ItemType itemType;
         private float effectSpeed = 1f;
         private float fadeTimer = 0f;
         private SpriteRenderer spriteRenderer;
@@ -30,6 +32,7 @@ namespace SkyDragonHunter {
 
             if (spriteRenderer.color.a <= 0.01f) // 부동소수점 비교는 정확히 0f 대신 작은 값 사용
             {
+                ItemMgr.Add(itemType);
                 Destroy(gameObject);
             }
         }
