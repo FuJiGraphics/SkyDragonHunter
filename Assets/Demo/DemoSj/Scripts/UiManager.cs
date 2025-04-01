@@ -15,13 +15,14 @@ namespace SkyDragonHunter.Test
         public GameObject fortressEquipmentPanel;
         public GameObject waveControler;
         public GameObject summonPanel;
-        public GameObject[] pickPanels;
         public GameObject waveSelectInfoPanel;
         public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
         public GameObject waveSlider;
         public GameObject waveRetryButton;
+        public GameObject[] pickPanels;
+        public GameObject[] fortressPickPanels;
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
@@ -114,6 +115,38 @@ namespace SkyDragonHunter.Test
                     Debug.Log($"Zone selected: {currentZoneLevel}");
                 }
             }
+        }
+
+        public void OnFortressPickPanel0()
+        {
+            fortressPickPanels[0].SetActive(true);
+            fortressPickPanels[1].SetActive(false);
+            fortressPickPanels[2].SetActive(false);
+            fortressPickPanels[3].SetActive(false);
+        }
+
+        public void OnFortressPickPanel1()
+        {
+            fortressPickPanels[1].SetActive(true);
+            fortressPickPanels[0].SetActive(false);
+            fortressPickPanels[2].SetActive(false);
+            fortressPickPanels[3].SetActive(false);
+        }
+
+        public void OnFortressPickPanel2()
+        {
+            fortressPickPanels[2].SetActive(true);
+            fortressPickPanels[0].SetActive(false);
+            fortressPickPanels[1].SetActive(false);
+            fortressPickPanels[3].SetActive(false);
+        }
+
+        public void OnFortressPickPanel3()
+        {
+            fortressPickPanels[3].SetActive(true);
+            fortressPickPanels[0].SetActive(false);
+            fortressPickPanels[1].SetActive(false);
+            fortressPickPanels[2].SetActive(false);
         }
 
         public void OnPickPanel0()
