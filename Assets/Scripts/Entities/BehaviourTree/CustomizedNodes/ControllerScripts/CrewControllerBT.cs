@@ -39,7 +39,7 @@ namespace SkyDragonHunter.Entities
         // 속성 (Properties)
         public float Speed => m_Speed;
 
-        public float DistanceToOrigin
+        public float OriginDistance
         {
             get
             {
@@ -332,7 +332,7 @@ namespace SkyDragonHunter.Entities
                 var normal = direction.normalized;
                 newPos.x += Time.deltaTime * m_Speed * normal.x * multiplier;
                 floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
-
+                                
                 transform.position = newPos;
             }
                                    
