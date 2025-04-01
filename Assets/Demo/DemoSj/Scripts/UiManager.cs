@@ -121,16 +121,16 @@ namespace SkyDragonHunter.Test
         {
             fortressPickPanels[0].SetActive(true);
             fortressPickPanels[1].SetActive(false);
-            fortressPickPanels[2].SetActive(false);
-            fortressPickPanels[3].SetActive(false);
+            //fortressPickPanels[2].SetActive(false);
+            //fortressPickPanels[3].SetActive(false);
         }
 
         public void OnFortressPickPanel1()
         {
             fortressPickPanels[1].SetActive(true);
             fortressPickPanels[0].SetActive(false);
-            fortressPickPanels[2].SetActive(false);
-            fortressPickPanels[3].SetActive(false);
+            //fortressPickPanels[2].SetActive(false);
+            //fortressPickPanels[3].SetActive(false);
         }
 
         public void OnFortressPickPanel2()
