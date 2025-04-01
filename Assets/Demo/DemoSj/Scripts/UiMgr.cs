@@ -74,6 +74,7 @@ namespace SkyDragonHunter.Test
                 inGameButtonPanel.SetActive(true);
                 fortressEquipmentPanel.SetActive(false);
                 isHideFortressEquipmentPanel = false;
+                AllOffFortressPickPanel();
             }
             else
             {
@@ -81,6 +82,7 @@ namespace SkyDragonHunter.Test
                 inGameButtonPanel.SetActive(false);
                 fortressEquipmentPanel.SetActive(true);
                 isHideFortressEquipmentPanel = true;
+                OnFortressPickPanel0();
             }
         }
 
@@ -122,6 +124,14 @@ namespace SkyDragonHunter.Test
                     Debug.Log($"Zone selected: {currentZoneLevel}");
                 }
             }
+        }
+
+        public void AllOffFortressPickPanel()
+        {
+            fortressPickPanels[0].SetActive(false);
+            fortressPickPanels[1].SetActive(false);
+            fortressPickPanels[2].SetActive(false);
+            fortressPickPanels[3].SetActive(false);
         }
 
         public void OnFortressPickPanel0()
