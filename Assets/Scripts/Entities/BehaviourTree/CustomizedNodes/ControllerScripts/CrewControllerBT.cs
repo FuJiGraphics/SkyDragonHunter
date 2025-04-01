@@ -4,9 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using SkyDragonHunter.Managers;
 
-namespace SkyDragonHunter.Entities {
-
+namespace SkyDragonHunter.Entities 
+{
     public enum CrewType
     {
         OnBoard,
@@ -30,7 +31,6 @@ namespace SkyDragonHunter.Entities {
 
         // TODO
         // Test용도 임시 필드
-        private float initialDelay_TEMP = 1f;
         public bool isOnBoard = false;
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
@@ -73,11 +73,11 @@ namespace SkyDragonHunter.Entities {
         public override float TargetDistance
         {
             get
-            {                
+            {
                 if (m_Target == null)
                 {
                     return float.MaxValue;
-                }                
+                }
 
                 var distance = m_Target.position.x - transform.position.x;
                 if (distance > 0)
@@ -173,19 +173,19 @@ namespace SkyDragonHunter.Entities {
 
         // Public 메서드
         public override void ResetTarget()
-        {            
+        {
             if (m_Target == null)
             {
-                targetYPos = float.MaxValue;                
+                targetYPos = float.MaxValue;
             }
             else
             {
                 return;
-            }           
+            }
 
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
-            {                 
+            {
                 foreach(var collider in colliders)
                 {
                     if(collider.CompareTag(s_EnemyTag))

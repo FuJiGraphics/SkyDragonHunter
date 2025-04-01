@@ -20,15 +20,14 @@ namespace SkyDragonHunter.Entities {
         // Protected 메서드
         protected override void OnStart()
         {
-            base.OnStart();            
-            //Debug.Log($"{m_Context.name} entered Return Action");            
+            base.OnStart();
+            //Debug.Log($"{m_Context.name} entered Return Action");        
         }
 
         protected override NodeStatus OnUpdate()
         {
-            if (m_Context.Target != null)
+            if (m_Context.IsTargetInAggroRange)
             {
-                //m_Context.ResetBehaviourTree();
                 return NodeStatus.Failure;
             }
 
