@@ -3,7 +3,11 @@ namespace SkyDragonHunter.Interfaces
 {
     public enum ItemType
     {
-        Potion, Weapon,
+        Potion, 
+        Weapon,
+        Gold,
+        Gem,
+        Scroll
     };
 
     public interface IItemType
