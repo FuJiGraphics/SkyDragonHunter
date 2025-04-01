@@ -12,6 +12,7 @@ namespace SkyDragonHunter.Structs
         public GameObject defender;         // 공격 받는 대상
         public AlphaUnit damagePerSeconds;  // 초당 데미지
         public float duration;              // 지속 시간
+    
     }; // struct Attack
 
 } // namespace SkyDragonHunter.Structs

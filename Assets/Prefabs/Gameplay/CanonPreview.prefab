@@ -124,8 +124,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8483980479997236234}
+  - component: {fileID: -7751053218168135342}
+  - component: {fileID: -9206469057887786528}
   m_Layer: 0
-  m_Name: Canon
+  m_Name: CanonPreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148,3 +150,30 @@ Transform:
   - {fileID: 8958250789277682175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-7751053218168135342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621301230960080181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8617c778ccde24f8bd7fee7638698c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinner: {fileID: 8483980479997236234}
+  start: {fileID: 4829600997666180316}
+--- !u!114 &-9206469057887786528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621301230960080181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f647e790cca38ec47afc2143c2c8ada9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 4829600997666180316}

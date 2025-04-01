@@ -12,6 +12,7 @@ namespace SkyDragonHunter.Structs
         public GameObject defender;         // 공격 받는 대상
         public float duration;              // 지속 시간
         public float immunityMultiplier;    // 빙결 내성 배율 (빙결 내성 시간 = 지속 시간 * 빙결 배율)
+    
     }; // struct FreezeStatusAilment
 
 } // namespace SkyDragonHunter.Structs

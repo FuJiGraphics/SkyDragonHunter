@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Numerics;
 
 namespace SkyDragonHunter.Structs {
     [System.Serializable]
@@ -123,13 +124,13 @@ namespace SkyDragonHunter.Structs {
         public static explicit operator double(AlphaUnit a) => a.m_OriginNumber;
 
         public static AlphaUnit operator +(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber + b.m_OriginNumber, true);
+            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) + new BigInteger(b.m_OriginNumber)), true);
         public static AlphaUnit operator -(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber - b.m_OriginNumber, true);
+            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) - new BigInteger(b.m_OriginNumber)), true);
         public static AlphaUnit operator *(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber * b.m_OriginNumber, true);
+            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) * new BigInteger(b.m_OriginNumber)), true);
         public static AlphaUnit operator /(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber / b.m_OriginNumber, true);
+            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) / new BigInteger(b.m_OriginNumber)), true);
 
         public static bool operator <(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) < 0;
         public static bool operator >(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) > 0;

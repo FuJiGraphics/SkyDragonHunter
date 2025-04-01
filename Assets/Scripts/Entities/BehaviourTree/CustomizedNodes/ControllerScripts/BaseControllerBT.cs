@@ -36,7 +36,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < m_CharacterInventory.CurrentWeapon.WeaponData.range;
             }
         }
 
@@ -122,7 +122,6 @@ namespace SkyDragonHunter.Entities
 
             if(m_CharacterInventory != null)
             {
-                m_CharacterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
                 m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
                 //Debug.LogError($"{gameObject.name} attacked {m_Target.gameObject.name}");
             }

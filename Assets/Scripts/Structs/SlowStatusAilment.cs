@@ -13,6 +13,7 @@ namespace SkyDragonHunter.Structs
         public float slowMultiplier;        // 슬로우 배율
         public float duration;              // 지속 시간
         public float immunityMultiplier;    // 둔화 내성 배율 (빙결 내성 시간 = 지속 시간 * 빙결 배율)
+    
     }; // struct SlowStatusAilment
 
 } // namespace SkyDragonHunter.Structs

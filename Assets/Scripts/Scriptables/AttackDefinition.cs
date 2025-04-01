@@ -8,11 +8,9 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
 
-    [CreateAssetMenu(fileName = "AttackDefinition.asset", menuName = "Weapon/AttackDefinition")]
-    public class AttackDefinition : ScriptableObject, IAttacker
+    public abstract class AttackDefinition : ItemDefinition
     {
         // 필드 (Fields)
-        public GameObject weaponPrefab;             // 공격 스프라이트 오브젝트
         public float coolDown;                      // 쿨다운
         public float range;                         // 공격 범위
         public double damage;                       // 데미지
@@ -20,25 +18,12 @@ namespace SkyDragonHunter.Scriptables {
         public float criticalMultiplier = 1.0f;     // 크리티컬 피해 배율
         public float bossDamageMultiplier = 1.0f;   // 보스 피해량 증가 배율
 
-        protected GameObject m_ActivePrefabInstance;    // 현재 활성화된 프리팹 인스턴스
-        protected GameObject m_Owner;                   // 공격하는 오브젝트
-        protected Transform m_Dummy;                    // 부착 위치
-
         // 속성 (Properties)
-        public void SetOwner(GameObject owner) => m_Owner = owner;
-        public void SetDummy(Transform transform) => m_Dummy = transform;
-        public void SetActivePrefabInstance(GameObject instance) => m_ActivePrefabInstance = instance;
-
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (ScriptableObject 기본 메서드)
         // Public 메서드
-        public virtual void Execute(GameObject attacker, GameObject defender)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected Attack CreateAttack(CharacterStatus aStats, CharacterStatus dStats)
+        public Attack CreateAttack(CharacterStatus aStats, CharacterStatus dStats)
         {
             Attack attack = new Attack();
             attack.defender = dStats.gameObject;
@@ -64,8 +49,7 @@ namespace SkyDragonHunter.Scriptables {
             return attack;
         }
 
-        // Private 메서드
         // Others
 
-    } // Scope by class NewScript
+    } // Scope by class AttackDefinition
 } // namespace SkyDragonHunter

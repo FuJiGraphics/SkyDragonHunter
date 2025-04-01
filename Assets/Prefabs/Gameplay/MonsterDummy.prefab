@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 1701353589846277976}
   - component: {fileID: -1063117355461685042}
   - component: {fileID: -2885725324869327300}
+  - component: {fileID: -6480407970460189275}
+  - component: {fileID: -723160324193856471}
   m_Layer: 0
   m_Name: MonsterDummy
   m_TagString: Monster
@@ -153,8 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponDummy: {fileID: 8145279371225729078}
-  weapons:
+  itemPrefabs:
   - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
 --- !u!114 &-7276501981709863167
 MonoBehaviour:
@@ -268,6 +269,33 @@ MonoBehaviour:
   - {fileID: 1427866813230450268, guid: 26d92420aaac1134bbfba3e06d56b9a7, type: 3}
   - {fileID: 1427866813230450268, guid: 7aa1ad94fdb2fef4d82006202da02fb1, type: 3}
   - {fileID: 1427866813230450268, guid: c8048c998babdce4c8812ef9a204cca6, type: 3}
+--- !u!114 &-6480407970460189275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedTargetTags:
+  - Player
+  - Crew
+--- !u!114 &-723160324193856471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df683436301c01241836e8a34c40d513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7540244396284621886
 GameObject:
   m_ObjectHideFlags: 0

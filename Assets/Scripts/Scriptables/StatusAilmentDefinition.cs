@@ -9,7 +9,7 @@ using UnityEngine;
 namespace SkyDragonHunter.Scriptables
 {
     [CreateAssetMenu(fileName = "StatusAilmentDefinition.asset", menuName = "StatusAilments/StatusAilmentDefinition")]
-    public class StatusAilmentDefinition : ScriptableObject, IAttacker
+    public class StatusAilmentDefinition : ScriptableObject
     {
         // 필드 (Fields)
         // 속성 (Properties)

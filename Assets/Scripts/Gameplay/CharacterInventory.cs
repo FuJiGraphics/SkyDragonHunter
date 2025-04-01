@@ -1,5 +1,5 @@
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay
@@ -7,20 +7,19 @@ namespace SkyDragonHunter.Gameplay
     public class CharacterInventory : MonoBehaviour
     {
         // 필드 (Fields)
-        public Transform weaponDummy;
-        [SerializeField] private AttackDefinition[] weapons;
+        [Header("Settings")]
+        [SerializeField] private ItemDefinition[] itemPrefabs;
 
-        private GameObject m_WeaponGo;
+        public GameObject CurrentEquipPreview { get; private set; }
 
         // 속성 (Properties)
-        public AttackDefinition CurrentWeapon { get; private set; }
-        public GameObject WeaponPrefabInstance { get; private set; }
+        public IWeaponable CurrentWeapon { get; private set; }
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            if (weapons != null && weapons.Length >= 1)
+            if (itemPrefabs != null && itemPrefabs.Length >= 1)
             {
                 EquipWeapon(0);
             }
@@ -29,7 +28,7 @@ namespace SkyDragonHunter.Gameplay
         // Public 메서드
         public void EquipWeapon(int index)
         {
-            if (0 > index || index >= weapons.Length || weapons[index] == null)
+            if (0 > index || index >= itemPrefabs.Length || itemPrefabs[index] == null)
             {
                 Debug.LogError($"잘못된 인덱스 접근입니다. {index}");
                 return;
@@ -37,22 +36,27 @@ namespace SkyDragonHunter.Gameplay
 
             UnequipWeapon();
 
-            CurrentWeapon = Instantiate(weapons[index]);
-            CurrentWeapon.SetOwner(gameObject);
-            CurrentWeapon.SetDummy(weaponDummy);
-            if (weapons[index].weaponPrefab != null)
+            if (itemPrefabs[index] is IWeaponable weapon)
             {
-                m_WeaponGo = Instantiate(weapons[index].weaponPrefab);
-                m_WeaponGo.transform.SetParent(weaponDummy);
-                m_WeaponGo.transform.localPosition = Vector3.zero;
-                CurrentWeapon.SetActivePrefabInstance(m_WeaponGo);
+                CurrentWeapon = weapon;
+
+                IEquipAnchor equipAnchor = GetComponent<IEquipAnchor>();
+                if (equipAnchor != null)
+                {
+                    CurrentEquipPreview = Instantiate(CurrentWeapon.WeaponData.previewPrefab);
+                    CurrentEquipPreview.transform.SetParent(equipAnchor.GetRangedWeaponAttachPoint());
+                    CurrentEquipPreview.transform.localPosition = Vector3.zero;
+                }
             }
         }
 
         public void UnequipWeapon()
         {
-            Destroy(CurrentWeapon);
-            Destroy(m_WeaponGo);
+            if (CurrentEquipPreview == null)
+                return;
+
+            Destroy(CurrentEquipPreview);
+            CurrentEquipPreview = null;
         }
 
         // Private 메서드

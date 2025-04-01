@@ -57,7 +57,7 @@ namespace SkyDragonHunter.Entities {
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < m_CharacterInventory.CurrentWeapon.WeaponData.range;
             }
         }
 
@@ -168,7 +168,7 @@ namespace SkyDragonHunter.Entities {
 
             Gizmos.color = Color.green;
             if(m_CharacterInventory != null &&  m_CharacterInventory.CurrentWeapon != null)
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);            
+            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.WeaponData.range);            
         }
 
         // Public 메서드

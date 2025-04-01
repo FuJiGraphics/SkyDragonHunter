@@ -133,6 +133,8 @@ GameObject:
   - component: {fileID: -6102419851012319264}
   - component: {fileID: 7145011849598956032}
   - component: {fileID: -5015490716612036505}
+  - component: {fileID: -3666998413519012154}
+  - component: {fileID: -2725025849333200871}
   m_Layer: 0
   m_Name: BossDummy
   m_TagString: Monster
@@ -288,8 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8271902aac5c5fd4f97bf2943ce5ffdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponDummy: {fileID: 8145279371225729078}
-  weapons:
+  itemPrefabs:
   - {fileID: 11400000, guid: 897ed128c5dcfab418154aad3028e85c, type: 2}
 --- !u!114 &2870753279803480994
 MonoBehaviour:
@@ -363,6 +364,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b52bd17e7f2e4eb4f8c0968ca1317494, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3666998413519012154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedTargetTags:
+  - Player
+  - Crew
+--- !u!114 &-2725025849333200871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df683436301c01241836e8a34c40d513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7597109240998436959
