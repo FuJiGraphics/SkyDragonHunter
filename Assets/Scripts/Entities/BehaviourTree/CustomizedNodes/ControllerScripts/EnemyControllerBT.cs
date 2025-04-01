@@ -52,7 +52,11 @@ namespace SkyDragonHunter.Entities {
             else
             {
                 m_CrewTarget = null;
-                if (!m_Target.CompareTag(s_PlayerTag))
+                if (m_Target == null)
+                {
+                    m_Target = GameObject.FindWithTag($"Player").transform;
+                }
+                else if (!m_Target.CompareTag(s_PlayerTag))
                 {
                     m_Target = GameObject.FindWithTag($"Player").transform;
                 }

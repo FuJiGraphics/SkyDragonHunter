@@ -19,6 +19,7 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             Debug.Log("GameMgr Init");
+            Application.targetFrameRate = 60;
             AccountMgr.Init();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;

@@ -105,12 +105,12 @@ namespace SkyDragonHunter.Entities
                 if (targetYPos != float.MaxValue)
                     newYPos = targetYPos;
 
-                Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);                
-
+                Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);
+                Vector3 selfPos = new Vector3(transform.position.x, floatingEffect.StartY, 0);
                 var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var distanceCallibrator = (sr.bounds.size.x + sr.bounds.size.y) * 0.25f;
+                var distanceCallibrator = (sr.bounds.size.x) * 0.5f;
 
-                distance = Vector3.Distance(targetPos, transform.position);
+                distance = Vector3.Distance(targetPos, selfPos);
 
                 distance += distanceCallibrator;
 
