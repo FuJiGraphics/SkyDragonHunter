@@ -4,9 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using SkyDragonHunter.Managers;
 
-namespace SkyDragonHunter.Entities {
-
+namespace SkyDragonHunter.Entities 
+{
     public enum CrewType
     {
         OnBoard,
@@ -30,7 +31,6 @@ namespace SkyDragonHunter.Entities {
 
         // TODO
         // Test용도 임시 필드
-        private float initialDelay_TEMP = 1f;
         public bool isOnBoard = false;
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
@@ -39,7 +39,7 @@ namespace SkyDragonHunter.Entities {
         // 속성 (Properties)
         public float Speed => m_Speed;
 
-        public float DistanceToOrigin
+        public float OriginDistance
         {
             get
             {
@@ -73,11 +73,11 @@ namespace SkyDragonHunter.Entities {
         public override float TargetDistance
         {
             get
-            {                
+            {
                 if (m_Target == null)
                 {
                     return float.MaxValue;
-                }                
+                }
 
                 var distance = m_Target.position.x - transform.position.x;
                 if (distance > 0)
@@ -105,12 +105,12 @@ namespace SkyDragonHunter.Entities {
                 if (targetYPos != float.MaxValue)
                     newYPos = targetYPos;
 
-                Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);                
-
+                Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);
+                Vector3 selfPos = new Vector3(transform.position.x, floatingEffect.StartY, 0);
                 var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var distanceCallibrator = (sr.bounds.size.x + sr.bounds.size.y) * 0.25f;
+                var distanceCallibrator = (sr.bounds.size.x) * 0.5f;
 
-                distance = Vector3.Distance(targetPos, transform.position);
+                distance = Vector3.Distance(targetPos, selfPos);
 
                 distance += distanceCallibrator;
 
@@ -173,19 +173,19 @@ namespace SkyDragonHunter.Entities {
 
         // Public 메서드
         public override void ResetTarget()
-        {            
+        {
             if (m_Target == null)
             {
-                targetYPos = float.MaxValue;                
+                targetYPos = float.MaxValue;
             }
             else
             {
                 return;
-            }           
+            }
 
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
-            {                 
+            {
                 foreach(var collider in colliders)
                 {
                     if(collider.CompareTag(s_EnemyTag))
@@ -332,7 +332,7 @@ namespace SkyDragonHunter.Entities {
                 var normal = direction.normalized;
                 newPos.x += Time.deltaTime * m_Speed * normal.x * multiplier;
                 floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
-
+                                
                 transform.position = newPos;
             }
                                    

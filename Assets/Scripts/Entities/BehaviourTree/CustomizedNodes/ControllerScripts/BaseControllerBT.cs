@@ -14,7 +14,7 @@ namespace SkyDragonHunter.Entities
         [SerializeField] protected float m_Speed;
         [SerializeField] protected float m_AggroRange;
 
-        protected BehaviourTree<T> m_BehaviourTree;
+        [SerializeField] protected BehaviourTree<T> m_BehaviourTree;
 
         public CharacterInventory m_CharacterInventory;
         //public AttackDefinition attackDefinition;
@@ -132,6 +132,7 @@ namespace SkyDragonHunter.Entities
         }
 
         public abstract void ResetTarget();
+
         public virtual void ResetBehaviourTree()
         {
             m_BehaviourTree.Reset();
