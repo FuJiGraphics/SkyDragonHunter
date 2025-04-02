@@ -5,12 +5,15 @@ using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using System;
 
 namespace SkyDragonHunter.Gameplay {
 
     public class RangedAttackExecutor : MonoBehaviour
     {
         // ÇÊµå (Fields)
+        public bool isSkipDistanceCheck = false;
+
         private RangedAttackSC m_Def;
         private ObjectPool<GameObject> m_ProjectilePool;
         private List<GameObject> m_ProjectileGenList;
@@ -84,9 +87,12 @@ namespace SkyDragonHunter.Gameplay {
                 }
             }
 
-            float distance = Vector2.Distance(defender.transform.position, firePos);
-            if (distance > m_Def.range)
-                return;
+            if (!isSkipDistanceCheck)
+            {
+                float distance = Vector2.Distance(defender.transform.position, firePos);
+                if (distance > m_Def.range)
+                    return;
+            }
 
             ILookAtProvider lookAtComp = firePreviewGo?.GetComponentInParent<ILookAtProvider>();
             if (lookAtComp != null)
