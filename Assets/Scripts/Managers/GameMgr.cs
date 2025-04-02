@@ -9,7 +9,7 @@ namespace SkyDragonHunter.Managers
     public static class GameMgr
     {
         // 필드 (Fields)
-        private static Dictionary<string, GameObject> m_LoadObjects = new Dictionary<string, GameObject>();
+        private static Dictionary<string, GameObject> m_LoadObjects;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -20,6 +20,7 @@ namespace SkyDragonHunter.Managers
         {
             Debug.Log("GameMgr Init");
             Application.targetFrameRate = 60;
+            m_LoadObjects = new Dictionary<string, GameObject>();
             AccountMgr.Init();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -27,12 +28,17 @@ namespace SkyDragonHunter.Managers
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (!Application.isPlaying)
+                return;
+
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
-            m_LoadObjects = new Dictionary<string, GameObject>();
         }
 
         private static void OnSceneUnloaded(Scene scene)
         {
+            if (!Application.isPlaying)
+                return;
+
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects = null;
             AccountMgr.Release();

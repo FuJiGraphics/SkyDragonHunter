@@ -1,5 +1,6 @@
 using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,14 +65,15 @@ namespace SkyDragonHunter
 
 
         // Test drop
-
-        private double currentHealth;
-        private CharacterStatus playerStatus;
-
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void Awake()
+        {
+            GameMgr.RegisterObject(gameObject);
+        }
+
         private void Start()
         {
             maxWaveTime = 10f;
@@ -88,10 +90,6 @@ namespace SkyDragonHunter
             OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
-
-            // TODO: 테스트 코드
-            playerStatus = airship.GetComponent<CharacterStatus>();
-            currentHealth = playerStatus.Health.Value;
         }
 
         private void Update()
@@ -105,16 +103,6 @@ namespace SkyDragonHunter
             else
             {
                 infiniteWaveUpdate();
-            }
-
-            if (currentHealth != playerStatus.Health.Value)
-            {
-                currentHealth = playerStatus.Health.Value;
-            }
-
-            if (currentHealth <= 0)
-            {
-                OnTestWaveFailedActive(); // 필드 패널 재활성화
             }
         }
 
@@ -154,6 +142,7 @@ namespace SkyDragonHunter
 
         public void ReStartAll()
         {
+            Debug.Log("리스타트.");
             clearPanel.SetActive(false);
             currentZonelLevel = 1;
             currentMissionLevel = 1;
