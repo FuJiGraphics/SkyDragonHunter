@@ -19,8 +19,8 @@ namespace SkyDragonHunter.Tables
         public float AggroRange { get; set; }
         public float Speed { get; set; }
         public float ChaseSpeed { get; set; }
-        public int BossSkillID { get; set; }
-        public float BossSkillCooltime { get; set; }
+        public int SkillID { get; set; }
+        public float SkillCooltime { get; set; }
 
         public override string ToString()
         {

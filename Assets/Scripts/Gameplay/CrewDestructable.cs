@@ -24,12 +24,15 @@ namespace SkyDragonHunter {
         // Others
         public override void OnDestruction(GameObject attacker)
         {
+            if (m_CrewController.isMounted)
+            {
+                return;
+            }
+
             m_CrewController.transform.position = m_CrewController.onFieldOriginPosition;
             //m_CrewController.isOnBoard = true;
-            m_CrewController.exhaustionRemainingTime = m_CrewController.exhaustionTime;
-            m_CrewController.MountAction(true);  
-            
-            
+            m_CrewController.exhaustionRemainingTime = m_CrewController.exhaustionTime;            
+            m_CrewController.MountAction(true);        
         }
 
     } // Scope by class CrewDestructable
