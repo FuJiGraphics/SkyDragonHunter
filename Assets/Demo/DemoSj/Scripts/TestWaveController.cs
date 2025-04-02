@@ -61,7 +61,7 @@ namespace SkyDragonHunter
         private bool changeSuccess = true;
         // 테스트용
         // Test drop
-        
+
 
         // Test drop
 
@@ -308,8 +308,11 @@ namespace SkyDragonHunter
             }
             else if (!shouldStop && isStopped)
             {
-                isStopped = false;
-                backGroundController.SetScrollSpeed(oldAllSpeed);
+                if (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null)))
+                {
+                    isStopped = false;
+                    backGroundController.SetScrollSpeed(oldAllSpeed);
+                }
             }
         }
 
