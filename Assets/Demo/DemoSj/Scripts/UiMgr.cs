@@ -11,6 +11,7 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject randomCrewPickUpInfo;
         public GameObject inGameButtonPanel;
         public GameObject inGameWaveInfoPanel;
         public GameObject fortressEquipmentPanel;
@@ -28,6 +29,7 @@ namespace SkyDragonHunter.Test
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideRandomCrewPickUpInfo = true;
         private bool isHideSummonPanel = true;
         private bool isHideCharacterInfoPanel = true;
         private bool isHideOptionsPanel = true;
@@ -66,6 +68,20 @@ namespace SkyDragonHunter.Test
         }
 
         // Public 메서드
+        public void OnOffRandomCrewPickUpInfo()
+        {
+            if (isHideRandomCrewPickUpInfo)
+            {
+                randomCrewPickUpInfo.SetActive(true);
+                isHideRandomCrewPickUpInfo = false;
+            }
+            else
+            {
+                randomCrewPickUpInfo.SetActive(false);
+                isHideRandomCrewPickUpInfo = true;
+            }
+        }
+
         public void OnOffFortressEquipmentPanel()
         {
             if (isHideFortressEquipmentPanel)
