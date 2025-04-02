@@ -19,8 +19,6 @@ namespace SkyDragonHunter.Entities
         // 필드 (Fields)
         [SerializeField] private CrewType m_Type;
 
-        private static readonly string s_EnemyTag = "Monster";
-
         public bool isIdle = false;
         public float lastIdleTime;
 

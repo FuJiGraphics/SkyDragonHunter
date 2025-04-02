@@ -38,10 +38,6 @@ namespace SkyDragonHunter.Entities
 
         // Public 메서드
 
-        public override void SetDataFromTable(int id)
-        {
-            
-        }
 
         public override void ResetTarget()
         {            

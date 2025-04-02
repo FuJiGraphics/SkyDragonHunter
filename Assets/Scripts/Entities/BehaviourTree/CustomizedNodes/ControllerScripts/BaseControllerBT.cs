@@ -10,6 +10,12 @@ namespace SkyDragonHunter.Entities
     public abstract class BaseControllerBT<T> : MonoBehaviour, ISlowable 
         where T : BaseControllerBT<T>
     {
+        // Static Fields
+        protected static readonly string s_EnemyTag = "Monster";
+        protected static readonly string s_PlayerTag= "Player";
+        protected static readonly string s_CrewTag = "Crew";
+        protected static readonly string s_Creature = "Creature";
+
         // 필드 (Fields)
         [SerializeField] protected float m_Speed;
         [SerializeField] protected float m_AggroRange;
