@@ -10,23 +10,28 @@ namespace SkyDragonHunter.Managers
     {
         // 속성 (Properties)
         public static Dictionary<string, DataTable> Tables {  get; private set; }
-        public static SampleGenericDataTable SampleTable => Get<SampleGenericDataTable>(DataTableIds.Sample);
         public static CrystalLevelTable CrystalLevelTable => Get<CrystalLevelTable>(DataTableIds.CrystalLevel);
+        public static CrewTable CrewTable => Get<CrewTable>(DataTableIds.Crew);
+        public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
+        public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
 
         // Static Constructor
         static DataTableManager()
         {
             Tables = new Dictionary<string, DataTable>();
+            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            LoadTable<CrewTable>(DataTableIds.Crew);
+            LoadTable<MonsterTable>(DataTableIds.Monster);
+            LoadTable<BossTable>(DataTableIds.Boss);
+        }
 
-            var sampleTable = new SampleGenericDataTable();
-            var sampleTableId = DataTableIds.Sample;
-            sampleTable.Load(sampleTableId);
-            Tables.Add(sampleTableId, sampleTable);
-
-            var crystalLevelTable = new CrystalLevelTable();
-            var crystalLevelId = DataTableIds.CrystalLevel;
-            crystalLevelTable.Load(crystalLevelId);
-            Tables.Add(crystalLevelId, crystalLevelTable);
+        public static void InitForGameScene()
+        {
+            Tables = new Dictionary<string, DataTable>();
+            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            LoadTable<CrewTable>(DataTableIds.Crew);
+            LoadTable<MonsterTable>(DataTableIds.Monster);
+            LoadTable<BossTable>(DataTableIds.Boss);
         }
 
         // Public 메서드
@@ -38,6 +43,23 @@ namespace SkyDragonHunter.Managers
                 return null;
             }
             return Tables[id] as T;
+        }
+
+        public static void LoadTable<T>(string fileName) where T : DataTable, new()
+        {
+            var table = new T();
+            var id = fileName;
+            if (Tables.ContainsKey(id))
+            {
+                Debug.LogError($"Table Id {id} 충돌");
+            }
+            table.Load(id);
+            Tables.Add(id, table);
+        }
+
+        public static void UnloadAll()
+        {
+            Tables.Clear();
         }
     } // Scope by class DataTableManager
 

@@ -5,23 +5,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Entities {
-
-    public enum EnemyType
+namespace SkyDragonHunter.Entities 
+{
+    public enum AttackType
     {
         Melee,
         Ranged,
-        Stationary // Boss
     }
 
-    public class EnemyControllerBT : BaseControllerBT<EnemyControllerBT>
+    public class MonsterControllerBT : BaseControllerBT<MonsterControllerBT>
     {
         // 필드 (Fields)
-        [SerializeField] private EnemyType m_Type;
-
-        private static readonly string s_PlayerTag = "Player";
-        private static readonly string s_CrewTag = "Crew";
-        private static readonly string s_CreatureTag = "Creature";
+        [SerializeField] private AttackType m_Type;
 
         private CrewControllerBT m_CrewTarget;
 
@@ -36,12 +31,18 @@ namespace SkyDragonHunter.Entities {
         //{
         //    Gizmos.color = Color.red;
         //    Gizmos.DrawWireSphere(transform.position, m_AggroRange);
-            
+
         //    Gizmos.color = Color.blue;
         //    Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);                        
         //}
 
         // Public 메서드
+
+        public override void SetDataFromTable(int id)
+        {
+            
+        }
+
         public override void ResetTarget()
         {            
             if(m_CrewTarget != null && !m_CrewTarget.isMounted)
@@ -100,34 +101,32 @@ namespace SkyDragonHunter.Entities {
         {
             switch (m_Type)
             {
-                case EnemyType.Melee:     
-                case EnemyType.Ranged:
+                case AttackType.Melee:     
+                case AttackType.Ranged:
                     InitMeleeBT();
-                    break;
-                case EnemyType.Stationary:
                     break;
             }
         }
 
         private void InitMeleeBT()
         {
-            m_BehaviourTree = new BehaviourTree<EnemyControllerBT>(this);
+            m_BehaviourTree = new BehaviourTree<MonsterControllerBT>(this);
 
-            var rootSelector = new SelectorNode<EnemyControllerBT>(this);
+            var rootSelector = new SelectorNode<MonsterControllerBT>(this);
 
-            var attackSequence = new SequenceNode<EnemyControllerBT>(this);
-            attackSequence.AddChild(new EntityAttackableCondition<EnemyControllerBT>(this));
-            attackSequence.AddChild(new EntityAttackAction<EnemyControllerBT>(this));
+            var attackSequence = new SequenceNode<MonsterControllerBT>(this);
+            attackSequence.AddChild(new EntityAttackableCondition<MonsterControllerBT>(this));
+            attackSequence.AddChild(new EntityAttackAction<MonsterControllerBT>(this));
             rootSelector.AddChild(attackSequence);
 
-            var chaseSequence = new SequenceNode<EnemyControllerBT>(this);
-            chaseSequence.AddChild(new EntityChasableCondition<EnemyControllerBT>(this));
-            chaseSequence.AddChild(new EntityChaseAction<EnemyControllerBT>(this));
+            var chaseSequence = new SequenceNode<MonsterControllerBT>(this);
+            chaseSequence.AddChild(new EntityChasableCondition<MonsterControllerBT>(this));
+            chaseSequence.AddChild(new EntityChaseAction<MonsterControllerBT>(this));
             rootSelector.AddChild(chaseSequence);
 
-            var moveSequence = new SequenceNode<EnemyControllerBT>(this);
-            moveSequence.AddChild(new EntityMoveCondition<EnemyControllerBT>(this));
-            moveSequence.AddChild(new EntityMoveAction<EnemyControllerBT>(this));
+            var moveSequence = new SequenceNode<MonsterControllerBT>(this);
+            moveSequence.AddChild(new EntityMoveCondition<MonsterControllerBT>(this));
+            moveSequence.AddChild(new EntityMoveAction<MonsterControllerBT>(this));
             rootSelector.AddChild(moveSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
@@ -135,11 +134,7 @@ namespace SkyDragonHunter.Entities {
                 
         private void UpdatePosition()
         {
-            var newPos = transform.position;
-            
-            //float newYPos = Mathf.Sin((Time.time + rand) * (2 * Mathf.PI / m_YaxisMovementPeriod)) * m_YaxisMovementAmplitude;
-            //
-            //newPos.y = m_InitialYPos + newYPos;                        
+            var newPos = transform.position;              
 
             if (isChasing || isMoving)
             {
@@ -151,7 +146,6 @@ namespace SkyDragonHunter.Entities {
                 newPos.x += Time.deltaTime * m_Speed * toRight;                
             }
 
-            // Debug.Log($"new Position: {newPos}");
             transform.position = newPos;
         }
         // Others

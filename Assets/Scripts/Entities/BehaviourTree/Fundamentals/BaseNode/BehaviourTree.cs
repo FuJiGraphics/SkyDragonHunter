@@ -25,6 +25,15 @@ namespace SkyDragonHunter.Gameplay {
 
         public NodeStatus Update()
         {            
+            if(m_context.name == "FieldCrewDummySlow")
+            {
+                int stopper = 0;
+            }
+            if(m_context.name == "FieldCrewDummyFreeze")
+            {
+                int stopper = 0;
+            }
+
             if (m_rootNode == null)
             {
                 return NodeStatus.Failure;
