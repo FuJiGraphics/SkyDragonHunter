@@ -13,6 +13,7 @@ namespace SkyDragonHunter.Gameplay {
     {
         // ÇÊµå (Fields)
         public bool isSkipDistanceCheck = false;
+        public bool isSkipCooldownCheck = false;
 
         private RangedAttackSC m_Def;
         private ObjectPool<GameObject> m_ProjectilePool;
@@ -100,10 +101,13 @@ namespace SkyDragonHunter.Gameplay {
                 lookAtComp.LookAt(defender);
             }
 
-            if (Time.time < m_LastCooldown)
-                return;
+            if (!isSkipCooldownCheck)
+            {
+                if (Time.time < m_LastCooldown)
+                    return;
 
-            m_LastCooldown = Time.time + m_Def.coolDown;
+                m_LastCooldown = Time.time + m_Def.coolDown;
+            }
 
             var instance = m_ProjectilePool.Get();
             m_ProjectileGenList.Add(instance);
