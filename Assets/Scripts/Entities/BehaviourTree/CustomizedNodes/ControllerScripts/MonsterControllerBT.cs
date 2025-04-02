@@ -1,8 +1,5 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
-using SkyDragonHunter.Scriptables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.Entities 
@@ -16,30 +13,62 @@ namespace SkyDragonHunter.Entities
     public class MonsterControllerBT : BaseControllerBT<MonsterControllerBT>
     {
         // 필드 (Fields)
-        [SerializeField] private AttackType m_Type;
+        [SerializeField] private AttackType m_AttackType;
 
         private CrewControllerBT m_CrewTarget;
 
         // 유니티 (MonoBehaviour 기본 메서드)
+        protected override void Start()
+        {
+            base.Start();
+
+            // TODO : Temporary code for test only
+            #region
+            if (ID != 0)
+            {
+                SetDataFromTable(ID);
+            }
+            #endregion
+        }
+
         private void Update()
         {
             UpdatePosition();
             m_BehaviourTree.Update();
         }
 
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawWireSphere(transform.position, m_AggroRange);
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, m_AggroRange);
 
-        //    Gizmos.color = Color.blue;
-        //    Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);                        
-        //}
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, m_AttackRange);
+        }
 
         // Public 메서드
         public override void SetDataFromTable(int id)
         {
+            ID = id;
+            var data = DataTableManager.MonsterTable.Get(id);
+            if (data == null)
+            {
+                Debug.LogError($"Set Monster Data Failed : ID '{id}' not found in monster table.");
+                return;
+            }
 
+            name = data.Name;
+            m_AttackType = data.Type;
+            status.MaxHealth = data.HP;
+            status.MaxDamage = data.ATK;
+            status.MaxArmor = data.DEF;
+            status.MaxResilient = data.REG;
+            projectileId = data.ProjectileID;
+            m_AttackInterval = data.AttackInterval;
+            m_AttackRange = data.AttackRange;
+            m_AggroRange = data.AggroRange;
+            m_Speed = data.Speed;
+            m_ChaseSpeed = data.ChaseSpeed;
         }
 
 
@@ -99,7 +128,7 @@ namespace SkyDragonHunter.Entities
         // Protected 메서드
         protected override void InitBehaviourTree()
         {
-            switch (m_Type)
+            switch (m_AttackType)
             {
                 case AttackType.Melee:     
                 case AttackType.Ranged:

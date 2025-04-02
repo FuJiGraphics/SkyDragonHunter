@@ -6,18 +6,6 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {
-    public enum PossessionBonusStatType
-    {
-        ATK,
-        HP,
-        DEF,
-        REG,
-        CritRate,
-        CritMultiplier,
-        GoldBonus,
-        ExpBonus,
-    }
-
     public class CrewData : DataTableData
     {
         public string                       Name { get; set; }
@@ -43,6 +31,8 @@ namespace SkyDragonHunter.Tables
         public double                       IncreasingATK { get; set; }
         public double                       IncreasingDEF { get; set; }
         public double                       IncreasingREG { get; set; }
+        public int                          IncreasingPossession1 { get; set;}
+        public int                          IncreasingPossession2 { get; set;}
 
         public override string ToString()
         {

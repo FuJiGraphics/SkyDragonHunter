@@ -20,6 +20,8 @@ namespace SkyDragonHunter.Entities
         [SerializeField] protected float m_Speed;
         [SerializeField] protected float m_ChaseSpeed;
         [SerializeField] protected float m_AggroRange;
+        [SerializeField] protected float m_AttackRange;
+        [SerializeField] public float m_AttackInterval;
 
         [SerializeField] protected BehaviourTree<T> m_BehaviourTree;
 
@@ -46,7 +48,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < characterInventory.CurrentWeapon.WeaponData.range;
+                return TargetDistance < m_AttackRange;
             }
         }
 

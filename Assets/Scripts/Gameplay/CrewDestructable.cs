@@ -24,7 +24,7 @@ namespace SkyDragonHunter {
         // Others
         public override void OnDestruction(GameObject attacker)
         {
-            if (m_CrewController.isMounted)
+            if(m_CrewController.isMounted)
             {
                 return;
             }
