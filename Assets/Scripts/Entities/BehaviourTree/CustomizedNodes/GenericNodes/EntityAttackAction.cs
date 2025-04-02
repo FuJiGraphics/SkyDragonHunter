@@ -31,7 +31,7 @@ namespace SkyDragonHunter.Entities {
                 return NodeStatus.Failure;
             }
 
-            if(Time.time < lastAttackTime + m_Context.m_CharacterInventory.CurrentWeapon.WeaponData.coolDown)
+            if(Time.time < lastAttackTime + m_Context.characterInventory.CurrentWeapon.WeaponData.coolDown)
             {
                 return NodeStatus.Running;
             }

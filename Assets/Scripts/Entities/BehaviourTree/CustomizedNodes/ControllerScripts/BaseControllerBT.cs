@@ -18,11 +18,15 @@ namespace SkyDragonHunter.Entities
 
         // 필드 (Fields)
         [SerializeField] protected float m_Speed;
+        [SerializeField] protected float m_ChaseSpeed;
         [SerializeField] protected float m_AggroRange;
 
         [SerializeField] protected BehaviourTree<T> m_BehaviourTree;
 
-        public CharacterInventory m_CharacterInventory;
+        public CharacterInventory characterInventory;
+        public int ID;
+        public int projectileId;
+
         //public AttackDefinition attackDefinition;
         public CharacterStatus status;
 
@@ -42,7 +46,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.WeaponData.range;
+                return TargetDistance < characterInventory.CurrentWeapon.WeaponData.range;
             }
         }
 
@@ -96,13 +100,13 @@ namespace SkyDragonHunter.Entities
         // 유니티 (MonoBehaviour 기본 메서드)
         protected virtual void Awake()
         {
-            m_CharacterInventory = GetComponent<CharacterInventory>();
+            characterInventory = GetComponent<CharacterInventory>();
             floatingEffect = GetComponent<FloatingEffect>();
         }
 
         protected virtual void Start()
         {
-            if(m_CharacterInventory == null)
+            if(characterInventory == null)
             {
                 Debug.LogError($"Character Inventory null in {gameObject.name}");
             }
@@ -126,9 +130,9 @@ namespace SkyDragonHunter.Entities
         {
             //m_Animator.SetTrigger(triggerHash);
 
-            if(m_CharacterInventory != null)
+            if(characterInventory != null)
             {
-                m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                characterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
                 //Debug.LogError($"{gameObject.name} attacked {m_Target.gameObject.name}");
             }
             else
@@ -138,6 +142,7 @@ namespace SkyDragonHunter.Entities
         }
 
         public abstract void ResetTarget();
+        public abstract void SetDataFromTable(int id);
 
         public virtual void ResetBehaviourTree()
         {

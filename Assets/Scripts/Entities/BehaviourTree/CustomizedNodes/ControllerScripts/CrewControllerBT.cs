@@ -24,12 +24,11 @@ namespace SkyDragonHunter.Entities
 
         [SerializeField] private float targetYPos = float.MaxValue;
         public MountableSlot m_MountSlot;
-        public bool isMounted;
         [SerializeField] public Vector3 onFieldOriginPosition;        
 
         // TODO
         // Test용도 임시 필드
-        public bool isOnBoard = false;
+        public bool isMounted = false;
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
         private CharacterStatus m_CharacterStatus;
@@ -55,7 +54,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.WeaponData.range;
+                return TargetDistance < characterInventory.CurrentWeapon.WeaponData.range;
             }
         }
 
@@ -131,7 +130,6 @@ namespace SkyDragonHunter.Entities
                 if(exhaustionRemainingTime <= 0)
                 {
                     exhaustionRemainingTime = exhaustionTime;
-                    isOnBoard = false;
                     m_CharacterStatus.ResetAll();
                     MountAction(false);
                     ResetBehaviourTree();
@@ -155,21 +153,26 @@ namespace SkyDragonHunter.Entities
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
 
-            if(m_CharacterInventory == null)
+            if(characterInventory == null)
             {
                 //Debug.LogWarning($"Character inventory Null of {gameObject.name}");
             }
-            else if (m_CharacterInventory.CurrentWeapon == null)
+            else if (characterInventory.CurrentWeapon == null)
             {
                 //Debug.LogWarning($"CurrentWeapon Null of {gameObject.name}");
             }
 
             Gizmos.color = Color.green;
-            if(m_CharacterInventory != null &&  m_CharacterInventory.CurrentWeapon != null)
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.WeaponData.range);            
+            if(characterInventory != null &&  characterInventory.CurrentWeapon != null)
+            Gizmos.DrawWireSphere(transform.position, characterInventory.CurrentWeapon.WeaponData.range);            
         }
 
         // Public 메서드
+        public override void SetDataFromTable(int id)
+        {
+
+        }
+
         public override void ResetTarget()
         {
             if (m_Target == null)
