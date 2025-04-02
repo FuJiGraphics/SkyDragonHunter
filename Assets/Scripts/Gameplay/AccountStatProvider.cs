@@ -7,6 +7,10 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         // 속성 (Properties)
+
+        // TODO: 현재까지는 UI 표시 테스트용
+        public CommonStats FirstStat => m_FirstStats;
+
         // 외부 종속성 필드 (External dependencies field)
         private CommonStats m_FirstStats;
         private CharacterStatus m_Stats;
