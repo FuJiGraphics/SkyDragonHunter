@@ -19,8 +19,6 @@ namespace SkyDragonHunter.Entities
         // 필드 (Fields)
         [SerializeField] private CrewType m_Type;
 
-        private static readonly string s_EnemyTag = "Monster";
-
         public bool isIdle = false;
         public float lastIdleTime;
 
@@ -57,15 +55,14 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < characterInventory.CurrentWeapon.range;
             }
         }
 
         public override bool IsTargetInAggroRange
         {
             get
-            {
-                //Debug.LogError($"Crew Controller D/A: {TargetDistance} / {m_AggroRange} // y : {targetYPos}");
+            {                
                 return TargetDistance < m_AggroRange;
             }
         }
@@ -78,7 +75,6 @@ namespace SkyDragonHunter.Entities
                 {
                     return float.MaxValue;
                 }
-
                 var distance = m_Target.position.x - transform.position.x;
                 if (distance > 0)
                 {
@@ -100,20 +96,15 @@ namespace SkyDragonHunter.Entities
                     }
                     isDirectionToRight = false;                    
                 }
-
                 float newYPos = 0f;
                 if (targetYPos != float.MaxValue)
                     newYPos = targetYPos;
-
                 Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);
                 Vector3 selfPos = new Vector3(transform.position.x, floatingEffect.StartY, 0);
                 var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
                 var distanceCallibrator = (sr.bounds.size.x) * 0.5f;
-
                 distance = Vector3.Distance(targetPos, selfPos);
-
                 distance += distanceCallibrator;
-
                 return distance;
             }
         }
@@ -156,22 +147,17 @@ namespace SkyDragonHunter.Entities
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
-
-            if(m_CharacterInventory == null)
-            {
-                //Debug.LogWarning($"Character inventory Null of {gameObject.name}");
-            }
-            else if (m_CharacterInventory.CurrentWeapon == null)
-            {
-                //Debug.LogWarning($"CurrentWeapon Null of {gameObject.name}");
-            }
-
             Gizmos.color = Color.green;
-            if(m_CharacterInventory != null &&  m_CharacterInventory.CurrentWeapon != null)
-            Gizmos.DrawWireSphere(transform.position, m_CharacterInventory.CurrentWeapon.range);            
+            if(characterInventory != null &&  characterInventory.CurrentWeapon != null)
+            Gizmos.DrawWireSphere(transform.position, characterInventory.CurrentWeapon.range);            
         }
 
         // Public 메서드
+        public override void SetDataFromTable(int id)
+        {
+            
+        }
+
         public override void ResetTarget()
         {
             if (m_Target == null)

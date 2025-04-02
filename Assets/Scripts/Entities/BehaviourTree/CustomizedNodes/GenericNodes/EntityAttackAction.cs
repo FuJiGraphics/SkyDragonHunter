@@ -30,7 +30,7 @@ namespace SkyDragonHunter.Entities {
             {
                 return NodeStatus.Failure;
             }
-            if(Time.time < lastAttackTime + m_Context.m_CharacterInventory.CurrentWeapon.coolDown)
+            if(Time.time < lastAttackTime + m_Context.characterInventory.CurrentWeapon.coolDown)
             {
                 return NodeStatus.Running;
             }
@@ -44,6 +44,7 @@ namespace SkyDragonHunter.Entities {
 
         protected override void OnEnd()
         {
+            m_Context.ResetTarget();
             base.OnEnd();
         }
     } // Scope by class AttackAction

@@ -11,10 +11,11 @@ namespace SkyDragonHunter.Utility {
         {
             "StringTableKr",
         };
-
-        public static readonly string Sample = "SampleTable";
-        public static readonly string Monster = "MonsterTable";
+                
         public static readonly string CrystalLevel = "CrystalLevelTable";
+        public static readonly string Crew = "CrewTable";
+        public static readonly string Monster = "MonsterTable";
+        public static readonly string Boss = "BossTable";
 
     } // Scope by class DataTableIds
 

@@ -10,17 +10,23 @@ namespace SkyDragonHunter.Entities
     public abstract class BaseControllerBT<T> : MonoBehaviour, ISlowable 
         where T : BaseControllerBT<T>
     {
+        // Static Fields
+        protected static readonly string s_PlayerTag = "Player";
+        protected static readonly string s_CrewTag = "Crew";
+        protected static readonly string s_CreatureTag = "Creature";
+        protected static readonly string s_EnemyTag = "Monster";
+
         // 필드 (Fields)
         [SerializeField] protected float m_Speed;
         [SerializeField] protected float m_AggroRange;
-
         [SerializeField] protected BehaviourTree<T> m_BehaviourTree;
+        [SerializeField] protected Animator m_Animator;
 
-        public CharacterInventory m_CharacterInventory;
-        //public AttackDefinition attackDefinition;
+        public string Name;
+
+        public CharacterInventory characterInventory;
         public CharacterStatus status;
 
-        protected Animator m_Animator;
         public FloatingEffect floatingEffect;
 
         [SerializeField] protected Transform m_Target;
@@ -28,6 +34,8 @@ namespace SkyDragonHunter.Entities
         public bool isDirectionToRight = false;
         public bool isMoving = false;
         public bool isChasing = false;
+        
+        public int ProjectileId;
 
         // 속성 (Properties)
         public Transform Target => m_Target;
@@ -36,7 +44,7 @@ namespace SkyDragonHunter.Entities
         {
             get
             {
-                return TargetDistance < m_CharacterInventory.CurrentWeapon.range;
+                return TargetDistance < characterInventory.CurrentWeapon.range;
             }
         }
 
@@ -90,13 +98,13 @@ namespace SkyDragonHunter.Entities
         // 유니티 (MonoBehaviour 기본 메서드)
         protected virtual void Awake()
         {
-            m_CharacterInventory = GetComponent<CharacterInventory>();
+            characterInventory = GetComponent<CharacterInventory>();
             floatingEffect = GetComponent<FloatingEffect>();
         }
 
         protected virtual void Start()
         {
-            if(m_CharacterInventory == null)
+            if(characterInventory == null)
             {
                 Debug.LogError($"Character Inventory null in {gameObject.name}");
             }
@@ -120,10 +128,10 @@ namespace SkyDragonHunter.Entities
         {
             //m_Animator.SetTrigger(triggerHash);
 
-            if(m_CharacterInventory != null)
+            if(characterInventory != null)
             {
-                m_CharacterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
-                m_CharacterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                characterInventory.CurrentWeapon.SetActivePrefabInstance(gameObject);
+                characterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
                 //Debug.LogError($"{gameObject.name} attacked {m_Target.gameObject.name}");
             }
             else
@@ -131,6 +139,8 @@ namespace SkyDragonHunter.Entities
                 Debug.LogWarning($"{gameObject.name} Character inventory null");
             }
         }
+
+        public abstract void SetDataFromTable(int id);
 
         public abstract void ResetTarget();
 
