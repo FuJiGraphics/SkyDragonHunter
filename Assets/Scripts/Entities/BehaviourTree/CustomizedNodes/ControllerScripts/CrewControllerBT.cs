@@ -13,25 +13,54 @@ namespace SkyDragonHunter.Entities
         OnBoard,
         OnField,
     }
+    public enum PossessionBonusStatType
+    {
+        ATK,
+        HP,
+        DEF,
+        REG,
+        CritRate,
+        CritMultiplier,
+        GoldBonus,
+        ExpBonus,
+    }
 
     public class CrewControllerBT :  BaseControllerBT<CrewControllerBT>
     {
         // 필드 (Fields)
-        [SerializeField] private CrewType m_Type;
+        [SerializeField] private CrewType m_CrewType;
 
         public bool isIdle = false;
         public float lastIdleTime;
 
         [SerializeField] private float targetYPos = float.MaxValue;
         public MountableSlot m_MountSlot;
-        [SerializeField] public Vector3 onFieldOriginPosition;        
+        public bool isMounted = false;
+        [SerializeField] public Vector3 onFieldOriginPosition;
+
+        public int activeSkillID;
+        private float m_ActiveSkillCooltime;
+        private float m_ActiveSkillInitialDelay;
+
+        public int passiveSkillID;
+        private float m_PassiveSkillCooltime;
+
+        public PossessionBonusStatType bonus1Type;
+        public int bonus1Value;
+        public PossessionBonusStatType bonus2Type;
+        public int bonus2Value;
+
+        public double   increaseHP;
+        public double   increaseATK;
+        public double   increaseDEF;
+        public double   increaseREG;
+        public int      increaseBonus1;
+        public int      increaseBonus2;
 
         // TODO
         // Test용도 임시 필드
-        public bool isMounted = false;
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
-        private CharacterStatus m_CharacterStatus;
 
         // 속성 (Properties)
         public float Speed => m_Speed;
@@ -47,23 +76,6 @@ namespace SkyDragonHunter.Entities
                 var distance = Vector3.Distance(onFieldOriginPosition, currentPos);
 
                 return distance;
-            }
-        }
-
-        public override bool IsTargetInAttackRange
-        {
-            get
-            {
-                return TargetDistance < characterInventory.CurrentWeapon.WeaponData.range;
-            }
-        }
-
-        public override bool IsTargetInAggroRange
-        {
-            get
-            {
-                //Debug.LogError($"Crew Controller D/A: {TargetDistance} / {m_AggroRange} // y : {targetYPos}");
-                return TargetDistance < m_AggroRange;
             }
         }
 
@@ -85,7 +97,7 @@ namespace SkyDragonHunter.Entities
                         newScale.z *= -1;
                         transform.localScale = newScale;
                     }
-                    isDirectionToRight = true;                    
+                    isDirectionToRight = true;
                 }
                 else
                 {
@@ -95,7 +107,7 @@ namespace SkyDragonHunter.Entities
                         newScale.z *= -1;
                         transform.localScale = newScale;
                     }
-                    isDirectionToRight = false;                    
+                    isDirectionToRight = false;
                 }
 
                 float newYPos = 0f;
@@ -119,18 +131,18 @@ namespace SkyDragonHunter.Entities
         protected override void Awake()
         {
             base.Awake();
-            m_CharacterStatus = GetComponent<CharacterStatus>();
+            status = GetComponent<CharacterStatus>();
         }
 
         private void Update()
         {            
-            if (m_Type == CrewType.OnField && isMounted)
+            if (m_CrewType == CrewType.OnField && isMounted)
             {
                 exhaustionRemainingTime -= Time.deltaTime;
                 if(exhaustionRemainingTime <= 0)
                 {
                     exhaustionRemainingTime = exhaustionTime;
-                    m_CharacterStatus.ResetAll();
+                    status.ResetAll();
                     MountAction(false);
                     ResetBehaviourTree();
                 }
@@ -146,6 +158,14 @@ namespace SkyDragonHunter.Entities
         {
             InitMountSlot();        
             base.Start();
+
+            // TODO : Temporary code for test only
+            #region
+            if (ID != 0)
+            {
+                SetDataFromTable(ID);
+            }
+            #endregion
         }
 
         private void OnDrawGizmos()
@@ -153,24 +173,47 @@ namespace SkyDragonHunter.Entities
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, m_AggroRange);
 
-            if(characterInventory == null)
-            {
-                //Debug.LogWarning($"Character inventory Null of {gameObject.name}");
-            }
-            else if (characterInventory.CurrentWeapon == null)
-            {
-                //Debug.LogWarning($"CurrentWeapon Null of {gameObject.name}");
-            }
-
             Gizmos.color = Color.green;
-            if(characterInventory != null &&  characterInventory.CurrentWeapon != null)
-            Gizmos.DrawWireSphere(transform.position, characterInventory.CurrentWeapon.WeaponData.range);            
+            Gizmos.DrawWireSphere(transform.position, m_AttackRange);
         }
 
         // Public 메서드
         public override void SetDataFromTable(int id)
         {
+            ID = id;
+            var data = DataTableManager.CrewTable.Get(id);
+            if (data == null)
+            {
+                Debug.LogError($"Set Crew Data Failed : ID '{id}' not found in crew table.");
+                return;
+            }
 
+            name = data.Name;
+            m_CrewType = data.Type;
+            activeSkillID = data.ActiveSkillID;
+            m_ActiveSkillCooltime = data.ActiveSkillCooltime;
+            m_ActiveSkillInitialDelay = data.ActiveSkillInitialDelay;
+            passiveSkillID = data.PassiveSkillID;
+            m_PassiveSkillCooltime = data.PassiveSkillCooltime;
+            status.MaxHealth = data.BasicHP;
+            status.MaxDamage = data.BasicATK;
+            status.MaxArmor = data.BasicDEF;
+            status.MaxResilient = data.BasicREG;
+            bonus1Type = data.PossessionBonus1Type;
+            bonus1Value = data.PossessionBonus1Value;
+            bonus2Type = data.PossessionBonus2Type;
+            bonus2Value = data.PossessionBonus2Value;
+            status.CriticalChance = data.CritRate;
+            status.CriticalMultiplier = data.CritMultiplier;
+            m_AttackInterval = data.AttackInterval;
+            m_AttackRange = data.AttackRange;
+            m_AggroRange = 15;
+            increaseHP = data.IncreasingHP;
+            increaseATK = data.IncreasingATK;
+            increaseDEF = data.IncreasingDEF;
+            increaseREG = data.IncreasingREG;
+            increaseBonus1 = data.IncreasingPossession1;
+            increaseBonus2 = data.IncreasingPossession2;
         }
 
         public override void ResetTarget()
@@ -236,7 +279,7 @@ namespace SkyDragonHunter.Entities
         // Protected 메서드
         protected override void InitBehaviourTree()
         {
-            switch (m_Type)
+            switch (m_CrewType)
             {
                 case CrewType.OnBoard:
                     InitOnBoardCrewBT();
@@ -264,12 +307,12 @@ namespace SkyDragonHunter.Entities
             attackSequence.AddChild(new EntityAttackAction<CrewControllerBT>(this));
             rootSelector.AddChild(attackSequence);
 
+            // TODO: 임시
             //var IdleSequence = new SequenceNode<CrewControllerBT>(this);
             //IdleSequence.AddChild(new OnFieldCrewIdleCondition(this));
             //IdleSequence.AddChild(new OnFieldCrewIdleAction(this));
             //rootSelector.AddChild(IdleSequence);
 
-            // TODO: 임시
             m_BehaviourTree.SetRoot(rootSelector);
         }
 

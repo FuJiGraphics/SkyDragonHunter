@@ -191,15 +191,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 10
+  m_ChaseSpeed: 0
   m_AggroRange: 30
-  m_CharacterInventory: {fileID: 0}
+  m_AttackRange: 8
+  m_AttackInterval: 0
+  characterInventory: {fileID: 0}
+  ID: 200001
+  projectileId: 0
   status: {fileID: -7276501981709863167}
   floatingEffect: {fileID: 0}
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
-  m_Type: 0
+  m_AttackType: 0
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0

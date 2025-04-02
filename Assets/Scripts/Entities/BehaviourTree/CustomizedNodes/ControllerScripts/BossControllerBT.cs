@@ -17,7 +17,7 @@ namespace SkyDragonHunter.Entities
         private static int s_InstanceNo = 0;
 
         // Fields
-        [SerializeField] private BossAttackType attackType;
+        [SerializeField] private BossAttackType m_AttackType;
         public int skillId;
         public float skillCooltime;
 
@@ -41,13 +41,14 @@ namespace SkyDragonHunter.Entities
             }
 
             name = data.Name;
+            m_AttackType = data.Type;
             status.MaxHealth = data.HP;
             status.MaxDamage = data.ATK;
             status.MaxArmor = data.DEF;
             status.MaxResilient = data.REG;
             projectileId = data.ProjectileID;
-            characterInventory.CurrentWeapon.WeaponData.coolDown = data.AttackInterval;
-            characterInventory.CurrentWeapon.WeaponData.range = data.AttackRange;
+            m_AttackInterval = data.AttackInterval;
+            m_AttackRange = data.AttackRange;
             m_AggroRange = data.AggroRange;
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
