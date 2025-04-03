@@ -548,7 +548,11 @@ PrefabInstance:
       objectReference: {fileID: 500486199}
     - target: {fileID: -7113192507965288946, guid: a3f65811d35411c478d59500d00a3419, type: 3}
       propertyPath: m_AggroRange
-      value: 40
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -7113192507965288946, guid: a3f65811d35411c478d59500d00a3419, type: 3}
+      propertyPath: m_AttackRange
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -7082953031541118418, guid: a3f65811d35411c478d59500d00a3419, type: 3}
       propertyPath: itemPrefabs.Array.size
@@ -899,6 +903,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 7434643913460656674, guid: a671568c6a169f040b823491c5713795, type: 3}
+    - target: {fileID: 504886660034442510, guid: a7ce81b9160806e468c5dd80ed2c3e32, type: 3}
       propertyPath: airship
       value: 
       objectReference: {fileID: 207899522}
@@ -1095,7 +1103,11 @@ PrefabInstance:
       objectReference: {fileID: 1056332789}
     - target: {fileID: -7113192507965288946, guid: a3f65811d35411c478d59500d00a3419, type: 3}
       propertyPath: m_AggroRange
-      value: 40
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -7113192507965288946, guid: a3f65811d35411c478d59500d00a3419, type: 3}
+      propertyPath: m_AttackRange
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -7082953031541118418, guid: a3f65811d35411c478d59500d00a3419, type: 3}
       propertyPath: weapons.Array.data[0]
@@ -1610,7 +1622,7 @@ PrefabInstance:
     - target: {fileID: 6164579576527314138, guid: ca1e202e454a58c418380c885cda5f06, type: 3}
       propertyPath: floatingObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 4381422749695507041, guid: d965ce7e20dbfe3418c712938345b5ec, type: 3}
+      objectReference: {fileID: 4381422749695507041, guid: a671568c6a169f040b823491c5713795, type: 3}
     - target: {fileID: 6164579576527314138, guid: ca1e202e454a58c418380c885cda5f06, type: 3}
       propertyPath: floatingObjects.Array.data[2]
       value: 
