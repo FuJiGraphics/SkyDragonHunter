@@ -5,18 +5,16 @@ using SkyDragonHunter.Utility;
 using SkyDraonHunter.Utility;
 using System;
 using UnityEngine;
-using UnityEngine.U2D;
 
 namespace SkyDragonHunter.Scriptables {
 
-    [CreateAssetMenu(fileName = "GameDataSC.asset", menuName = "Skills/GameDataSC")]
-    public class GameDataSC : ScriptableObject
+    public class SkillDefinition : ScriptableObject
     {
         // 필드 (Fields)
-        public int ID;
-        public string Name;
-        public double HP;
-        public float Speed;
+        public int id;
+        public string skillName;
+        public double damage;   // 데미지
+        public float coolDown;  // 쿨다운
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -25,5 +23,5 @@ namespace SkyDragonHunter.Scriptables {
         // Public 메서드
         // Others
 
-    } // Scope by class GameDataSC
+    } // Scope by class SkillDefinition
 } // namespace SkyDragonHunter
