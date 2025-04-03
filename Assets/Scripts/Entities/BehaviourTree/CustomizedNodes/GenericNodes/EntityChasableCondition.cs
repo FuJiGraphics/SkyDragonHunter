@@ -15,6 +15,11 @@ namespace SkyDragonHunter.Entities {
         // Protected 메서드
         protected override NodeStatus OnUpdate()
         {
+            if (m_Context.IsSkillAvailable)
+            {
+                return NodeStatus.Failure;
+            }
+
             if (m_Context.IsTargetInAttackRange)
                 return NodeStatus.Failure;
 

@@ -333,15 +333,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 10
+  m_ChaseSpeed: 0
   m_AggroRange: 30
-  m_CharacterInventory: {fileID: 0}
-  status: {fileID: 0}
-  floatingEffect: {fileID: 0}
+  m_AttackRange: 0
+  m_AttackInterval: 0
+  characterInventory: {fileID: -3548480993830963735}
+  ID: 200001
+  projectileId: 0
+  status: {fileID: -6860440072148329640}
+  floatingEffect: {fileID: 4381422749695507041}
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
-  m_Type: 0
+  m_AttackType: 0
 --- !u!114 &7145011849598956032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
+  isSkipCooldownCheck: 0
 --- !u!1001 &7597109240998436959
 PrefabInstance:
   m_ObjectHideFlags: 0
