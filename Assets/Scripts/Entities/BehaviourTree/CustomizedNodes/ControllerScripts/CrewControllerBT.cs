@@ -170,6 +170,11 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public 메서드
+        public override void ResetHealth()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void SetDataFromTable(int id)
         {
             ID = id;

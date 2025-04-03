@@ -174,6 +174,10 @@ namespace SkyDragonHunter.Entities
         }
         // Others
 
+        [ContextMenu("Reset Health")]
+        public abstract void ResetHealth();
+
+
     } // Scope by class BaseControllerBT
 
 } // namespace Root
