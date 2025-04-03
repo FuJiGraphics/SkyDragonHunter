@@ -9,7 +9,6 @@ namespace SkyDragonHunter {
         // 필드 (Fields)
         public StatusAilmentDefinition[] ailments;
 
-        private IAttackTargetProvider m_TargetProvider;
         private SkillBase m_SkillBase;
 
         // 속성 (Properties)
@@ -27,8 +26,6 @@ namespace SkyDragonHunter {
 
         public void OnSkillHitEnter(GameObject defender)
         {
-            if (!m_TargetProvider.IsAllowedTarget(defender.tag))
-                return;
             ApplyStatusAilment(defender);
         }
 
@@ -40,7 +37,6 @@ namespace SkyDragonHunter {
         // Private 메서드
         private void Init()
         {
-            m_TargetProvider = GetComponent<IAttackTargetProvider>();
             m_SkillBase = GetComponent<SkillBase>();
         }
 

@@ -13,7 +13,6 @@ namespace SkyDragonHunter {
         // 외부 종속성 필드 (External dependencies field)
         private SkillBase m_SkillBase;
         private SkillDefinition m_SkillData;
-        private GameObject m_Caster;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -28,8 +27,8 @@ namespace SkyDragonHunter {
 
         public void OnSkillHitEnter(GameObject defender)
         {
-            CharacterStatus aStat = m_Caster.GetComponent<CharacterStatus>();
-            CharacterStatus bStat = m_Caster.GetComponent<CharacterStatus>();
+            CharacterStatus aStat = m_SkillBase.Caster.GetComponent<CharacterStatus>();
+            CharacterStatus bStat = defender.GetComponent<CharacterStatus>();
             if (aStat == null || bStat == null)
                 return;
 
@@ -37,7 +36,7 @@ namespace SkyDragonHunter {
             IAttackable attackable = bStat.GetComponent<IAttackable>();
             if (attackable != null)
             {
-                attackable.OnAttack(m_Caster, attack);
+                attackable.OnAttack(m_SkillBase.Caster, attack);
             }
         }
 
@@ -51,7 +50,6 @@ namespace SkyDragonHunter {
         {
             m_SkillBase = GetComponent<SkillBase>();
             m_SkillData = m_SkillBase.skillData;
-            m_Caster = m_SkillBase.Caster;
         }
 
         // Others

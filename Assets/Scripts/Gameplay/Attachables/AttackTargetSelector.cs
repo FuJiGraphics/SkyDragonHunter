@@ -26,6 +26,12 @@ namespace SkyDragonHunter
         }
 
         // Public 메서드
+        public void SetAllowedTarget(string[] targets)
+        {
+            allowedTargetTags = targets;
+            Init();
+        }
+
         // Private 메서드
         private void Init()
         {

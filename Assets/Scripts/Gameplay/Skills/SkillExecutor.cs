@@ -11,6 +11,7 @@ namespace SkyDragonHunter {
     {
         public Button button;
         public SkillBase skill;
+        public string[] targetTags;
     }
 
     public class SkillExecutor : MonoBehaviour
@@ -41,6 +42,11 @@ namespace SkyDragonHunter {
             SkillBase skill = Instantiate(m_Slots[index].skill);
             skill.Caster = gameObject;
             skill.Receiver = m_EnemySearchProvider.Target;
+            // 스킬을 적용 받을 타겟을 등록
+            if (skill.TryGetComponent<AttackTargetSelector>(out var selector))
+            {
+                selector.SetAllowedTarget(m_Slots[index].targetTags);
+            }
 
             // 스킬 시전 위치에 대한 앵커가 있는지 체크
             Vector3 firePos = skill.Caster.transform.position;

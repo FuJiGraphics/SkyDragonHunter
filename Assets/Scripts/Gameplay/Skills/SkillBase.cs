@@ -15,12 +15,18 @@ namespace SkyDragonHunter {
 
         // 외부 종속성 필드 (External dependencies field)
         private ISkillLifecycleHandler[] m_Handlers;
+        private IAttackTargetProvider m_AttackTargetSelector;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
             m_Handlers = GetComponents<ISkillLifecycleHandler>();
+            m_AttackTargetSelector = GetComponent<IAttackTargetProvider>();
+            if (m_AttackTargetSelector == null)
+            {
+                Debug.LogWarning("[SkillBase]: AttackTargetSelector를 찾을 수 없습니다.");
+            }
         }
 
         private void OnEnable()
@@ -38,34 +44,52 @@ namespace SkyDragonHunter {
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collision.gameObject.tag))
+                return;
+
             OnHitBefore();
             OnHitEnter(collision.gameObject);
         }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collision.gameObject.tag))
+                return;
+
             OnHitStay(collision.gameObject);
         }
 
         private void OnCollisionExit2D(Collision2D collision)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collision.gameObject.tag))
+                return;
+
             OnHitExit(collision.gameObject);
             OnHitAfter();
         }
 
         private void OnTriggerEnter2D(Collider2D collider)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collider.tag))
+                return;
+
             OnHitBefore();
             OnHitEnter(collider.gameObject);
         }
 
         private void OnTriggerStay2D(Collider2D collider)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collider.tag))
+                return;
+
             OnHitStay(collider.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collider)
         {
+            if (!m_AttackTargetSelector.IsAllowedTarget(collider.tag))
+                return;
+
             OnHitExit(collider.gameObject);
             OnHitAfter();
         }
