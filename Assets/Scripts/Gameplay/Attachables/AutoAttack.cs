@@ -4,22 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static NPOI.HSSF.Util.HSSFColor;
 
 namespace SkyDragonHunter.Gameplay
 {
     public class AutoAttack : MonoBehaviour
     {
         // 필드 (Fields)
-        public string[] targetTags;
-        private CharacterInventory m_Inventory;
-
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
+        [SerializeField] private CharacterInventory m_Inventory;
+        [SerializeField] private EnemySearchProvider m_EnemySearchProvider;
+
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+        private void Awake()
         {
-            m_Inventory = GetComponent<CharacterInventory>();
+            Init();
         }
 
         private void Update()
@@ -30,18 +31,26 @@ namespace SkyDragonHunter.Gameplay
                 return;
             }
 
-            foreach (string tag in targetTags)
-            {
-                var findGo = GameObject.FindWithTag(tag);
-                if (findGo != null)
-                {
-                    m_Inventory.CurrentWeapon?.Execute(gameObject, findGo);
-                }
-            }
+            AttackTarget();
         }
 
         // Public 메서드
         // Private 메서드
+        private void Init()
+        {
+            m_Inventory = GetComponent<CharacterInventory>();
+            m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
+        }
+
+        private void AttackTarget()
+        {
+            GameObject target = m_EnemySearchProvider.Target;
+            if (target != null)
+            {
+                m_Inventory.CurrentWeapon?.Execute(gameObject, target);
+            }
+        }
+
         // Others
 
     } // Scope by class AutoAttack
