@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
-  isSkipCooldownCheck: 0
+  isSkipCooldownCheck: 1
 --- !u!114 &-1228580994115567982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +402,7 @@ MonoBehaviour:
   m_AttackType: 0
   skillId: 0
   lastSkillCasted: 0
+  IsSkillAvailable: 0
 --- !u!1001 &7597109240998436959
 PrefabInstance:
   m_ObjectHideFlags: 0

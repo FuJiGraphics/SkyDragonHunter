@@ -50,12 +50,22 @@ namespace SkyDragonHunter.Entities
         public void UseSkill()
         {
             // TODO
-            for (int i = 0; i < 5; ++i)
-            {
-                SetAnimTrigger(0);
-            }
-
+            StartCoroutine(SkillShot());
+            lastSkillCasted = Time.time;
             Debug.Log($"Skill id [{skillId}] used at '{Time.time}', CD : {m_skillCooltime}");
+        }
+
+        public IEnumerator SkillShot()
+        {
+            SetAnimTrigger(0);
+            yield return new WaitForSeconds(0.1f);
+            SetAnimTrigger(0);
+            yield return new WaitForSeconds(0.1f);
+            SetAnimTrigger(0);
+            yield return new WaitForSeconds(0.1f);
+            SetAnimTrigger(0);
+            yield return new WaitForSeconds(0.1f);
+            SetAnimTrigger(0);            
         }
 
         public override void SetDataFromTable(int id)

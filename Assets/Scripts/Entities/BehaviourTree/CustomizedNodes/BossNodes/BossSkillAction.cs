@@ -20,7 +20,7 @@ namespace SkyDragonHunter {
 
         protected override NodeStatus OnUpdate()
         {
-            if(m_Context.IsTargetInAttackRange)
+            if(!m_Context.IsTargetInAttackRange)
             {
                 return NodeStatus.Failure;
             }
