@@ -13,6 +13,8 @@ namespace SkyDragonHunter.Scriptables
         public float burnMultiplier = 1.0f;
         [Tooltip("화상 지속 시간")]
         public float duration = 5f;
+        [Tooltip("상태 이상 걸릴 확률")]
+        public float chance = 0.3f;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -34,6 +36,8 @@ namespace SkyDragonHunter.Scriptables
         public override void Execute(GameObject attacker, GameObject defender)
         {
             if (defender == null)
+                return;
+            if (Random.value > chance)
                 return;
 
             CharacterStatus aStats = attacker.GetComponent<CharacterStatus>();

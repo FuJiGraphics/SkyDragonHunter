@@ -239,7 +239,28 @@ namespace SkyDragonHunter.Editors {
                         int index = 0;
                         foreach (var row in dataRows)
                         {
-                            var instance = ScriptableObject.CreateInstance(selectedType);
+                            string columnValue = row.Length > selectedColumnIndex ? row[selectedColumnIndex] : "Unnamed";
+                            string finalName = fileNameFormat
+                                .Replace("{type}", selectedType.Name)
+                                .Replace("{index}", index.ToString("D3"))
+                                .Replace("{column}", columnValue)
+                                .Replace("{guid}", Guid.NewGuid().ToString("N"));
+
+                            string fullPath = Path.Combine(saveFolderPath, finalName + ".asset");
+                            Directory.CreateDirectory(saveFolderPath);
+
+                            var existingAsset = AssetDatabase.LoadAssetAtPath<ScriptableObject>(fullPath);
+                            ScriptableObject instanceToUse;
+
+                            if (existingAsset != null)
+                            {
+                                instanceToUse = existingAsset;
+                            }
+                            else
+                            {
+                                instanceToUse = ScriptableObject.CreateInstance(selectedType);
+                                AssetDatabase.CreateAsset(instanceToUse, fullPath);
+                            }
 
                             for (int i = 0; i < header.Length && i < row.Length; i++)
                             {
@@ -251,20 +272,10 @@ namespace SkyDragonHunter.Editors {
                                     else if (field.FieldType == typeof(float) && float.TryParse(row[i], out float fVal)) value = fVal;
                                     else if (field.FieldType == typeof(double) && double.TryParse(row[i], out double dVal)) value = dVal;
                                     else if (field.FieldType == typeof(bool) && bool.TryParse(row[i], out bool bVal)) value = bVal;
-                                    field.SetValue(instance, value);
+                                    field.SetValue(instanceToUse, value);
                                 }
                             }
 
-                            string columnValue = row.Length > selectedColumnIndex ? row[selectedColumnIndex] : "Unnamed";
-                            string finalName = fileNameFormat
-                                .Replace("{type}", selectedType.Name)
-                                .Replace("{index}", index.ToString("D3"))
-                                .Replace("{column}", columnValue)
-                                .Replace("{guid}", Guid.NewGuid().ToString("N"));
-
-                            string fullPath = Path.Combine(saveFolderPath, finalName + ".asset");
-                            Directory.CreateDirectory(saveFolderPath);
-                            AssetDatabase.CreateAsset(instance, fullPath);
                             index++;
                         }
 
