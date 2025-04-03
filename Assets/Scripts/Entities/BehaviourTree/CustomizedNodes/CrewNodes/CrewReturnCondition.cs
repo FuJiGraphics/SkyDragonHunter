@@ -10,6 +10,7 @@ namespace SkyDragonHunter.Entities {
         // Public 메서드
         public CrewReturnCondition(CrewControllerBT context) : base(context)
         {
+
         }
 
         // Protected 메서드

@@ -42,6 +42,8 @@ namespace SkyDragonHunter.Entities
         public bool isChasing = false;
 
         // 속성 (Properties)
+        public virtual bool IsSkillAvailable => false;
+
         public Transform Target => m_Target;
 
         public virtual bool IsTargetInAttackRange

@@ -2,6 +2,7 @@ using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SkyDragonHunter.Gameplay;
 
 namespace SkyDragonHunter.Entities 
 {
@@ -19,15 +20,19 @@ namespace SkyDragonHunter.Entities
         // Fields
         [SerializeField] private BossAttackType m_AttackType;
         public int skillId;
-        public float skillCooltime;
+        private float m_skillCooltime;
+        public float lastSkillCasted;
 
-        // Unity Methods
-        public void Awake()
+        // Properties
+        public override bool IsSkillAvailable
         {
-            
+            get
+            {
+                return Time.time > lastSkillCasted + m_skillCooltime;
+            }
         }
 
-
+        // Unity Methods
 
         // Public Methods
         public override void SetDataFromTable(int id)
@@ -53,7 +58,7 @@ namespace SkyDragonHunter.Entities
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
             skillId = data.SkillID;
-            skillCooltime = data.SkillCooltime;
+            m_skillCooltime = data.SkillCooltime;
         }
 
         public override void ResetTarget()
@@ -63,7 +68,29 @@ namespace SkyDragonHunter.Entities
 
         protected override void InitBehaviourTree()
         {
+            m_BehaviourTree = new BehaviourTree<BossControllerBT>(this);
+
+            var rootSelector = new SelectorNode<BossControllerBT>(this);
+
+            var skillSequence = new SequenceNode<BossControllerBT>(this);
             
+
+            var attackSequence = new SequenceNode<BossControllerBT>(this);
+            attackSequence.AddChild(new EntityAttackableCondition<BossControllerBT>(this));
+            attackSequence.AddChild(new EntityAttackAction<BossControllerBT>(this));
+            rootSelector.AddChild(attackSequence);
+
+            var chaseSequence = new SequenceNode<BossControllerBT>(this);
+            chaseSequence.AddChild(new EntityChasableCondition<BossControllerBT>(this));
+            chaseSequence.AddChild(new EntityChaseAction<BossControllerBT>(this));
+            rootSelector.AddChild(chaseSequence);
+
+            var moveSequence = new SequenceNode<BossControllerBT>(this);
+            moveSequence.AddChild(new EntityMoveCondition<BossControllerBT>(this));
+            moveSequence.AddChild(new EntityMoveAction<BossControllerBT>(this));
+            rootSelector.AddChild(moveSequence);
+
+            m_BehaviourTree.SetRoot(rootSelector);
         }
     } // Scope by class BossControllerBT
 
