@@ -115,6 +115,14 @@ namespace SkyDragonHunter.Entities
                 Debug.LogError($"Character Inventory null in {gameObject.name}");
             }
             InitBehaviourTree();
+
+            // TODO : Temporary code for test only
+            #region
+            if (ID != 0)
+            {
+                SetDataFromTable(ID);
+            }
+            #endregion
         }
 
         protected virtual void FixedUpdate()
