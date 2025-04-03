@@ -18,18 +18,7 @@ namespace SkyDragonHunter.Entities
         private CrewControllerBT m_CrewTarget;
 
         // 유니티 (MonoBehaviour 기본 메서드)
-        protected override void Start()
-        {
-            base.Start();
-
-            // TODO : Temporary code for test only
-            #region
-            if (ID != 0)
-            {
-                SetDataFromTable(ID);
-            }
-            #endregion
-        }
+       
 
         private void Update()
         {
@@ -160,7 +149,7 @@ namespace SkyDragonHunter.Entities
 
             m_BehaviourTree.SetRoot(rootSelector);
         }
-                
+        
         private void UpdatePosition()
         {
             var newPos = transform.position;              

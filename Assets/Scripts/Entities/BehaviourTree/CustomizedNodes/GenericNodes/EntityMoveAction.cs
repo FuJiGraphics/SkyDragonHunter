@@ -22,7 +22,12 @@ namespace SkyDragonHunter.Entities {
 
         protected override NodeStatus OnUpdate()
         {
-            if(m_Context.IsTargetInAggroRange)
+            if (m_Context.IsSkillAvailable)
+            {
+                return NodeStatus.Failure;
+            }
+
+            if (m_Context.IsTargetInAggroRange)
             {
                 return NodeStatus.Failure; 
             }

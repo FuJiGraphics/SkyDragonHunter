@@ -157,15 +157,7 @@ namespace SkyDragonHunter.Entities
         protected override void Start()
         {
             InitMountSlot();        
-            base.Start();
-
-            // TODO : Temporary code for test only
-            #region
-            if (ID != 0)
-            {
-                SetDataFromTable(ID);
-            }
-            #endregion
+            base.Start();           
         }
 
         private void OnDrawGizmos()
@@ -207,7 +199,7 @@ namespace SkyDragonHunter.Entities
             status.CriticalMultiplier = data.CritMultiplier;
             m_AttackInterval = data.AttackInterval;
             m_AttackRange = data.AttackRange;
-            m_AggroRange = 15;
+            m_AggroRange = 20;
             increaseHP = data.IncreasingHP;
             increaseATK = data.IncreasingATK;
             increaseDEF = data.IncreasingDEF;

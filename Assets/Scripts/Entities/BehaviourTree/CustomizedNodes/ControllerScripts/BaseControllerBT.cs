@@ -42,6 +42,8 @@ namespace SkyDragonHunter.Entities
         public bool isChasing = false;
 
         // 속성 (Properties)
+        public virtual bool IsSkillAvailable => false;
+
         public Transform Target => m_Target;
 
         public virtual bool IsTargetInAttackRange
@@ -113,6 +115,14 @@ namespace SkyDragonHunter.Entities
                 Debug.LogError($"Character Inventory null in {gameObject.name}");
             }
             InitBehaviourTree();
+
+            // TODO : Temporary code for test only
+            #region
+            if (ID != 0)
+            {
+                SetDataFromTable(ID);
+            }
+            #endregion
         }
 
         protected virtual void FixedUpdate()

@@ -13,7 +13,6 @@ namespace SkyDragonHunter.Test {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
 
-
         // Public 메서드
 
         public static void Add(ItemType type)
