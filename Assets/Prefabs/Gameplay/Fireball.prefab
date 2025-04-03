@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 6137323338437560331}
   - component: {fileID: 6311727942934268204}
   - component: {fileID: 3576230618638523811}
+  - component: {fileID: 1191274274205496815}
+  - component: {fileID: 4127903021569255891}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Untagged
@@ -145,3 +147,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+--- !u!114 &1191274274205496815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5838538179751590997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a787eaf25714146b3fc6e0ef52e81f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ailments:
+  - {fileID: 11400000, guid: e8532c56c90933440bd4fe1a439f8746, type: 2}
+--- !u!114 &4127903021569255891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5838538179751590997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e823f20d41eca47aa6c3e83cf0a9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

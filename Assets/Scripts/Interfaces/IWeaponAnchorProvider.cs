@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Interfaces
 {
-    public interface IWeaponAnchor
+    public interface IWeaponAnchorProvider
     {
         Transform GetWeaponFirePoint();
 
-    }// Scope by interface IInventoryItem
+    }// Scope by interface IWeaponAnchorProvider
 } // namespace SkyDragonHunter.Interfaces
 

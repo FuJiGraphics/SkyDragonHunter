@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SkyDragonHunter.Gameplay
 {
     public class WeaponAnchorProvider : MonoBehaviour
-        , IWeaponAnchor
+        , IWeaponAnchorProvider
     {
         [Tooltip("원거리 무기 발사되는 위치")]
         public Transform firePoint;

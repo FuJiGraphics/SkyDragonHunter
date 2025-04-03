@@ -81,7 +81,7 @@ namespace SkyDragonHunter.Gameplay {
             GameObject firePreviewGo = m_Inventory?.CurrentEquipPreview;
             if (m_Def.fireDummyName.Length > 0 && firePreviewGo != null)
             {
-                IWeaponAnchor weaponAnchor = firePreviewGo.GetComponent<IWeaponAnchor>();
+                IWeaponAnchorProvider weaponAnchor = firePreviewGo.GetComponent<IWeaponAnchorProvider>();
                 if (weaponAnchor != null)
                 {
                     firePos = weaponAnchor.GetWeaponFirePoint().position;

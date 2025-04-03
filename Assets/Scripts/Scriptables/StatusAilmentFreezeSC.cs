@@ -13,6 +13,8 @@ namespace SkyDragonHunter.Scriptables
         public float duration = 5f;
         [Tooltip("빙결 내성 배율")]
         public float immunityMultiplier = 2f;
+        [Tooltip("상태 이상 걸릴 확률")]
+        public float chance = 0.3f;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -34,6 +36,8 @@ namespace SkyDragonHunter.Scriptables
         public override void Execute(GameObject attacker, GameObject defender)
         {
             if (defender == null)
+                return;
+            if (Random.value > chance)
                 return;
 
             CharacterStatus aStats = attacker.GetComponent<CharacterStatus>();
