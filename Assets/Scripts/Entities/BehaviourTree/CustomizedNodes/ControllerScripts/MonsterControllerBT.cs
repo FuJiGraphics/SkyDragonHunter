@@ -60,6 +60,10 @@ namespace SkyDragonHunter.Entities
             m_ChaseSpeed = data.ChaseSpeed;
         }
 
+        public override void ResetHealth()
+        {
+            status.Health = status.MaxHealth;
+        }
 
         public override void ResetTarget()
         {            
