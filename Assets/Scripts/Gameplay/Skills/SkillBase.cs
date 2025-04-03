@@ -11,6 +11,7 @@ namespace SkyDragonHunter {
 
         // 속성 (Properties)
         public GameObject Caster { get; set; }
+        public GameObject Receiver { get; set; }
 
         // 외부 종속성 필드 (External dependencies field)
         private ISkillLifecycleHandler[] m_Handlers;
@@ -35,34 +36,38 @@ namespace SkyDragonHunter {
             Release();
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
+            OnHitBefore();
             OnHitEnter(collision.gameObject);
         }
 
-        private void OnCollisionStay(Collision collision)
+        private void OnCollisionStay2D(Collision2D collision)
         {
             OnHitStay(collision.gameObject);
         }
 
-        private void OnCollisionExit(Collision collision)
+        private void OnCollisionExit2D(Collision2D collision)
         {
             OnHitExit(collision.gameObject);
+            OnHitAfter();
         }
 
-        private void OnTriggerEnter(Collider collider)
+        private void OnTriggerEnter2D(Collider2D collider)
         {
+            OnHitBefore();
             OnHitEnter(collider.gameObject);
         }
 
-        private void OnTriggerStay(Collider collider)
+        private void OnTriggerStay2D(Collider2D collider)
         {
             OnHitStay(collider.gameObject);
         }
 
-        private void OnTriggerExit(Collider collider)
+        private void OnTriggerExit2D(Collider2D collider)
         {
             OnHitExit(collider.gameObject);
+            OnHitAfter();
         }
 
         // Public 메서드
@@ -72,6 +77,14 @@ namespace SkyDragonHunter {
             foreach (var handler in m_Handlers)
             {
                 handler.OnSkillCast(Caster);
+            }
+        }
+
+        private void OnHitBefore()
+        {
+            foreach (var handler in m_Handlers)
+            {
+                handler.OnSkillHitBefore(Caster);
             }
         }
 
@@ -96,6 +109,14 @@ namespace SkyDragonHunter {
             foreach (var handler in m_Handlers)
             {
                 handler.OnSkillHitExit(defender);
+            }
+        }
+
+        private void OnHitAfter()
+        {
+            foreach (var handler in m_Handlers)
+            {
+                handler.OnSkillHitAfter(Caster);
             }
         }
 

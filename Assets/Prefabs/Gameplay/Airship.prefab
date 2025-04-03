@@ -932,11 +932,11 @@ GameObject:
   - component: {fileID: 8741033374808620608}
   - component: {fileID: 1368838517403059848}
   - component: {fileID: 1906963435698747156}
+  - component: {fileID: 4486795681517090657}
   - component: {fileID: 340859549380337069}
   - component: {fileID: 4407643704684851497}
   - component: {fileID: 3887874726710397860}
   - component: {fileID: 926121004951576397}
-  - component: {fileID: 4486795681517090657}
   m_Layer: 0
   m_Name: Airship
   m_TagString: Player
@@ -1167,6 +1167,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowedTargetTags:
   - Monster
+--- !u!114 &4486795681517090657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5566452352409628216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemySearchType: 0
+  m_AttackTargetSelector: {fileID: 0}
 --- !u!114 &340859549380337069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1219,20 +1233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4486795681517090657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5566452352409628216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EnemySearchType: 0
-  m_AttackTargetSelector: {fileID: 0}
+  m_Slots:
+  - {fileID: 6311727942934268204, guid: 34b1fa64a5ae8694fab79cc1dba5726e, type: 3}
 --- !u!1 &6241507758742770042
 GameObject:
   m_ObjectHideFlags: 0

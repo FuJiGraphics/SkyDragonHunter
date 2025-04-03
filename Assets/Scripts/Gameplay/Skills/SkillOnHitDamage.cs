@@ -25,6 +25,7 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void OnSkillCast(GameObject caster) {}
         public void OnSkillEnd(GameObject caster) {}
+
         public void OnSkillHitEnter(GameObject defender)
         {
             CharacterStatus aStat = m_Caster.GetComponent<CharacterStatus>();
@@ -42,6 +43,8 @@ namespace SkyDragonHunter {
 
         public void OnSkillHitExit(GameObject defender) {}
         public void OnSkillHitStay(GameObject defender) {}
+        public void OnSkillHitBefore(GameObject caster) {}
+        public void OnSkillHitAfter(GameObject caster) {}
 
         // Private 메서드
         private void Init()
@@ -50,6 +53,7 @@ namespace SkyDragonHunter {
             m_SkillData = m_SkillBase.skillData;
             m_Caster = m_SkillBase.Caster;
         }
+
         // Others
 
     } // Scope by class SkillOnHitDamage

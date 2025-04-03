@@ -33,7 +33,9 @@ namespace SkyDragonHunter {
         }
 
         public void OnSkillHitExit(GameObject defender) {}
-        public void OnSkillHitStay(GameObject defender) {}
+        public void OnSkillHitStay(GameObject defender) { }
+        public void OnSkillHitBefore(GameObject caster) { }
+        public void OnSkillHitAfter(GameObject caster) { }
 
         // Private 메서드
         private void Init()
