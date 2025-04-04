@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using SkyDragonHunter.Managers;
+using Spine.Unity;
 
 namespace SkyDragonHunter.Entities 
 {
@@ -127,10 +128,14 @@ namespace SkyDragonHunter.Entities
             }
         }
 
+        // External Dependancies
+        private SkeletonAnimation m_SkeletonAnim;
+
         // 유니티 (MonoBehaviour 기본 메서드)
         protected override void Awake()
         {
             base.Awake();
+            m_SkeletonAnim = GetComponentInChildren<SkeletonAnimation>();
             status = GetComponent<CharacterStatus>();
         }
 
@@ -156,8 +161,8 @@ namespace SkyDragonHunter.Entities
 
         protected override void Start()
         {
-            InitMountSlot();        
-            base.Start();           
+            InitMountSlot();
+            base.Start();
         }
 
         private void OnDrawGizmos()
@@ -290,6 +295,7 @@ namespace SkyDragonHunter.Entities
         public override void SetAnimTrigger(string triggerName)
         {
             base.SetAnimTrigger(triggerName);
+            
         }
 
         // Private 메서드
