@@ -273,6 +273,7 @@ namespace SkyDragonHunter.Editors {
                                     else if (field.FieldType == typeof(double) && double.TryParse(row[i], out double dVal)) value = dVal;
                                     else if (field.FieldType == typeof(bool) && bool.TryParse(row[i], out bool bVal)) value = bVal;
                                     field.SetValue(instanceToUse, value);
+                                    EditorUtility.SetDirty(instanceToUse);
                                 }
                             }
 
@@ -282,6 +283,7 @@ namespace SkyDragonHunter.Editors {
                         AssetDatabase.SaveAssets();
                         AssetDatabase.Refresh();
                         EditorUtility.DisplayDialog("완료", "ScriptableObject 생성 완료!", "확인");
+                        
                     }
                 }
             }
