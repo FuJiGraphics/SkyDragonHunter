@@ -43,6 +43,7 @@ namespace SkyDragonHunter.Entities
 
         // 속성 (Properties)
         public virtual bool IsSkillAvailable => false;
+        public virtual bool IsTargetNull => m_Target == null;
 
         public Transform Target => m_Target;
 

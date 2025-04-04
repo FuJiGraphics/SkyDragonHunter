@@ -27,6 +27,11 @@ namespace SkyDragonHunter.Entities {
                 return NodeStatus.Failure;
             }
 
+            if (m_Context.IsTargetNull)
+            {
+                return NodeStatus.Failure;
+            }
+
             if (!m_Context.IsTargetInAttackRange)
             {
                 return NodeStatus.Running;
