@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
 
+    [CreateAssetMenu(fileName = "SkillDefinition.asset", menuName = "Skills/SkillDefinition")]
     public class SkillDefinition : ScriptableObject
     {
         // ÇÊµå (Fields)
