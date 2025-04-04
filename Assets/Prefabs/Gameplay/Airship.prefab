@@ -1234,7 +1234,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Slots:
-  - {fileID: 6311727942934268204, guid: 34b1fa64a5ae8694fab79cc1dba5726e, type: 3}
+  - button: {fileID: 0}
+    skill: {fileID: 6311727942934268204, guid: 34b1fa64a5ae8694fab79cc1dba5726e, type: 3}
+    targetTags:
+    - Monster
+  - button: {fileID: 0}
+    skill: {fileID: 1629483086014380661, guid: d0247b70d0b391e468ed15a536627af9, type: 3}
+    targetTags:
+    - Monster
+  m_EnemySearchProvider: {fileID: 0}
 --- !u!1 &6241507758742770042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2009,7 +2017,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1408933069819184237, guid: 019bc04e4b001c9408f85a709fe92123, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2075,7 +2084,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1408933069819184237, guid: 019bc04e4b001c9408f85a709fe92123, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2141,7 +2151,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1408933069819184237, guid: 019bc04e4b001c9408f85a709fe92123, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2207,7 +2218,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1408933069819184237, guid: 019bc04e4b001c9408f85a709fe92123, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

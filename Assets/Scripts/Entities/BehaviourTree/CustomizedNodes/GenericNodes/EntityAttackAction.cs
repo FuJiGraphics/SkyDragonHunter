@@ -1,3 +1,4 @@
+using ICSharpCode.SharpZipLib.Zip;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using System.Collections;
@@ -9,7 +10,6 @@ namespace SkyDragonHunter.Entities {
     public class EntityAttackAction<T> : ActionNode<T> where T : BaseControllerBT<T>
     {
         // 필드 (Fields)
-        private static readonly int s_AttackHash = Animator.StringToHash("Attack");
         private float lastAttackTime;
 
         // Public 메서드
@@ -43,7 +43,9 @@ namespace SkyDragonHunter.Entities {
             else
             {
                 lastAttackTime = Time.time;
-                m_Context.SetAnimTrigger(s_AttackHash);
+                var randomAttackAnimIndex = Random.Range(1, 9);
+                string animTriggerName = "Attack_" + randomAttackAnimIndex.ToString();
+                m_Context.TriggerAttack();
                 return NodeStatus.Success;
             }
         }
