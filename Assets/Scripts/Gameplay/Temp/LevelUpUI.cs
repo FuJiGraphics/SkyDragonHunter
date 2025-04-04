@@ -8,6 +8,7 @@ namespace SkyDragonHunter {
     public class LevelUpUI : MonoBehaviour
     {
         // 필드 (Fields)
+        [SerializeField] private int m_LevelUpInc = 1;
         [SerializeField] private Button m_Button;
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -33,7 +34,10 @@ namespace SkyDragonHunter {
         // Private 메서드
         private void LevelUp()
         {
-            AccountMgr.LevelUp();
+            for (int i = 0; i < m_LevelUpInc; ++i)
+            {
+                AccountMgr.LevelUp();
+            }
         }
 
         // Others
