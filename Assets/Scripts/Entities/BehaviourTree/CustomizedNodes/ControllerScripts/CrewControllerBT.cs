@@ -316,7 +316,7 @@ namespace SkyDragonHunter.Entities
                 Debug.LogWarning($"AnimStatus Set To Idle {attackAnimationPlaying}");
                 m_SkeletonAnim.AnimationState.SetAnimation(0, s_AnimNameIdle1, true);
                 attackAnimationPlaying = false;
-            }            
+            }
         }
 
         private void InitOnBoardCrewBT()
@@ -401,12 +401,11 @@ namespace SkyDragonHunter.Entities
                 floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
                                 
                 transform.position = newPos;
-            }
-                                   
+            }                                   
         }
         
         private void InitMountSlot()
-        {           
+        {
             if (m_MountSlot == null)
             {
                 throw new System.NullReferenceException("MountSlot cannot be found, please assign Mountslot on inspector");

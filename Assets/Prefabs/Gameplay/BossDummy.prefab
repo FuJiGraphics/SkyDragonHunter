@@ -247,7 +247,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6273585, b: 0.6273585, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -332,6 +332,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd25bb772179c804c823939fb3825865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AttackAnimTriggers: []
+  m_SkillAnimTriggers: []
   m_Speed: 10
   m_ChaseSpeed: 0
   m_AggroRange: 30
@@ -346,6 +348,8 @@ MonoBehaviour:
   isDirectionToRight: 0
   isMoving: 0
   isChasing: 0
+  lastAttackTime: 0
+  attackAnimationPlaying: 0
   m_AttackType: 0
 --- !u!114 &7145011849598956032
 MonoBehaviour:

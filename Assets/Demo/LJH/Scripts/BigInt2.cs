@@ -63,10 +63,10 @@ namespace SkyDragonHunter.Structs {
             ResetUnitCharacter();
             if (m_Digits < 17)
             {
-                HandleDoubleUnder17Digits(number);
+                HandleDoubleUpto16thDigits(number);
                 return;
             }
-            HandleDoubleNumberOver17Digits(number);
+            HandleDoubleNumberFrom17thDigit(number);
         }
 
         public override string ToString()
@@ -81,7 +81,7 @@ namespace SkyDragonHunter.Structs {
         }
 
         // Private Methods
-        private void HandleDoubleUnder17Digits(double number)
+        private void HandleDoubleUpto16thDigits(double number)
         {
             long longNum = (long)Math.Floor(number);
 
@@ -127,12 +127,13 @@ namespace SkyDragonHunter.Structs {
             Debug.Log($"Digits: {m_Digits}, Number = {number}, Num of Arrays {m_Values.Length}");
         }
 
-        private void HandleDoubleNumberOver17Digits(double number)
+        private void HandleDoubleNumberFrom17thDigit(double number)
         {
             Debug.LogWarning($"Start of handling {m_Digits}digits");
 
             double divisor = Math.Pow(10, m_Digits - 17);
             long frontDigits = (long)(number / divisor);
+            Debug.Log($"divisor: {divisor}, frontDigit: {frontDigits.ToString("N0")}");
             
             m_Values = new int[UnitCount];
             Debug.Log($"{m_Values.Length}");
