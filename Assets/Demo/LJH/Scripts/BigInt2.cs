@@ -158,20 +158,18 @@ namespace SkyDragonHunter.Structs {
                 }
                 if(i == 1)
                 {
-                    //for(int j = 0; j < )
-
-
                     for (int j = 0; j < underDecimalCount; ++j)
                     {
                         int cached = m_Values[lastUnitIndex - i];
-                        int divisor2 = 1;
-                        for (int k = j; k < underDecimalCount - 1; ++k)
+                        for (int k = j; k < underDecimalCount; ++k)
                         {
-                            divisor2 *= 10;
+
                         }
-                        
                     }
                 }
+
+
+                
 
                 // calibrate value of last index in int array with guaranteed precesion ( 17digits )
                 if (i == repeatCount - 1)

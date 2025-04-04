@@ -1,3 +1,4 @@
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,28 +10,33 @@ namespace SkyDragonHunter {
 
     public class BigIntTest : MonoBehaviour
     {
-        public Button button;
-        public TextMeshProUGUI numberText;
+        public TextMeshProUGUI stringNum;
+        public TextMeshProUGUI unitNum;
         public double valueToToss;
-        public BigNum bignum;
+        public BigInt2 bignum;
 
         private void Awake()
         {
             valueToToss = 1;
-            bignum = new BigNum(valueToToss);
-            numberText.text = bignum.ToString();
+            bignum = new BigInt2(valueToToss);
+            stringNum.text = $"{bignum.StringNumber}";
+            unitNum.text = $"{bignum.ToString()}";
         }
 
-        private void Start()
-        {
-            button.onClick.AddListener(OnButtonClicked);
-        }
-
-        public void OnButtonClicked()
+        public void OnButtonClickedX2()
         {
             valueToToss *= 2;
-            bignum = new BigNum(valueToToss);
-            numberText.text = $"{bignum.StringNumber} \n{bignum.ToString()}";
+            bignum = new BigInt2(valueToToss);
+            stringNum.text = $"{bignum.StringNumber}";
+            unitNum.text = $"{bignum.ToString()}";
+        }
+
+        public void OnButtonClickedX10()
+        {
+            valueToToss *= 10;
+            bignum = new BigInt2(valueToToss);
+            stringNum.text = $"{bignum.StringNumber}";
+            unitNum.text = $"{bignum.ToString()}";
         }
 
     } // Scope by class BigIntTest
