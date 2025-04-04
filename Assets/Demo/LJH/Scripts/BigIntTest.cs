@@ -39,6 +39,22 @@ namespace SkyDragonHunter {
             unitNum.text = $"{bignum.ToString()}";
         }
 
+        public void Reset1()
+        {
+            valueToToss = 1;
+            bignum = new BigInt2(valueToToss);
+            stringNum.text = $"{bignum.StringNumber}";
+            unitNum.text = $"{bignum.ToString()}";
+        }
+
+        public void Reset10D()
+        {
+            valueToToss = 10_000_000_000_000;
+            bignum = new BigInt2(valueToToss);
+            stringNum.text = $"{bignum.StringNumber}";
+            unitNum.text = $"{bignum.ToString()}";
+        }
+
     } // Scope by class BigIntTest
 
 } // namespace Root

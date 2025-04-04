@@ -129,15 +129,18 @@ namespace SkyDragonHunter.Structs {
 
         private void HandleDoubleNumberOver17Digits(double number)
         {
+            Debug.LogWarning($"Start of handling {m_Digits}digits");
+
             double divisor = Math.Pow(10, m_Digits - 17);
             long frontDigits = (long)(number / divisor);
             
             m_Values = new int[UnitCount];
+            Debug.Log($"{m_Values.Length}");
             int firstArrDigit = (m_Digits+2) % 3;
             int repeatCount = 6;
             if (firstArrDigit == 0)
                 repeatCount = 7;
-            int lastUnitIndex = UnitCount - 1;
+            int lastUnitIndex = m_Values.Length - 1;
             int underDecimalCount = 3 - firstArrDigit;
 
             // (n + 2) % 3 == 0 : 1자리
@@ -148,38 +151,39 @@ namespace SkyDragonHunter.Structs {
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                m_Values[lastUnitIndex - i] = (int)(frontDigits % BaseVal);
+                m_Values[i] = (int)(frontDigits % BaseVal);
                 
                 // Set Significance in first two loop
                 if(i == 0)
                 {
-                    significanceSB.Append(m_Values[lastUnitIndex - i]);
+                    significanceSB.Append(m_Values[i]);
                     significanceSB.Append('.');
                 }
                 if(i == 1)
                 {
-                    for (int j = 0; j < underDecimalCount; ++j)
-                    {
-                        int cached = m_Values[lastUnitIndex - i];
+                    int cached = m_Values[i];
+                    for (int j = 0; j < underDecimalCount - 1; ++j)
+                    {                        
                         for (int k = j; k < underDecimalCount; ++k)
                         {
-
+                            cached /= 10;
                         }
                     }
+                    significanceSB.Append(cached);
                 }
-
-
-                
 
                 // calibrate value of last index in int array with guaranteed precesion ( 17digits )
                 if (i == repeatCount - 1)
                 {
                     for (int j = 1; j < underDecimalCount; ++j)
                     {
-                        m_Values[lastUnitIndex - i] *= 10;
+                        m_Values[i] *= 10;
                     }
                 }
                 frontDigits /= BaseVal;
+
+                Debug.Log($"Loop{i}, indexNo: {lastUnitIndex - i} / {m_Values.Length}" +
+                    $"\n" + frontDigits.ToString("N0"));
             }
         }
 
