@@ -16,7 +16,12 @@ namespace SkyDragonHunter.Entities
         protected static readonly string s_CrewTag = "Crew";
         protected static readonly string s_Creature = "Creature";
 
+        protected static readonly string s_AnimNameIdle1 = "Idle_1";
+
         // 필드 (Fields)
+        [SerializeField] protected string[] m_AttackAnimTriggers;
+        [SerializeField] protected string[] m_SkillAnimTriggers;
+
         [SerializeField] protected float m_Speed;
         [SerializeField] protected float m_ChaseSpeed;
         [SerializeField] protected float m_AggroRange;
@@ -40,6 +45,8 @@ namespace SkyDragonHunter.Entities
         public bool isDirectionToRight = false;
         public bool isMoving = false;
         public bool isChasing = false;
+        public float lastAttackTime;
+        public bool attackAnimationPlaying;
 
         // 속성 (Properties)
         public virtual bool IsSkillAvailable => false;
@@ -132,11 +139,17 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public 메서드
-        public virtual void SetAnimTrigger(string triggerName)
+        public virtual void TriggerAttack()
         {
-            var triggerHash = Animator.StringToHash(triggerName);
-            Debug.Log($"Recommended to use trigger hash({triggerHash}) instead of trigger name({triggerName})");
-            SetAnimTrigger(triggerHash);
+            if (characterInventory != null)
+            {
+                characterInventory.CurrentWeapon.Execute(gameObject, m_Target.gameObject);
+                //Debug.LogError($"{gameObject.name} attacked {m_Target.gameObject.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"{gameObject.name} Character inventory null");
+            }
         }
 
         public virtual void SetAnimTrigger(int triggerHash)

@@ -156,7 +156,13 @@ namespace SkyDragonHunter.Entities
             {
                 m_BehaviourTree.Update();
                 UpdatePosition();
-            }            
+            }
+        }
+
+        protected override void FixedUpdate()
+        {
+            base.FixedUpdate();
+            UpdateAnimation();            
         }
 
         protected override void Start()
@@ -292,13 +298,27 @@ namespace SkyDragonHunter.Entities
             }
         }
 
-        public override void SetAnimTrigger(string triggerName)
+        public override void TriggerAttack()
         {
-            base.SetAnimTrigger(triggerName);
-            
+            base.TriggerAttack();
+            int randomAttackTrigger = Random.Range(0, m_AttackAnimTriggers.Length);
+            m_SkeletonAnim.AnimationState.SetAnimation(0, m_AttackAnimTriggers[randomAttackTrigger], false);
+            lastAttackTime = Time.time;
+            attackAnimationPlaying = true;
         }
 
         // Private 메서드
+        private void UpdateAnimation()
+        {                        
+            if (attackAnimationPlaying && Time.time > lastAttackTime + m_AttackInterval)
+            {
+                Debug.Log($"Last Attack {lastAttackTime}, interval {m_AttackInterval}, time {Time.time}");
+                Debug.LogWarning($"AnimStatus Set To Idle {attackAnimationPlaying}");
+                m_SkeletonAnim.AnimationState.SetAnimation(0, s_AnimNameIdle1, true);
+                attackAnimationPlaying = false;
+            }
+        }
+
         private void InitOnBoardCrewBT()
         {
             MountAction(true);
@@ -381,12 +401,11 @@ namespace SkyDragonHunter.Entities
                 floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
                                 
                 transform.position = newPos;
-            }
-                                   
+            }                                   
         }
         
         private void InitMountSlot()
-        {           
+        {
             if (m_MountSlot == null)
             {
                 throw new System.NullReferenceException("MountSlot cannot be found, please assign Mountslot on inspector");
