@@ -33,8 +33,7 @@ namespace SkyDragonHunter {
                 return;
 
             Attack attack = m_SkillData.CreateAttack(aStat, bStat);
-            IAttackable attackable = bStat.GetComponent<IAttackable>();
-            if (attackable != null)
+            if (bStat.TryGetComponent<IAttackable>(out var attackable))
             {
                 attackable.OnAttack(m_SkillBase.Caster, attack);
             }

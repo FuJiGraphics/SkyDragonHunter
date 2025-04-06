@@ -9,8 +9,8 @@ namespace SkyDragonHunter {
     [System.Serializable]
     public class SkillSlotUI
     {
-        public Button button;
-        public SkillBase skill;
+        public Button button;       // 스킬이 발동할 버튼
+        public SkillBase skill;     // 스킬 프리팹에 붙어있는 스킬 베이스
         public string[] targetTags;
     }
 

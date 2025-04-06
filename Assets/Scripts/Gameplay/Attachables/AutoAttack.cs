@@ -1,10 +1,4 @@
-using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Managers;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static NPOI.HSSF.Util.HSSFColor;
 
 namespace SkyDragonHunter.Gameplay
 {
