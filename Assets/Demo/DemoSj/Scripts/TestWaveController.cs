@@ -212,6 +212,9 @@ namespace SkyDragonHunter
                     currentOpenPanel = 0f;
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
+
+                    // TODO: 데이터 세이브
+                    AccountMgr.SaveUserData();
                 }
             }
         }

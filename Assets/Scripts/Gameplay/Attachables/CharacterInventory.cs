@@ -1,5 +1,6 @@
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay
@@ -10,9 +11,8 @@ namespace SkyDragonHunter.Gameplay
         [Header("Settings")]
         [SerializeField] private ItemDefinition[] itemPrefabs;
 
-        public GameObject CurrentEquipPreview { get; private set; }
-
         // 속성 (Properties)
+        public GameObject CurrentEquipPreview { get; private set; }
         public IWeaponable CurrentWeapon { get; private set; }
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

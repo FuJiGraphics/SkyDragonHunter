@@ -10,9 +10,13 @@ namespace SkyDragonHunter.Gameplay {
         , ICrewInfoProvider
     {
         // 필드 (Fields)
-        [SerializeField] private string CrewName;
-        [SerializeField] private Sprite CrewIcon;
-        [SerializeField] private Sprite CrewPreview;
+        [SerializeField] private string m_CrewTitle;
+        [SerializeField] private string m_CrewName;
+        [SerializeField] private Sprite m_CrewIcon;
+        [SerializeField] private Sprite m_CrewPreview;
+
+        private int m_QuantityCount = 0;
+        private bool m_EquipState = false;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -29,26 +33,26 @@ namespace SkyDragonHunter.Gameplay {
 
         public void Start()
         {
-            // Crew 정보창에 자신을 등록
-            GameObject findPanelGo = GameMgr.FindObject("UICrewInfoPanel");
-            if (findPanelGo.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
-            {
-                crewInfoPanel.AddCrewNode(gameObject);
-            }
-            else
-            {
-                Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
-            }
+            
         }
 
         // Public 메서드
-        public string Name => CrewName;
+        public void IncreaseQuantityCount()
+            => m_QuantityCount++;
+
+        public void SetEquipState(bool isEquip)
+            => m_EquipState = isEquip;
+
+        public string Title => m_CrewTitle;
+        public string Name => m_CrewName;
         public string Damage => m_Status.Damage.ToString();
         public string Health => m_Status.Health.ToString();
         public string Defense => m_Status.Armor.ToString();
-        public Sprite Preview => CrewPreview;
-        public Sprite Icon => CrewIcon;
+        public Sprite Preview => m_CrewPreview;
+        public Sprite Icon => m_CrewIcon;
         public bool IsMounted => m_Controller.isMounted;
+        public int QuantityCount => m_QuantityCount;
+        public bool IsEquip => m_EquipState;
 
         // Private 메서드
         // Others

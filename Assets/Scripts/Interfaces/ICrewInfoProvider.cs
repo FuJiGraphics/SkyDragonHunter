@@ -5,6 +5,7 @@ namespace SkyDragonHunter.Interfaces
 {
     public interface ICrewInfoProvider
     {
+        string Title { get; }
         string Name { get; }
         string Damage { get; }
         string Health { get; }
@@ -12,6 +13,8 @@ namespace SkyDragonHunter.Interfaces
         Sprite Icon { get; }
         Sprite Preview { get; }
         bool IsMounted { get; }
+        bool IsEquip { get; }
+        int QuantityCount { get; }
 
     } // Scope by interface IAttackTargetProvider
 } // namespace SkyDragonHunter.Interfaces
