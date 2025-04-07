@@ -174,10 +174,10 @@ namespace SkyDragonHunter.Entities
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, m_AggroRange);
+            Gizmos.DrawWireCube(transform.position, new Vector3(m_AggroRange, 300, 1));
 
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, m_AttackRange);
+            Gizmos.DrawWireCube(transform.position, new Vector3(m_AttackRange, 300, 1));
         }
 
         // Public 메서드
@@ -235,7 +235,7 @@ namespace SkyDragonHunter.Entities
                 return;
             }
 
-            var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
+            var colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(m_AggroRange, float.MaxValue), 0);
             if (colliders.Length > 0)
             {
                 foreach(var collider in colliders)
@@ -380,7 +380,7 @@ namespace SkyDragonHunter.Entities
 
             if (m_Target != null && isChasing)
             {
-                float multiplier = 3f;                
+                float multiplier = 3f;
 
                 direction.y = targetYPos - floatingEffect.StartY;
 

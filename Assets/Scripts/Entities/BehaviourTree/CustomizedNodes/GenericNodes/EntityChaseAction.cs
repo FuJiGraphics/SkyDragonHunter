@@ -1,7 +1,4 @@
 using SkyDragonHunter.Gameplay;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
@@ -15,9 +12,9 @@ namespace SkyDragonHunter.Entities {
 
         // Protected 메서드
         protected override void OnStart()
-        {            
+        {
             base.OnStart();
-            m_Context.isChasing = true;            
+            m_Context.isChasing = true;
         }
 
         protected override NodeStatus OnUpdate()
@@ -26,12 +23,10 @@ namespace SkyDragonHunter.Entities {
             {
                 return NodeStatus.Failure;
             }
-
             if (m_Context.IsTargetNull)
             {
                 return NodeStatus.Failure;
             }
-
             if (!m_Context.IsTargetInAttackRange)
             {
                 return NodeStatus.Running;
