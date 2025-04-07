@@ -69,10 +69,6 @@ namespace SkyDragonHunter
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
-        {
-            GameMgr.RegisterObject(gameObject);
-        }
 
         private void Start()
         {
@@ -90,6 +86,8 @@ namespace SkyDragonHunter
             OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
+
+            GameMgr.FindObject("WaveController");
         }
 
         private void Update()

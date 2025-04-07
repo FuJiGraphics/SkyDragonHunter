@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,6 +46,7 @@ namespace SkyDragonHunter.Test
         private void Start()
         {
             rectTransform = questPanel.GetComponent<RectTransform>();
+            waveControler = GameMgr.FindObject("WaveController");
             waveControlerScript = waveControler.GetComponent<TestWaveController>();
         }
 
