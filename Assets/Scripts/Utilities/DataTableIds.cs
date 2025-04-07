@@ -16,6 +16,7 @@ namespace SkyDragonHunter.Utility {
         public static readonly string Crew = "CrewTable";
         public static readonly string Monster = "MonsterTable";
         public static readonly string Boss = "BossTable";
+        public static readonly string Artifact = "ArtifactTable";
 
     } // Scope by class DataTableIds
 

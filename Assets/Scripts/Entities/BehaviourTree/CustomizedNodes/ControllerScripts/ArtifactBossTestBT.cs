@@ -6,13 +6,13 @@ using SkyDragonHunter.Gameplay;
 
 namespace SkyDragonHunter.Entities 
 {
-    public enum BossAttackType
+    public enum ArtifactBossAttackType
     {
         Melee,
         Ranged,
     }
 
-    public class BossControllerBT : BaseControllerBT<BossControllerBT>
+    public class ArtifactBossTestBT : BaseControllerBT<ArtifactBossTestBT>
     {
         // Static Fields
         private static int s_InstanceNo = 0;
@@ -26,6 +26,8 @@ namespace SkyDragonHunter.Entities
 
         private CrewControllerBT m_CrewTarget;
 
+        public Artifact[] artifacts;
+
         // Properties
         //public override bool IsSkillAvailable
         //{
@@ -36,7 +38,11 @@ namespace SkyDragonHunter.Entities
         //}
 
         // Unity Methods
-        
+        protected override void Start()
+        {
+            base.Start();
+            SetArtifactStatus();
+        }
 
         protected void Update()
         {
@@ -79,7 +85,7 @@ namespace SkyDragonHunter.Entities
             var data = DataTableManager.BossTable.Get(id);
             if (data == null)
             {
-                Debug.LogError($"Set Boss Data Failed : ID '{id}' not found in boss table.");
+                Debug.LogError($"Set ArtifactBoss Data Failed : ID '{id}' not found in boss table.");
                 return;
             }
 
@@ -97,7 +103,12 @@ namespace SkyDragonHunter.Entities
             m_ChaseSpeed = data.ChaseSpeed;
             skillId = data.SkillID;
             m_skillCooltime = data.SkillCooltime;
-        }        
+        } 
+        
+        private void SetArtifactStatus()
+        {
+            
+        }
 
         public override void ResetTarget()
         {
@@ -149,28 +160,23 @@ namespace SkyDragonHunter.Entities
 
         protected override void InitBehaviourTree()
         {
-            m_BehaviourTree = new BehaviourTree<BossControllerBT>(this);
+            m_BehaviourTree = new BehaviourTree<ArtifactBossTestBT>(this);
 
-            var rootSelector = new SelectorNode<BossControllerBT>(this);
+            var rootSelector = new SelectorNode<ArtifactBossTestBT>(this);
 
-            var skillSequence = new SequenceNode<BossControllerBT>(this);
-            skillSequence.AddChild(new BossSkillCastableCondition(this));
-            skillSequence.AddChild(new BossSkillAction(this));
-            rootSelector.AddChild(skillSequence);
-
-            var attackSequence = new SequenceNode<BossControllerBT>(this);
-            attackSequence.AddChild(new EntityAttackableCondition<BossControllerBT>(this));
-            attackSequence.AddChild(new EntityAttackAction<BossControllerBT>(this));
+            var attackSequence = new SequenceNode<ArtifactBossTestBT>(this);
+            attackSequence.AddChild(new EntityAttackableCondition<ArtifactBossTestBT>(this));
+            attackSequence.AddChild(new EntityAttackAction<ArtifactBossTestBT>(this));
             rootSelector.AddChild(attackSequence);
 
-            var chaseSequence = new SequenceNode<BossControllerBT>(this);
-            chaseSequence.AddChild(new EntityChasableCondition<BossControllerBT>(this));
-            chaseSequence.AddChild(new EntityChaseAction<BossControllerBT>(this));
+            var chaseSequence = new SequenceNode<ArtifactBossTestBT>(this);
+            chaseSequence.AddChild(new EntityChasableCondition<ArtifactBossTestBT>(this));
+            chaseSequence.AddChild(new EntityChaseAction<ArtifactBossTestBT>(this));
             rootSelector.AddChild(chaseSequence);
 
-            var moveSequence = new SequenceNode<BossControllerBT>(this);
-            moveSequence.AddChild(new EntityMoveCondition<BossControllerBT>(this));
-            moveSequence.AddChild(new EntityMoveAction<BossControllerBT>(this));
+            var moveSequence = new SequenceNode<ArtifactBossTestBT>(this);
+            moveSequence.AddChild(new EntityMoveCondition<ArtifactBossTestBT>(this));
+            moveSequence.AddChild(new EntityMoveAction<ArtifactBossTestBT>(this));
             rootSelector.AddChild(moveSequence);
 
             m_BehaviourTree.SetRoot(rootSelector);
@@ -192,6 +198,6 @@ namespace SkyDragonHunter.Entities
 
             transform.position = newPos;
         }
-    } // Scope by class BossControllerBT
+    } // Scope by class ArtifactBossControllerBT
 
 } // namespace Root

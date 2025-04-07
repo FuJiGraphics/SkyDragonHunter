@@ -14,6 +14,7 @@ namespace SkyDragonHunter.Managers
         public static CrewTable CrewTable => Get<CrewTable>(DataTableIds.Crew);
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
         public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
+        public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
 
         // Static Constructor
         static DataTableManager()

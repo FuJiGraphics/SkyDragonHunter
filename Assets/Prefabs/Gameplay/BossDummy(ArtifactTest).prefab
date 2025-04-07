@@ -130,13 +130,13 @@ GameObject:
   - component: {fileID: -3548480993830963735}
   - component: {fileID: 2870753279803480994}
   - component: {fileID: 4381422749695507041}
-  - component: {fileID: -6102419851012319264}
   - component: {fileID: 7145011849598956032}
   - component: {fileID: -5015490716612036505}
   - component: {fileID: -3666998413519012154}
   - component: {fileID: -2725025849333200871}
+  - component: {fileID: -1228580994115567982}
   m_Layer: 0
-  m_Name: BossDummy
+  m_Name: BossDummy(ArtifactTest)
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,10 +155,10 @@ Transform:
   m_LocalScale: {x: 3.16, y: 4.5360003, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6319560197747671357}
   - {fileID: 6118548252565894742}
   - {fileID: 2497543133589625658}
   - {fileID: 2613013636290628307}
-  - {fileID: 6062204992440497859}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &852608348216678719
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  health: 100
+  health: 300
   shield: 50
   armor: 5
   resilient: 0
@@ -321,33 +321,6 @@ MonoBehaviour:
   floatSpeedOffset: 1
   floatAmount: 0.5
   m_StartY: 0
---- !u!114 &-6102419851012319264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434643913460656674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd25bb772179c804c823939fb3825865, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Speed: 10
-  m_ChaseSpeed: 0
-  m_AggroRange: 30
-  m_AttackRange: 0
-  m_AttackInterval: 0
-  characterInventory: {fileID: -3548480993830963735}
-  ID: 200001
-  projectileId: 0
-  status: {fileID: -6860440072148329640}
-  floatingEffect: {fileID: 4381422749695507041}
-  m_Target: {fileID: 0}
-  isDirectionToRight: 0
-  isMoving: 0
-  isChasing: 0
-  m_AttackType: 0
 --- !u!114 &7145011849598956032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +373,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
-  isSkipCooldownCheck: 0
+  isSkipCooldownCheck: 1
+--- !u!114 &-1228580994115567982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ebbcc907b2a9204f906f8f99c5793f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Speed: 0
+  m_ChaseSpeed: 0
+  m_AggroRange: 0
+  m_AttackRange: 0
+  m_AttackInterval: 0
+  characterInventory: {fileID: -3548480993830963735}
+  ID: 300001
+  projectileId: 0
+  status: {fileID: -6860440072148329640}
+  floatingEffect: {fileID: 4381422749695507041}
+  m_Target: {fileID: 0}
+  isDirectionToRight: 0
+  isMoving: 0
+  isChasing: 0
+  m_AttackType: 0
+  skillId: 0
+  lastSkillCasted: 0
+  IsSkillAvailable: 0
 --- !u!1001 &7597109240998436959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -471,7 +474,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
   m_PrefabInstance: {fileID: 7597109240998436959}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8599298813292545759
+--- !u!1001 &8413860326835810593
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -501,11 +504,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2555687132098097180, guid: d6cf04ea30b02c349adf97fda54e1206, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.5
+      value: -4.77
       objectReference: {fileID: 0}
     - target: {fileID: 2555687132098097180, guid: d6cf04ea30b02c349adf97fda54e1206, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2555687132098097180, guid: d6cf04ea30b02c349adf97fda54e1206, type: 3}
       propertyPath: m_LocalRotation.w
@@ -540,8 +543,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6cf04ea30b02c349adf97fda54e1206, type: 3}
---- !u!4 &6062204992440497859 stripped
+--- !u!4 &6319560197747671357 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2555687132098097180, guid: d6cf04ea30b02c349adf97fda54e1206, type: 3}
-  m_PrefabInstance: {fileID: 8599298813292545759}
+  m_PrefabInstance: {fileID: 8413860326835810593}
   m_PrefabAsset: {fileID: 0}
