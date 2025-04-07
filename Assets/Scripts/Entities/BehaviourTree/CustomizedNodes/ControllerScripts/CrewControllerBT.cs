@@ -67,6 +67,8 @@ namespace SkyDragonHunter.Entities
         public float Speed => m_Speed;
         public bool IsAllocatedMountSlot => m_MountSlot != null;
 
+        public bool IsAllocatedMountSlot => m_MountSlot != null;
+
         public float OriginDistance
         {
             get

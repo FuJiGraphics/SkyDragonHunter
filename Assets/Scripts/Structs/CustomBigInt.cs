@@ -69,7 +69,6 @@ namespace SkyDragonHunter.Structs {
                 m_Units = new char[1] { ' ' };
                 m_Values = new int[1];
                 m_Digits = 1;
-                Debug.LogError($"Invalid string value, returned Bignumber with 0 value");
                 return;
             }
 
@@ -341,13 +340,13 @@ namespace SkyDragonHunter.Structs {
 
         private static int[] GetSubtractedArray(CustomBigInt a, CustomBigInt b, out int digit)
         {
-            for (int i = 0; i < a.UnitCount; ++i)
+            for (int i = 0; i < b.UnitCount; ++i)
             {
                 a.m_Values[i] -= b.m_Values[i];
                 if (a.m_Values[i] < 0)
                 {
                     a.m_Values[i + 1]--;
-                    a.m_Values[i] += BaseVal;
+                    a.m_Values[i] += BaseVal;                    
                 }
             }
             int index = a.m_Values.Length - 1;
@@ -393,7 +392,6 @@ namespace SkyDragonHunter.Structs {
             {
                 sb.Append(result.m_Values[i].ToString("D3"));
             }
-            Debug.Log($"added arr value {sb}");
             result.m_Significance = GetSignificance(result.m_Values);
             result.m_StringNumber = GetStringNumber(result.m_Values);
             result.m_Units = GetUnitAlphabetArray(result.UnitCount);
@@ -401,8 +399,7 @@ namespace SkyDragonHunter.Structs {
             foreach( var c in result.m_Units )
             {
                 sb2.Append(c);
-            }            
-            Debug.LogError($"result unitCount: {result.UnitCount}, unitChar: {sb2}");
+            }
             return result;
         }
 
@@ -444,7 +441,7 @@ namespace SkyDragonHunter.Structs {
 
         // Operators
         public static implicit operator CustomBigInt(int number) => new CustomBigInt(number);
-        public static implicit operator CustomBigInt(double number) => new CustomBigInt(number);        
+        public static implicit operator CustomBigInt(double number) => new CustomBigInt(number);
 
         public static bool operator >(CustomBigInt a, CustomBigInt b) => a.CompareTo(b) > 0;
         public static bool operator >=(CustomBigInt a, CustomBigInt b) => a.CompareTo(b) >= 0;

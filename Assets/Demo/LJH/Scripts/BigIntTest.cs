@@ -21,7 +21,6 @@ namespace SkyDragonHunter {
         public TextMeshProUGUI stringNum;
         public TextMeshProUGUI unitNum;
         public double valueToToss;
-        public CustomBigInt bignum;
         public string stringValuesToToss;
         public CustomBigInt m_internalBignum;
         public TMP_InputField addVal;
@@ -32,18 +31,15 @@ namespace SkyDragonHunter {
             valueToToss = 1;
             stringValuesToToss = "1";
 
-
             if (testType == TestType.DoubleNum)
             {
-                bignum = new CustomBigInt(valueToToss);
-                m_internalBignum = bignum;
+                m_internalBignum = new CustomBigInt(valueToToss);
                 stringNum.text = m_internalBignum.StringNumber;
                 unitNum.text = m_internalBignum.ToString();
             }
             else if (testType == TestType.StringNum)
             {
-                bignum = new CustomBigInt(stringValuesToToss);
-                m_internalBignum = bignum;
+                m_internalBignum = new CustomBigInt(stringValuesToToss);
                 stringNum.text = m_internalBignum.StringNumber;
                 unitNum.text = m_internalBignum.ToString();
             }
@@ -51,71 +47,42 @@ namespace SkyDragonHunter {
 
         public void OnButtonClickedX2()
         {
-            if (testType == TestType.DoubleNum)
-            {
-                valueToToss *= 2;
-                bignum = new CustomBigInt(valueToToss);
-                m_internalBignum = bignum;
-                stringNum.text = m_internalBignum.StringNumber;
-                unitNum.text = m_internalBignum.ToString();
-            }
-            else if (testType == TestType.StringNum)
-            {
-
-            }
+            m_internalBignum *= 2;
+            stringNum.text = m_internalBignum.StringNumber;
+            unitNum.text = m_internalBignum.ToString();
         }
 
         public void OnButtonClickedX10()
         {
-            if (testType == TestType.DoubleNum)
-            {
-                valueToToss *= 10;
-                bignum = new CustomBigInt(valueToToss);
-                m_internalBignum = bignum;
-                stringNum.text = m_internalBignum.StringNumber;
-                unitNum.text = m_internalBignum.ToString();
-            }
-            else if (testType == TestType.StringNum)
-            {
-
-            }
+            m_internalBignum *= 10;
+            stringNum.text = m_internalBignum.StringNumber;
+            unitNum.text = m_internalBignum.ToString();
         }
 
         public void Reset1()
         {
-            if (testType == TestType.DoubleNum)
-            {
-                valueToToss = 1;
-                bignum = new CustomBigInt(valueToToss);
-                m_internalBignum = bignum;
-                stringNum.text = bignum.StringNumber;
-                unitNum.text = bignum.ToString();
-            }
-            else if (testType == TestType.StringNum)
-            {
-
-            }
+            m_internalBignum = 1;
+            stringNum.text = m_internalBignum.StringNumber;
+            unitNum.text = m_internalBignum.ToString();
         }
         
         public void Reset10D()
         {
-            if (testType == TestType.DoubleNum)
-            {
-                valueToToss = 10_000_000_000_000;
-                bignum = new CustomBigInt(valueToToss);
-                m_internalBignum = bignum;
-                stringNum.text = bignum.StringNumber;
-                unitNum.text = bignum.ToString();
-            }
-            else if (testType == TestType.StringNum)
-            {
-                
-            }
+            m_internalBignum = new CustomBigInt("10000000000000");
+            stringNum.text = m_internalBignum.StringNumber;
+            unitNum.text = m_internalBignum.ToString();
         }
 
         public void TestADD()
         {
             m_internalBignum += new CustomBigInt(addVal.text);
+            stringNum.text = m_internalBignum.StringNumber;
+            unitNum.text = m_internalBignum.ToString();
+        }
+
+        public void TestSubstract()
+        {
+            m_internalBignum -= new CustomBigInt(addVal.text);
             stringNum.text = m_internalBignum.StringNumber;
             unitNum.text = m_internalBignum.ToString();
         }
