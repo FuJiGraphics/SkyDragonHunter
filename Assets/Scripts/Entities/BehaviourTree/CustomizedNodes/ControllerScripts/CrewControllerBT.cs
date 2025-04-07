@@ -312,8 +312,9 @@ namespace SkyDragonHunter.Entities
         {                        
             if (attackAnimationPlaying && Time.time > lastAttackTime + m_AttackInterval)
             {
-                Debug.Log($"Last Attack {lastAttackTime}, interval {m_AttackInterval}, time {Time.time}");
-                Debug.LogWarning($"AnimStatus Set To Idle {attackAnimationPlaying}");
+                // TODO:
+                //Debug.Log($"Last Attack {lastAttackTime}, interval {m_AttackInterval}, time {Time.time}");
+                //Debug.LogWarning($"AnimStatus Set To Idle {attackAnimationPlaying}");
                 m_SkeletonAnim.AnimationState.SetAnimation(0, s_AnimNameIdle1, true);
                 attackAnimationPlaying = false;
             }

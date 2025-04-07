@@ -11,7 +11,7 @@ namespace SkyDragonHunter.Structs {
     public struct CustomBigInt : IComparable<CustomBigInt>, IEquatable<CustomBigInt>
     {
         // const Fields
-        private const int BaseVal = 1_000; 
+        private const int BaseVal = 1_000;
         private int[] m_Values;
         private char[] m_Units;
         private string m_Significance;
