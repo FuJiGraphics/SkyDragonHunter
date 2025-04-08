@@ -51,8 +51,8 @@ namespace SkyDragonHunter
         public bool isInfiniteMode { get; private set; } = false;
         public bool isRewardSet { get; private set; } = false;
         private int backGroundIndex;
-        private int currentZonelLevel = 1;
         private int currentMissionLevel = 1;
+        private int currentZonelLevel = 1;
         private int lastTriedZonelLevel = 1;
         private int lastTriedMissionLevel = 1;
         private int currentSpawnMonsters = 0;
