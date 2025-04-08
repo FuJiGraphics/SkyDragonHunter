@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using SkyDragonHunter.Managers;
 using Spine.Unity;
+using SkyDragonHunter.Interfaces;
 
 namespace SkyDragonHunter.Entities 
 {
@@ -65,8 +66,6 @@ namespace SkyDragonHunter.Entities
 
         // 속성 (Properties)
         public float Speed => m_Speed;
-        public bool IsAllocatedMountSlot => m_MountSlot != null;
-
         public bool IsAllocatedMountSlot => m_MountSlot != null;
 
         public float OriginDistance
@@ -140,6 +139,9 @@ namespace SkyDragonHunter.Entities
             base.Awake();
             m_SkeletonAnim = GetComponentInChildren<SkeletonAnimation>();
             status = GetComponent<CharacterStatus>();
+
+            var crewProvider = GetComponent<ICrewInfoProvider>();
+            //crewProvider.IsEquip
         }
 
         private void Update()
@@ -184,6 +186,15 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public 메서드
+        public void AllocateMountSlot(MountableSlot slot)
+        {
+            isMounted = false;
+            m_MountSlot = slot;
+            transform.position = m_MountSlot.transform.localPosition;
+            exhaustionRemainingTime = 1f;
+            MountAction(true);
+        }
+
         public override void ResetHealth()
         {
             throw new System.NotImplementedException();

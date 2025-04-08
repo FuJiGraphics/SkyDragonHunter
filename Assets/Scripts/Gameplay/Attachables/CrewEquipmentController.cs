@@ -44,8 +44,8 @@ namespace SkyDragonHunter {
                 crewInstance.SetActive(true);
                 if (crewInstance.TryGetComponent<CrewControllerBT>(out var btComp))
                 {
-                    btComp.m_MountSlot = m_MountableSlots[slot];
-                    btComp.MountAction(true);
+                    // 장착 시, BT에서 처리하는 부분
+                    btComp.AllocateMountSlot(m_MountableSlots[slot]);
                 }
                 else
                 {
@@ -75,6 +75,7 @@ namespace SkyDragonHunter {
             {
                 if (m_EquipSlots[slot].TryGetComponent<CrewControllerBT>(out var btComp))
                 {
+                    // 장착 해세 시, BT에서 처리하는 부분
                     btComp.MountAction(false);
                 }
                 else

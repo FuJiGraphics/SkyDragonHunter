@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class TestAniController : MonoBehaviour
 {
+    // TODO: LJH
+    public int ID;
+    private void OnEnable()
+    {
+        transform.localPosition = Vector3.zero;
+    }
+    // ~TODO
+
     private Animator animator;
     private float loopUseTime;
     private float loopEndTime = 2f;

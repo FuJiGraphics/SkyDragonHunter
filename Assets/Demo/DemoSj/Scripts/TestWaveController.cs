@@ -1,3 +1,4 @@
+using SkyDragonHunter.Entities;
 using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
@@ -312,6 +313,17 @@ namespace SkyDragonHunter
             {
                 GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
                 spawned.name = $"Monster({instanceNo++})";
+
+                // TODO: LJH
+                int tempId = 100_000;
+                tempId += ((currentMissionLevel - 1) % 4 + 1) * 10;
+                tempId += (currentZonelLevel - 1) % 6 + 1;
+
+                var monsterBT = spawned.GetComponent<MonsterControllerBT>();
+                monsterBT.SetDataFromTable(tempId);
+
+                // ~TODO
+
                 currentEnemy.Add(spawned);
                 currentSpawnMonsters++;
             }

@@ -46,7 +46,7 @@ namespace SkyDragonHunter.Entities
         public bool isMoving = false;
         public bool isChasing = false;
         public float lastAttackTime;
-        public bool attackAnimationPlaying;
+        public bool attackAnimationPlaying;               
 
         // 속성 (Properties)
         public virtual bool IsSkillAvailable => false;
@@ -126,10 +126,7 @@ namespace SkyDragonHunter.Entities
 
             // TODO : Temporary code for test only
             #region
-            if (ID != 0)
-            {
-                SetDataFromTable(ID);
-            }
+            
             #endregion
         }
 
