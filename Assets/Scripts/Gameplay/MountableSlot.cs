@@ -39,7 +39,10 @@ namespace SkyDragonHunter.Gameplay {
         }
 
         public void Dismounting()
-        {           
+        {
+            if (slot == null)
+                return;
+
             slot.transform.SetParent(null);
             m_BackupPos.ApplyTo(slot.transform);
             slot = null;
