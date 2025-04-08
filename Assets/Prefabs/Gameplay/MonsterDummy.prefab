@@ -43,7 +43,6 @@ Transform:
   m_Children:
   - {fileID: 9082493999201264193}
   - {fileID: 6133443290086957401}
-  - {fileID: 570627556457827949}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &-6873027583999143960
@@ -209,6 +208,8 @@ MonoBehaviour:
   lastAttackTime: 0
   attackAnimationPlaying: 0
   m_AttackType: 0
+  monsterPrefabLoader: {fileID: 0}
+  tempAnimController: {fileID: 0}
 --- !u!114 &5654016661433389589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,66 +416,4 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
   m_PrefabInstance: {fileID: 2222819471104219708}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &7656450180355709959
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8145279371225729078}
-    m_Modifications:
-    - target: {fileID: 7899349636707251207, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_Name
-      value: BlackBabyDragon
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
---- !u!4 &570627556457827949 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7902245468957315690, guid: da86eb57078a9bf4fa1639729ded4fa4, type: 3}
-  m_PrefabInstance: {fileID: 7656450180355709959}
   m_PrefabAsset: {fileID: 0}

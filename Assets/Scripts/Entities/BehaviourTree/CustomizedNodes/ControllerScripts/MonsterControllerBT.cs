@@ -14,11 +14,21 @@ namespace SkyDragonHunter.Entities
     {
         // 필드 (Fields)
         [SerializeField] private AttackType m_AttackType;
+        [SerializeField] private MonsterPrefabLoader monsterPrefabLoader;
+        [SerializeField] private TestAniController tempAnimController;
 
         private CrewControllerBT m_CrewTarget;
 
         // 유니티 (MonoBehaviour 기본 메서드)
-       
+        protected void OnEnable()
+        {
+            monsterPrefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+        }
+
+        protected override void Start()
+        {
+            base.Start();            
+        }
 
         private void Update()
         {
@@ -58,6 +68,13 @@ namespace SkyDragonHunter.Entities
             m_AggroRange = data.AggroRange;
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
+
+            var animController = monsterPrefabLoader.GetMonsterAnimController(id);            
+            Instantiate(animController, transform);
+            Vector3 localScale = animController.transform.localScale;
+            localScale.x = -1;
+            animController.transform.localScale = localScale;
+            tempAnimController = animController;
         }
 
         public override void ResetHealth()

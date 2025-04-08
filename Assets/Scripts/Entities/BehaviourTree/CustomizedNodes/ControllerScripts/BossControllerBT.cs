@@ -36,7 +36,14 @@ namespace SkyDragonHunter.Entities
         //}
 
         // Unity Methods
-        
+        protected override void Start()
+        {
+            base.Start();
+            if (ID != 0)
+            {
+                SetDataFromTable(ID);
+            }
+        }
 
         protected void Update()
         {
