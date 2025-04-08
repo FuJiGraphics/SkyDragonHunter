@@ -141,9 +141,10 @@ namespace SkyDragonHunter.UI {
                     GameObject airshipGo = GameMgr.FindObject("Airship");
                     if (airshipGo.TryGetComponent<CrewEquipmentController>(out var equipController))
                     {
+                        GameObject crewGo = crewInstance;
                         nodeButton.onClick.AddListener(() =>
                         {
-                            m_PrevClickedCrew = crewInstance;
+                            m_PrevClickedCrew = crewGo;
                         });
                         nodeGo.transform.SetParent(m_UiCrewPickContent.transform);
                     }
@@ -167,18 +168,29 @@ namespace SkyDragonHunter.UI {
                 UIEquipmentMountSlot currentSlot = slot;
                 slot.mountSlotButton.onClick.AddListener(() =>
                 {
-                    if (m_PrevClickedCrew != null)
+                    if (m_PrevClickedCrew != null && slot.crewInstance != m_PrevClickedCrew)
                     {
                         m_PrevClickedCrew.SetActive(true);
-
+                        var inSlot = FindSlotCrew(m_PrevClickedCrew);
+                        RemoveDuplicateCrew(m_PrevClickedCrew);
+                        GameObject outInstance = null;
                         if (slot.crewInstance != null)
                         {
+                            outInstance = slot.crewInstance;
                             m_AirshipEquipController.UnequipSlot(slot.crewInstance);
                         }
                         m_AirshipEquipController.EquipSlot(slot.slotNumber, m_PrevClickedCrew);
-                        RemoveDuplicateCrew(m_PrevClickedCrew);
+                        slot.ResetSlot();
                         slot.SetSlot(m_PrevClickedCrew);
                         m_PrevClickedCrew = null;
+
+                        // 스왑
+                        if (inSlot != null && outInstance != null)
+                        {
+                            m_AirshipEquipController.EquipSlot(inSlot.slotNumber, outInstance);
+                            inSlot.ResetSlot();
+                            inSlot.SetSlot(outInstance);
+                        }
                     }
                 });
             }
@@ -186,14 +198,30 @@ namespace SkyDragonHunter.UI {
 
         private void RemoveDuplicateCrew(GameObject crewInstance)
         {
+            for (int i = 0; i < m_MountSlots.Length; ++i)
+            {
+                if (m_MountSlots[i].crewInstance == crewInstance)
+                {
+                    m_AirshipEquipController.UnequipSlot(crewInstance);
+                    m_MountSlots[i].ResetSlot();
+                    break;
+                }
+            }
+        }
+
+
+        private UIEquipmentMountSlot FindSlotCrew(GameObject crewInstance)
+        {
+            UIEquipmentMountSlot result = null;
             foreach (var slot in m_MountSlots)
             {
                 if (slot.crewInstance == crewInstance)
                 {
-                    slot.ResetSlot();
+                    result = slot;
                     break;
                 }
             }
+            return result;
         }
 
         // Others
