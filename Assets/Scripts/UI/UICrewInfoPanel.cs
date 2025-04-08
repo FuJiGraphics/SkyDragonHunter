@@ -2,6 +2,7 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -48,10 +49,29 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private GameObject m_UiCrewListContent;
         [SerializeField] private GameObject m_UiCrewListNodePrefab;
 
+        private List<GameObject> m_CrewListNodeObjects;
+        private Button m_PrevClickButton = null;
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnEnable()
+        {
+            if (m_PrevClickButton == null)
+            {
+                if (m_CrewListNodeObjects != null)
+                {
+                    Button button = m_CrewListNodeObjects.First().gameObject.GetComponent<Button>();
+                    button.onClick.Invoke();
+                }
+            }
+            else
+            {
+                m_PrevClickButton.onClick.Invoke();
+            }
+        }
+
         // Public 메서드
         public void SetName(string name)
             => m_UiCrewName.text = m_UiCrewNameFormat + name;
@@ -78,9 +98,15 @@ namespace SkyDragonHunter.UI {
 
         public void AddCrewNode(GameObject crew)
         {
+            if (m_CrewListNodeObjects == null)
+            {
+                m_CrewListNodeObjects = new List<GameObject>();
+            }
+
             if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewListNodePrefab);
+                m_CrewListNodeObjects.Add(nodeGo);
                 if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
                 {
                     nodeIcon.sprite = provider.Icon;
@@ -94,6 +120,7 @@ namespace SkyDragonHunter.UI {
                         SetDefense(provider.Defense);
                         SetPreview(provider.Preview);
                         SetMountedState(provider.IsMounted);
+                        m_PrevClickButton = nodeButton;
                     });
                 }
                 nodeGo.transform.SetParent(m_UiCrewListContent.transform);

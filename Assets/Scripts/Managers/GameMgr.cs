@@ -34,6 +34,7 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
 
             GameMgr.LoadedRegisterObjects();
+            AccountMgr.LoadUserData();
         }
 
         private static void OnSceneUnloaded(Scene scene)
