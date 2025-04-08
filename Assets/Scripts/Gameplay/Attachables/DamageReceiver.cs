@@ -1,7 +1,9 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.UI;
+using System.Numerics;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -22,19 +24,19 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void TakeDamage(GameObject attacker, AlphaUnit damage)
         {
-            double takeDamage = m_Stats.Shield.Value - damage.Value;
-            if (takeDamage >= 0.0)
+            BigInteger takeDamage = m_Stats.Shield.Value - damage.Value;
+            if (takeDamage >= 0)
             {
                 m_Stats.Shield = takeDamage;
                 return;
             }
             else
             {
-                m_Stats.Shield = 0.0;
+                m_Stats.Shield = 0;
             }
 
-            takeDamage = System.Math.Abs(takeDamage);
-            takeDamage = System.Math.Clamp(m_Stats.Health.Value - takeDamage, 0.0, double.MaxValue);
+             takeDamage = Math2DHelper.Abs(takeDamage);
+            takeDamage = Math2DHelper.Clamp(m_Stats.Health.Value - takeDamage, 0, m_Stats.Health.Value);
             m_Stats.Health = takeDamage;
 
             // 죽음 
@@ -43,9 +45,9 @@ namespace SkyDragonHunter {
 
         private void UpdateDestructions(GameObject attacker)
         {
-            if (m_Stats.Health.Equals(0.0) || m_Stats.Health < 0.0)
+            if (m_Stats.Health <= 0)
             {
-                m_Stats.Health = 0.0;
+                m_Stats.Health = 0;
                 // 죽는거 호출
                 IDestructible[] destructibles = GetComponentsInChildren<IDestructible>();
                 foreach (IDestructible destructible in destructibles)

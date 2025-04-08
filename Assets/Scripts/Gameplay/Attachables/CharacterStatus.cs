@@ -9,11 +9,11 @@ namespace SkyDragonHunter.Gameplay {
     public class CharacterStatus : MonoBehaviour
     {
         // 필드 (Fields)
-        [SerializeField] private double damage = CommonStats.c_DefaultDamage;
-        [SerializeField] private double health = CommonStats.c_DefaultHealth;
-        [SerializeField] private double shield = CommonStats.c_DefaultShield;
-        [SerializeField] private double armor = CommonStats.c_DefaultArmor;
-        [SerializeField] private double resilient = CommonStats.c_DefaultResilient;
+        [SerializeField] private string damage = CommonStats.c_DefaultDamage;
+        [SerializeField] private string health = CommonStats.c_DefaultHealth;
+        [SerializeField] private string shield = CommonStats.c_DefaultShield;
+        [SerializeField] private string armor = CommonStats.c_DefaultArmor;
+        [SerializeField] private string resilient = CommonStats.c_DefaultResilient;
         [SerializeField] private float criticalChance = CommonStats.c_DefaultCriticalChance;
         [SerializeField] private float criticalMultiplier = CommonStats.c_DefaultCriticalMultiplier;
         [SerializeField] private float bossDamageMultiplier = CommonStats.c_DefaultBossDamageMultiplier;
@@ -77,22 +77,22 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_ShieldBarUI != null)
             {
-                if (!Math2DHelper.Equals(m_ShieldBarUI.maxHealth, m_CommonStats.MaxShield.Value))
+                if (m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield.Value)
                 {
                     m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
                 }
-                if (!Math2DHelper.Equals(m_ShieldBarUI.currentHealth, m_CommonStats.Shield.Value))
+                if (m_ShieldBarUI.currentHealth != m_CommonStats.Shield.Value)
                 {
                     m_ShieldBarUI.SetHP(m_CommonStats.Shield.Value);
                 }
             }
             if (m_HealthBarUI != null)
             {
-                if (!Math2DHelper.Equals(m_HealthBarUI.maxHealth, m_CommonStats.MaxHealth.Value))
+                if (m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth.Value)
                 {
                     m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
                 }
-                if (!Math2DHelper.Equals(m_HealthBarUI.currentHealth, m_CommonStats.Health.Value))
+                if (m_HealthBarUI.currentHealth != m_CommonStats.Health.Value)
                 {
                     m_HealthBarUI.SetHP(m_CommonStats.Health.Value);
                 }
@@ -102,11 +102,11 @@ namespace SkyDragonHunter.Gameplay {
 #if UNITY_EDITOR
         public void UpdateParams()
         {
-            damage = m_CommonStats.Damage.Value;
-            health = m_CommonStats.Health.Value;
-            shield = m_CommonStats.Shield.Value;
-            armor = m_CommonStats.Armor.Value;
-            resilient = m_CommonStats.Resilient.Value;
+            damage = m_CommonStats.Damage.Value.ToString();
+            health = m_CommonStats.Health.Value.ToString();
+            shield = m_CommonStats.Shield.Value.ToString();
+            armor = m_CommonStats.Armor.Value.ToString();
+            resilient = m_CommonStats.Resilient.Value.ToString();
             criticalChance = m_CommonStats.CriticalChance;
             criticalMultiplier = m_CommonStats.CriticalMultiplier;
             bossDamageMultiplier = m_CommonStats.BossDamageMultiplier;
@@ -142,8 +142,7 @@ namespace SkyDragonHunter.Gameplay {
                 if (bar.name == "UIShieldBar")
                 {
                     m_ShieldBarUI = bar;
-                    if (m_ShieldBarUI != null &&
-                        !Math2DHelper.Equals(m_ShieldBarUI.maxHealth, m_CommonStats.MaxShield.Value))
+                    if (m_ShieldBarUI != null && m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield.Value)
                     {
                         m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
                         m_ShieldBarUI.ResetHP();
@@ -152,8 +151,7 @@ namespace SkyDragonHunter.Gameplay {
                 else if (bar.name == "UIHealthBar")
                 {
                     m_HealthBarUI = bar;
-                    if (m_HealthBarUI != null &&
-                        !Math2DHelper.Equals(m_HealthBarUI.maxHealth, m_CommonStats.MaxHealth.Value))
+                    if (m_HealthBarUI != null && m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth.Value)
                     {
                         m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
                         m_HealthBarUI.ResetHP();

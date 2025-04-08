@@ -4,6 +4,7 @@ using SkyDragonHunter.Managers;
 using Spine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +14,10 @@ namespace SkyDragonHunter.UI {
     [System.Serializable]
     public class UIEquipmentMountSlot
     {
-        public Button mountSlot;
+        public int slotNumber;
         public Image slotNumberIcon;
+        public GameObject crewInstance;
+        public Button mountSlotButton;
         public Image crewIcon;
         public TextMeshProUGUI title;
         public TextMeshProUGUI crewName;
@@ -37,13 +40,14 @@ namespace SkyDragonHunter.UI {
             damageText.text = "0";
             armorIcon.sprite = null;
             armorText.text = "0";
+            crewInstance = null;
         }
 
         public void SetSlot(GameObject crewGo)
         {
             if (crewGo.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
-                slotNumberIcon.sprite = provider.Icon;
+                crewIcon.sprite = provider.Icon;
                 title.text = provider.Title;
                 crewName.text = provider.Name;
 
@@ -63,6 +67,7 @@ namespace SkyDragonHunter.UI {
             {
                 Debug.LogWarning("[UIEquipmentMountSlot]: Crew의 ICrewInfoProvider를 찾을 수 없습니다.");
             }
+            crewInstance = crewGo;
         }
     }
 
@@ -80,10 +85,23 @@ namespace SkyDragonHunter.UI {
 
         private List<GameObject> m_CrewPickNodeObjects;
         private GameObject m_PrevClickedCrew;
+        private CrewEquipmentController m_AirshipEquipController; 
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void Awake()
+        {
+            AdjustCallbackFuntionToMountSlot();
+        }
+
+        private void Start()
+        {
+            GameObject airshipGo = GameMgr.FindObject("Airship");
+            m_AirshipEquipController = airshipGo.GetComponent<CrewEquipmentController>();
+        }
+
         // Public 메서드
         public void SetSlot(int slot, GameObject crewGo)
         {
@@ -103,14 +121,14 @@ namespace SkyDragonHunter.UI {
             m_MountSlots[slot].ResetSlot();
         }
 
-        public void AddCrewNode(GameObject crew)
+        public void AddCrewNode(GameObject crewInstance)
         {
             if (m_CrewPickNodeObjects == null)
             {
                 m_CrewPickNodeObjects = new List<GameObject>();
             }
 
-            if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
+            if (crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewPickNodePrefab);
                 m_CrewPickNodeObjects.Add(nodeGo);
@@ -125,9 +143,7 @@ namespace SkyDragonHunter.UI {
                     {
                         nodeButton.onClick.AddListener(() =>
                         {
-                            // equipController.EquipSlot(m_PrevClickedSlot, crew);
-                            m_PrevClickedCrew = crew;
-                            Debug.Log($"크루 장착! {m_PrevClickedCrew.name}");
+                            m_PrevClickedCrew = crewInstance;
                         });
                         nodeGo.transform.SetParent(m_UiCrewPickContent.transform);
                     }
@@ -144,6 +160,42 @@ namespace SkyDragonHunter.UI {
         }
 
         // Private 메서드
+        private void AdjustCallbackFuntionToMountSlot()
+        {
+            foreach (var slot in m_MountSlots)
+            {
+                UIEquipmentMountSlot currentSlot = slot;
+                slot.mountSlotButton.onClick.AddListener(() =>
+                {
+                    if (m_PrevClickedCrew != null)
+                    {
+                        m_PrevClickedCrew.SetActive(true);
+
+                        if (slot.crewInstance != null)
+                        {
+                            m_AirshipEquipController.UnequipSlot(slot.crewInstance);
+                        }
+                        m_AirshipEquipController.EquipSlot(slot.slotNumber, m_PrevClickedCrew);
+                        RemoveDuplicateCrew(m_PrevClickedCrew);
+                        slot.SetSlot(m_PrevClickedCrew);
+                        m_PrevClickedCrew = null;
+                    }
+                });
+            }
+        }
+
+        private void RemoveDuplicateCrew(GameObject crewInstance)
+        {
+            foreach (var slot in m_MountSlots)
+            {
+                if (slot.crewInstance == crewInstance)
+                {
+                    slot.ResetSlot();
+                    break;
+                }
+            }
+        }
+
         // Others
 
     } // Scope by class UIFortressEquipment

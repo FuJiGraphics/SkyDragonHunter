@@ -1,3 +1,6 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -7,8 +10,8 @@ namespace SkyDragonHunter.UI {
     public class UIHealthBar : MonoBehaviour
     {
         // 필드 (Fields)
-        public double maxHealth;
-        public double currentHealth;
+        public BigInteger maxHealth;
+        public BigInteger currentHealth;
         private Slider m_Slider;
 
         // 속성 (Properties)
@@ -36,14 +39,14 @@ namespace SkyDragonHunter.UI {
             SetHP(currentHealth);
         }
 
-        public void TakeDamage(double damage)
+        public void TakeDamage(AlphaUnit damage)
         {
             //Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
-            SetHP(currentHealth - damage);
+            SetHP(currentHealth - damage.Value);
             UpdateSlider();
         }
 
-        public void SetHP(double health)
+        public void SetHP(AlphaUnit health)
         {
             if (m_Slider == null)
             {
@@ -51,25 +54,25 @@ namespace SkyDragonHunter.UI {
                 return;
             }
 
-            currentHealth = System.Math.Max(0.0, System.Math.Min(health, maxHealth));
+            currentHealth = Math2DHelper.Max(0, Math2DHelper.Min(health.Value, maxHealth));
             UpdateSlider();
 
-            if (currentHealth <= 0.0)
+            if (currentHealth <= 0)
             {
-                currentHealth = 0.0;
+                currentHealth = 0;
                 OnHealthDepleted.Invoke();
             }
         }
 
         private void UpdateSlider()
         {
-            if (m_Slider == null || maxHealth <= 0.0) 
+            if (m_Slider == null || maxHealth <= 0) 
                 return;
 
             m_Slider.minValue = 0f;
             m_Slider.maxValue = 1f;
 
-            m_Slider.value = (float)(currentHealth / maxHealth);
+            m_Slider.value = (float)((double)currentHealth / (double)maxHealth);
         }
 
         // Private 메서드

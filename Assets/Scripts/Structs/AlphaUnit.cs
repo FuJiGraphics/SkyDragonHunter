@@ -5,44 +5,38 @@ namespace SkyDragonHunter.Structs {
     [System.Serializable]
     public struct AlphaUnit : IComparable<AlphaUnit>, IEquatable<AlphaUnit>
     {
-        public const double Epsilon = double.Epsilon;
-        public const double MaxValue = double.MaxValue;
-        public const double MinValue = double.MinValue;
-        public const double NaN = double.NaN;
-        public const double NegativeInfinity = double.NegativeInfinity;
-        public const double PositiveInfinity = double.PositiveInfinity;
-
-        private double m_OriginNumber;
+        private BigInteger m_OriginNumber;
         private string m_StringNumber;
         private string m_StringBase;
         private char[] m_Base;
-        private bool m_IsInfinity;
-        private bool m_IsNaN;
 
-        public double Value => m_OriginNumber;
+        public BigInteger Value => m_OriginNumber;
 
-        public AlphaUnit(double number)
+        public AlphaUnit(int number)
         {
-            m_OriginNumber = number < 0.0 ? 0.0 : number;
+            m_OriginNumber = number < 0 ? 0 : number;
 
             m_StringNumber = "0";
             m_StringBase = null;
             m_Base = new char[1] { (char)('a' - 1) };
+        }
+        
+        public AlphaUnit(BigInteger number)
+        {
+            m_OriginNumber = number < 0 ? 0 : number;
 
-            m_IsInfinity = double.IsInfinity(m_OriginNumber);
-            m_IsNaN = double.IsNaN(m_OriginNumber);
+            m_StringNumber = "0";
+            m_StringBase = null;
+            m_Base = new char[1] { (char)('a' - 1) };
         }
 
-        private AlphaUnit(double number, bool rawInit)
+        private AlphaUnit(BigInteger number, bool rawInit)
         {
-            m_OriginNumber = number < 0.0 ? 0.0 : number;
+            m_OriginNumber = number < 0 ? 0 : number;
 
             m_StringNumber = "0";
             m_StringBase = null;
             m_Base = new char[1] { (char)('a' - 1) };
-
-            m_IsInfinity = double.IsInfinity(m_OriginNumber);
-            m_IsNaN = double.IsNaN(m_OriginNumber);
         }
 
         public int CompareTo(AlphaUnit other)
@@ -53,26 +47,34 @@ namespace SkyDragonHunter.Structs {
 
         private void Normalize()
         {
-            if (m_StringBase != null || m_OriginNumber <= 0.0 || m_IsInfinity || m_IsNaN)
+            if (m_StringBase != null || m_OriginNumber <= 0)
                 return;
 
-            double targetNumber = m_OriginNumber;
-
-            int unitShift = (int)(Math.Log10(targetNumber) / 3);
-            targetNumber *= Math.Pow(0.001, unitShift);
+            BigInteger targetNumber = m_OriginNumber;
+            int digits = targetNumber.ToString().Length;
+            int unitShift = (digits - 1) / 3; 
 
             m_Base = new char[1] { (char)('a' - 1) };
-            for (int i = 0; i < unitShift; ++i)
-                IncreaseUnit();
-
-            if (targetNumber >= 999.9995)
+            for (int i = 0; i < unitShift; i++)
             {
-                targetNumber = 1.0;
                 IncreaseUnit();
             }
 
-            targetNumber = Math.Truncate(targetNumber * 1000) / 1000;
-            m_StringNumber = targetNumber.ToString("F1");
+            BigInteger pow = BigInteger.Pow(1000, unitShift);
+            BigInteger scaled = targetNumber / pow;   
+            BigInteger remainder = targetNumber % pow; 
+
+            if (scaled >= 1000)
+            {
+                scaled = 1;
+                remainder = 0;
+                IncreaseUnit();
+            }
+
+            BigInteger fractionTimes10 = (remainder * 10) / pow;
+            int fractionDigit = (int)fractionTimes10; // 0~9
+
+            m_StringNumber = $"{scaled}.{fractionDigit}";
             m_StringBase = GetBaseString();
         }
 
@@ -120,17 +122,17 @@ namespace SkyDragonHunter.Structs {
             return new string(m_Base, 0, validCount);
         }
 
-        public static implicit operator AlphaUnit(double number) => new AlphaUnit(number);
-        public static explicit operator double(AlphaUnit a) => a.m_OriginNumber;
+         public static implicit operator AlphaUnit(BigInteger number) => new AlphaUnit(number);
+        public static explicit operator BigInteger(AlphaUnit a) => a.m_OriginNumber;
 
         public static AlphaUnit operator +(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) + new BigInteger(b.m_OriginNumber)), true);
+            => new AlphaUnit(a.m_OriginNumber + b.m_OriginNumber, true);
         public static AlphaUnit operator -(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) - new BigInteger(b.m_OriginNumber)), true);
+            => new AlphaUnit(a.m_OriginNumber - b.m_OriginNumber, true);
         public static AlphaUnit operator *(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) * new BigInteger(b.m_OriginNumber)), true);
+            => new AlphaUnit(a.m_OriginNumber * b.m_OriginNumber, true);
         public static AlphaUnit operator /(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit((double)(new BigInteger(a.m_OriginNumber) / new BigInteger(b.m_OriginNumber)), true);
+            => new AlphaUnit(a.m_OriginNumber / b.m_OriginNumber, true);
 
         public static bool operator <(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) < 0;
         public static bool operator >(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) > 0;
@@ -139,11 +141,18 @@ namespace SkyDragonHunter.Structs {
         public static bool operator ==(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) == 0;
         public static bool operator !=(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) != 0;
 
+        public static implicit operator AlphaUnit(int v)
+        {
+            return new AlphaUnit((BigInteger)v);
+        }
+
+        public static implicit operator AlphaUnit(double v)
+        {
+            return new AlphaUnit((BigInteger)v);
+        }
+
         public override string ToString()
         {
-            if (m_IsInfinity) return "Inf";
-            if (m_IsNaN) return "NaN";
-
             Normalize();
             return m_StringNumber + m_StringBase;
         }

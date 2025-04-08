@@ -6,6 +6,7 @@ using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
@@ -74,9 +75,9 @@ namespace SkyDragonHunter.Managers
 
             // 계정 스탯과 통합
             CurrentLevel = Crystal.level;
-            AccountStats.SetMaxDamage(AccountStats.MaxDamage.Value + Crystal.atkUp);
+            AccountStats.SetMaxDamage(AccountStats.MaxDamage.Value + BigInteger.Parse(Crystal.atkUp));
             AccountStats.ResetDamage();
-            AccountStats.SetMaxHealth(AccountStats.MaxHealth.Value + Crystal.hpUp);
+            AccountStats.SetMaxHealth(AccountStats.MaxHealth.Value + BigInteger.Parse(Crystal.atkUp));
             AccountStats.ResetHealth();
         }
 
