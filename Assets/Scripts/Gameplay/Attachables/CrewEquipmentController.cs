@@ -36,6 +36,7 @@ namespace SkyDragonHunter {
                 return;
 
             UnequipSlot(slot);
+            RemoveSlotCrew(crewInstance);
 
             if (crewInstance.TryGetComponent<CrewInfoProvider>(out var crewProviderComp))
             {
@@ -45,6 +46,7 @@ namespace SkyDragonHunter {
                 if (crewInstance.TryGetComponent<CrewControllerBT>(out var btComp))
                 {
                     btComp.m_MountSlot = m_MountableSlots[slot];
+                    btComp.m_MountSlot.Mounting(crewInstance);
                     btComp.MountAction(true);
                 }
                 else
@@ -75,6 +77,7 @@ namespace SkyDragonHunter {
             {
                 if (m_EquipSlots[slot].TryGetComponent<CrewControllerBT>(out var btComp))
                 {
+                    btComp.m_MountSlot.Dismounting();
                     btComp.MountAction(false);
                 }
                 else
@@ -113,6 +116,17 @@ namespace SkyDragonHunter {
             return m_EquipSlots[slot];
         }
 
+        public void RemoveSlotCrew(GameObject crewInstance)
+        {
+            for (int i = 0; i < m_EquipSlots.Length; ++i)
+            {
+                if (m_EquipSlots[i] == crewInstance)
+                {
+                    m_EquipSlots[i] = null;
+                    break;
+                }
+            }
+        }
         // Private 메서드
         // Others
 
