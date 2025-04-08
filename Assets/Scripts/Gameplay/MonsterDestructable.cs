@@ -21,6 +21,7 @@ namespace SkyDragonHunter {
             item.transform.position = gameObject.transform.position;
             Destroy(gameObject);
         }
+
         // Private 메서드
         // Others
 
