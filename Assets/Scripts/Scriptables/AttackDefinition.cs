@@ -4,6 +4,7 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using SkyDraonHunter.Utility;
 using System;
+using System.Numerics;
 using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
@@ -13,7 +14,7 @@ namespace SkyDragonHunter.Scriptables {
         // 필드 (Fields)
         public float coolDown;                      // 쿨다운
         public float range;                         // 공격 범위
-        public double damage;                       // 데미지
+        public string damage;                       // 데미지
         public float criticalChance = 0.0f;         // 크리티컬 확률
         public float criticalMultiplier = 1.0f;     // 크리티컬 피해 배율
         public float bossDamageMultiplier = 1.0f;   // 보스 피해량 증가 배율
@@ -27,7 +28,7 @@ namespace SkyDragonHunter.Scriptables {
         {
             Attack attack = new Attack();
             attack.defender = dStats.gameObject;
-            double newDamage = damage + aStats.MaxDamage.Value;
+            AlphaUnit newDamage = BigInteger.Parse(damage) + aStats.MaxDamage.Value;
             float newCriticalChance = Mathf.Clamp01(criticalChance + aStats.CriticalChance);
             float newCriticalMultiplier = criticalMultiplier + aStats.CriticalMultiplier;
             if (newCriticalChance > UnityEngine.Random.value)
@@ -39,7 +40,7 @@ namespace SkyDragonHunter.Scriptables {
             {
                 newDamage *= bossDamageMultiplier;
             }
-            attack.damage = Math.Floor(newDamage);
+            attack.damage = newDamage;
             if (dStats != null)
             {
                 attack.damage -= dStats.Armor;

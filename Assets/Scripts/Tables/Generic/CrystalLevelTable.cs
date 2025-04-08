@@ -7,9 +7,9 @@ namespace SkyDragonHunter.Tables
     public class CrystalLevelData : DataTableData
     {
         public int Level { get; set; }
-        public double NeedEXP { get; set; }
-        public double AtkUP { get; set; }
-        public double HPUP { get; set; }
+        public string NeedEXP { get; set; }
+        public string AtkUP { get; set; }
+        public string HPUP { get; set; }
         public int NextLvID { get; set; }
 
         public override string ToString()
