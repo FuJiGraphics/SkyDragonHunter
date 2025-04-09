@@ -1,16 +1,16 @@
 
-using UnityEngine;
+//using UnityEngine;
 
-namespace SkyDragonHunter.Structs
-{
-    public struct CrystalData
-    {
-        public int level;
-        public string needExp;
-        public string atkUp;
-        public string hpUp;
-        public int nextLevelId;
+//namespace SkyDragonHunter.Structs
+//{
+//    public struct CrystalData
+//    {
+//        public int level;
+//        public string needExp;
+//        public string atkUp;
+//        public string hpUp;
+//        public int nextLevelId;
 
-    }; // struct CrystalData
+//    }; // struct CrystalData
 
-} // namespace SkyDragonHunter.Structs
+//} // namespace SkyDragonHunter.Structs

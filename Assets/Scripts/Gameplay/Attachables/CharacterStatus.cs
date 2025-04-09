@@ -5,7 +5,8 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using System.Text;
 
-namespace SkyDragonHunter.Gameplay {
+namespace SkyDragonHunter.Gameplay
+{
     public class CharacterStatus : MonoBehaviour
     {
         // 필드 (Fields)

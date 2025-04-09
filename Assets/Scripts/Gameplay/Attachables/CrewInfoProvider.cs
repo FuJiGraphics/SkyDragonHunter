@@ -31,11 +31,6 @@ namespace SkyDragonHunter.Gameplay {
             m_Controller = GetComponent<CrewControllerBT>();
         }
 
-        public void Start()
-        {
-            
-        }
-
         // Public ¸Þ¼­µå
         public void IncreaseQuantityCount()
             => m_QuantityCount++;

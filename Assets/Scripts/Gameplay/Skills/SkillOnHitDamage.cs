@@ -48,7 +48,7 @@ namespace SkyDragonHunter {
         private void Init()
         {
             m_SkillBase = GetComponent<SkillBase>();
-            m_SkillData = m_SkillBase.skillData;
+            m_SkillData = m_SkillBase.SkillData;
         }
 
         // Others

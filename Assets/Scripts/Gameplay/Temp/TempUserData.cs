@@ -7,6 +7,7 @@ namespace SkyDragonHunter {
     {
         // 필드 (Fields)
         public GameObject[] crewDataPrefabs;
+        public GameObject[] canonDataPrefabs;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

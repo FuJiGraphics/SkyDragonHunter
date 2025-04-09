@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter {
-    public class SkillOnHitDestroyImmediatly : MonoBehaviour
+    public class BallOnHitDestroyImmediatly : MonoBehaviour
         , ISkillLifecycleHandler
     {
         // 필드 (Fields)

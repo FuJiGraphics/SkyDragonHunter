@@ -35,7 +35,7 @@ namespace SkyDragonHunter {
                 m_Stats.Shield = 0;
             }
 
-             takeDamage = Math2DHelper.Abs(takeDamage);
+            takeDamage = Math2DHelper.Abs(takeDamage);
             takeDamage = Math2DHelper.Clamp(m_Stats.Health.Value - takeDamage, 0, m_Stats.Health.Value);
             m_Stats.Health = takeDamage;
 

@@ -29,19 +29,19 @@ namespace SkyDragonHunter {
                 if (isCrystal)
                 {
                     if (isHp)
-                        m_Text.text = m_StringBase + AccountMgr.Crystal.hpUp.ToString();
+                        m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseHealth.ToString();
                     else
-                        m_Text.text = m_StringBase + AccountMgr.Crystal.atkUp.ToString();
+                        m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseDamage.ToString();
                 }
                 else
                 {
                     if (isHp)
                         m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxHealth.ToString() + " + " 
-                            + AccountMgr.Crystal.hpUp.ToString() + " = " 
+                            + AccountMgr.Crystal.IncreaseHealth.ToString() + " = " 
                             + m_Stat.MaxHealth.ToString();
                     else
                         m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxDamage.ToString() + " + "
-                            + AccountMgr.Crystal.atkUp.ToString() + " = "
+                            + AccountMgr.Crystal.IncreaseDamage.ToString() + " = "
                             + m_Stat.MaxDamage.ToString();
                 }
             }
@@ -52,19 +52,19 @@ namespace SkyDragonHunter {
             if (isCrystal)
             {
                 if (isHp)
-                    m_Text.text = m_StringBase + AccountMgr.Crystal.hpUp.ToString();
+                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseHealth.ToString();
                 else
-                    m_Text.text = m_StringBase + AccountMgr.Crystal.atkUp.ToString();
+                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseDamage.ToString();
             }
             else
             {
                 if (isHp)
                     m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxHealth.ToString() + " + "
-                        + AccountMgr.Crystal.hpUp.ToString() + " = "
+                        + AccountMgr.Crystal.IncreaseDamage.ToString() + " = "
                         + m_Stat.MaxHealth.ToString();
                 else
                     m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxDamage.ToString() + " + "
-                        + AccountMgr.Crystal.atkUp.ToString() + " = "
+                        + AccountMgr.Crystal.IncreaseHealth.ToString() + " = "
                         + m_Stat.MaxDamage.ToString();
             }
         }

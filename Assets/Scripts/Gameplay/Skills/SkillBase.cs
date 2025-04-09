@@ -6,10 +6,12 @@ namespace SkyDragonHunter {
     public class SkillBase : MonoBehaviour
     {
         // 필드 (Fields)
-        public SkillDefinition skillData;
-        public float lifetime = 5f;
+        [SerializeField] private SkillDefinition m_SkillData;
+        [SerializeField] private float m_Lifetime = 5f;
 
         // 속성 (Properties)
+        public SkillDefinition SkillData => m_SkillData;
+        public float LifeTime => m_Lifetime;
         public GameObject Caster { get; set; }
         public GameObject Receiver { get; set; }
 
@@ -34,7 +36,7 @@ namespace SkyDragonHunter {
             Init();
 
             // TODO: 임시
-            Destroy(gameObject, lifetime);
+            Destroy(gameObject, m_Lifetime);
         }
 
         private void OnDisable()

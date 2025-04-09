@@ -20,7 +20,17 @@ namespace SkyDragonHunter.Structs {
             m_StringBase = null;
             m_Base = new char[1] { (char)('a' - 1) };
         }
-        
+
+        public AlphaUnit(string strNumber)
+        {
+            BigInteger number = BigInteger.Parse(strNumber);
+            m_OriginNumber = number < 0 ? 0 : number;
+
+            m_StringNumber = "0";
+            m_StringBase = null;
+            m_Base = new char[1] { (char)('a' - 1) };
+        }
+
         public AlphaUnit(BigInteger number)
         {
             m_OriginNumber = number < 0 ? 0 : number;
