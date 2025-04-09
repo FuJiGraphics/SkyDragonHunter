@@ -152,6 +152,7 @@ namespace SkyDragonHunter.UI {
                             m_PrevClickedCrew = crewGo;
                         });
                         nodeGo.transform.SetParent(m_UiCrewPickContent.transform);
+                        nodeGo.transform.localScale = Vector3.one;
                     }
                     else
                     {
