@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -205,6 +206,7 @@ namespace SkyDragonHunter.UI {
                 m_AirshipEquipController.EquipSlot(inSlot.slotNumber, outInstance);
                 inSlot.ResetSlot();
                 inSlot.SetSlot(outInstance);
+                m_EquipmentPanel.mountSlotIcons[inSlot.slotNumber].sprite = inSlot.crewIcon.sprite;
             }
         }
 
