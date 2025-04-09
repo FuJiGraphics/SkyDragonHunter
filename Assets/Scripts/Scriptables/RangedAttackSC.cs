@@ -21,12 +21,6 @@ namespace SkyDragonHunter.Scriptables
 
         public string fireDummyName;
 
-        // private LinkedList<GameObject> m_ExecutorUsers;
-        // private Dictionary<GameObject, RangedAttackExecutor> m_Executors;
-        // private LinkedList<GameObject> m_PreviewItemUsers;
-        // private Dictionary<GameObject, GameObject> m_PreviewObjects;
-        // private Dictionary<GameObject, GameObject> m_PreviewFireDummyObjects;
-
         // 속성 (Properties)
         public override ItemType Type => ItemType.Weapon;
         public AttackDefinition WeaponData => this;
