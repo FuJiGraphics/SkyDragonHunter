@@ -24,7 +24,7 @@ namespace SkyDragonHunter.Entities
         public float lastSkillCasted;
         new public bool IsSkillAvailable;
 
-        private CrewControllerBT m_CrewTarget;
+        [SerializeField] private CrewControllerBT m_CrewTarget;
 
         // Properties
         //public override bool IsSkillAvailable
@@ -126,6 +126,10 @@ namespace SkyDragonHunter.Entities
                 }
             }
 
+            // TODO: 
+            Debug.Log($"No CrewTarget, target: {m_Target.name}");
+            // ~TODO
+
             var colliders = Physics2D.OverlapCircleAll(transform.position, m_AggroRange);
             if (colliders.Length > 0)
             {
@@ -137,6 +141,7 @@ namespace SkyDragonHunter.Entities
                         if (crewBT != null)
                         {
                             var onBoard = crewBT.isMounted;
+                            Debug.Log($"crew '{crewBT.name}' isMounted: {onBoard}");
                             if (onBoard)
                             {
                                 continue;
