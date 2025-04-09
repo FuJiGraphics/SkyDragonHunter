@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5869768347353564658}
   - component: {fileID: 2658377295138934896}
   - component: {fileID: 5650259525417235952}
+  - component: {fileID: -3359130589602439771}
   m_Layer: 0
   m_Name: GreenLight
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7692943698395102772}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.6, y: -10.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,5 +118,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d7e5dca10e28ff49b0a8147f2a0c19f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 0
+  animator: {fileID: 0}
+--- !u!114 &-3359130589602439771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7692943698395102772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa3587b6e394f14da44f155ad6eba1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

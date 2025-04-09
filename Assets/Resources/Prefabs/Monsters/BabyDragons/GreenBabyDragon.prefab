@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2062438541049813123}
   - component: {fileID: 2414286952407433082}
   - component: {fileID: 9143517516871605923}
+  - component: {fileID: 5289164174615010192}
   m_Layer: 0
   m_Name: GreenBabyDragon
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2931984415808889774}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 100005
+  animator: {fileID: 0}
+--- !u!114 &5289164174615010192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2931984415808889774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc13de8f654705049be13da750945509, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

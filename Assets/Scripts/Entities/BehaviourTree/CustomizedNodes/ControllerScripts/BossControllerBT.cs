@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Utility;
 
 namespace SkyDragonHunter.Entities 
 {
@@ -25,6 +26,7 @@ namespace SkyDragonHunter.Entities
         new public bool IsSkillAvailable;
 
         [SerializeField] private CrewControllerBT m_CrewTarget;
+        [SerializeField] private TestAniController tempAnimController;
 
         // Properties
         //public override bool IsSkillAvailable
@@ -43,6 +45,14 @@ namespace SkyDragonHunter.Entities
             {
                 SetDataFromTable(ID);
             }
+            var monsterPrefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+
+            var animController = monsterPrefabLoader.GetMonsterAnimController(100041);
+            var instantiatedAnimController = Instantiate(animController, transform);
+            Vector3 localScale = instantiatedAnimController.transform.localScale;
+            localScale.x = -1;
+            instantiatedAnimController.transform.localScale = localScale;
+            tempAnimController = instantiatedAnimController;
         }
 
         protected void Update()
@@ -75,6 +85,12 @@ namespace SkyDragonHunter.Entities
             SetAnimTrigger(0);            
         }
 
+        public override void TriggerAttack()
+        {
+            base.TriggerAttack();
+            tempAnimController.OnAttck();
+        }
+
         public override void ResetHealth()
         {
             throw new System.NotImplementedException();
@@ -103,7 +119,7 @@ namespace SkyDragonHunter.Entities
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
             skillId = data.SkillID;
-            m_skillCooltime = data.SkillCooltime;
+            m_skillCooltime = data.SkillCooltime;           
         }        
 
         public override void ResetTarget()
@@ -192,10 +208,10 @@ namespace SkyDragonHunter.Entities
         {
             var newPos = transform.position;
 
-            if (isChasing || isMoving)
+            if (IsChasing || isMoving)
             {
                 int toRight = 1;
-                if (isChasing)
+                if (IsChasing)
                     toRight *= 3;
                 if (!isDirectionToRight)
                     toRight *= -1;
