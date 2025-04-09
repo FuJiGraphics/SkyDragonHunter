@@ -188,10 +188,11 @@ namespace SkyDragonHunter.Entities
         // Public 메서드
         public void AllocateMountSlot(MountableSlot slot)
         {
+            m_SkeletonAnim.AnimationState.SetAnimation(0, s_AnimNameIdle1, true);
             isMounted = false;
             m_MountSlot = slot;
             transform.position = m_MountSlot.transform.localPosition;
-            exhaustionRemainingTime = 1f;
+            exhaustionRemainingTime = 0.3f;
             MountAction(true);
         }
 
@@ -387,7 +388,7 @@ namespace SkyDragonHunter.Entities
         }
 
         private void UpdatePosition()
-        {
+        {            
             var newPos = transform.position;
             var direction = Vector3.zero;
 
