@@ -263,13 +263,11 @@ namespace SkyDragonHunter.Entities
                             if (floatingEffectComp != null)
                             {
                                 targetYPos = floatingEffectComp.StartY;
-                                //Debug.LogError($"target Y pos reassigned {targetYPos}");
                             }
                             else
                             {
                                 Debug.LogError($"no floatingEffect Comp");
                             }
-                            //ResetBehaviourTree();
                         }                                                
                     }
                 }                

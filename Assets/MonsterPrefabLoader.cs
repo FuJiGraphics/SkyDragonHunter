@@ -5,7 +5,6 @@ using UnityEngine;
 public class MonsterPrefabLoader : MonoBehaviour
 {
     private Dictionary<int, TestAniController> prefabDictionary = new Dictionary<int, TestAniController>();
-    [SerializeField] private List<TestAniController> list = new List<TestAniController>();
 
     private string filePath = "Prefabs/Monsters/";
     private string[] fileNames =
@@ -33,7 +32,6 @@ public class MonsterPrefabLoader : MonoBehaviour
                 if (!prefabDictionary.ContainsKey(prefab.ID))
                 {
                     prefabDictionary.Add(prefab.ID, prefab);
-                    list.Add(prefab);
                 }
                 else
                 {

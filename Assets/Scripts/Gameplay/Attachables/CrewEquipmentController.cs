@@ -45,6 +45,7 @@ namespace SkyDragonHunter {
                 crewInstance.SetActive(true);
                 if (crewInstance.TryGetComponent<CrewControllerBT>(out var btComp))
                 {
+                    
                     btComp.m_MountSlot = m_MountableSlots[slot];
                     btComp.m_MountSlot.Mounting(crewInstance);
                     btComp.MountAction(true);
