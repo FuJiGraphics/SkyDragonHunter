@@ -6,32 +6,26 @@ public class TestAniController : MonoBehaviour
 {
     // TODO: LJH
     public int ID;
+    // ~TODO
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     private void OnEnable()
     {
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = Vector3.zero;        
     }
     // ~TODO
 
-    private Animator animator;
+    [SerializeField] private Animator animator;
     private float loopUseTime;
     private float loopEndTime = 2f;
     private float chaseUseTime;
     private float chaseEndTime = 2f;
     private bool loopAttack;
     private bool chase;
-    // Start is called before the first frame update
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        
-
-    }
-
+       
     public void OnAttck()
     {
         animator.SetTrigger("Attack");
@@ -77,7 +71,13 @@ public class TestAniController : MonoBehaviour
 
     public void OnDead()
     {
-        animator.SetTrigger("Dead");
+        animator.SetTrigger("Dead");        
     }
 
+    // TODO: LJH
+    //public void OnDeadAnimationEnd()
+    //{
+    //    Destroy(gameObject);
+    //}
+    // ~TODO
 }

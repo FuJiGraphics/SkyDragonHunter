@@ -316,8 +316,8 @@ namespace SkyDragonHunter
 
                 // TODO: LJH
                 int tempId = 100_000;
-                tempId += ((currentMissionLevel - 1) % 4 + 1) * 10;
-                tempId += (currentZonelLevel - 1) % 6 + 1;
+                tempId += ((currentZonelLevel - 1) % 4) * 10;
+                tempId += (currentMissionLevel - 1) % 6 + 1;
 
                 var monsterBT = spawned.GetComponent<MonsterControllerBT>();
                 monsterBT.SetDataFromTable(tempId);
