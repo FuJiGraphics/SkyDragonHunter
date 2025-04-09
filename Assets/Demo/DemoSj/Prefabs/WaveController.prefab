@@ -86,6 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7951261400370368363}
+  - component: {fileID: 5056235766857252441}
   - component: {fileID: 504886660034442510}
   m_Layer: 0
   m_Name: WaveController
@@ -110,6 +111,19 @@ Transform:
   - {fileID: 5525623379842242346}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5056235766857252441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991951754933951724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7afd4a88219c43a19d2dcd0be9c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: WaveController
 --- !u!114 &504886660034442510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,13 +138,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveSlider: {fileID: 0}
   waveLevelText: {fileID: 0}
-  ClearPanel: {fileID: 0}
-  FeildPanel: {fileID: 0}
+  clearPanel: {fileID: 0}
+  feildPanel: {fileID: 0}
   backGround: {fileID: 0}
   backGroundController: {fileID: 0}
   airship: {fileID: 0}
   monster: {fileID: 7434643913460656674, guid: 5e497bcd1ce990b45a71368d17fa3280, type: 3}
-  boss: {fileID: 7434643913460656674, guid: d965ce7e20dbfe3418c712938345b5ec, type: 3}
+  boss: {fileID: 7434643913460656674, guid: a671568c6a169f040b823491c5713795, type: 3}
   spawnArea: {fileID: 1390594380999938773}
   maxWaveTime: 10
   TestBackGround:

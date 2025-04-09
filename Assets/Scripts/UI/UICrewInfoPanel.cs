@@ -124,6 +124,7 @@ namespace SkyDragonHunter.UI {
                     });
                 }
                 nodeGo.transform.SetParent(m_UiCrewListContent.transform);
+                nodeIcon.transform.localScale = Vector3.one;
             }
             else
             {
