@@ -186,10 +186,10 @@ namespace SkyDragonHunter.Entities
         {
             var newPos = transform.position;
 
-            if (isChasing || isMoving)
+            if (IsChasing || isMoving)
             {
                 int toRight = 1;
-                if (isChasing)
+                if (IsChasing)
                     toRight *= 3;
                 if (!isDirectionToRight)
                     toRight *= -1;

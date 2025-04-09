@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: -3666998413519012154}
   - component: {fileID: -2725025849333200871}
   - component: {fileID: -1228580994115567982}
+  - component: {fileID: -4782080259429431447}
   m_Layer: 0
   m_Name: BossDummy(BossBT)
   m_TagString: Monster
@@ -73,7 +74,6 @@ Transform:
   m_Children:
   - {fileID: 6118548252565894742}
   - {fileID: 2497543133589625658}
-  - {fileID: 6014955016129060529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &852608348216678719
@@ -316,75 +316,27 @@ MonoBehaviour:
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
-  isChasing: 0
   lastAttackTime: 0
   attackAnimationPlaying: 0
   m_AttackType: 0
   skillId: 0
   lastSkillCasted: 0
   IsSkillAvailable: 0
---- !u!1001 &7453211104094369101
-PrefabInstance:
+  m_CrewTarget: {fileID: 0}
+  tempAnimController: {fileID: 0}
+--- !u!114 &-4782080259429431447
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8145279371225729078}
-    m_Modifications:
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4701482627703406947, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-      propertyPath: m_Name
-      value: BlackDragon
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
---- !u!4 &6014955016129060529 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3753268382604536828, guid: 67166cbbf2fc5254db18ae2bc79864d5, type: 3}
-  m_PrefabInstance: {fileID: 7453211104094369101}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434643913460656674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78da1e7b128023647b77caf2fd400d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
 --- !u!1001 &7597109240998436959
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2564972951978022104}
   - component: {fileID: 2491622530389800407}
   - component: {fileID: 1813804659423723027}
+  - component: {fileID: 9118728329187821607}
   m_Layer: 0
   m_Name: BrownLight
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6901002408819274173}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -36.1, y: -10.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 100038
+  animator: {fileID: 0}
+--- !u!114 &9118728329187821607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901002408819274173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fa3587b6e394f14da44f155ad6eba1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

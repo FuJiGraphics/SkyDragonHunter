@@ -44,7 +44,8 @@ namespace SkyDragonHunter.Entities
 
         public bool isDirectionToRight = false;
         public bool isMoving = false;
-        public bool isChasing = false;
+        public virtual bool IsChasing { get; set; }
+
         public float lastAttackTime;
         public bool attackAnimationPlaying;               
 

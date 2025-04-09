@@ -17,6 +17,19 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private MonsterPrefabLoader monsterPrefabLoader;
         [SerializeField] private TestAniController tempAnimController;
 
+        public override bool IsChasing 
+        { 
+            get => base.IsChasing;
+            set
+            {
+                if(value != IsChasing)
+                {
+                    tempAnimController.OnChase();
+                }
+                base.IsChasing = value;
+            }
+        }
+
         private CrewControllerBT m_CrewTarget;
 
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -69,12 +82,18 @@ namespace SkyDragonHunter.Entities
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
 
-            var animController = monsterPrefabLoader.GetMonsterAnimController(id);            
-            Instantiate(animController, transform);
-            //Vector3 localScale = animController.transform.localScale;
-            //localScale.x = -1;
-            //animController.transform.localScale = localScale;
-            tempAnimController = animController;
+            var animController = monsterPrefabLoader.GetMonsterAnimController(id);
+            var instantiatedAnimController = Instantiate(animController, transform);
+            Vector3 localScale = instantiatedAnimController.transform.localScale;
+            localScale.x = -1;
+            instantiatedAnimController.transform.localScale = localScale;
+            tempAnimController = instantiatedAnimController;
+        }
+
+        public override void TriggerAttack()
+        {
+            base.TriggerAttack();
+            tempAnimController.OnAttck();
         }
 
         public override void ResetHealth()
@@ -175,21 +194,25 @@ namespace SkyDragonHunter.Entities
         {
             var newPos = transform.position;              
 
-            if (isChasing || isMoving)
-            {
+            if (IsChasing || isMoving)
+            {                
+
                 int toRight = 1;
-                var xScale = 1;
+                var yRotation = 0;
                 if (!isDirectionToRight)
                 {
                     toRight *= -1;
-                    xScale *= -1;
+                    yRotation += 180;
                 }
-                if (isChasing)
+                if (IsChasing)
                     toRight *= 3;
 
-                var localScale = tempAnimController.transform.localScale;
-                localScale.x = xScale;
-                tempAnimController.transform.localScale = localScale;
+                //Debug.Log($"yRotation {yRotation}");
+                //var localRotation = (tempAnimController.transform.localRotation).eulerAngles;
+                //localRotation.y = yRotation;
+                //tempAnimController.transform.localRotation = Quaternion.Euler(localRotation);
+                //tempAnimController.transform.localScale = Vector3.one;
+                //Debug.Log($"{tempAnimController.transform.localRotation.eulerAngles}, {yRotation}");
 
                 newPos.x += Time.deltaTime * m_Speed * toRight;                
             }

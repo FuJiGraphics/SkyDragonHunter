@@ -90,7 +90,6 @@ namespace SkyDragonHunter.Entities
                 if (m_Target == null)
                     return false;
 
-                Debug.Log($"Crew Target Distance : {TargetDistance}, Range : {m_AttackRange + distanceCalibrator * 2} ({m_AttackRange}, + {distanceCalibrator} * 2)");
                 return TargetDistance < m_AttackRange + distanceCalibrator * 2;
             }
         }
@@ -405,7 +404,7 @@ namespace SkyDragonHunter.Entities
             var newPos = transform.position;
             var direction = Vector3.zero;
 
-            if (m_Target != null && isChasing)
+            if (m_Target != null && IsChasing)
             {
                 float multiplier = 3f;
 

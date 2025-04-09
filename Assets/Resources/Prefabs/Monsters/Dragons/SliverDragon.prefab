@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2441947058756081800}
   - component: {fileID: 1742010230410306130}
   - component: {fileID: 1090584885076042584}
+  - component: {fileID: 3821985117871353839}
   m_Layer: 0
   m_Name: SliverDragon
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2963283243982017864}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.4, y: -10.860144, z: -0.86720556}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,3 +121,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 100048
+  animator: {fileID: 0}
+--- !u!114 &3821985117871353839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2963283243982017864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc13de8f654705049be13da750945509, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
