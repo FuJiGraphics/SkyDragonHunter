@@ -63,6 +63,7 @@ namespace SkyDragonHunter.Entities
         // Test용도 임시 필드
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
+        private float distanceCalibrator;
 
         // 속성 (Properties)
         public float Speed => m_Speed;
@@ -79,6 +80,18 @@ namespace SkyDragonHunter.Entities
                 var distance = Vector3.Distance(onFieldOriginPosition, currentPos);
 
                 return distance;
+            }
+        }
+
+        public override bool IsTargetInAttackRange
+        {
+            get
+            {
+                if (m_Target == null)
+                    return false;
+
+                Debug.Log($"Crew Target Distance : {TargetDistance}, Range : {m_AttackRange + distanceCalibrator * 2} ({m_AttackRange}, + {distanceCalibrator} * 2)");
+                return TargetDistance < m_AttackRange + distanceCalibrator * 2;
             }
         }
 
@@ -119,12 +132,12 @@ namespace SkyDragonHunter.Entities
 
                 Vector3 targetPos = new Vector3(m_Target.position.x, targetYPos, 0);
                 Vector3 selfPos = new Vector3(transform.position.x, floatingEffect.StartY, 0);
-                var sr = m_Target.gameObject.GetComponent<SpriteRenderer>();
-                var distanceCallibrator = (sr.bounds.size.x) * 0.5f;
+                var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+                distanceCalibrator = (sr.bounds.size.x) * 0.5f;
 
                 distance = Vector3.Distance(targetPos, selfPos);
 
-                distance += distanceCallibrator;
+                distance += distanceCalibrator;
 
                 return distance;
             }
@@ -388,7 +401,7 @@ namespace SkyDragonHunter.Entities
         }
 
         private void UpdatePosition()
-        {            
+        {
             var newPos = transform.position;
             var direction = Vector3.zero;
 
@@ -413,9 +426,8 @@ namespace SkyDragonHunter.Entities
                 var normal = direction.normalized;
                 newPos.x += Time.deltaTime * m_Speed * normal.x * multiplier;
                 floatingEffect.StartY += Time.deltaTime * m_Speed * normal.y * multiplier;
-                                
                 transform.position = newPos;
-            }                                   
+            }
         }
         
         private void InitMountSlot()

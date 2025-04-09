@@ -43,7 +43,7 @@ namespace SkyDragonHunter.Entities {
         {
             base.OnEnd();
             m_Context.isChasing = false;
-            m_Context.ResetTarget();           
+            m_Context.ResetTarget();
         }
 
     } // Scope by class EnemyChaseAction

@@ -71,9 +71,9 @@ namespace SkyDragonHunter.Entities
 
             var animController = monsterPrefabLoader.GetMonsterAnimController(id);            
             Instantiate(animController, transform);
-            Vector3 localScale = animController.transform.localScale;
-            localScale.x = -1;
-            animController.transform.localScale = localScale;
+            //Vector3 localScale = animController.transform.localScale;
+            //localScale.x = -1;
+            //animController.transform.localScale = localScale;
             tempAnimController = animController;
         }
 
@@ -178,10 +178,19 @@ namespace SkyDragonHunter.Entities
             if (isChasing || isMoving)
             {
                 int toRight = 1;
+                var xScale = 1;
+                if (!isDirectionToRight)
+                {
+                    toRight *= -1;
+                    xScale *= -1;
+                }
                 if (isChasing)
                     toRight *= 3;
-                if (!isDirectionToRight)
-                    toRight *= -1;
+
+                var localScale = tempAnimController.transform.localScale;
+                localScale.x = xScale;
+                tempAnimController.transform.localScale = localScale;
+
                 newPos.x += Time.deltaTime * m_Speed * toRight;                
             }
 
