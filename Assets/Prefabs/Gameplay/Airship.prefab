@@ -1040,12 +1040,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 20
   health: 500
   shield: 50
   armor: 5
-  resilient: 2
-  criticalChance: 0
+  resilient: 1
+  criticalChance: 0.3
   criticalMultiplier: 2
   bossDamageMultiplier: 1
   skillEffectMultiplier: 1
@@ -1236,9 +1236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbebd687ce87d04385de26ab1f629e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TargetTags:
-  - Monster
-  - Boss
+  attackRange: 50
   m_EnemySearchProvider: {fileID: 0}
 --- !u!114 &3631966690247035673
 MonoBehaviour:
@@ -1252,8 +1250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4416fdb2ef3d5f4c8710eabbed5b343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Inventory: {fileID: 0}
-  m_EnemySearchProvider: {fileID: 0}
+  m_CanonExecutor: {fileID: 7546861831730399887}
 --- !u!114 &3915615868300328666
 MonoBehaviour:
   m_ObjectHideFlags: 0
