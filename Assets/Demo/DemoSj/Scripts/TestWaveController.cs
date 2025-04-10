@@ -43,6 +43,7 @@ namespace SkyDragonHunter
         private float distance;
         private bool isStopped;
         private bool isCanSpawn;
+        private bool isSuccessChangeBackGround;
 
         // 테스트용
         public Sprite[] TestBackGround;
@@ -84,6 +85,8 @@ namespace SkyDragonHunter
             currentEnemy = new List<GameObject>();
             currentMissionLevel = 1;
             currentZonelLevel = 1;
+            isSuccessChangeBackGround = true;
+
             OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
@@ -108,23 +111,45 @@ namespace SkyDragonHunter
         // Public 메서드
         public void OnSelectWave(int misson, int zone)
         {
-            currentMissionLevel = misson;
-            currentZonelLevel = zone;
+            if (misson > lastTriedMissionLevel)
+            {
+                Debug.Log("들린적이 없는 미션입니다!!");
+                return;
+            }
+            else
+            {
+                currentMissionLevel = misson;
+            }
+
+            if (zone > lastTriedZonelLevel)
+            {
+                Debug.Log("들린적이 없는 존입니다!!");
+                return;
+            }
+            else
+            {
+                currentZonelLevel = zone;
+            }
             OnGoSelectCurrentWave();
         }
 
         public void OnOffInfiniteMod()
         {
-            if (isInfiniteMode)
+            if (isSuccessChangeBackGround)
             {
-                isInfiniteMode = false;
-                OnSetLastTriedtWave();
+                if (isInfiniteMode)
+                {
+                    isInfiniteMode = false;
+                    OnSetLastTriedtWave();
+                }
+                else
+                {
+                    isInfiniteMode = true;
+                    OnSetCurrentWave();
+                }
+                isSuccessChangeBackGround = false;
             }
-            else
-            {
-                isInfiniteMode = true;
-                OnSetCurrentWave();
-            }
+
         }
 
         public void OnTestWaveFailedActive()
@@ -264,6 +289,10 @@ namespace SkyDragonHunter
 
         private void OnGoSelectCurrentWave()
         {
+            OnClearMonster();
+            isCanSpawn = true;
+            currentWaveTime = 0f;
+            isInfiniteMode = true;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
         }
@@ -457,6 +486,7 @@ namespace SkyDragonHunter
 
             ctrl.color = from;
             changeSuccess = true;
+            isSuccessChangeBackGround = true;
         }
 
 

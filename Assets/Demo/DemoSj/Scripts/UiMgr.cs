@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
-        public GameObject randomCrewPickUpInfo;
+        public GameObject randomCrewPickUpInfoPanel;
         public GameObject inGameButtonPanel;
         public GameObject inGameWaveInfoPanel;
         public GameObject fortressEquipmentPanel;
@@ -27,15 +27,12 @@ namespace SkyDragonHunter.Test
         public GameObject[] pickPanels;
         public GameObject[] fortressPickPanels;
         public GameObject[] rewardSlots;
+        public GameObject[] ShopPanels;
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
-        private bool isHideRandomCrewPickUpInfo = true;
-        private bool isHideSummonPanel = true;
-        private bool isHideCharacterInfoPanel = true;
         private bool isHideOptionsPanel = true;
-        private bool isHideWaveSelectPanel = true;
-        private bool isHideFortressEquipmentPanel;
+        private bool isHideRandomCrewPanel = true;
         private bool isHideQuestPanel;
         private int currentMissionLevel = 1;
         private int currentZoneLevel = 1;
@@ -70,44 +67,66 @@ namespace SkyDragonHunter.Test
         }
 
         // Public 메서드
+        public void OnInGamePanels()
+        {
+            AllPanelsOff();
+            inGameButtonPanel.SetActive(true);
+            inGameWaveInfoPanel.SetActive(true);
+        }
+
+        public void OnGoldShopPanel()
+        {
+            AllPanelsOff();
+            ShopPanels[0].SetActive(true);
+            ShopPanels[1].SetActive(false);
+            ShopPanels[2].SetActive(false);
+        }
+
+        public void OnDiamondShopPanel()
+        {
+            AllPanelsOff();
+            ShopPanels[0].SetActive(false);
+            ShopPanels[1].SetActive(true);
+            ShopPanels[2].SetActive(false);
+        }
+
+        public void OnRerollShopPanel()
+        {
+            AllPanelsOff();
+            ShopPanels[0].SetActive(false);
+            ShopPanels[1].SetActive(false);
+            ShopPanels[2].SetActive(true);
+        }
+
         public void OnOffRandomCrewPickUpInfo()
         {
-            if (isHideRandomCrewPickUpInfo)
+            if (randomCrewPickUpInfoPanel != null)
             {
-                randomCrewPickUpInfo.SetActive(true);
-                isHideRandomCrewPickUpInfo = false;
-            }
-            else
-            {
-                randomCrewPickUpInfo.SetActive(false);
-                isHideRandomCrewPickUpInfo = true;
+                if (isHideRandomCrewPanel)
+                {
+                    randomCrewPickUpInfoPanel.SetActive(true);
+                    isHideRandomCrewPanel = false;
+                }
+                else
+                {
+                    randomCrewPickUpInfoPanel.SetActive(false);
+                    isHideRandomCrewPanel = true;
+                }
             }
         }
 
         public void OnOffFortressEquipmentPanel()
         {
-            if (isHideFortressEquipmentPanel)
-            {
-                inGameWaveInfoPanel.SetActive(true);
-                inGameButtonPanel.SetActive(true);
-                fortressEquipmentPanel.SetActive(false);
-                isHideFortressEquipmentPanel = false;
-                AllOffFortressPickPanel();
-            }
-            else
-            {
-                inGameWaveInfoPanel.SetActive(false);
-                inGameButtonPanel.SetActive(false);
-                fortressEquipmentPanel.SetActive(true);
-                isHideFortressEquipmentPanel = true;
-                OnFortressPickPanel0();
-            }
+            AllPanelsOff();
+            fortressEquipmentPanel.SetActive(true);
+            OnFortressPickPanel0();
         }
 
         public void OnSelectWaveToGO()
         {
             waveSelectInfoPanel.SetActive(false);
             waveControlerScript.OnSelectWave(currentMissionLevel, currentZoneLevel);
+            OnInGamePanels();
         }
 
         public void OnMissionButtonClicked()
@@ -146,14 +165,13 @@ namespace SkyDragonHunter.Test
 
         public void AllOffFortressPickPanel()
         {
-            fortressPickPanels[0].SetActive(false);
-            fortressPickPanels[1].SetActive(false);
-            fortressPickPanels[2].SetActive(false);
-            fortressPickPanels[3].SetActive(false);
+            AllPanelsOff();
+            OnInGamePanels();
         }
 
         public void OnFortressPickPanel0()
         {
+            AllPanelsOff();
             fortressPickPanels[0].SetActive(true);
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
@@ -162,6 +180,7 @@ namespace SkyDragonHunter.Test
 
         public void OnFortressPickPanel1()
         {
+            AllPanelsOff();
             fortressPickPanels[1].SetActive(true);
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[2].SetActive(false);
@@ -170,6 +189,7 @@ namespace SkyDragonHunter.Test
 
         public void OnFortressPickPanel2()
         {
+            AllPanelsOff();
             fortressPickPanels[2].SetActive(true);
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
@@ -178,6 +198,7 @@ namespace SkyDragonHunter.Test
 
         public void OnFortressPickPanel3()
         {
+            AllPanelsOff();
             fortressPickPanels[3].SetActive(true);
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
@@ -209,17 +230,11 @@ namespace SkyDragonHunter.Test
         {
             if (summonPanel != null)
             {
-                if (!isHideSummonPanel)
-                {
-                    summonPanel.SetActive(false);
-                    isHideSummonPanel = true;
-                }
-                else
-                {
-                    summonPanel.SetActive(true);
-                    OnPickPanel0();
-                    isHideSummonPanel = false;
-                }
+                AllPanelsOff();
+                summonPanel.SetActive(true);
+                OnPickPanel0();
+                randomCrewPickUpInfoPanel.SetActive(false);
+                isHideRandomCrewPanel = true;
             }
         }
 
@@ -227,16 +242,8 @@ namespace SkyDragonHunter.Test
         {
             if (waveSelectInfoPanel != null)
             {
-                if (!isHideWaveSelectPanel)
-                {
-                    waveSelectInfoPanel.SetActive(false);
-                    isHideWaveSelectPanel = true;
-                }
-                else
-                {
-                    waveSelectInfoPanel.SetActive(true);
-                    isHideWaveSelectPanel = false;
-                }
+                AllPanelsOff();
+                waveSelectInfoPanel.SetActive(true);
             }
         }
 
@@ -244,16 +251,8 @@ namespace SkyDragonHunter.Test
         {
             if (characterInfoPanel != null)
             {
-                if (!isHideCharacterInfoPanel)
-                {
-                    characterInfoPanel.SetActive(false);
-                    isHideCharacterInfoPanel = true;
-                }
-                else
-                {
-                    characterInfoPanel.SetActive(true);
-                    isHideCharacterInfoPanel = false;
-                }
+                AllPanelsOff();
+                characterInfoPanel.SetActive(true);
             }
         }
 
@@ -261,15 +260,15 @@ namespace SkyDragonHunter.Test
         {
             if (optionsPanel != null)
             {
-                if (!isHideOptionsPanel)
-                {
-                    optionsPanel.SetActive(false);
-                    isHideOptionsPanel = true;
-                }
-                else
+                if (isHideOptionsPanel)
                 {
                     optionsPanel.SetActive(true);
                     isHideOptionsPanel = false;
+                }
+                else
+                {
+                    optionsPanel.SetActive(false);
+                    isHideOptionsPanel = true;
                 }
             }
         }
@@ -355,6 +354,35 @@ namespace SkyDragonHunter.Test
             }
 
             target.anchoredPosition = end;
+        }
+
+        private void AllPanelsOff()
+        {
+            inGameButtonPanel.SetActive(false);
+            inGameWaveInfoPanel.SetActive(false);
+            fortressEquipmentPanel.SetActive(false);
+            summonPanel.SetActive(false);
+            waveSelectInfoPanel.SetActive(false);
+            characterInfoPanel.SetActive(false);
+            questPanel.SetActive(false);
+            optionsPanel.SetActive(false);
+            foreach (var panel in pickPanels)
+            {
+                panel.SetActive(false);
+            }
+            foreach (var panel in fortressPickPanels)
+            {
+                panel?.SetActive(false);
+            }
+
+            foreach (var panel in rewardSlots)
+            {
+                panel?.SetActive(false);
+            }
+            foreach (var panel in ShopPanels)
+            {
+                panel?.SetActive(false);
+            }
         }
 
     } // Scope by class PanelHide
