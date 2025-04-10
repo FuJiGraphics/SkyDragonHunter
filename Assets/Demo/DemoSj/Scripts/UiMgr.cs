@@ -22,6 +22,7 @@ namespace SkyDragonHunter.Test
         public GameObject characterInfoPanel;
         public GameObject questPanel;
         public GameObject optionsPanel;
+        public GameObject masteryPanel;
         public GameObject waveSlider;
         public GameObject waveRetryButton;
         public GameObject[] pickPanels;
@@ -356,7 +357,7 @@ namespace SkyDragonHunter.Test
             target.anchoredPosition = end;
         }
 
-        private void AllPanelsOff()
+        public void AllPanelsOff()
         {
             inGameButtonPanel.SetActive(false);
             inGameWaveInfoPanel.SetActive(false);
@@ -366,6 +367,7 @@ namespace SkyDragonHunter.Test
             characterInfoPanel.SetActive(false);
             questPanel.SetActive(false);
             optionsPanel.SetActive(false);
+            masteryPanel.SetActive(false);
             foreach (var panel in pickPanels)
             {
                 panel.SetActive(false);

@@ -15,6 +15,8 @@ namespace SkyDragonHunter.Managers
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
         public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
         public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
+        public static MasteryNodeTable MasteryNodeTable => Get<MasteryNodeTable>(DataTableIds.MasteryNode);
+        public static MasterySocketTable MasterySocketTable => Get<MasterySocketTable>(DataTableIds.MasterySocket);
 
         // Static Constructor
         static DataTableMgr()
@@ -24,6 +26,8 @@ namespace SkyDragonHunter.Managers
             LoadTable<CrewTable>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
+            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
+            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
         }
 
         public static void InitForGameScene()

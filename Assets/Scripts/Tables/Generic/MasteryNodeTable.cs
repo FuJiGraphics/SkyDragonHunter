@@ -1,14 +1,15 @@
+using CsvHelper.Configuration.Attributes;
 using SkyDragonHunter.Tables.Generic;
 
 namespace SkyDragonHunter.Tables
 {
     public class MasteryNodeData : DataTableData
     {
-        public int NodeID { get; set; }
+        [TypeConverter(typeof(IntArrayConverter))]
         public int[] NextNodeIds { get; set; }
-        public string SocketID { get; set; }
-        public string Level { get; set; }
-        public string Position { get; set; }
+        public int SocketID { get; set; }
+        public int Level { get; set; }
+        public int Position { get; set; }
     }
 
     public class MasteryNodeTable : DataTable<MasteryNodeData>

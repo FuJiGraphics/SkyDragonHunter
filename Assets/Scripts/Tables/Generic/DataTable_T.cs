@@ -1,18 +1,33 @@
 using CsvHelper;
-using CsvHelper.Configuration;
-using SkyDragonHunter.Utility;
+using CsvHelper.TypeConversion;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace SkyDragonHunter.Tables.Generic 
-{
+namespace SkyDragonHunter.Tables.Generic {
+
+    public class IntArrayConverter : DefaultTypeConverter
+    {
+        public override object ConvertFromString(string text, IReaderRow row, CsvHelper.Configuration.MemberMapData memberMapData)
+        {
+            if (string.IsNullOrEmpty(text))
+                return new int[0];
+            try
+            {
+                return text.Split('/')
+                           .Select(s => int.Parse(s, CultureInfo.InvariantCulture))
+                           .ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw new TypeConverterException(this, memberMapData, text, row.Context, $"Failed to convert '{text}' to int[].", ex);
+            }
+        }
+    }
+
     public abstract class DataTableData
     {
         public int ID { get; set; }
@@ -37,6 +52,7 @@ namespace SkyDragonHunter.Tables.Generic
             using (var reader = new StringReader(csvFile))
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
+                csvReader.Context.TypeConverterCache.AddConverter<int[]>(new IntArrayConverter());
                 return csvReader.GetRecords<T>().ToList();
             }
         }

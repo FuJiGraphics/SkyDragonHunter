@@ -22,10 +22,10 @@ public class MonsterPrefabLoader : MonoBehaviour
         {
             TestAniController[] prefabs = Resources.LoadAll<TestAniController>($"{filePath}{file}");
 
-            Debug.Log($"Loading Path: {filePath}{file}");
+            // Debug.Log($"Loading Path: {filePath}{file}");
             foreach (var prefab in prefabs)
             {
-                Debug.Log($"Loading File id: {prefab.ID}");
+                // Debug.Log($"Loading File id: {prefab.ID}");
                 if (prefab.ID == 0)
                     continue;
                 
@@ -35,7 +35,7 @@ public class MonsterPrefabLoader : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"ID {prefab.ID} exists already");
+                    // Debug.LogWarning($"ID {prefab.ID} exists already");
                 }
             }
         }
