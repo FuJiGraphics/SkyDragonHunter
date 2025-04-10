@@ -1,4 +1,3 @@
-using SixLabors.ImageSharp.PixelFormats;
 using SkyDragonHunter.test;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,25 +10,25 @@ namespace SkyDragonHunter.test
 {
 
     // 상점 종류를 나타내는 열거형 정의 (일반 / 일일 / 주간 / 월간)
-    public enum DiamondShopCategory { Common, Daily, Weekly, Monthly }
+    public enum GoldShopCategory { Common, Daily, Weekly, Monthly }
 
-    public class DiamondShopController : MonoBehaviour
+    public class GoldShopController : MonoBehaviour
     {
         public ShopType shopType;
 
         [Header("UI 참조")]
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
-        [SerializeField] private List<ItemStatus> diamondShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
+        [SerializeField] private List<ItemStatus> goldShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
 
-        [SerializeField] private DiamondShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
+        [SerializeField] private GoldShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
 
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
         // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
-        private Dictionary<DiamondShopCategory, List<ShopSlotState>> categoryItems = new();
+        private Dictionary<GoldShopCategory, List<ShopSlotState>> categoryItems = new();
 
         // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
-        private Dictionary<DiamondShopCategory, Coroutine> resetRoutines = new();
+        private Dictionary<GoldShopCategory, Coroutine> resetRoutines = new();
 
         [Header("탭별 자동 갱신 시간 (초 단위)")]
         [SerializeField] private float dailyResetTime = 86400f;        // 일일: 24시간
@@ -53,7 +52,7 @@ namespace SkyDragonHunter.test
             }
 
             // 각 카테고리에 대해 빈 리스트 초기화
-            foreach (DiamondShopCategory cat in System.Enum.GetValues(typeof(DiamondShopCategory)))
+            foreach (GoldShopCategory cat in System.Enum.GetValues(typeof(GoldShopCategory)))
                 categoryItems[cat] = new List<ShopSlotState>();
         }
 
@@ -68,11 +67,11 @@ namespace SkyDragonHunter.test
         // 외부 탭 버튼에서 호출되는 메서드
         public void OnClickTab(int categoryIndex)
         {
-            RefreshCategory((DiamondShopCategory)categoryIndex);
+            RefreshCategory((GoldShopCategory)categoryIndex);
         }
 
         // 주어진 카테고리로 아이템을 갱신
-        public void RefreshCategory(DiamondShopCategory category)
+        public void RefreshCategory(GoldShopCategory category)
         {
             currentCategory = category;
 
@@ -95,13 +94,13 @@ namespace SkyDragonHunter.test
         // Private 메서드
 
         // 카테고리에 대해 출현 확률 기반으로 아이템을 선택하고 저장
-        private void GenerateRandomItemsFor(DiamondShopCategory category)
+        private void GenerateRandomItemsFor(GoldShopCategory category)
         {
             List<ShopSlotState> result = new();
 
             for (int i = 0; i < slotHandlers.Count; i++)
             {
-                ItemStatus selectedItem = GetWeightedRandomItem(diamondShopItemPool);
+                ItemStatus selectedItem = GetWeightedRandomItem(goldShopItemPool);
                 if (selectedItem != null)
                     result.Add(new ShopSlotState(selectedItem));
             }
@@ -109,7 +108,7 @@ namespace SkyDragonHunter.test
             categoryItems[category] = result;
 
             // [수정 포인트] 일반(Common) 탭은 리셋 코루틴을 실행하지 않음
-            if (category == DiamondShopCategory.Common)
+            if (category == GoldShopCategory.Common)
                 return;
 
             // 기존 리셋 코루틴 정리
@@ -145,19 +144,19 @@ namespace SkyDragonHunter.test
         }
 
         // 각 카테고리에 대해 설정된 갱신 시간 반환
-        private float GetDelay(DiamondShopCategory category)
+        private float GetDelay(GoldShopCategory category)
         {
             return category switch
             {
-                DiamondShopCategory.Daily => dailyResetTime,
-                DiamondShopCategory.Weekly => weeklyResetTime,
-                DiamondShopCategory.Monthly => monthlyResetTime,
+                GoldShopCategory.Daily => dailyResetTime,
+                GoldShopCategory.Weekly => weeklyResetTime,
+                GoldShopCategory.Monthly => monthlyResetTime,
                 _ => 0f
             };
         }
 
         // 일정 시간이 지나면 해당 카테고리의 아이템 초기화
-        private IEnumerator ResetCategoryAfterDelay(DiamondShopCategory category, float delay)
+        private IEnumerator ResetCategoryAfterDelay(GoldShopCategory category, float delay)
         {
             yield return new WaitForSeconds(delay);
             categoryItems[category].Clear();

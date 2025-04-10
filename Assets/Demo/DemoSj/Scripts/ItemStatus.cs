@@ -13,7 +13,7 @@ namespace SkyDragonHunter.test
         // 필드 (Fields)
         public string itemName;
         public int price;
-        public int MaxCount;
+        public int maxCount;
         public float pullRate;
         public Sprite itemImage;
         public Sprite currencyTypeIcon;
