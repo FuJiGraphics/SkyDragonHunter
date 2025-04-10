@@ -37,7 +37,16 @@ namespace SkyDragonHunter
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            grid = GetComponent<GridLayoutGroup>();
+            grid = contentRect.GetComponent<GridLayoutGroup>();
+        }
+
+        private void Start()
+        {
+            // 강제로 레이아웃 갱신하도록 표시
+            dirty = true;
+
+            // 다음 프레임 이후 레이아웃 적용
+            StartCoroutine(ForceUpdateNextFrame());
         }
 
         // GameObject가 활성화될 때 호출됨 (SetActive(true))
@@ -102,13 +111,18 @@ namespace SkyDragonHunter
         // UI가 활성화되었을 때 다음 프레임에 강제로 레이아웃 갱신 (CanvasScaler 대응)
         System.Collections.IEnumerator ForceUpdateNextFrame()
         {
-            yield return null; // 1프레임 대기 (UI 레이아웃 계산 완료 보장)
+            yield return new WaitUntil(() => contentRect.rect.width > 0f);
             ApplyLayout();     // 강제 적용
         }
 
         // 셀 크기 및 콘텐츠 높이 재계산 적용
         private void ApplyLayout()
         {
+            if (contentRect.rect.width <= 0f)
+            {
+                return;
+            }
+
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentRect);
             
             float totalSpacingX = spacingX * (columnCount - 1);
