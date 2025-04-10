@@ -314,10 +314,10 @@ namespace SkyDragonHunter.Test
                 GameObject slot = rewardSlots[index];
 
                 // 슬롯의 자식 구조에서 "RewardSlotText" 오브젝트를 찾아 텍스트 컴포넌트 참조
-                var typeText = slot.transform.Find("Image/RewardSlotText")?.GetComponent<TMP_Text>();
+                var typeText = slot.transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
 
                 // 슬롯 내부에 있는 또 다른 Image 자식 아래의 "RewardSlotCountText" 텍스트 컴포넌트 참조
-                var countText = slot.transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TMP_Text>();
+                var countText = slot.transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
 
                 // 드롭된 아이템의 타입을 텍스트로 표시 (예: Gold, Potion 등)
                 if (typeText != null) typeText.text = kvp.Key.ToString();
@@ -332,8 +332,8 @@ namespace SkyDragonHunter.Test
             for (; index < rewardSlots.Length; index++)
             {
                 // 남은 슬롯 오브젝트
-                var typeText = rewardSlots[index].transform.Find("Image/RewardSlotText")?.GetComponent<TMP_Text>();
-                var countText = rewardSlots[index].transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TMP_Text>();
+                var typeText = rewardSlots[index].transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
+                var countText = rewardSlots[index].transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
 
                 // 텍스트를 빈 문자열로 설정하여 보이지 않게 함
                 if (typeText != null) typeText.text = "";
@@ -377,10 +377,6 @@ namespace SkyDragonHunter.Test
                 panel?.SetActive(false);
             }
 
-            foreach (var panel in rewardSlots)
-            {
-                panel?.SetActive(false);
-            }
             foreach (var panel in ShopPanels)
             {
                 panel?.SetActive(false);
