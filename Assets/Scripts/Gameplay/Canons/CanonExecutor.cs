@@ -1,4 +1,7 @@
 using SkyDragonHunter.Interfaces;
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
@@ -7,9 +10,12 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         public float attackRange = 10f;
+        public event Action<CanonBase> onEquipEvents;
 
         private CanonBase m_CurrentEquipCanonInstance = null;
         private GameObject m_EquipAnchorInstance = null;
+        private Coroutine m_FireCoroutine = null;
+        private Vector3 m_PrevFirePos;
 
         // 속성 (Properties)
         public bool IsEquip => m_CurrentEquipCanonInstance != null;
@@ -38,10 +44,17 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            m_FireCoroutine = null;
+        }
+
         public void Equip(GameObject canonInstance)
         {
             if (canonInstance.TryGetComponent<CanonBase>(out var canonBase))
             {
+                Unequip();
                 if (m_EquipAnchor != null && canonBase.CanonDummy != null)
                 {
                     var currentEquipPreview = Instantiate(canonBase.CanonDummy);
@@ -51,6 +64,7 @@ namespace SkyDragonHunter.Gameplay {
                 }
                 m_CurrentEquipCanonInstance = canonBase;
                 m_CurrentEquipCanonInstance.gameObject.SetActive(true);
+                onEquipEvents?.Invoke(m_CurrentEquipCanonInstance);
             }
             else
             {
@@ -62,10 +76,10 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_EquipAnchorInstance != null)
             {
+                m_CurrentEquipCanonInstance?.gameObject.SetActive(false);
                 Destroy(m_EquipAnchorInstance);
                 m_EquipAnchorInstance = null;
                 m_CurrentEquipCanonInstance = null;
-                m_CurrentEquipCanonInstance.gameObject.SetActive(false);
             }
         }
 
@@ -95,14 +109,15 @@ namespace SkyDragonHunter.Gameplay {
             var target = m_EnemySearchProvider.Target;
 
             // 발사 위치에 대한 앵커가 있는지 체크
-            Vector3 firePos = m_EquipAnchorInstance.transform.position;
+            // 캐싱하지 않으면 코루틴과 오차 발생함.
+            m_PrevFirePos = m_EquipAnchorInstance.transform.position;
             if (m_EquipAnchorInstance.TryGetComponent<IWeaponAnchorProvider>(out var anchor))
             {
-                firePos = anchor.GetWeaponFirePoint().position;
+                m_PrevFirePos = anchor.GetWeaponFirePoint().position;
             }
 
             // 거리 확인
-            float distance = Vector2.Distance(target.transform.position, firePos);
+            float distance = Vector2.Distance(target.transform.position, m_PrevFirePos);
             if (distance > attackRange)
                 return;
 
@@ -112,14 +127,25 @@ namespace SkyDragonHunter.Gameplay {
                 lookAtable.LookAt(target);
             }
 
-            m_CurrentEquipCanonInstance.Fire(
-                firePos,
-                gameObject,
-                m_EnemySearchProvider.Target,
-                m_AttackTargetProvider.AllowedTargetTags);
+            if (m_FireCoroutine == null)
+            {
+                m_FireCoroutine = StartCoroutine(CoFire());
+            }
         }
 
         // Private 메서드
+        private IEnumerator CoFire()
+        {
+            yield return new WaitForSeconds(m_CurrentEquipCanonInstance.CanonData.canCooldown);
+
+            if (m_CurrentEquipCanonInstance != null)
+            {
+                m_CurrentEquipCanonInstance.Fire(m_PrevFirePos, gameObject, m_EnemySearchProvider.Target, m_AttackTargetProvider.AllowedTargetTags);
+            }
+
+            m_FireCoroutine = null;
+        }
+
         // Others
 
     } // Scope by class CanonExecutor

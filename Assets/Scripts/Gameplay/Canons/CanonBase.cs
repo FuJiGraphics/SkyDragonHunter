@@ -13,8 +13,6 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private GameObject m_CanonDummy;
         [SerializeField] private BallBase m_BallPrefab;
 
-        private Coroutine m_FireCoroutine = null;
-
         // 속성 (Properties)
         public CanonDefinition CanonData => m_CanonDefinition;
         public GameObject CanonDummy => m_CanonDummy;
@@ -37,9 +35,6 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public void Fire(Vector3 firePos, GameObject attacker, GameObject target, string[] targetTags)
         {
-            if (m_FireCoroutine != null)
-                return;
-
             if (target == null)
             {
                 Debug.LogWarning("[CanonBase]: 공격할 타겟을 찾을 수 없습니다.");
@@ -62,12 +57,6 @@ namespace SkyDragonHunter.Gameplay {
             }
 
             // TODO: 나중에 오브젝트 풀 활용 예정
-            m_FireCoroutine = StartCoroutine(FireCo(firePos, attacker, target, targetTags));
-        }
-
-        // Private 메서드
-        private IEnumerator FireCo(Vector3 firePos, GameObject attacker, GameObject target, string[] targetTags)
-        {
             BallBase ballInstance = GameObject.Instantiate(m_BallPrefab);
             if (ballInstance != null)
             {
@@ -93,10 +82,9 @@ namespace SkyDragonHunter.Gameplay {
                     dir.SetDirection(dPos - aPos);
                 }
             }
-            yield return new WaitForSeconds(ballInstance.CanonData.canCooldown);
-            m_FireCoroutine = null;
         }
 
+        // Private 메서드
         // Others
 
     } // Scope by class CanonBase

@@ -50,9 +50,13 @@ namespace SkyDragonHunter.Gameplay
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+        private void Awake()
         {
             Init();
+        }
+
+        private void Start()
+        {
             InitUIBars();
         }
 
@@ -132,7 +136,6 @@ namespace SkyDragonHunter.Gameplay
             m_CommonStats.SetBossDamageMultiplier(bossDamageMultiplier);
             m_CommonStats.SetSkillEffectMultiplier(skillEffectMultiplier);
             m_CommonStats.ResetAll();
-            InitUIBars();
         }
 
         private void InitUIBars()
