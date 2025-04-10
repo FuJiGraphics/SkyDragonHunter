@@ -99,7 +99,7 @@ namespace SkyDragonHunter.Entities
         public override void SetDataFromTable(int id)
         {
             ID = id;
-            var data = DataTableManager.BossTable.Get(id);
+            var data = DataTableMgr.BossTable.Get(id);
             if (data == null)
             {
                 Debug.LogError($"Set Boss Data Failed : ID '{id}' not found in boss table.");

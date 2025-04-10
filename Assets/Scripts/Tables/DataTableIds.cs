@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Utility {
+namespace SkyDragonHunter.Tables {
 
     public class DataTableIds
     {
@@ -17,7 +17,8 @@ namespace SkyDragonHunter.Utility {
         public static readonly string Monster = "MonsterTable";
         public static readonly string Boss = "BossTable";
         public static readonly string Artifact = "ArtifactTable";
-
+        public static readonly string MasterySocket = "MasterySocketTable";
+        public static readonly string MasteryNode = "MasteryNodeTable";
 
     } // Scope by class DataTableIds
 

@@ -1,15 +1,15 @@
 using SkyDragonHunter.Tables;
-using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 
 namespace SkyDragonHunter.Managers 
 {
-    public static class DataTableManager
+    public static class DataTableMgr
     {
         // 속성 (Properties)
-        public static Dictionary<string, DataTable> Tables {  get; private set; }
+        public static Dictionary<string, DataTable> Tables { get; private set; }
         public static CrystalLevelTable CrystalLevelTable => Get<CrystalLevelTable>(DataTableIds.CrystalLevel);
         public static CrewTable CrewTable => Get<CrewTable>(DataTableIds.Crew);
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
@@ -17,10 +17,10 @@ namespace SkyDragonHunter.Managers
         public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
 
         // Static Constructor
-        static DataTableManager()
+        static DataTableMgr()
         {
             Tables = new Dictionary<string, DataTable>();
-            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            LoadTable<CrystalLevelTable>(SkyDragonHunter.Tables.DataTableIds.CrystalLevel);
             LoadTable<CrewTable>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
@@ -33,6 +33,8 @@ namespace SkyDragonHunter.Managers
             LoadTable<CrewTable>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
+            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
+            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
         }
 
         // Public 메서드

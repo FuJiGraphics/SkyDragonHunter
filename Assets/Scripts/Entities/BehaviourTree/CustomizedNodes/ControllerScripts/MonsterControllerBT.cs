@@ -62,7 +62,7 @@ namespace SkyDragonHunter.Entities
         public override void SetDataFromTable(int id)
         {
             ID = id;
-            var data = DataTableManager.MonsterTable.Get(id);
+            var data = DataTableMgr.MonsterTable.Get(id);
             if (data == null)
             {
                 Debug.LogError($"Set Monster Data Failed : ID '{id}' not found in monster table.");

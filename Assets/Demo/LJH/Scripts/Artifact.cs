@@ -108,7 +108,7 @@ namespace SkyDragonHunter.Gameplay
         // Public Methods
         public void SetData(int ID, int level = 1)
         {
-            var data = DataTableManager.ArtifactTable.Get(ID);
+            var data = DataTableMgr.ArtifactTable.Get(ID);
             if(data == null)
             {
                 Debug.LogError($"Artifact ID Not found in table");

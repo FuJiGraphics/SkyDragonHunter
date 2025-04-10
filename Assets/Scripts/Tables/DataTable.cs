@@ -10,6 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SkyDragonHunter.Tables {
+
     public abstract class DataTable
     {
         // 필드 (Fields)

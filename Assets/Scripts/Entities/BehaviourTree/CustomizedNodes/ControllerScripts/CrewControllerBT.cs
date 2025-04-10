@@ -216,7 +216,7 @@ namespace SkyDragonHunter.Entities
         public override void SetDataFromTable(int id)
         {
             ID = id;
-            var data = DataTableManager.CrewTable.Get(id);
+            var data = DataTableMgr.CrewTable.Get(id);
             if (data == null)
             {
                 Debug.LogError($"Set Crew Data Failed : ID '{id}' not found in crew table.");

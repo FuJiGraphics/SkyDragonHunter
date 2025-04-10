@@ -31,7 +31,7 @@ namespace SkyDragonHunter.Managers
             Debug.Log("AccountMgr Init");
             s_CollectedCrews = new Dictionary<string, GameObject>();
             AccountStats = new CommonStats();
-            var crystalData = DataTableManager.CrystalLevelTable.First;
+            var crystalData = DataTableMgr.CrystalLevelTable.First;
             InitAccountData(crystalData);
 
             s_CollectedCanons = new Dictionary<string, GameObject>();
@@ -55,7 +55,7 @@ namespace SkyDragonHunter.Managers
             }
 
             // 크리스탈 등급 증가
-            var crystalData = DataTableManager.CrystalLevelTable.Get(Crystal.NextLevelId);
+            var crystalData = DataTableMgr.CrystalLevelTable.Get(Crystal.NextLevelId);
             InitAccountData(crystalData);
 
             // 이벤트 호출
