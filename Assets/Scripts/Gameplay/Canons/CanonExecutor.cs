@@ -42,6 +42,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (canonInstance.TryGetComponent<CanonBase>(out var canonBase))
             {
+                Unequip();
                 if (m_EquipAnchor != null && canonBase.CanonDummy != null)
                 {
                     var currentEquipPreview = Instantiate(canonBase.CanonDummy);
@@ -62,10 +63,10 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_EquipAnchorInstance != null)
             {
+                m_CurrentEquipCanonInstance?.gameObject.SetActive(false);
                 Destroy(m_EquipAnchorInstance);
                 m_EquipAnchorInstance = null;
                 m_CurrentEquipCanonInstance = null;
-                m_CurrentEquipCanonInstance.gameObject.SetActive(false);
             }
         }
 
