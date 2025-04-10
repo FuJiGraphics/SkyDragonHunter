@@ -1,13 +1,10 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
-using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace SkyDragonHunter.Managers
@@ -24,6 +21,7 @@ namespace SkyDragonHunter.Managers
         public static int CurrentLevel => Crystal.CurrentLevel;
         public static CommonStats AccountStats { get; private set; }
         public static Crystal Crystal { get; private set; }
+        public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

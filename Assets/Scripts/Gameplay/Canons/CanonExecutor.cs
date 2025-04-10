@@ -1,4 +1,5 @@
 using SkyDragonHunter.Interfaces;
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         public float attackRange = 10f;
+        public event Action<CanonBase> onEquipEvents;
 
         private CanonBase m_CurrentEquipCanonInstance = null;
         private GameObject m_EquipAnchorInstance = null;
@@ -62,6 +64,7 @@ namespace SkyDragonHunter.Gameplay {
                 }
                 m_CurrentEquipCanonInstance = canonBase;
                 m_CurrentEquipCanonInstance.gameObject.SetActive(true);
+                onEquipEvents?.Invoke(m_CurrentEquipCanonInstance);
             }
             else
             {

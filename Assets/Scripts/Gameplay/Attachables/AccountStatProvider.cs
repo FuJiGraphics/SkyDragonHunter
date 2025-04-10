@@ -1,5 +1,7 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
+using System.Numerics;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
@@ -14,14 +16,20 @@ namespace SkyDragonHunter.Gameplay {
         // 외부 종속성 필드 (External dependencies field)
         private CommonStats m_FirstStats;
         private CharacterStatus m_Stats;
+        private CanonExecutor m_CanonExecutor;
+        private CanonBase m_CurrentEpCanonInstance;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
             Init();
-            MergedAccountStatsForCharacter();
             AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
+        }
+
+        private void Start()
+        {
+            MergedAccountStatsForCharacter();
         }
 
         [ContextMenu("테스트용 레벨 업")]
@@ -37,8 +45,9 @@ namespace SkyDragonHunter.Gameplay {
             {
                 Debug.Log("Account Stats과 병합할 수 없습니다. CharacterStatus가 null입니다.");
             }
-
+            m_Stats = GetComponent<CharacterStatus>();
             CommonStats accStats = AccountMgr.AccountStats;
+            CommonStats canonHoldStats = GetCanonHoldStats();
 
             // 곱연산
             m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * accStats.MaxDamage.Value;
@@ -51,8 +60,28 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + accStats.CriticalMultiplier;
             m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + accStats.BossDamageMultiplier;
             m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + accStats.SkillEffectMultiplier;
-            
+
+            if (gameObject.name == "Airship")
+            {
+                // 캐논 보유 스탯 적용
+                m_Stats.MaxDamage = m_Stats.MaxDamage + canonHoldStats.MaxDamage;
+                m_Stats.MaxArmor = m_Stats.MaxArmor + canonHoldStats.MaxArmor;
+
+                // 캐논 장착 스탯 적용
+                if (m_CurrentEpCanonInstance != null)
+                {
+                    m_Stats.MaxDamage = m_Stats.MaxDamage + BigInteger.Parse(m_CurrentEpCanonInstance.CanonData.canEqATK);
+                    m_Stats.MaxArmor = m_Stats.MaxArmor + BigInteger.Parse(m_CurrentEpCanonInstance.CanonData.canEqDEF);
+                }
+            }
+
             m_Stats.ResetAll();
+        }
+
+        public void RegisterEquipCanon(CanonBase canonInstance)
+        {
+            m_CurrentEpCanonInstance = canonInstance;
+            MergedAccountStatsForCharacter();
         }
 
         // Private 메서드
@@ -69,6 +98,36 @@ namespace SkyDragonHunter.Gameplay {
             m_FirstStats.SetCriticalMultiplier(m_Stats.CriticalMultiplier);
             m_FirstStats.SetBossDamageMultiplier(m_Stats.BossDamageMultiplier);
             m_FirstStats.SetSkillEffectMultiplier(m_Stats.SkillEffectMultiplier);
+
+            if (TryGetComponent<CanonExecutor>(out var canonExecutor))
+            {
+                m_CanonExecutor = canonExecutor;
+                canonExecutor.onEquipEvents += RegisterEquipCanon;
+            }
+        }
+
+        private CommonStats GetCanonHoldStats()
+        {
+            var canons = AccountMgr.Canons;
+            CommonStats stats = new CommonStats();
+            for (int i = 0; i < canons.Length; ++i)
+            {
+                if (canons[i].TryGetComponent<CanonBase>(out var canonBase))
+                {
+                    var data = canonBase.CanonData;
+                    if (i == 0)
+                    {
+                        stats.SetMaxDamage(data.canHoldATK);
+                        stats.SetMaxArmor(data.canHoldDEF);
+                    }
+                    else
+                    {
+                        stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(data.canHoldATK));
+                        stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(data.canHoldDEF));
+                    }
+                }
+            }
+            return stats;
         }
 
         // Others
