@@ -1,10 +1,13 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.UI;
+using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
+
     public class AccountStatProvider : MonoBehaviour
     {
         // 필드 (Fields)
@@ -18,6 +21,7 @@ namespace SkyDragonHunter.Gameplay {
         private CharacterStatus m_Stats;
         private CanonExecutor m_CanonExecutor;
         private CanonBase m_CurrentEpCanonInstance;
+        private CommonStats m_SocketStats;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -25,6 +29,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             Init();
             AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
+            AccountMgr.onSocketUpdateEvents += MergedAccountStatsForCharacter;
         }
 
         private void Start()
@@ -48,18 +53,19 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats = GetComponent<CharacterStatus>();
             CommonStats accStats = AccountMgr.AccountStats;
             CommonStats canonHoldStats = GetCanonHoldStats();
+            m_SocketStats = GetCalculateSocketStats();
 
             // 곱연산
-            m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * accStats.MaxDamage.Value;
-            m_Stats.MaxHealth = m_FirstStats.MaxHealth.Value * accStats.MaxHealth.Value;
-            m_Stats.MaxArmor = m_FirstStats.MaxArmor.Value * accStats.MaxArmor.Value;
-            m_Stats.MaxResilient = m_FirstStats.MaxResilient.Value * accStats.MaxResilient.Value;
+            m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value);
+            m_Stats.MaxHealth = m_FirstStats.MaxHealth.Value * (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value);
+            m_Stats.MaxArmor = m_FirstStats.MaxArmor.Value * (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value);
+            m_Stats.MaxResilient = m_FirstStats.MaxResilient.Value * (accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value);
 
             // 합연산
             m_Stats.CriticalChance = m_FirstStats.CriticalChance + accStats.CriticalChance;
-            m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + accStats.CriticalMultiplier;
-            m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + accStats.BossDamageMultiplier;
-            m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + accStats.SkillEffectMultiplier;
+            m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier);
+            m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + (accStats.BossDamageMultiplier + m_SocketStats.BossDamageMultiplier);
+            m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + (accStats.SkillEffectMultiplier + m_SocketStats.SkillEffectMultiplier);
 
             if (gameObject.name == "Airship")
             {
@@ -128,6 +134,46 @@ namespace SkyDragonHunter.Gameplay {
                 }
             }
             return stats;
+        }
+
+        private CommonStats GetCalculateSocketStats()
+        {
+            CommonStats result = new CommonStats();
+            result.ResetAllZero();
+
+            var socketMap = AccountMgr.SocketMap;
+            foreach (var socketList in socketMap)
+            {
+                foreach (var socket in socketList.Value)
+                {
+                    switch (socket.Type)
+                    {
+                        case MasterySockeyType.Damage:
+                            result.SetMaxDamage(socket.Stat);
+                            break;
+                        case MasterySockeyType.Health:
+                            result.SetMaxHealth(socket.Stat);
+                            break;
+                        case MasterySockeyType.Armor:
+                            result.SetMaxArmor(socket.Stat);
+                            break;
+                        case MasterySockeyType.Resilient:
+                            result.SetMaxResilient(socket.Stat);
+                            break;
+                        case MasterySockeyType.CriticalMultiplier:
+                            result.SetCriticalMultiplier((float)socket.Multiplier);
+                            break;
+                        case MasterySockeyType.BossDamageMultiplier:
+                            result.SetBossDamageMultiplier((float)socket.Multiplier);
+                            break;
+                        case MasterySockeyType.SkillEffectMultiplier:
+                            result.SetSkillEffectMultiplier((float)socket.Multiplier);
+                            break;
+                    }
+                }
+            }
+
+            return result;
         }
 
         // Others

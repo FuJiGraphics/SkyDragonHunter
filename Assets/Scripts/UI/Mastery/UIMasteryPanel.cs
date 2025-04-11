@@ -18,15 +18,16 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private UIMasteryContent m_UiContent;
         [SerializeField] private UIMasterySocket[] m_SocketPrefabs;
 
-        private Dictionary<int, List<UIMasteryNode>> m_GenNodeMap 
-            = new Dictionary<int, List<UIMasteryNode>>();
+        private Dictionary<int, List<UIMasteryNode>> m_GenNodeMap;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+        public void Init()
         {
+            m_GenNodeMap = new Dictionary<int, List<UIMasteryNode>>();
+
             int maxLevel = -1;
             for (int id = m_UiMasteryTableStartId; id <= m_UiMasteryTableEndId; ++id)
             {

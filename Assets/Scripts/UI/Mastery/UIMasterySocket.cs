@@ -1,5 +1,6 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -19,6 +20,8 @@ namespace SkyDragonHunter.UI {
         SkillEffectMultiplier = 7,
     }
 
+    // 소켓은 생성된 후 절대 게임 도중 메모리에서 제외되면 안됩니다.
+    // AccountMgr에서 소켓의 정보를 참조하여 업데이트 되기 때문
     public class UIMasterySocket
     {
         // 필드 (Fields)
@@ -27,8 +30,10 @@ namespace SkyDragonHunter.UI {
 
         // 속성 (Properties)
         public int ID { get; private set; }
+        public string SocketName { get; private set; }
         public MasterySockeyType Type { get; private set; } = MasterySockeyType.Damage;
         public BigInteger Stat { get; private set; }
+        public double Multiplier { get; private set; }
         public int NextID { get; private set; }
         public string SlotCountString { get; private set; }
         public bool IsActive { get; private set; } = false;
@@ -36,6 +41,8 @@ namespace SkyDragonHunter.UI {
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
+        public event Action onLevelupEvents;
+
         // 유니티 (MonoBehaviour 기본 메서드)
 
         // Public 메서드
@@ -60,6 +67,8 @@ namespace SkyDragonHunter.UI {
                 ResetSlotCountString();
                 if (m_CurrentCount >= m_MaxLevelCount)
                     IsMaxLevel = true;
+                AccountMgr.RegisterMasterySocket(this);
+                onLevelupEvents?.Invoke();
                 return true;
             }
 
@@ -68,13 +77,15 @@ namespace SkyDragonHunter.UI {
             {
                 var newData = DataTableMgr.MasterySocketTable.Get(NextID);
                 ID = newData.ID;
+                SocketName = newData.SocketName;
                 Type = (MasterySockeyType)newData.StatType;
                 Stat = BigInteger.Parse(newData.Stat);
-                Stat = (BigInteger)((double)Stat * newData.Multiplier);
+                Multiplier = newData.Multiplier;
                 NextID = newData.NextSocketID;
                 result = true;
                 m_CurrentCount++;
                 ResetSlotCountString();
+                onLevelupEvents?.Invoke();
             }
             if (m_CurrentCount >= m_MaxLevelCount)
                 IsMaxLevel = true;
@@ -86,6 +97,7 @@ namespace SkyDragonHunter.UI {
         {
             var newData = DataTableMgr.MasterySocketTable.Get(id);
             ID = newData.ID;
+            SocketName = newData.SocketName;
             Type = (MasterySockeyType)newData.StatType;
             Stat = BigInteger.Parse(newData.Stat);
             NextID = newData.NextSocketID;

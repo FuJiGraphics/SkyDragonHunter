@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SkyDragonHunter {
     public class RegisterObject : MonoBehaviour
     {
         // 필드 (Fields)
         public string id;
+        public UnityEvent onInitEvents;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

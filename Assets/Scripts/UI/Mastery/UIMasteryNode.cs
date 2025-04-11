@@ -18,11 +18,12 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Button m_Button;
         [SerializeField] private Image m_Icon;
         [SerializeField] private TextMeshProUGUI m_Text;
+        [SerializeField] private TextMeshProUGUI m_StatTempText;
 
         private UIMasterySocket m_SocketInstance;
 
         // ¼Ó¼º (Properties)
-        public bool IsMaxLevel => (m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
+        public bool IsMaxLevel => ( m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
         public bool IsActiveNode { get; private set; } = false;
         public UIMasteryEdgeContent MasteryEdgeContent = null;
 
@@ -63,6 +64,7 @@ namespace SkyDragonHunter.UI {
             }
             m_SocketInstance = new UIMasterySocket(nodeData.SocketID);
             m_Text.text = m_SocketInstance.SlotCountString;
+            m_StatTempText.text = m_SocketInstance.SocketName;
         }
 
         public void SocketLevelUp()

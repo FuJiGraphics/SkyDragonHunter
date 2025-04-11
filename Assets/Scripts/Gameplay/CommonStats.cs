@@ -71,6 +71,19 @@ namespace SkyDragonHunter.Gameplay
             ResetResilient();
         }
 
+        public void ResetAllZero()
+        {
+            MaxDamage = Damage = 0;
+            MaxHealth = Health = 0;
+            MaxShield = Shield = 0;
+            MaxArmor = Armor = 0;
+            MaxResilient = Resilient = 0;
+            CriticalChance = 0f;
+            CriticalMultiplier = 0f;
+            BossDamageMultiplier = 0f;
+            SkillEffectMultiplier = 0f;
+        }
+
         public void SetMaxDamage(BigInteger value)
         {
             MaxDamage = Math2DHelper.Max(0, value);

@@ -12,19 +12,22 @@ namespace SkyDragonHunter.Managers
     public static class AccountMgr
     {
         // 필드 (Fields)
-        public static event Action onLevelUpEvents;
-
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<string, GameObject> s_CollectedCanons; // 인스턴스
+        private static Dictionary<MasterySockeyType, List<UIMasterySocket>> s_CollectedSockets;
 
         // 속성 (Properties)
         public static int CurrentLevel => Crystal.CurrentLevel;
         public static CommonStats AccountStats { get; private set; }
         public static Crystal Crystal { get; private set; }
         public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
+        public static Dictionary<MasterySockeyType, List<UIMasterySocket>> SocketMap => s_CollectedSockets;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
+        public static event Action onLevelUpEvents;
+        public static event Action onSocketUpdateEvents; // 소켓 쪽과 의존성 엮여있음
+
         // Public 메서드
         public static void Init()
         {
@@ -35,6 +38,7 @@ namespace SkyDragonHunter.Managers
             InitAccountData(crystalData);
 
             s_CollectedCanons = new Dictionary<string, GameObject>();
+            s_CollectedSockets = new Dictionary<MasterySockeyType, List<UIMasterySocket>>();
         }
 
         public static void Release()
@@ -60,6 +64,12 @@ namespace SkyDragonHunter.Managers
 
             // 이벤트 호출
             onLevelUpEvents?.Invoke();
+        }
+
+        public static void OnSocketLevelUp()
+        {
+            // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
+            onSocketUpdateEvents.Invoke();
         }
 
         // Private 메서드
@@ -115,20 +125,38 @@ namespace SkyDragonHunter.Managers
                         }
                         else
                         {
-                            Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
+                            Debug.LogWarning("[CanonInfoProvider]: Canon Info Panel Node 등록 실패");
                         }
                     }
 
-                    Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {canonInstance.name}");
+                    Debug.Log($"[AccountMgr]: Canon 정보 등록 완료 {canonInstance.name}");
                 }
                 else
                 {
-                    Debug.LogWarning($"[AccountMgr]: 이미 등록된 Crew입니다. {canonInstance.name}");
+                    Debug.LogWarning($"[AccountMgr]: 이미 등록된 Canon입니다. {canonInstance.name}");
                 }
             }
             else
             {
-                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 Crew가 아닙니다. {canonInstance.name}");
+                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 Canon가 아닙니다. {canonInstance.name}");
+            }
+        }
+
+        public static void RegisterMasterySocket(UIMasterySocket masterySocketInstance)
+        {
+            if (masterySocketInstance != null)
+            {
+                if (!s_CollectedSockets.ContainsKey(masterySocketInstance.Type))
+                {
+                    s_CollectedSockets.Add(masterySocketInstance.Type, new List<UIMasterySocket>());
+                }
+                s_CollectedSockets[masterySocketInstance.Type].Add(masterySocketInstance);
+                masterySocketInstance.onLevelupEvents += OnSocketLevelUp;
+                Debug.Log($"[AccountMgr]: Socket 정보 등록 완료 {masterySocketInstance.ID}");
+            }
+            else
+            {
+                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 null입니다.");
             }
         }
 
