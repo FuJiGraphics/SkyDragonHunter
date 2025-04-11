@@ -16,7 +16,7 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private AttackType m_AttackType;
         [SerializeField] private MonsterPrefabLoader monsterPrefabLoader;
         [SerializeField] private TestAniController tempAnimController;
-
+        
         public override bool IsChasing
         { 
             get => base.IsChasing;

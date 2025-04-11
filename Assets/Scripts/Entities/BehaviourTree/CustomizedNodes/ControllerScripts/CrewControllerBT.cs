@@ -48,14 +48,14 @@ namespace SkyDragonHunter.Entities
         public int bonus1Value;
         public PossessionBonusStatType bonus2Type;
         public int bonus2Value;
-
+        
         public double   increaseHP;
         public double   increaseATK;
         public double   increaseDEF;
         public double   increaseREG;
         public int      increaseBonus1;
         public int      increaseBonus2;
-
+        
         // TODO
         // Test용도 임시 필드
         public readonly float exhaustionTime = 10f;
@@ -65,6 +65,22 @@ namespace SkyDragonHunter.Entities
         // 속성 (Properties)
         public float Speed => m_Speed;
         public bool IsAllocatedMountSlot => m_MountSlot != null;
+
+        public Vector3 MountSlotPosition
+        {
+            get
+            {
+                if(m_MountSlot != null)
+                {
+                    return m_MountSlot.transform.position;
+                }
+                else
+                {
+                    Debug.LogError($"MountableSlot not assigned to {gameObject.name}.");
+                    return Vector3.zero;
+                }
+            }
+        }
 
         public float OriginDistance
         {

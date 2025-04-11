@@ -1,7 +1,5 @@
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {

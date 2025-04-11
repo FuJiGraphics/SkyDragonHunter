@@ -29,7 +29,7 @@ namespace SkyDragonHunter {
                 return;
             }
 
-            m_CrewController.transform.position = m_CrewController.onFieldOriginPosition;
+            m_CrewController.transform.position = m_CrewController.MountSlotPosition;
             //m_CrewController.isOnBoard = true;
             m_CrewController.exhaustionRemainingTime = m_CrewController.exhaustionTime;            
             m_CrewController.MountAction(true);        
