@@ -195,9 +195,9 @@ MonoBehaviour:
   m_SkillAnimTriggers: []
   m_Speed: 10
   m_ChaseSpeed: 0
-  m_AggroRange: 50
-  m_AttackRange: 50
-  m_AttackInterval: 0.5
+  m_AggroRange: 100
+  m_AttackRange: 100
+  m_AttackInterval: 1.2
   characterInventory: {fileID: 0}
   ID: 0
   projectileId: 0
@@ -206,7 +206,6 @@ MonoBehaviour:
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
-  isChasing: 0
   lastAttackTime: 0
   attackAnimationPlaying: 0
   m_CrewType: 0
@@ -229,6 +228,7 @@ MonoBehaviour:
   increaseBonus1: 0
   increaseBonus2: 0
   exhaustionRemainingTime: 0
+  rangedTargetRange: {x: 0, y: 0}
 --- !u!114 &4815983980356703909
 MonoBehaviour:
   m_ObjectHideFlags: 0

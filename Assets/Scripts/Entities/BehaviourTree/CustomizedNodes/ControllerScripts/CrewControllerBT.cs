@@ -1,9 +1,5 @@
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Scriptables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using SkyDragonHunter.Managers;
 using Spine.Unity;
 using SkyDragonHunter.Interfaces;
@@ -15,6 +11,7 @@ namespace SkyDragonHunter.Entities
         OnBoard,
         OnField,
     }
+
     public enum PossessionBonusStatType
     {
         ATK,
@@ -31,7 +28,7 @@ namespace SkyDragonHunter.Entities
     {
         // 필드 (Fields)
         [SerializeField] private CrewType m_CrewType;
-
+        
         public bool isIdle = false;
         public float lastIdleTime;
 
@@ -51,23 +48,40 @@ namespace SkyDragonHunter.Entities
         public int bonus1Value;
         public PossessionBonusStatType bonus2Type;
         public int bonus2Value;
-
+        
         public double   increaseHP;
         public double   increaseATK;
         public double   increaseDEF;
         public double   increaseREG;
         public int      increaseBonus1;
         public int      increaseBonus2;
-
+        
         // TODO
         // Test용도 임시 필드
         public readonly float exhaustionTime = 10f;
         public float exhaustionRemainingTime;
         private float distanceCalibrator;
+        public Vector2 rangedTargetRange;
 
         // 속성 (Properties)
         public float Speed => m_Speed;
         public bool IsAllocatedMountSlot => m_MountSlot != null;
+
+        public Vector3 MountSlotPosition
+        {
+            get
+            {
+                if(m_MountSlot != null)
+                {
+                    return m_MountSlot.transform.position;
+                }
+                else
+                {
+                    Debug.LogError($"MountableSlot not assigned to {gameObject.name}.");
+                    return Vector3.zero;
+                }
+            }
+        }
 
         public float OriginDistance
         {
@@ -152,8 +166,22 @@ namespace SkyDragonHunter.Entities
             m_SkeletonAnim = GetComponentInChildren<SkeletonAnimation>();
             status = GetComponent<CharacterStatus>();
 
-            var crewProvider = GetComponent<ICrewInfoProvider>();
+            //var crewProvider = GetComponent<ICrewInfoProvider>();
             //crewProvider.IsEquip
+        }
+        protected void OnEnable()
+        {
+            SetRangedTargetRange();
+        }
+
+        private void SetRangedTargetRange()
+        {
+            var airshipGO = GameMgr.FindObject("Airship");
+            if(airshipGO != null)
+                Debug.Log($"Found Airship");
+            var airshipPosX = airshipGO.transform.position.x;                        
+
+            rangedTargetRange = new Vector2(Mathf.Abs(airshipPosX) + 10, 300f);            
         }
 
         private void Update()
@@ -262,32 +290,66 @@ namespace SkyDragonHunter.Entities
                 return;
             }
 
-            var colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(m_AggroRange, float.MaxValue), 0);
-            if (colliders.Length > 0)
+            if (m_CrewType == CrewType.OnField)
             {
-                foreach(var collider in colliders)
+                var colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(m_AggroRange, float.MaxValue), 0);
+                if (colliders.Length > 0)
                 {
-                    if(collider.CompareTag(s_EnemyTag))
+                    foreach (var collider in colliders)
                     {
-                        if (m_Target == null || !m_Target.Equals(collider.transform))
+                        if (collider.CompareTag(s_EnemyTag))
                         {
-                            m_Target = collider.transform;
-                            var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
-                            if (floatingEffectComp != null)
+                            if (m_Target == null || !m_Target.Equals(collider.transform))
                             {
-                                targetYPos = floatingEffectComp.StartY;
+                                m_Target = collider.transform;
+                                var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
+                                if (floatingEffectComp != null)
+                                {
+                                    targetYPos = floatingEffectComp.StartY;
+                                }
+                                else
+                                {
+                                    Debug.LogError($"no floatingEffect Comp");
+                                }
                             }
-                            else
-                            {
-                                Debug.LogError($"no floatingEffect Comp");
-                            }
-                        }                                                
+                        }
                     }
-                }                
+                }
+                else
+                {
+                    //Debug.Log($"crew target None");
+                }
             }
-            else
+
+            if(m_CrewType == CrewType.OnBoard)
             {
-                Debug.Log($"crew target None");
+                var colliders = Physics2D.OverlapBoxAll(Vector2.zero, rangedTargetRange, 0);
+                if (colliders.Length > 0)
+                {
+                    foreach (var collider in colliders)
+                    {
+                        if (collider.CompareTag(s_EnemyTag))
+                        {
+                            if (m_Target == null || !m_Target.Equals(collider.transform))
+                            {
+                                m_Target = collider.transform;
+                                var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
+                                if (floatingEffectComp != null)
+                                {
+                                    targetYPos = floatingEffectComp.StartY;
+                                }
+                                else
+                                {
+                                    Debug.LogError($"no floatingEffect Comp");
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //Debug.Log($"crew target None");
+                }
             }
         }
 

@@ -37,7 +37,7 @@ namespace SkyDragonHunter.Tables.Generic {
     {
         // 필드 (Fields)
         private Dictionary<int, T> m_dict = new Dictionary<int, T>();
-
+        
         public T First => m_dict.First().Value;
 
         // Public 메서드        

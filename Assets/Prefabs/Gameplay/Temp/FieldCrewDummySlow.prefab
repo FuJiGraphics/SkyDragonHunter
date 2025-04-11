@@ -228,7 +228,7 @@ MonoBehaviour:
   m_ChaseSpeed: 25
   m_AggroRange: 30
   m_AttackRange: 4
-  m_AttackInterval: 1
+  m_AttackInterval: 1.5
   characterInventory: {fileID: 0}
   ID: 100001
   projectileId: 0
@@ -237,7 +237,6 @@ MonoBehaviour:
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
-  isChasing: 0
   lastAttackTime: 0
   attackAnimationPlaying: 0
   m_CrewType: 1
@@ -260,6 +259,7 @@ MonoBehaviour:
   increaseBonus1: 0
   increaseBonus2: 0
   exhaustionRemainingTime: 0
+  rangedTargetRange: {x: 0, y: 0}
 --- !u!114 &3370314638835417491
 MonoBehaviour:
   m_ObjectHideFlags: 0
