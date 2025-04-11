@@ -5,8 +5,10 @@ namespace SkyDragonHunter.Tables
     public class MasterySocketData : DataTableData
     {
         public int NextSocketID { get; set; }       // 비활성상태 -1
+        public string SocketName { get; set; }
         public int StatType { get; set; }
         public string Stat { get; set; }
+        public double Multiplier { get; set; }
     }
 
     public class MasterySocketTable : DataTable<MasterySocketData>

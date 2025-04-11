@@ -8,7 +8,7 @@ namespace SkyDragonHunter.Utility {
         public bool IsVisited { get; set; }
     }
 
-    public class GraphNode<T> : MonoBehaviour
+    public class GraphNode<T> : MonoBehaviour where T : class
     {
         // 필드 (Fields)
         private List<int> m_Edges = new List<int>();
@@ -24,8 +24,8 @@ namespace SkyDragonHunter.Utility {
         public void AddEdge(int nodeIndex)
             => m_Edges.Add(nodeIndex);
 
-        public virtual bool IsVisited { get; set; } = false;
-        public virtual void OnVisitAfter() { }
+        public bool IsVisited { get; set; } = false;
+        public virtual void OnVisited(T[] egdeNodes) { }
 
         // Private 메서드
         // Others
@@ -48,6 +48,14 @@ namespace SkyDragonHunter.Utility {
             m_NodeMap.Add(node.ID, node);
         }
 
+        public void ResetVisitedFlags()
+        {
+            foreach (var node in m_NodeMap)
+            {
+                node.Value.IsVisited = false;
+            }
+        }
+
         public void TraverseBFS()
         {
             if (m_Nodes == null || m_Nodes.Count <= 0)
@@ -65,22 +73,39 @@ namespace SkyDragonHunter.Utility {
             while (queue.Count > 0)
             {
                 var node = queue.Dequeue();
+                node.OnVisited(this.GetNodeList(node.Edges));
 
                 foreach (var adjNodeID in node.Edges)
                 {
                     if (!m_NodeMap.ContainsKey(adjNodeID))
                         continue;
 
-                    if (!m_NodeMap[adjNodeID].IsVisited)
+                    var targetNode = m_NodeMap[adjNodeID];
+                    if (!targetNode.IsVisited)
                     {
-                        queue.Enqueue(m_NodeMap[adjNodeID]);
-                        m_NodeMap[adjNodeID].IsVisited = true;
+                        queue.Enqueue(targetNode);
+                        targetNode.IsVisited = true;
                     }
                 }
             }
         }
 
         // Private 메서드
+        T[] GetNodeList(List<int> indices)
+        {
+            List<T> result = null;
+            foreach (var index in indices)
+            {
+                if (index == -1)
+                    continue;
+
+                if (result == null)
+                    result = new List<T>();
+                result.Add(m_NodeMap[index]);
+            }
+            return result?.ToArray();
+        }
+
         // Others
 
     } // Scope by class Graph<T>
