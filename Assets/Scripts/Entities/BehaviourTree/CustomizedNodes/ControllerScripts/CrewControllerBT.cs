@@ -1,9 +1,5 @@
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Scriptables;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using SkyDragonHunter.Managers;
 using Spine.Unity;
 using SkyDragonHunter.Interfaces;
@@ -15,6 +11,7 @@ namespace SkyDragonHunter.Entities
         OnBoard,
         OnField,
     }
+
     public enum PossessionBonusStatType
     {
         ATK,

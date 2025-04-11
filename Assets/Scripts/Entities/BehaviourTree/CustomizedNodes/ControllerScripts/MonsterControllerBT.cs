@@ -17,7 +17,7 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private MonsterPrefabLoader monsterPrefabLoader;
         [SerializeField] private TestAniController tempAnimController;
 
-        public override bool IsChasing 
+        public override bool IsChasing
         { 
             get => base.IsChasing;
             set
@@ -81,6 +81,7 @@ namespace SkyDragonHunter.Entities
             m_AggroRange = data.AggroRange;
             m_Speed = data.Speed;
             m_ChaseSpeed = data.ChaseSpeed;
+            status.ResetAll();
 
             var animController = monsterPrefabLoader.GetMonsterAnimController(id);
             var instantiatedAnimController = Instantiate(animController, transform);
