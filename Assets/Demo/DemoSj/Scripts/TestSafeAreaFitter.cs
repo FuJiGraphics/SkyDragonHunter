@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.test {
 
     public class TestSafeAreaFitter : MonoBehaviour
     {

@@ -23,7 +23,7 @@ namespace SkyDragonHunter.test
             {
                 // "CrewAndMoonStone" 오브젝트를 계층 구조에서 찾아 할당
                 crewAndMoonStone = GameObject
-                    .Find("InGameUI/Canvas/SummonPanel/RandomPickCrewInfo/CrewAndMoonStone")
+                    .Find("InGameUI/Canvas/SafeAreaPanel/SummonPanel/RandomPickCrewInfo/CrewAndMoonStone")
                     ?.transform;
 
                 // 못 찾은 경우 경고 로그 출력
