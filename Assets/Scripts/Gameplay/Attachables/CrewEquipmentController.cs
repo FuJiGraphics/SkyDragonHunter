@@ -43,7 +43,7 @@ namespace SkyDragonHunter {
                 crewProviderComp.SetEquipState(true); 
                 m_EquipSlots[slot] = crewInstance;
                 crewInstance.SetActive(true);
-                if (crewInstance.TryGetComponent<CrewControllerBT>(out var btComp))
+                if (crewInstance.TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
                     btComp.AllocateMountSlot(m_MountableSlots[slot]);
                 }
@@ -73,7 +73,7 @@ namespace SkyDragonHunter {
 
             if (m_EquipSlots[slot].TryGetComponent<CrewInfoProvider>(out var providerComp))
             {
-                if (m_EquipSlots[slot].TryGetComponent<CrewControllerBT>(out var btComp))
+                if (m_EquipSlots[slot].TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
                     btComp.m_MountSlot.Dismounting();
                     btComp.MountAction(false);

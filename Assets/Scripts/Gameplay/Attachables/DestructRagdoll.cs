@@ -1,4 +1,5 @@
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,8 +11,10 @@ namespace SkyDragonHunter {
     {
         public override void OnDestruction(GameObject attacker)
         {
+            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
             var animController = GetComponent<TestAniController>();
-            var instantiated = Instantiate(animController, transform.position, transform.rotation);
+            var id = animController.ID;
+            var instantiated = Instantiate(prefabLoader.GetRagdollAnimController(id), transform.position, transform.rotation);
             var droppingBody = instantiated.AddComponent<DroppingBody>();
             droppingBody.StartDrop();
         }

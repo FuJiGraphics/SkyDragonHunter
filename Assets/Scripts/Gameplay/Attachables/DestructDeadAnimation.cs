@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,8 +11,10 @@ namespace SkyDragonHunter {
         private static int DeadHash = Animator.StringToHash("Dead");
         public override void OnDestruction(GameObject attacker)
         {
+            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
             var animController = GetComponent<TestAniController>();
-            var instantiated = Instantiate(animController, transform.position, transform.rotation);
+            var id = animController.ID;
+            var instantiated = Instantiate(prefabLoader.GetRagdollAnimController(id), transform.position, transform.rotation);
             var animator = instantiated.GetComponent<Animator>();
             if(animator != null )
             {

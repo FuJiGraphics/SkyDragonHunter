@@ -36,7 +36,7 @@ namespace SkyDragonHunter
         public GameObject boss;
         public BoxCollider2D spawnArea;
         public float maxWaveTime;
-        private List<GameObject> currentEnemy;
+        [SerializeField] private List<GameObject> currentEnemy;
         private float oldAllSpeed;
         private float currentWaveTime;
         private float inpiniteModSpawnDelay = 3;
@@ -338,32 +338,58 @@ namespace SkyDragonHunter
 
         private void OnSpwanMonster()
         {
-            for (int i = 0; i < spawnableMonsters; i++)
+            // Original Code
+            //for (int i = 0; i < spawnableMonsters; i++)
+            //{
+            //    GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
+            //    spawned.name = $"Monster({instanceNo++})";
+            //
+            //    // TODO: LJH
+            //    //int tempId = 100_000;
+            //    //tempId += ((currentZonelLevel - 1) % 4) * 10;
+            //    //tempId += (currentMissionLevel - 1) % 6 + 1;
+            //
+            //    //var monsterBT = spawned.GetComponent<MonsterControllerBT>();
+            //    //monsterBT.SetDataFromTable(tempId);
+            //
+            //    // ~TODO
+            //
+            //    currentEnemy.Add(spawned);
+            //    currentSpawnMonsters++;
+            //}
+            
+            // TODO: LJH
+            int tempId = 100_000;
+            tempId += ((currentZonelLevel - 1) % 4) * 10;
+            tempId += (currentMissionLevel - 1) % 6 + 1;
+            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+                        
+            for (int i = 0; i < spawnableMonsters; ++i)
             {
-                GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
-                spawned.name = $"Monster({instanceNo++})";
+                var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
+                spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
 
-                // TODO: LJH
-                int tempId = 100_000;
-                tempId += ((currentZonelLevel - 1) % 4) * 10;
-                tempId += (currentMissionLevel - 1) % 6 + 1;
-
-                var monsterBT = spawned.GetComponent<MonsterControllerBT>();
-                monsterBT.SetDataFromTable(tempId);
-
-                // ~TODO
-
-                currentEnemy.Add(spawned);
+                currentEnemy.Add(spawned.gameObject);
                 currentSpawnMonsters++;
             }
+            // ~ TODO
 
             isCanSpawn = false;
         }
 
         private void OnSpwanBoss()
         {
-            GameObject spawned = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
-            currentEnemy.Add(spawned);
+            //GameObject spawned = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
+            //currentEnemy.Add(spawned);
+            //currentSpawnMonsters++;
+            //isCanSpawn = false;
+
+            int tempId = 300_001;
+            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+            Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
+            var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), bossSpawnPos, Quaternion.identity);
+
+            currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;
             isCanSpawn = false;
         }
