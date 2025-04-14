@@ -12,6 +12,13 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject panelBackGroundImage;
+        public GameObject facilityPanelPanel;
+        public GameObject facilityPanelLevelUpPanel;
+        public GameObject dungeonEntryPanel;
+        public GameObject profileSettingsPanel;
+        public GameObject growthPanel;
+        public GameObject masteryPanelPicks;
         public GameObject randomCrewPickUpInfoPanel;
         public GameObject inGameButtonPanel;
         public GameObject inGameWaveInfoPanel;
@@ -32,6 +39,9 @@ namespace SkyDragonHunter.Test
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideFacilityLevelUpPanel = true;
+        private bool isHideDungeonEntryPanel = true;
+        private bool isHideProfileSettingsPanel = true;
         private bool isHideOptionsPanel = true;
         private bool isHideRandomCrewPanel = true;
         private bool isHideQuestPanel;
@@ -73,6 +83,71 @@ namespace SkyDragonHunter.Test
             AllPanelsOff();
             inGameButtonPanel.SetActive(true);
             inGameWaveInfoPanel.SetActive(true);
+            questPanel.SetActive(true);
+            panelBackGroundImage.SetActive(false);
+        }
+
+        public void OnOffDungeonEntryPanel()
+        {
+            if (isHideDungeonEntryPanel)
+            {
+                dungeonEntryPanel.SetActive(true);
+                isHideDungeonEntryPanel = false;
+            }
+            else
+            {
+                dungeonEntryPanel.SetActive(false);
+                isHideDungeonEntryPanel = true;
+            }
+        }
+
+        public void OnOffProfileSettingsPanel()
+        {
+            if (isHideProfileSettingsPanel)
+            {
+                profileSettingsPanel.SetActive(true);
+                isHideProfileSettingsPanel = false;
+            }
+            else
+            {
+                profileSettingsPanel.SetActive(false);
+                isHideProfileSettingsPanel = true;
+            }
+        }
+
+        public void OnOffFacilityLevelUpPanel()
+        {
+            if (isHideFacilityLevelUpPanel)
+            {
+                facilityPanelLevelUpPanel.SetActive(true);
+                isHideFacilityLevelUpPanel = false;
+            }
+            else
+            {
+                facilityPanelLevelUpPanel.SetActive(false);
+                isHideFacilityLevelUpPanel = true;
+            }
+        }
+
+        public void OnFacilityPanel()
+        {
+            AllPanelsOff();
+            facilityPanelPanel.SetActive(true);
+            panelBackGroundImage.SetActive(true);
+        }
+
+        public void OnGrowthPanel()
+        {
+            AllPanelsOff();
+            growthPanel.SetActive(true);
+            panelBackGroundImage.SetActive(true);
+        }
+
+        public void OnMasteryPanel()
+        {
+            AllPanelsOff();
+            masteryPanelPicks.SetActive(true);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnGoldShopPanel()
@@ -81,6 +156,7 @@ namespace SkyDragonHunter.Test
             ShopPanels[0].SetActive(true);
             ShopPanels[1].SetActive(false);
             ShopPanels[2].SetActive(false);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnDiamondShopPanel()
@@ -89,6 +165,7 @@ namespace SkyDragonHunter.Test
             ShopPanels[0].SetActive(false);
             ShopPanels[1].SetActive(true);
             ShopPanels[2].SetActive(false);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnRerollShopPanel()
@@ -97,6 +174,7 @@ namespace SkyDragonHunter.Test
             ShopPanels[0].SetActive(false);
             ShopPanels[1].SetActive(false);
             ShopPanels[2].SetActive(true);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnOffRandomCrewPickUpInfo()
@@ -177,6 +255,8 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            panelBackGroundImage.SetActive(false);
+
         }
 
         public void OnFortressPickPanel1()
@@ -186,6 +266,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            panelBackGroundImage.SetActive(false);
         }
 
         public void OnFortressPickPanel2()
@@ -195,6 +276,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            panelBackGroundImage.SetActive(false);
         }
 
         public void OnFortressPickPanel3()
@@ -204,6 +286,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnPickPanel0()
@@ -211,6 +294,7 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(true);
             pickPanels[1].SetActive(false);
             pickPanels[2].SetActive(false);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnPickPanel1()
@@ -218,6 +302,7 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(false);
             pickPanels[1].SetActive(true);
             pickPanels[2].SetActive(false);
+            panelBackGroundImage.SetActive(true);
         }
 
         public void OnPickPanel2()
@@ -225,13 +310,15 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(false);
             pickPanels[1].SetActive(false);
             pickPanels[2].SetActive(true);
+            panelBackGroundImage.SetActive(true);
         }
 
-        public void OnOffSummonPanel()
+        public void OnSummonPanel()
         {
             if (summonPanel != null)
             {
                 AllPanelsOff();
+                panelBackGroundImage.SetActive(true);
                 summonPanel.SetActive(true);
                 OnPickPanel0();
                 randomCrewPickUpInfoPanel.SetActive(false);
@@ -239,7 +326,7 @@ namespace SkyDragonHunter.Test
             }
         }
 
-        public void OnOffWaveSelectPanel()
+        public void OnWaveSelectPanel()
         {
             if (waveSelectInfoPanel != null)
             {
@@ -248,12 +335,13 @@ namespace SkyDragonHunter.Test
             }
         }
 
-        public void OnOffCharacterInfoPanel()
+        public void OnCharacterInfoPanel()
         {
             if (characterInfoPanel != null)
             {
                 AllPanelsOff();
                 characterInfoPanel.SetActive(true);
+                panelBackGroundImage.SetActive(true);
             }
         }
 
@@ -368,6 +456,9 @@ namespace SkyDragonHunter.Test
             questPanel.SetActive(false);
             optionsPanel.SetActive(false);
             masteryPanel.SetActive(false);
+            growthPanel.SetActive(false);
+            masteryPanelPicks.SetActive(false);
+            facilityPanelPanel.SetActive(false);
             foreach (var panel in pickPanels)
             {
                 panel.SetActive(false);
