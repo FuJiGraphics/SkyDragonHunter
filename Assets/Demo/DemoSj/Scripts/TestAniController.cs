@@ -14,7 +14,9 @@ public class TestAniController : MonoBehaviour
     }
     private void OnEnable()
     {
-        transform.localPosition = Vector3.zero;        
+        // TODO: LJH
+        //transform.localPosition = Vector3.zero;
+        // ~TODO
     }
     // ~TODO
 
@@ -58,6 +60,14 @@ public class TestAniController : MonoBehaviour
             animator.SetBool("Chase", chase);
         }
     }
+
+    // TODO: LJH
+    public void OnChase(bool isChase)
+    {
+        chase = isChase;
+        animator.SetBool("Chase", chase);
+    }
+    // ~TODO
 
     public void OnHit()
     {

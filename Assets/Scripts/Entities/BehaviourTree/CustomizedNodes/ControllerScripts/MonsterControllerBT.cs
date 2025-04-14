@@ -40,7 +40,7 @@ namespace SkyDragonHunter.Entities
 
         protected override void Start()
         {
-            base.Start();            
+            base.Start();
         }
 
         private void Update()
@@ -197,7 +197,6 @@ namespace SkyDragonHunter.Entities
 
             if (IsChasing || isMoving)
             {                
-
                 int toRight = 1;
                 var yRotation = 0;
                 if (!isDirectionToRight)
@@ -215,7 +214,7 @@ namespace SkyDragonHunter.Entities
                 //tempAnimController.transform.localScale = Vector3.one;
                 //Debug.Log($"{tempAnimController.transform.localRotation.eulerAngles}, {yRotation}");
 
-                newPos.x += Time.deltaTime * m_Speed * toRight;                
+                newPos.x += Time.deltaTime * m_Speed * toRight;           
             }
 
             transform.position = newPos;

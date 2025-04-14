@@ -21,14 +21,14 @@ namespace SkyDragonHunter.Gameplay {
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         private CharacterStatus m_Status;
-        private CrewControllerBT m_Controller;
+        private NewCrewControllerBT m_Controller;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         public void Awake()
         {
             m_Status = GetComponent<CharacterStatus>();
-            m_Controller = GetComponent<CrewControllerBT>();
+            m_Controller = GetComponent<NewCrewControllerBT>();
         }
 
         // Public 메서드
@@ -45,7 +45,7 @@ namespace SkyDragonHunter.Gameplay {
         public string Defense => m_Status.Armor.ToString();
         public Sprite Preview => m_CrewPreview;
         public Sprite Icon => m_CrewIcon;
-        public bool IsMounted => m_Controller.isMounted;
+        public bool IsMounted => m_Controller.IsMounted;
         public int QuantityCount => m_QuantityCount;
         public bool IsEquip => m_EquipState;
 

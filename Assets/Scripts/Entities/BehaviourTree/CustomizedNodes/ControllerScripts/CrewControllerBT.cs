@@ -6,12 +6,6 @@ using SkyDragonHunter.Interfaces;
 
 namespace SkyDragonHunter.Entities 
 {
-    public enum CrewType
-    {
-        OnBoard,
-        OnField,
-    }
-
     public enum PossessionBonusStatType
     {
         ATK,

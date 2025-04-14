@@ -6,12 +6,7 @@ using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Utility;
 
 namespace SkyDragonHunter.Entities 
-{
-    public enum BossAttackType
-    {
-        Melee,
-        Ranged,
-    }
+{   
 
     public class BossControllerBT : BaseControllerBT<BossControllerBT>
     {

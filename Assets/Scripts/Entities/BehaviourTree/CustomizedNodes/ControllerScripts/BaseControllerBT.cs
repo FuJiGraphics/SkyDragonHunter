@@ -109,7 +109,7 @@ namespace SkyDragonHunter.Entities
                 return distance;
             }
         }
-
+        
         // 유니티 (MonoBehaviour 기본 메서드)
         protected virtual void Awake()
         {
