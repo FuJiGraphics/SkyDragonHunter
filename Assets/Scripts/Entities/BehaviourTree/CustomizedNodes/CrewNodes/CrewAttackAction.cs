@@ -31,12 +31,17 @@ namespace SkyDragonHunter {
             return NodeStatus.Running;
         }
 
+        protected override void OnEnd()
+        {
+            base.OnEnd();            
+        }
+
         private void Attack()
         {
             lastAttackTime = Time.time;
             m_Context.crewStatus.inventory.CurrentWeapon.Execute(m_Context.gameObject, m_Context.Target.gameObject);
             m_Context.animController.PlayAttackAnimation();
-        }
+        }        
     } // Scope by class CrewAttackAction
 
 } // namespace Root

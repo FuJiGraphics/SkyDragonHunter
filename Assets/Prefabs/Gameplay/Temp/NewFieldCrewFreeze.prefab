@@ -417,7 +417,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AttackAnimTriggers:
+  - Attack_1
   - Attack_3
+  - Attack_6
   m_SkillAnimTriggers: []
 --- !u!1001 &1134324430442188439
 PrefabInstance:
@@ -427,6 +429,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5261577503925332203}
     m_Modifications:
+    - target: {fileID: 2487392575316829815, guid: 71ae5d9c66fc51f40a6033f0c50e397a, type: 3}
+      propertyPath: _animationName
+      value: Attack_2
+      objectReference: {fileID: 0}
     - target: {fileID: 5260459292562058187, guid: 71ae5d9c66fc51f40a6033f0c50e397a, type: 3}
       propertyPath: m_Name
       value: Elia

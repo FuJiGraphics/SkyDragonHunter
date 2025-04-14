@@ -30,7 +30,7 @@ namespace SkyDragonHunter {
             if (Time.time >= lastAttackTime + m_Context.AttackInterval)
             {
                 lastAttackTime = Time.time;
-                m_Context.animController.OnAttck();
+                m_Context.animController.OnAttck();                
                 m_Context.bossStatus.inventory.CurrentWeapon.Execute(m_Context.gameObject, m_Context.Target.gameObject);
                 return NodeStatus.Success;
             }
