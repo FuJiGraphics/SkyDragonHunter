@@ -19,6 +19,7 @@ namespace SkyDragonHunter {
         private void Awake()
         {
             m_SkeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+            PlayIdleAnimation();
         }
 
         // Public Methods
@@ -31,12 +32,14 @@ namespace SkyDragonHunter {
         {
             int randomTriggerIndex = Random.Range(0, m_AttackAnimTriggers.Length);
             m_SkeletonAnim.AnimationState.SetAnimation(0, m_SkillAnimTriggers[randomTriggerIndex], loop);
+            m_SkeletonAnim.AnimationState.AddAnimation(0, s_AnimTagIdle1, true, 0);
         }
 
         public void PlayAttackAnimation(bool loop = false)
         {
             int randomTriggerIndex = Random.Range(0, m_AttackAnimTriggers.Length);
             m_SkeletonAnim.AnimationState.SetAnimation(0, m_AttackAnimTriggers[randomTriggerIndex], loop);
+            m_SkeletonAnim.AnimationState.AddAnimation(0, s_AnimTagIdle1, true, 0);
         }
 
 

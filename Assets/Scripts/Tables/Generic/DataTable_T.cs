@@ -40,7 +40,7 @@ namespace SkyDragonHunter.Tables.Generic {
         
         public T First => m_dict.First().Value;
 
-        // Public 메서드        
+        // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
         new public static List<U> LoadCSV<U>(string csvFile)
         {

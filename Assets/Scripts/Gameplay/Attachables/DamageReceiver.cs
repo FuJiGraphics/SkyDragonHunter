@@ -2,7 +2,6 @@ using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
-using SkyDragonHunter.UI;
 using System.Numerics;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace SkyDragonHunter {
     public class DamageReceiver : MonoBehaviour
     {
         // 필드 (Fields)
-        private CharacterStatus m_Stats;
+        private CharacterStatus m_Stats;        
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -24,6 +23,11 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void TakeDamage(GameObject attacker, AlphaUnit damage)
         {
+            //// TODO: LJH
+            if (m_Stats.Health <= 0)
+                return;
+            //// ~TODO
+
             BigInteger takeDamage = m_Stats.Shield.Value - damage.Value;
             if (takeDamage >= 0)
             {
