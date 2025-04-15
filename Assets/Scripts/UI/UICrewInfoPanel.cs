@@ -119,7 +119,7 @@ namespace SkyDragonHunter.UI {
                         SetHealth(provider.Health);
                         SetDefense(provider.Defense);
                         SetPreview(provider.Preview);
-                        SetMountedState(provider.IsMounted);
+                        SetMountedState(provider.IsEquip);
                         m_PrevClickButton = nodeButton;
                     });
                 }

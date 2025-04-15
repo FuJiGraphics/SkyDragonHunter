@@ -24,30 +24,9 @@ namespace SkyDragonHunter {
         private void Start()
         {
             m_Text = GetComponentInChildren<TextMeshProUGUI>();
-            if (m_Text != null)
-            {
-                if (isCrystal)
-                {
-                    if (isHp)
-                        m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseHealth.ToString();
-                    else
-                        m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseDamage.ToString();
-                }
-                else
-                {
-                    if (isHp)
-                        m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxHealth.ToString() + " + " 
-                            + AccountMgr.Crystal.IncreaseHealth.ToString() + " = " 
-                            + m_Stat.MaxHealth.ToString();
-                    else
-                        m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxDamage.ToString() + " + "
-                            + AccountMgr.Crystal.IncreaseDamage.ToString() + " = "
-                            + m_Stat.MaxDamage.ToString();
-                }
-            }
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (isCrystal)
             {

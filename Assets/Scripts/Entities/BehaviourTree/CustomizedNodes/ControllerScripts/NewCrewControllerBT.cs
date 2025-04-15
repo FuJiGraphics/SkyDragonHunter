@@ -43,6 +43,8 @@ namespace SkyDragonHunter.Entities
         public MountableSlot m_MountSlot;
 
         // Properties
+        public float ExhaustionTime => 5f;
+        public Vector2 MountSlotPosition => m_MountSlot.transform.position;
         public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
