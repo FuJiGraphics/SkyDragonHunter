@@ -28,7 +28,12 @@ namespace SkyDragonHunter {
         public void EnablePausedPanel(bool enabled)
         {
             m_PausedPanel.gameObject.SetActive(enabled);
-            Time.timeScale = enabled ? 0.01f : TimeScale;
+            Time.timeScale = enabled ? 0f : TimeScale;
+        }
+
+        public void EnableClearedPanel(bool enabled)
+        {
+            m_ClearedPanel.gameObject.SetActive(enabled);
         }
 
         // Private Methods

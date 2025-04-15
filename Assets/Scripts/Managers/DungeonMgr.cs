@@ -22,9 +22,7 @@ namespace SkyDragonHunter.Managers
 
         // Temp
         private static int s_SlotCount = 4;
-
         
-
         // Public Methods
         public static void Init()
         {
