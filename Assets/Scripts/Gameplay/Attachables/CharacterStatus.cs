@@ -123,7 +123,7 @@ namespace SkyDragonHunter.Gameplay
 
         private void Init()
         {
-            m_CommonStats.SetMaxDamage(damage);
+             m_CommonStats.SetMaxDamage(damage);
             m_CommonStats.SetMaxHealth(health);
             m_CommonStats.SetMaxShield(shield);
             m_CommonStats.SetMaxArmor(armor);
