@@ -10,6 +10,8 @@ namespace SkyDragonHunter
     {
         // 필드 (Fields)
         [Header("UI 연결")]
+        [SerializeField] private FavorabilityUIController favorabilityUIController;       
+        [SerializeField] private FavorailityMgr favorailityMgr;       
         [SerializeField] private TextMeshProUGUI itemNameText;       // 아이템 이름 텍스트
         [SerializeField] private Image itemImage;                    // 아이템 이미지
         [SerializeField] private Image currencyImage;                // 재화 아이콘 (골드/다이아 등)
@@ -25,21 +27,28 @@ namespace SkyDragonHunter
         private bool isLocked = false;               // 현재 슬롯 잠금 여부
         private bool isPurchased = false;            // 해당 슬롯에서 구매가 발생했는지 여부
         private ItemStatus itemData;                 // 슬롯에 표시 중인 아이템 데이터
+        private int currentPrice; // 할인 적용된 가격 (내부 저장)
 
         // Public 메서드
 
         // 슬롯에 아이템 적용 (외부에서 호출)
-        public void Initialize(ItemStatus item)
+        public void Initialize(ItemStatus item, FavorailityMgr favorMgr, FavorabilityUIController favorUIController)
         {
+            favorailityMgr = favorMgr;
+            favorabilityUIController = favorUIController;
             itemData = item;
             isLocked = false;         // 초기화 시 잠금 해제
             isPurchased = false;      // 초기화 시 미구매 상태
+
+            // 친밀도 할인율 계산
+            float discountRate = favorailityMgr.GetDiscountRate(); // 예: 0.15f → 15% 할인
+            currentPrice = Mathf.FloorToInt(item.price * (1f - discountRate));
 
             // UI 적용
             itemNameText.text = item.itemName;
             itemImage.sprite = item.itemImage;
             currencyImage.sprite = item.currencyTypeIcon;
-            priceText.text = item.price.ToString("N0");
+            priceText.text = currentPrice.ToString();
 
             // 버튼 및 잠금 이미지 초기화
             lockImage.sprite = unlockedSprite;
@@ -55,6 +64,9 @@ namespace SkyDragonHunter
             // 구매 버튼 리스너 연결 ← 추가
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(TryBuy);
+            buyButton.onClick.AddListener(() => favorailityMgr.GainExpFromRerollPurchase());
+            buyButton.onClick.AddListener(() => favorabilityUIController.UpdateUI());
+
             buyButton.interactable = true; // 초기화 시 버튼 활성화
         }
 
@@ -63,6 +75,9 @@ namespace SkyDragonHunter
         {
             if (isPurchased)
                 return;
+
+            // 재화 차감 처리 (할인 적용된 가격 사용)
+            //if (!currencySystem.TryConsume(currentPrice)) return;
 
             // 구매 처리
             isPurchased = true;    // 구매됨 표시

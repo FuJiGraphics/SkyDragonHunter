@@ -10,6 +10,8 @@ namespace SkyDragonHunter {
     {
         // 필드 (Fields)
         [Header("UI 참조")]
+        [SerializeField] private FavorabilityUIController favorabilityUIController;
+        [SerializeField] private FavorailityMgr favorailityMgr;               
         [SerializeField] private Transform contentParent;               // 6개의 슬롯이 배치된 Content 오브젝트
         [SerializeField] private float rerollInterval = 10800f;         // 자동 리롤 시간 (초 단위, 기본 3시간)
         [SerializeField] private List<ItemStatus> shopItemPool;        // 전체 리롤 상점 아이템 풀
@@ -58,7 +60,7 @@ namespace SkyDragonHunter {
                 if (!slot.IsLocked())
                 {
                     var item = GetWeightedRandomItem(shopItemPool);
-                    slot.Initialize(item);
+                    slot.Initialize(item, favorailityMgr, favorabilityUIController);
                 }
             }
         }
