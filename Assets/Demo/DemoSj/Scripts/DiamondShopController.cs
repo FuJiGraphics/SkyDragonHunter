@@ -18,6 +18,7 @@ namespace SkyDragonHunter.test
         public ShopType shopType;
 
         [Header("UI 참조")]
+        [SerializeField] private FavorailityMgr favorailityMgr;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private List<ItemStatus> diamondShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
 
@@ -168,7 +169,7 @@ namespace SkyDragonHunter.test
         {
             for (int i = 0; i < slotHandlers.Count; i++)
             {
-                slotHandlers[i].Initialize(items[i], shopType);
+                slotHandlers[i].Initialize(items[i], favorailityMgr, shopType);
             }
         }
 
