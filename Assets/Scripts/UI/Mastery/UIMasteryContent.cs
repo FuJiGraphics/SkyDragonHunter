@@ -98,7 +98,6 @@ namespace SkyDragonHunter.UI {
         private void UpdateNodeFocus()
         {
             int currLevel = FindActivedCurrentLevel();
-            Debug.Log(currLevel);
             m_ScrollRect.verticalNormalizedPosition = (float)currLevel / (float)(m_Levels.Count - 1);
         }
 
