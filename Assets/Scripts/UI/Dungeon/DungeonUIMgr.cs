@@ -19,7 +19,7 @@ namespace SkyDragonHunter {
         private float TimeScale => m_ButtonsPanel.TimeScaleMultipler;
 
         // Unity Methods
-        public void Start()
+        public void Awake()
         {
             InitDungeonUIMgr();
         }
@@ -27,8 +27,8 @@ namespace SkyDragonHunter {
         // Public Methods
         public void EnablePausedPanel(bool enabled)
         {
-            m_PausedPanel.enabled = enabled;
-            Time.timeScale = enabled ? 0f : TimeScale;
+            m_PausedPanel.gameObject.SetActive(enabled);
+            Time.timeScale = enabled ? 0.01f : TimeScale;
         }
 
         // Private Methods
@@ -41,12 +41,12 @@ namespace SkyDragonHunter {
             m_PausedPanel.SetUIMgr(this);
             m_EnteredMsgPanel.SetUIMgr(this);
 
-            m_ButtonsPanel.enabled = true;
-            m_InfoPanel.enabled = true;
-            m_ClearedPanel.enabled = false;
-            m_FailedPanel.enabled = false;
-            m_PausedPanel.enabled = false;
-            m_EnteredMsgPanel.enabled = true;
+            m_ButtonsPanel.gameObject.SetActive(true);
+            m_InfoPanel.gameObject.SetActive(true);
+            m_ClearedPanel.gameObject.SetActive(false);
+            m_FailedPanel.gameObject.SetActive(false);
+            m_PausedPanel.gameObject.SetActive(false);
+            m_EnteredMsgPanel.gameObject.SetActive(true);
         }
     } // Scope by class InDungeonUI
 

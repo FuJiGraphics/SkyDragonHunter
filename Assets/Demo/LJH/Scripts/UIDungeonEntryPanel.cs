@@ -22,6 +22,7 @@ namespace SkyDragonHunter {
         [SerializeField] private UIDungeonStages m_DungeonStagePrefab;
         [SerializeField] private List<GameObject> m_StageList;
 
+        [SerializeField] private Button m_CloseButton;
         [SerializeField] private Button m_EnterButton;
 
         // Unity Methods
@@ -43,6 +44,12 @@ namespace SkyDragonHunter {
                 m_DungeonTypeButtons[i].onClick.AddListener(() => OnClickDungoenType(i));
             }
             m_EnterButton.onClick.AddListener(OnClickDungeonEnterButton);
+            m_CloseButton.onClick.AddListener(OnClickCloseButton);
+        }
+
+        private void OnClickCloseButton()
+        {
+            gameObject.SetActive(false);
         }
 
         private void OnClickDungeonEnterButton()

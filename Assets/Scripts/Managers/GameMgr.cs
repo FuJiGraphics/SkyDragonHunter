@@ -44,7 +44,7 @@ namespace SkyDragonHunter.Managers
 
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects.Clear();
-            AccountMgr.Release();
+            //AccountMgr.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 
