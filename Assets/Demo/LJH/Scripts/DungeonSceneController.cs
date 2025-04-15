@@ -67,7 +67,7 @@ namespace SkyDragonHunter {
         
 
         // Private Methods
-        private void TestKillBoss()
+        public void TestKillBoss()
         {
             if(m_cachedBoss == null)
             {
@@ -150,7 +150,7 @@ namespace SkyDragonHunter {
 
         }
 
-        private void OnStageClear()
+        private void OnStageClear() 
         {
             m_UIMgr.EnableClearedPanel(true);
             m_Cleared = true;
