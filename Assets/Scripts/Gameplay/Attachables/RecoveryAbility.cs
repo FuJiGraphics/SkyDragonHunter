@@ -1,10 +1,12 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using UnityEngine;
 
 namespace SkyDragonHunter {
     public class RecoveryAbility : MonoBehaviour
+        , IStateResetHandler
     {
         // 필드 (Fields)
         private CharacterStatus m_Stats;
@@ -16,25 +18,25 @@ namespace SkyDragonHunter {
         // 유니티 (MonoBehaviour 기본 메서드)
         private void OnEnable()
         {
-            m_LastTime = Time.time + 1f;
+            ResetState();
         }
 
         private void OnDisable()
         {
-            m_LastTime = Time.time + 1f;
+            ResetState();
         }
 
         private void Awake()
         {
-            m_Stats = GetComponent<CharacterStatus>();
-            m_LastTime = Time.time + 1f;
+            m_Stats = GetComponent<CharacterStatus>(); 
+            ResetState();
         }
     
         private void Update()
         {
             if (Time.time > m_LastTime)
             {
-                m_LastTime = Time.time + 1f;
+                ResetState();
                 Recover(m_Stats.Resilient);
             }
         }
@@ -56,6 +58,11 @@ namespace SkyDragonHunter {
                 // TODO: 테스트 용
                 DrawableMgr.Text(transform.position, "Recover: " + inc.ToString() + "++", Color.green);
             }
+        }
+
+        public void ResetState()
+        {
+            m_LastTime = Time.time + 1f;
         }
 
         // Private 메서드
