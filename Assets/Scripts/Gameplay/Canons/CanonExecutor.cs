@@ -7,6 +7,7 @@ using UnityEngine;
 namespace SkyDragonHunter.Gameplay {
 
     public class CanonExecutor : MonoBehaviour
+        , IStateResetHandler
     {
         // 필드 (Fields)
         public float attackRange = 10f;
@@ -131,6 +132,11 @@ namespace SkyDragonHunter.Gameplay {
             {
                 m_FireCoroutine = StartCoroutine(CoFire());
             }
+        }
+
+        public void ResetState()
+        {
+            StopAllCoroutines();
         }
 
         // Private 메서드

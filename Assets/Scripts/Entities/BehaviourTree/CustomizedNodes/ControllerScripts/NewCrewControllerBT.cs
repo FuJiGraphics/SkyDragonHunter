@@ -28,7 +28,7 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private bool isMounted;
 
         // Public Fields
-        public int ID;
+        public bool IsMounted => isMounted;
         public Vector2 aggroBox;
         public Vector2 onFieldOriginPosition;
         public float targetPosY;
@@ -43,7 +43,8 @@ namespace SkyDragonHunter.Entities
         public MountableSlot m_MountSlot;
 
         // Properties
-        public bool IsMounted => isMounted;
+        public float ExhaustionTime => 5f;
+        public Vector2 MountSlotPosition => m_MountSlot.transform.position;
         public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
@@ -51,11 +52,13 @@ namespace SkyDragonHunter.Entities
         public bool IsTargetInAttackRange => TargetDistance < crewStatus.attackRange;
         public bool IsTargetInAggroRange => TargetDistance < crewStatus.aggroRange;
         public bool IsTargetAllocated => m_Target != null;
-        public float Speed => crewStatus.speed * slowMultiplier;
-        public float ChaseSpeed => crewStatus.chaseSpeed * slowMultiplier;
+        public float Speed => crewStatus.speed;
+        public float ChaseSpeed => crewStatus.chaseSpeed;
         public float AttackInterval => crewStatus.attackInterval;
         public float AggroRange => crewStatus.aggroRange;
         public float AttackRange => crewStatus.attackRange;
+        
+
 
         public float TargetDistance
         {
@@ -118,18 +121,6 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public Methods
-        public void Initialize()
-        {
-            if (m_MountSlot != null)
-                transform.position = m_MountSlot.transform.position;
-            else
-                Debug.LogError($"Position initialize Failed : Mountslot null");
-            slowMultiplier = 1f;
-            skillTimer = crewStatus.skillInitialDelay; // TODO: Temp initial value
-            m_BehaviourTree.Reset();
-            m_Target = null;
-        }
-
         public void SetTarget(Transform targetTransform)
         {
             m_Target = targetTransform;

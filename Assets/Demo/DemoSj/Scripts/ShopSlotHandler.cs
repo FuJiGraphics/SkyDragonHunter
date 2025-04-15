@@ -1,5 +1,6 @@
 using SkyDragonHunter.test;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +29,11 @@ namespace SkyDragonHunter
         public Image currencyImage;                   // 재화 아이콘
         public TextMeshProUGUI priceText;             // 가격 텍스트
         public Button buyButton;                      // 구매 버튼
+        public FavorailityMgr favorabilityMgr;         // 상점 친밀도 가지고있는 객체
 
         private ShopSlotState slotState;
         private ShopType shopType;
+        private int currentPrice; // 할인 적용된 실제 가격
 
         [Header("통화 아이콘 스프라이트")]
         [SerializeField] private Sprite diamondSprite;
@@ -42,16 +45,21 @@ namespace SkyDragonHunter
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
         // 외부에서 슬롯 초기화 시 상태 객체를 전달
-        public void Initialize(ShopSlotState state, ShopType type)
+        public void Initialize(ShopSlotState state, FavorailityMgr manager, ShopType type)
         {
             slotState = state;
             shopType = type;
+            favorabilityMgr = manager;
+
+            // 할인율 계산
+            float discountRate = favorabilityMgr.GetDiscountRate();
+            currentPrice = Mathf.FloorToInt(state.item.price * (1f - discountRate)); // 할인된 가격 저장
 
             var item = state.item;
 
             nameText.text = item.itemName;
             itemImage.sprite = item.itemImage;
-            priceText.text = item.price.ToString("N0");
+            priceText.text = currentPrice.ToString("N0");
 
             // 통화 스프라이트는 상점 타입에 따라 고정
             currencyImage.sprite = (shopType == ShopType.Diamond) ? diamondSprite : goldSprite;
@@ -60,6 +68,7 @@ namespace SkyDragonHunter
 
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(TryBuy);
+            buyButton.onClick.AddListener(() => favorabilityMgr.GainExpFromCurrencyPurchase(currentPrice, shopType));
         }
         // Private 메서드
         // UI 텍스트에 구매 가능 수 갱신
@@ -77,6 +86,9 @@ namespace SkyDragonHunter
                 Debug.Log($"[{slotState.item.itemName}] 구매 불가: 남은 수량 없음");
                 return;
             }
+
+            // 할인 가격 기준 재화 차감
+            //if (!currencySystem.TryConsume(currentPrice)) return;
 
             slotState.currentCount--;     // 상태에 직접 반영
             Debug.Log($"[{slotState.item.itemName}] 구매 완료!");

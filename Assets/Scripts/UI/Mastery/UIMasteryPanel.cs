@@ -21,6 +21,8 @@ namespace SkyDragonHunter.UI {
         private Dictionary<int, List<UIMasteryNode>> m_GenNodeMap;
 
         // 속성 (Properties)
+        public Dictionary<int, List<UIMasteryNode>> NodeMap => m_GenNodeMap;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)

@@ -87,31 +87,26 @@ namespace SkyDragonHunter.Gameplay
         public void SetMaxDamage(BigInteger value)
         {
             MaxDamage = Math2DHelper.Max(0, value);
-            Damage = Math2DHelper.Min(Damage.Value, MaxDamage.Value);
         }
 
         public void SetMaxHealth(BigInteger value)
         {
             MaxHealth = Math2DHelper.Max(0, value);
-            Health = Math2DHelper.Min(Health.Value, MaxHealth.Value);
         }
 
         public void SetMaxShield(BigInteger value)
         {
             MaxShield = Math2DHelper.Max(0, value);
-            Shield = Math2DHelper.Min(Shield.Value, MaxShield.Value);
         }
 
         public void SetMaxArmor(BigInteger value)
         {
             MaxArmor = Math2DHelper.Max(0, value);
-            Armor = Math2DHelper.Min(Armor.Value, MaxArmor.Value);
         }
 
         public void SetMaxResilient(BigInteger value)
         {
             MaxResilient = Math2DHelper.Max(0, value);
-            Resilient = Math2DHelper.Min(Resilient.Value, MaxResilient.Value);
         }
 
         public void SetMaxDamage(string value)

@@ -60,8 +60,8 @@ namespace SkyDragonHunter
         private int currentSpawnMonsters = 0;
         private float currentOpenPanel = 0f;
         private StageInfo stageInfo;
-
         private bool changeSuccess = true;
+        private Coroutine coroutine;
         // 테스트용
         // Test drop
 
@@ -274,6 +274,7 @@ namespace SkyDragonHunter
             currentZonelLevel = lastTriedZonelLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
+            OnFadeSlider();
         }
 
         private void OnSetCurrentWave()
@@ -285,6 +286,7 @@ namespace SkyDragonHunter
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
+            OnFadeSlider();
         }
 
         private void OnGoSelectCurrentWave()
@@ -295,6 +297,7 @@ namespace SkyDragonHunter
             isInfiniteMode = true;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
+            OnFadeSlider();
         }
 
         private void OnSaveLastClearWave()
@@ -357,13 +360,13 @@ namespace SkyDragonHunter
             //    currentEnemy.Add(spawned);
             //    currentSpawnMonsters++;
             //}
-            
+
             // TODO: LJH
             int tempId = 100_000;
             tempId += ((currentZonelLevel - 1) % 4) * 10;
             tempId += (currentMissionLevel - 1) % 6 + 1;
             var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
-                        
+
             for (int i = 0; i < spawnableMonsters; ++i)
             {
                 var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
@@ -404,8 +407,40 @@ namespace SkyDragonHunter
         {
             clearPanel.SetActive(false);
             OnChangeBackGround(currentZonelLevel);
+            OnFadeSlider();
             isRewardSet = false;
             ItemMgr.Reset();
+        }
+
+        private void OnFadeSlider()
+        {
+            //foreach (Transform child in waveSlider.transform)
+            //{
+            //    Image childImage = child.GetComponent<Image>();
+            //    if (childImage != null)
+            //    {
+            //        if (childImage.gameObject.name == "Background")
+            //        {
+            //           StartCoroutine(WaveSliderFade(childImage));
+            //        }
+            //        else if (childImage.gameObject.name == "Fill")
+            //        {
+            //           StartCoroutine(WaveSliderFade(childImage));
+            //        }
+            //        else if (childImage.gameObject.name == "Handle")
+            //        {
+            //           StartCoroutine(WaveSliderFade(childImage));
+            //        }
+            //    }
+            //}
+            foreach (Image image in waveSlider.GetComponentsInChildren<Image>())
+            {
+                string name = image.gameObject.name;
+                if (name == "Background" || name == "Fill" || name == "Handle")
+                {
+                    StartCoroutine(WaveSliderFade(image));
+                }
+            }
         }
 
         private void OnChangeBackGround(int bgIndex)
@@ -423,15 +458,15 @@ namespace SkyDragonHunter
                 {
                     if (ctrl.gameObject.name == "BackGround")
                     {
-                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "MidGround")
                     {
-                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "ForeGround")
                     {
-                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                 }
             }
@@ -468,7 +503,44 @@ namespace SkyDragonHunter
             return worldPos;
         }
 
+
         // Others
+
+        IEnumerator WaveSliderFade(Image ctrl)
+        {
+            if (ctrl == null) yield break;
+            changeSuccess = false;
+            var ctrlR = ctrl.color.r;
+            var ctrlG = ctrl.color.g;
+            var ctrlB = ctrl.color.b;
+            var ctrlA = ctrl.color.a;
+            Color from = new Color(ctrlR, ctrlG, ctrlB, ctrlA); // 밝은 상태 (흰색)
+            Color to = new Color(0, 0, 0, 1);   // 검정색
+            float duration = 1.5f;
+
+            // 1. 페이드 아웃
+            float t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                ctrl.color = Color.Lerp(from, to, t);
+                yield return null;
+            }
+
+            waveSlider.value = 0;
+
+            // 2. 페이드 인
+            t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime / duration;
+                ctrl.color = Color.Lerp(to, from, t);
+                yield return null;
+            }
+
+            ctrl.color = from;
+        }
+
         IEnumerator ChangeBackgroundWithFade(SpriteRenderer ctrl, int backGroundIndex)
         {
             if (ctrl == null) yield break;

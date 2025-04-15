@@ -22,18 +22,19 @@ namespace SkyDragonHunter.Gameplay {
         private CanonExecutor m_CanonExecutor;
         private CanonBase m_CurrentEpCanonInstance;
         private CommonStats m_SocketStats;
+        private bool m_IsInitialized = false;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            Init();
             AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
             AccountMgr.onSocketUpdateEvents += MergedAccountStatsForCharacter;
         }
 
         private void Start()
         {
+            Init();
             MergedAccountStatsForCharacter();
         }
 
@@ -46,26 +47,41 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public void MergedAccountStatsForCharacter()
         {
-            if (m_Stats == null)
+            if (m_FirstStats == null || m_Stats == null)
             {
-                Debug.Log("Account Stats과 병합할 수 없습니다. CharacterStatus가 null입니다.");
+                Init();
             }
-            m_Stats = GetComponent<CharacterStatus>();
+
             CommonStats accStats = AccountMgr.AccountStats;
             CommonStats canonHoldStats = GetCanonHoldStats();
             m_SocketStats = GetCalculateSocketStats();
 
+            AlphaUnit prevLostHealth = m_Stats.MaxHealth - m_Stats.Health;
+
+            var mergeDamage = (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value);
+            var mergeHealth = (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value);
+            var mergeArmor = (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value);
+            var mergeRes = accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value;
+            var mergeCriMul = (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier);
+            var mergeBossDamMul = (accStats.BossDamageMultiplier + m_SocketStats.BossDamageMultiplier);
+            var mergeSkillMul = (accStats.SkillEffectMultiplier + m_SocketStats.SkillEffectMultiplier);
+
             // 곱연산
-            m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value);
-            m_Stats.MaxHealth = m_FirstStats.MaxHealth.Value * (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value);
-            m_Stats.MaxArmor = m_FirstStats.MaxArmor.Value * (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value);
-            m_Stats.MaxResilient = m_FirstStats.MaxResilient.Value * (accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value);
+            m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * mergeDamage;
+            m_Stats.MaxHealth = m_FirstStats.MaxHealth.Value * mergeHealth;
+            m_Stats.MaxArmor = m_FirstStats.MaxArmor.Value * mergeArmor;
+
+            // 기본 회복력 1
+            if (mergeRes > 0)
+            {
+                m_Stats.MaxResilient = m_FirstStats.MaxResilient.Value * mergeRes;
+            }
 
             // 합연산
             m_Stats.CriticalChance = m_FirstStats.CriticalChance + accStats.CriticalChance;
-            m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier);
-            m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + (accStats.BossDamageMultiplier + m_SocketStats.BossDamageMultiplier);
-            m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + (accStats.SkillEffectMultiplier + m_SocketStats.SkillEffectMultiplier);
+            m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + mergeCriMul;
+            m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + mergeBossDamMul;
+            m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + mergeSkillMul;
 
             if (gameObject.name == "Airship")
             {
@@ -81,7 +97,11 @@ namespace SkyDragonHunter.Gameplay {
                 }
             }
 
-            m_Stats.ResetAll();
+            m_Stats.ResetDamage();
+            m_Stats.ResetHealth();
+            m_Stats.ResetArmor();
+            m_Stats.ResetResilient();
+            m_Stats.Health -= prevLostHealth;
         }
 
         public void RegisterEquipCanon(CanonBase canonInstance)
@@ -93,7 +113,16 @@ namespace SkyDragonHunter.Gameplay {
         // Private 메서드
         private void Init()
         {
+            if (m_IsInitialized)
+                return;
+
+            m_IsInitialized = true;
             m_Stats = GetComponent<CharacterStatus>();
+            if (m_Stats == null)
+            {
+                Debug.Log("Account Stats과 병합할 수 없습니다. CharacterStatus가 null입니다.");
+            }
+
             m_FirstStats = new CommonStats();
             m_FirstStats.SetMaxDamage(m_Stats.MaxDamage.Value);
             m_FirstStats.SetMaxHealth(m_Stats.MaxHealth.Value);
@@ -110,6 +139,8 @@ namespace SkyDragonHunter.Gameplay {
                 m_CanonExecutor = canonExecutor;
                 canonExecutor.onEquipEvents += RegisterEquipCanon;
             }
+
+            m_Stats.ResetAll();
         }
 
         private CommonStats GetCanonHoldStats()

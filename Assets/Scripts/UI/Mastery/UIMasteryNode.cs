@@ -23,6 +23,7 @@ namespace SkyDragonHunter.UI {
         private UIMasterySocket m_SocketInstance;
 
         // ¼Ó¼º (Properties)
+        public int LevelGroup { get; set; }
         public bool IsMaxLevel => ( m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
         public bool IsActiveNode { get; private set; } = false;
         public UIMasteryEdgeContent MasteryEdgeContent = null;

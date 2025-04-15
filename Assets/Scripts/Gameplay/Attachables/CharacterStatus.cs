@@ -4,10 +4,12 @@ using SkyDragonHunter.UI;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using System.Text;
+using SkyDragonHunter.Interfaces;
 
 namespace SkyDragonHunter.Gameplay
 {
     public class CharacterStatus : MonoBehaviour
+        , IStateResetHandler
     {
         // 필드 (Fields)
         [SerializeField] private string damage = CommonStats.c_DefaultDamage;
@@ -121,7 +123,7 @@ namespace SkyDragonHunter.Gameplay
 
         private void Init()
         {
-            m_CommonStats.SetMaxDamage(damage);
+             m_CommonStats.SetMaxDamage(damage);
             m_CommonStats.SetMaxHealth(health);
             m_CommonStats.SetMaxShield(shield);
             m_CommonStats.SetMaxArmor(armor);
@@ -172,6 +174,11 @@ namespace SkyDragonHunter.Gameplay
             sb.Append($"CriticalChance: {CriticalChance}, CriticalMultiplier: {CriticalMultiplier}");
             sb.Append($"BossDamageMultiplier: {BossDamageMultiplier}, SkillEffectMultiplier: {SkillEffectMultiplier}");
             return sb.ToString();
+        }
+
+        public void ResetState()
+        {
+            ResetAll();
         }
 
     } // Scope by class CharacterStatus
