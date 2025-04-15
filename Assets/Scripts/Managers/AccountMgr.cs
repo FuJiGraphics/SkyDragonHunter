@@ -119,7 +119,8 @@ namespace SkyDragonHunter.Managers
                     if (canonInstance.TryGetComponent<CanonInfoProvider>(out var canonInfoProvider))
                     {
                         GameObject findPanelGo = GameMgr.FindObject("UICanonEquipmentPanel");
-                        if (findPanelGo.TryGetComponent<UICanonEquipmentPanel>(out var canonEquipPanel))
+                        if (findPanelGo != null && 
+                            findPanelGo.TryGetComponent<UICanonEquipmentPanel>(out var canonEquipPanel))
                         {
                             canonEquipPanel.AddCanonNode(canonInstance);
                         }
@@ -167,7 +168,8 @@ namespace SkyDragonHunter.Managers
         {
             // Crew 정보창에 자신을 등록
             GameObject findPanelGo = GameMgr.FindObject("UICrewInfoPanel");
-            if (findPanelGo.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
+            if (findPanelGo != null
+                && findPanelGo.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
             {
                 crewInfoPanel.AddCrewNode(crewInstance);
             }
@@ -180,7 +182,8 @@ namespace SkyDragonHunter.Managers
         public static void AddCrewUIAssignUnitToFortressPanel(GameObject crewInstance)
         {
             GameObject findPanelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-            if (findPanelGo.TryGetComponent<UIAssignUnitTofortressPanel>(out var crewInfoPanel))
+            if (findPanelGo != null 
+                && findPanelGo.TryGetComponent<UIAssignUnitTofortressPanel>(out var crewInfoPanel))
             {
                 crewInfoPanel.AddCrewNode(crewInstance);
             }

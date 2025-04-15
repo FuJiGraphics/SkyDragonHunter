@@ -9,11 +9,15 @@ namespace SkyDragonHunter.Entities {
     public class CrewStats : MonoBehaviour
     {
         // Fields
+        
+
         public float attackRange;
         public float aggroRange;
         public float speed;
         public float chaseSpeed;
         public float attackInterval;
+        public float skillCoolTime;
+        public float skillInitialDelay;
 
         // External Dependencies Field
         public CharacterStatus status;
@@ -52,6 +56,14 @@ namespace SkyDragonHunter.Entities {
             if(attackInterval == 0)
             {
                 attackInterval = 1f;
+            }
+            if(skillCoolTime == 0)
+            {
+                skillCoolTime = 1f;
+            }
+            if(skillInitialDelay == 0)
+            {
+                skillInitialDelay = 1f;
             }
         }
 
