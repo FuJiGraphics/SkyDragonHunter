@@ -10,12 +10,14 @@ namespace SkyDragonHunter.UI {
 
     public class UIMasteryContent : MonoBehaviour
     {
+        private const float k_BaseHeight = 1080f;
+
         // 필드 (Fields)
         [SerializeField] private UIMasteryPanel m_UiMasteryPanel;
         [SerializeField] private GameObject m_LevelGroupPrefab;
         [SerializeField] private UIMasteryEdgeContent m_MasteryEdgeContent;
         [SerializeField] private ScrollRect m_ScrollRect;
-        [SerializeField] private float m_LevelGroupPadding = 30f;
+        [SerializeField] private float m_LevelGroupPadding = 160f;
 
         private List<GameObject> m_Levels = new List<GameObject>();
 
@@ -39,7 +41,9 @@ namespace SkyDragonHunter.UI {
             levelGroupInstance.transform.localScale = Vector3.one;
             m_Levels.Add(levelGroupInstance);
             var rect = GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(rect.sizeDelta.x, rect.sizeDelta.y + m_LevelGroupPadding);
+
+            float padding = GetResponsiveLevelGroupPadding();
+            rect.sizeDelta = new Vector2(rect.sizeDelta.x, rect.sizeDelta.y + padding);
             m_ScrollRect.verticalNormalizedPosition = 0f; 
         }
 
@@ -99,6 +103,12 @@ namespace SkyDragonHunter.UI {
         {
             int currLevel = FindActivedCurrentLevel();
             m_ScrollRect.verticalNormalizedPosition = (float)currLevel / (float)(m_Levels.Count - 1);
+        }
+
+        private float GetResponsiveLevelGroupPadding()
+        {
+            float scale = (float)Screen.height / k_BaseHeight;
+            return m_LevelGroupPadding * scale;
         }
 
         // Others
