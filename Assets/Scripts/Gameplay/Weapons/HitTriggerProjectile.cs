@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Gameplay
         public Attack attackInfo;
         public float lifeTime = 5f;
         public bool isSingleAttack = true;
-        public StatusAilmentDefinition[] statusAliments;
+        public AilmentType[] ailments;
         public string[] targetTags;
         public bool perfectAimAttack = false;
 
@@ -57,7 +57,7 @@ namespace SkyDragonHunter.Gameplay
             if (target == null)
                 return;
 
-            if (statusAliments != null && statusAliments.Length > 0)
+            if (ailments != null && ailments.Length > 0)
             {
                 ApplyStatusAliments(OwnerShooter, collision.gameObject);
             }
@@ -100,9 +100,12 @@ namespace SkyDragonHunter.Gameplay
 
         private void ApplyStatusAliments(GameObject attacker, GameObject defender)
         {
-            foreach (var status in statusAliments)
+            foreach (var ailment in ailments)
             {
-                status.Execute(attacker, defender);
+                if (defender.TryGetComponent<AilmentAffectable>(out var ailmentComp))
+                {
+                    ailmentComp.Execute(ailment, 3f, attacker);
+                }
             }
         }
 

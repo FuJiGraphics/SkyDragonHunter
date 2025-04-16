@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using SkyDraonHunter.Utility;
@@ -12,13 +13,24 @@ namespace SkyDragonHunter.Scriptables {
     public class SkillDefinition : ScriptableObject
     {
         // 필드 (Fields)
-        public int id;
-        public string skillName;
-        public double damage;   // 데미지
-        public float coolDown;  // 쿨다운
+        public int ID;                      // 스킬 아이디
+        public string skillName;            // 스킬의 이름
+        public int skillType;               // 스킬의 타입 0 : 근거리(단일), 1 : 근거리(범위), 2 : 원거리(단일), 3 : 원거리(범위), 4 : 투사체 없는 원거리(단일), 5 : 투사체 없는 원거리(범위) 6 : 글로벌
+        public string skillEffect;          // 스킬 이펙트 리소스의 이름
+        public string projectileName;       // 투사체 리소스 이름
+        public float projectileSpeed;       // 투사체 속도
+        public string explosionEffect;      // 투사체 폭발 이펙트 리소스 이름
+        public int skillArea;               // 스킬이 적용되었을 때 주변의 객체가 영향을 받는 범위
+        public float skillMultiplier;       // 스킬이 적용받는 공격력의 비율
+        public int skillHitCount;           // 스킬이 적용되었을 때 타격 횟수
+        public float skillHitDuration;      // 스킬이 적용되는 간격의 시간
+        public int buffID;                  // 효과 ID
+        public int buffTarget;              // 효과 적용 대상 (0: 효과 없음, 1: 스킬 적용 대상, 2: 시전자, 3:아군 전체)
+        public int ailmentID;               // 상태이상의 ID
+        public float ailmentDuration;       // 상태이상의 지속 시간
 
         // 속성 (Properties)
-        // 외부 종속성 필드 (External dependencies field)
+        // 외부 종속성 필드 (External dependencies field)3
         // 이벤트 (Events)
         // 유니티 (ScriptableObject 기본 메서드)
         // Public 메서드
@@ -27,12 +39,23 @@ namespace SkyDragonHunter.Scriptables {
             Attack attack = new Attack();
             attack.attacker = aStats.gameObject;
             attack.defender = dStats.gameObject;
-            double newDamage = damage * aStats.SkillEffectMultiplier;
+
+            double newMultiplier = skillMultiplier * aStats.SkillEffectMultiplier;
+            AlphaUnit newDamage = aStats.MaxDamage.Value;
+            if ((double)newDamage.Value > (double)float.MaxValue)
+                newDamage *= Math2DHelper.SmartRound(newMultiplier);
+            else
+                newDamage *= newMultiplier;
+
             if (dStats.gameObject.tag == "Boss")
             {
-                newDamage *= aStats.BossDamageMultiplier;
+                if ((double)newDamage.Value > (double)float.MaxValue)
+                    newDamage *= Math2DHelper.SmartRound(aStats.BossDamageMultiplier);
+                else
+                    newDamage *= aStats.BossDamageMultiplier;
             }
-            attack.damage = Math.Floor(newDamage);
+
+            attack.damage = newDamage;
             if (dStats != null)
             {
                 attack.damage -= dStats.Armor;

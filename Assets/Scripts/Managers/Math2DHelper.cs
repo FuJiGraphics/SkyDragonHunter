@@ -21,6 +21,10 @@ namespace SkyDragonHunter.Managers
         public static BigInteger Abs(BigInteger value)
             => value < 0 ? -value : value;
 
+        public static double SmartRound(double d)
+            => (double)((BigInteger)((d >= 0.0) ? d + 0.5 : d - 0.5));
+        
+
         /*
          * @brief
          * 3D 공간에서 2D 오브젝트 간의 LookAt 메서드

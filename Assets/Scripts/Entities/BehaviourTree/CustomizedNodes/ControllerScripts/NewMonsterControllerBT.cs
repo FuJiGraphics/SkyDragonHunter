@@ -97,11 +97,17 @@ namespace SkyDragonHunter.Entities
         public void OnSlowBegin(float slowMultiplier)
         {
             this.slowMultiplier = slowMultiplier;
+            monsterStatus.speed *= slowMultiplier;
+            monsterStatus.chaseSpeed *= slowMultiplier;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
         }
 
         public void OnSlowEnd(float slowMultiplier)
         {
             this.slowMultiplier = 1f;
+            monsterStatus.speed *= (1 / slowMultiplier);
+            monsterStatus.chaseSpeed *= (1 / slowMultiplier);
+            GetComponent<SpriteRenderer>().color = Color.white;
         }
 
         // Private Methods

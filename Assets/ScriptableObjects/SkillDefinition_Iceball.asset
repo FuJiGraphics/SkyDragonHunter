@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d63a21760c9cbd4cbc99318faba0d07, type: 3}
   m_Name: SkillDefinition_Iceball
   m_EditorClassIdentifier: 
-  id: 102
+  ID: 501
   skillName: Iceball
-  damage: 40
-  coolDown: 5
+  skillType: 2
+  skillEffect: 
+  projectileName: 
+  projectileSpeed: 40
+  explosionEffect: 
+  skillArea: 1
+  skillMultiplier: 1.2
+  skillHitCount: 1
+  skillHitDuration: 0
+  buffID: -1
+  buffTarget: 0
+  ailmentID: 602
+  ailmentDuration: 3
