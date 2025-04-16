@@ -23,6 +23,9 @@ namespace SkyDragonHunter
             public int ExpToNextLevel => level * 300;
         }
         // 필드 (Fields)
+        public int testGold = 100000;      // 임시 테스트용 골드
+        public int testDiamond = 10000;    // 임시 테스트용 다이아
+
         private int goldDailyExp = 0;
         private int diamondDailyExp = 0;
         // 최대치 상수
@@ -94,7 +97,7 @@ namespace SkyDragonHunter
         public float GetDiscountRate()
         {
             // 예시: 레벨 * 0.05f, 최대 30% 제한
-            return Mathf.Clamp(data.level * 0.05f, 0f, 0.3f);
+            return Mathf.Clamp01((data.level - 1) * 0.02f);
         }
 
         // Private 메서드
@@ -107,6 +110,9 @@ namespace SkyDragonHunter
                 data.currentExp -= data.ExpToNextLevel;     // 초과 경험치는 이월
                 data.level++;                               // 레벨 증가
             }
+
+            // 여기서 슬롯 가격 갱신
+            UpdateAllSlotDiscountPrices();
         }
 
         // 골드/다이아 제한 리셋
@@ -119,6 +125,24 @@ namespace SkyDragonHunter
                 lastResetDate = DateTime.Now;
             }
         }
+
+        private void UpdateAllSlotDiscountPrices()
+        {
+            float newRate = GetDiscountRate();
+
+            // 일반 상점 슬롯
+            foreach (var slot in FindObjectsOfType<ShopSlotHandler>())
+            {
+                slot.UpdateDiscountedPrice(newRate);
+            }
+
+            // 리롤 상점 슬롯
+            foreach (var slot in FindObjectsOfType<RerollShopSlotHandler>())
+            {
+                slot.UpdateDiscountedPrice(newRate);
+            }
+        }
+
         // Others
 
     } // Scope by class FavorailityMgr
