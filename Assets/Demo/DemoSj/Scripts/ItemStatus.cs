@@ -7,10 +7,12 @@ using UnityEngine.UI;
 
 namespace SkyDragonHunter.test
 {
+    public enum CurrencyType { Gold, Diamond }
 
     public class ItemStatus : MonoBehaviour
     {
         // 필드 (Fields)
+        public CurrencyType currencyType;
         public string itemName;
         public int price;
         public int maxCount;

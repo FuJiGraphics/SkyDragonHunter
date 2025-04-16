@@ -44,6 +44,12 @@ namespace SkyDragonHunter
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
+        public void UpdateDiscountedPrice(float discountRate)
+        {
+            currentPrice = Mathf.FloorToInt(slotState.item.price * (1f - discountRate));
+            priceText.text = currentPrice.ToString("N0");
+        }
+
         // 외부에서 슬롯 초기화 시 상태 객체를 전달
         public void Initialize(ShopSlotState state, FavorailityMgr manager, ShopType type)
         {
@@ -68,7 +74,6 @@ namespace SkyDragonHunter
 
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(TryBuy);
-            buyButton.onClick.AddListener(() => favorabilityMgr.GainExpFromCurrencyPurchase(currentPrice, shopType));
         }
         // Private 메서드
         // UI 텍스트에 구매 가능 수 갱신
@@ -81,6 +86,26 @@ namespace SkyDragonHunter
         // 실제 구매 로직
         private void TryBuy()
         {
+            if (shopType == ShopType.Gold)
+            {
+                if (favorabilityMgr.testGold < currentPrice)
+                {
+                    Debug.Log("골드 부족으로 구매 불가");
+                    return;
+                }
+                favorabilityMgr.testGold -= currentPrice;
+            }
+            else if (shopType == ShopType.Diamond)
+            {
+                if (favorabilityMgr.testDiamond < currentPrice)
+                {
+                    Debug.Log("다이아 부족으로 구매 불가");
+                    return;
+                }
+                favorabilityMgr.testDiamond -= currentPrice;
+            }
+
+
             if (slotState.currentCount <= 0)
             {
                 Debug.Log($"[{slotState.item.itemName}] 구매 불가: 남은 수량 없음");
@@ -93,6 +118,8 @@ namespace SkyDragonHunter
             slotState.currentCount--;     // 상태에 직접 반영
             Debug.Log($"[{slotState.item.itemName}] 구매 완료!");
             UpdateLimitText();
+
+            favorabilityMgr.GainExpFromCurrencyPurchase(currentPrice, shopType);
         }
     }
     // Others
