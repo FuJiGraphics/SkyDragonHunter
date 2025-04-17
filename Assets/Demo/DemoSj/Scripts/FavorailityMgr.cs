@@ -19,7 +19,7 @@ namespace SkyDragonHunter
         {
             public int level = 1;            // 현재 친밀도 레벨
             public int currentExp = 0;       // 현재 누적된 총 경험치
-            
+        
             public int ExpToNextLevel => level * 300;
         }
         // 필드 (Fields)

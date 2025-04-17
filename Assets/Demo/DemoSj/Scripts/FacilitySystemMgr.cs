@@ -18,6 +18,9 @@ namespace SkyDragonHunter {
             public int itemCount = 0;                 // 현재 생성된 아이템 수
             public float timer = 0f;                  // 아이템 생성용 타이머 누적값
             public float generateInterval = 10f;      // 아이템 생성 주기 (초)
+            public float levelUpCooldown = 0f; // 남은 레벨업 대기 시간
+            public float levelUpInterval => level * 10f; // 레벨업에 필요한 시간
+            public bool isInLevelUpCooldown => levelUpCooldown > 0f;
 
             public ItemStatus itemToGenerate;         // 해당 슬롯에서 생성할 아이템
 
@@ -57,6 +60,12 @@ namespace SkyDragonHunter {
         {
             foreach (var data in facilityList)
             {
+                if (data.levelUpCooldown > 0f)
+                {
+                    data.levelUpCooldown -= deltaTime;
+                    if (data.levelUpCooldown < 0f) data.levelUpCooldown = 0f;
+                    continue; // 레벨업 대기 중에는 생산 금지
+                }
                 // 최대 개수 도달 시 생성 중단
                 if (data.itemCount >= data.maxCount)
                     continue;
