@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
+using Unity.VisualScripting;
 
 namespace SkyDragonHunter.UI {
 
@@ -18,7 +20,14 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private UIMasteryContent m_UiContent;
         [SerializeField] private UIMasterySocket[] m_SocketPrefabs;
 
+        [Header("Mastery Node Infomations")]
+        [SerializeField] private SpriteRenderer m_Icon;
+        [SerializeField] private SpriteRenderer m_NextNodeInfoArrowIcon;
+        [SerializeField] private TextMeshProUGUI m_UiPrevNodeInfo;
+        [SerializeField] private TextMeshProUGUI m_UiNextNodeInfo;
+
         private Dictionary<int, List<UIMasteryNode>> m_GenNodeMap;
+        private UIMasteryNode m_CilckedNode;
 
         // 속성 (Properties)
         public Dictionary<int, List<UIMasteryNode>> NodeMap => m_GenNodeMap;
@@ -38,6 +47,7 @@ namespace SkyDragonHunter.UI {
                 // 마스터리 노드 생성
                 var newMasteryNodeInstance = Instantiate(m_UiMasteryNodePrefab);
                 newMasteryNodeInstance.onLevelup.AddListener(DirtyMastery);
+                newMasteryNodeInstance.onClickedEvent.AddListener(() => { ShowNodeInfo(newMasteryNodeInstance); });
                 newMasteryNodeInstance.SetMasteryNodeData(id);
                 if (maxLevel < newNodeData.Level)
                 {
@@ -57,10 +67,42 @@ namespace SkyDragonHunter.UI {
         }
 
         // Public 메서드
+        public void OnNodeLevelUp()
+        {
+            if (m_CilckedNode != null)
+            {
+                m_CilckedNode.SocketLevelUp();
+                ShowNodeInfo(m_CilckedNode);
+            }
+        }
+
         public void DirtyMastery()
         {
             base.ResetVisitedFlags();
             base.TraverseBFS();
+        }
+
+        public void ShowNodeInfo(UIMasteryNode clickedNode)
+        {
+            m_CilckedNode = clickedNode;
+            var currSocketInfo = clickedNode.CurrentSocket;
+            if (clickedNode.CurrentLevel > 0)
+            {
+                m_UiPrevNodeInfo.text = currSocketInfo.Description;
+                if (currSocketInfo.NextLevelSocket != null)
+                {
+                    m_UiNextNodeInfo.text = currSocketInfo.NextLevelSocket.Description;
+                }
+                else
+                {
+                    m_UiNextNodeInfo.text = "최대 레벨";
+                }
+            }
+            else
+            {
+                m_UiPrevNodeInfo.text = "없음";
+                m_UiNextNodeInfo.text = currSocketInfo.Description;
+            }
         }
 
         // Private 메서드
