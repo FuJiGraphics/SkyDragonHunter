@@ -1,5 +1,5 @@
 using SkyDragonHunter.Managers;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -41,7 +41,8 @@ namespace SkyDragonHunter {
         {
             for (int i = 0; i < (int)DungeonType.Count; ++i)
             {
-                m_DungeonTypeButtons[i].onClick.AddListener(() => OnClickDungoenType(i));
+                int captured = i;
+                m_DungeonTypeButtons[i].onClick.AddListener(() => OnClickDungoenType(captured));
             }
             m_EnterButton.onClick.AddListener(OnClickDungeonEnterButton);
             m_CloseButton.onClick.AddListener(OnClickCloseButton);
@@ -63,12 +64,12 @@ namespace SkyDragonHunter {
             {
                 ChangeDungeonType((DungeonType)dungeonTypeIndex);
             }
+            InstantiateStagePrefabs();
         }
 
         private void ChangeDungeonType(DungeonType dungeonType)
         {
-            m_SelectedDungeonType = dungeonType;
-            InstantiateStagePrefabs();
+            m_SelectedDungeonType = dungeonType;            
         }
 
         private void InstantiateStagePrefabs()
@@ -90,6 +91,11 @@ namespace SkyDragonHunter {
                 sb.Append(i + 1);
                 stageButton.name = sb.ToString();
                 stageButton.SetLevel(i + 1);
+                stageButton.AddListener(() => 
+                { 
+                    m_SelectedDungeonIndex = stageButton.Level;
+                });
+                m_StageList.Add(stageButton.gameObject);
             }
         }
     } // Scope by class UIDungeonEntryPanel

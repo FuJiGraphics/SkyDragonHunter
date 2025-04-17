@@ -18,6 +18,7 @@ namespace SkyDragonHunter.Entities
         private static readonly string s_EnemyTag = "Monster";
 
         // Private Fields
+        [SerializeField] int m_Id;
         [SerializeField] private CrewType m_CrewType;
         [SerializeField] private Transform m_Target;
         private BehaviourTree<NewCrewControllerBT> m_BehaviourTree;
@@ -43,6 +44,7 @@ namespace SkyDragonHunter.Entities
         public MountableSlot m_MountSlot;
 
         // Properties
+        public int ID => m_Id;
         public float ExhaustionTime => 5f;
         public Vector2 MountSlotPosition => m_MountSlot.transform.position;
         public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
@@ -80,11 +82,12 @@ namespace SkyDragonHunter.Entities
         // Unity Methods
         private void Awake()
         {
-            Init();
+            
         }
 
         private void Start()
         {
+            Init();
             GetAirshipPosX();
         }
 

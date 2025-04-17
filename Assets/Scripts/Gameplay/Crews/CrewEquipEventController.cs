@@ -1,5 +1,6 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -17,12 +18,12 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void OnEquip(int slotIndex)
         {
-            throw new System.NotImplementedException();
+            DungeonMgr.RegisterCrew(slotIndex, m_CrewController.ID);
         }
 
         public void OnUnequip(int slotIndex)
         {
-            throw new System.NotImplementedException();
+            DungeonMgr.UnregisterCrew(slotIndex);
         }
     } // Scope by class CrewEquipEventController
 
