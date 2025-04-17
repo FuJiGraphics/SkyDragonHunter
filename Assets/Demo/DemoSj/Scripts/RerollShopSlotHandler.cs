@@ -2,6 +2,7 @@ using SkyDragonHunter.test;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter
@@ -25,6 +26,7 @@ namespace SkyDragonHunter
         [SerializeField] private Sprite lockedSprite;                // 잠겼을 때 스프라이트
         [SerializeField] private Sprite unlockedSprite;              // 풀렸을 때 스프라이트
 
+        private EventTrigger eventTrigger = null;
         private bool isLocked = false;               // 현재 슬롯 잠금 여부
         private bool isPurchased = false;            // 해당 슬롯에서 구매가 발생했는지 여부
         private ItemStatus itemData;                 // 슬롯에 표시 중인 아이템 데이터
@@ -66,8 +68,10 @@ namespace SkyDragonHunter
             buyButton.interactable = true;
 
             // 잠금 버튼 리스너 연결
-            lockButton.onClick.RemoveAllListeners();
-            lockButton.onClick.AddListener(ToggleLock);
+            eventTrigger = lockButton.GetComponent<EventTrigger>();
+            eventTrigger.enabled = true;
+            eventTrigger.triggers.Clear();
+            AddPointerDownEvent(eventTrigger, (BaseEventData _) => ToggleLock());
 
             // 구매 버튼 리스너 연결 ← 추가
             buyButton.onClick.RemoveAllListeners();
@@ -116,6 +120,15 @@ namespace SkyDragonHunter
 
             isLocked = !isLocked;
             lockImage.sprite = isLocked ? lockedSprite : unlockedSprite;
+
+            // 버튼 시각적 상호작용 차단
+            lockButton.interactable = !isLocked;
+
+            // 이벤트 트리거 기능 차단 (실제로 클릭 못 하게)
+            if (eventTrigger != null)
+            {
+                eventTrigger.enabled = !isLocked;
+            }
         }
 
         // 외부에서 잠금 상태 확인
@@ -134,6 +147,17 @@ namespace SkyDragonHunter
         public bool IsPurchased()
         {
             return isPurchased;
+        }
+
+        // PointerDown 이벤트 등록 함수
+        private void AddPointerDownEvent(EventTrigger trigger, UnityEngine.Events.UnityAction<BaseEventData> action)
+        {
+            EventTrigger.Entry entry = new EventTrigger.Entry
+            {
+                eventID = EventTriggerType.PointerDown
+            };
+            entry.callback.AddListener(action);
+            trigger.triggers.Add(entry);
         }
 
     } // Scope by class RerollShopSlotHandler
