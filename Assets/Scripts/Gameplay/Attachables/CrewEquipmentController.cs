@@ -1,5 +1,6 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using Spine;
 using System;
@@ -19,6 +20,8 @@ namespace SkyDragonHunter {
         [SerializeField] private GameObject[] m_EquipSlots;
 
         // 속성 (Properties)
+        public GameObject[] EquipSlots => m_EquipSlots;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -43,6 +46,10 @@ namespace SkyDragonHunter {
                 crewProviderComp.SetEquipState(true); 
                 m_EquipSlots[slot] = crewInstance;
                 crewInstance.SetActive(true);
+                if (crewInstance.TryGetComponent<ICrewEquipEventHandler>(out var equipEventController))
+                {
+                    equipEventController.OnEquip(slot);
+                }
                 if (crewInstance.TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
                     btComp.AllocateMountSlot(m_MountableSlots[slot]);
@@ -81,6 +88,11 @@ namespace SkyDragonHunter {
                 else
                 {
                     Debug.LogError("[CrewEquipmentController]: CrewControllerBT를 찾을 수 없습니다.");
+                }
+
+                if (m_EquipSlots[slot].TryGetComponent<ICrewEquipEventHandler>(out var equipEventController))
+                {
+                    equipEventController.OnEquip(slot);
                 }
                 providerComp.SetEquipState(false);
                 m_EquipSlots[slot].SetActive(false);

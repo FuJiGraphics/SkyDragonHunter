@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,18 +99,14 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
+        // Public 메서드
+        public void Init()
         {
             AdjustCallbackFuntionToMountSlot();
-        }
-
-        private void Start()
-        {
             GameObject airshipGo = GameMgr.FindObject("Airship");
             m_AirshipEquipController = airshipGo.GetComponent<CrewEquipmentController>();
         }
 
-        // Public 메서드
         public void SetSlot(int slot, GameObject crewGo)
         {
             if (slot < 0 || slot >= m_MountSlots.Length)
@@ -139,6 +136,7 @@ namespace SkyDragonHunter.UI {
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewPickNodePrefab);
                 m_CrewPickNodeObjects.Add(nodeGo);
+                nodeGo.name = provider.Name + "(Slot)";
                 if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
                 {
                     nodeIcon.sprite = provider.Icon;
@@ -209,6 +207,27 @@ namespace SkyDragonHunter.UI {
                 inSlot.SetSlot(outInstance);
                 m_EquipmentPanel.mountSlotIcons[inSlot.slotNumber].sprite = inSlot.crewIcon.sprite;
             }
+        }
+
+        public void EquipCrew(int slot, GameObject crewInstance)
+        {
+            string findName = crewInstance.GetComponent<ICrewInfoProvider>().Name + "(Slot)";
+            GameObject targetButton = null;
+            foreach (var nodeGo in m_CrewPickNodeObjects)
+            {
+                if (nodeGo.name == findName)
+                {
+                    targetButton = nodeGo;
+                    break;
+                }
+            }
+            if (targetButton == null)
+            {
+                Debug.LogError($"[UIAssignUnitTofortressPanel]: 장착 실패. crewInstance를 찾을 수 없습니다. / {crewInstance.name}");
+                return;
+            }
+            targetButton?.GetComponent<Button>().onClick?.Invoke();
+            m_MountSlots[slot].mountSlotButton.onClick.Invoke();
         }
 
         // Private 메서드

@@ -68,31 +68,12 @@ namespace SkyDragonHunter
 
         // Test drop
         // 속성 (Properties)
+        public int CurrentTriedZonelLevel => currentZonelLevel;
+        public int CurrentTriedMissionLevel => currentMissionLevel;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-
-        private void Start()
-        {
-            maxWaveTime = 10f;
-            currentWaveTime = 0f;
-            waveSlider.maxValue = maxWaveTime;
-            waveSlider.minValue = 0;
-            backGroundController = backGround.GetComponent<BackGroundController>();
-            oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
-            isCanSpawn = true;
-            isStopped = false;
-            currentEnemy = new List<GameObject>();
-            currentMissionLevel = 1;
-            currentZonelLevel = 1;
-            isSuccessChangeBackGround = true;
-
-            OnSaveLastClearWave();
-            OnTestWaveFailedUnActive();
-            SpwanAreaPositionSet();
-
-            GameMgr.FindObject("WaveController");
-        }
 
         private void Update()
         {
@@ -109,6 +90,32 @@ namespace SkyDragonHunter
         }
 
         // Public 메서드
+        public void Init()
+        {
+            maxWaveTime = 10f;
+            currentWaveTime = 0f;
+            waveSlider.maxValue = maxWaveTime;
+            waveSlider.minValue = 0;
+            backGroundController = backGround.GetComponent<BackGroundController>();
+            oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
+            isCanSpawn = true;
+            isStopped = false;
+            currentEnemy = new List<GameObject>();
+            currentMissionLevel = AccountMgr.CurrentStageLevel;
+            currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
+            isSuccessChangeBackGround = true;
+            SetStageText(currentMissionLevel, currentZonelLevel);
+            OnSaveLastClearWave();
+            OnTestWaveFailedUnActive();
+            SpwanAreaPositionSet();
+            OnSetCurrentWave();
+        }
+
+        public void SetStageText(int stageLevel, int stageZoneLevel)
+        {
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+        }
+
         public void OnSelectWave(int misson, int zone)
         {
             if (misson > lastTriedMissionLevel)
@@ -231,8 +238,7 @@ namespace SkyDragonHunter
                         currentMissionLevel++;
                     }
 
-                    waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
-
+                    SetStageText(currentMissionLevel, currentZonelLevel);
                     currentWaveTime = 0f;
                     isCanSpawn = true;
                     currentOpenPanel = 0f;

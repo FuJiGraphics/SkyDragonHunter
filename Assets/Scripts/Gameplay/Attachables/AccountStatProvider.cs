@@ -26,18 +26,6 @@ namespace SkyDragonHunter.Gameplay {
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
-        {
-            AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
-            AccountMgr.onSocketUpdateEvents += MergedAccountStatsForCharacter;
-        }
-
-        private void Start()
-        {
-            Init();
-            MergedAccountStatsForCharacter();
-        }
-
         [ContextMenu("테스트용 레벨 업")]
         private void LevelUp()
         {
@@ -47,11 +35,6 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public void MergedAccountStatsForCharacter()
         {
-            if (m_FirstStats == null || m_Stats == null)
-            {
-                Init();
-            }
-
             CommonStats accStats = AccountMgr.AccountStats;
             CommonStats canonHoldStats = GetCanonHoldStats();
             m_SocketStats = GetCalculateSocketStats();
@@ -111,12 +94,13 @@ namespace SkyDragonHunter.Gameplay {
         }
 
         // Private 메서드
-        private void Init()
+        public void Init()
         {
             if (m_IsInitialized)
                 return;
 
             m_IsInitialized = true;
+
             m_Stats = GetComponent<CharacterStatus>();
             if (m_Stats == null)
             {
@@ -141,6 +125,11 @@ namespace SkyDragonHunter.Gameplay {
             }
 
             m_Stats.ResetAll();
+
+            AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
+            AccountMgr.onSocketUpdateEvents += MergedAccountStatsForCharacter;
+
+            MergedAccountStatsForCharacter();
         }
 
         private CommonStats GetCanonHoldStats()

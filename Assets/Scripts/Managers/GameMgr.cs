@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {
@@ -33,7 +34,7 @@ namespace SkyDragonHunter.Managers
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
             AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
-            AccountMgr.LoadUserData();
+            AccountMgr.LoadUserData(scene.name);
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -87,6 +88,9 @@ namespace SkyDragonHunter.Managers
             return findGo;
         }
 
+        public static T FindObject<T>(string id)
+            => FindObject(id).GetComponent<T>();
+
         public static GameObject[] FindObjects(string id)
         {
             GameObject[] findGos = null;
@@ -104,8 +108,12 @@ namespace SkyDragonHunter.Managers
             foreach (RegisterObject comp in components)
             {
                 RegisterObject(comp.id, comp.gameObject);
-                comp.onInitEvents.Invoke();
                 Debug.Log($"게임 매니저에 등록됨: {comp.id}");
+            }
+            foreach (RegisterObject comp in components)
+            {
+                comp.onInitEvents.Invoke();
+                Debug.Log($"초기화 이벤트 호출: {comp.id}");
             }
         }
 
