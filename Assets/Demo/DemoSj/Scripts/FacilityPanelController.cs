@@ -33,6 +33,15 @@ namespace SkyDragonHunter {
                 slot.Initialize(data);
             }
         }
+
+        public void OnAllSlotAcquire()
+        {
+            foreach (var slot in slotHandlers)
+            {
+                var data = systemMgr.GetFacility(slot.GetFacilityType());
+                slot.OnClickAcquire();
+            }
+        }
         // Private 메서드
         // Others
 

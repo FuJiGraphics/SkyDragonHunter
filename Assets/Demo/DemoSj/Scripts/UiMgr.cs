@@ -45,6 +45,7 @@ namespace SkyDragonHunter.Test
         private bool isHideOptionsPanel = true;
         private bool isHideRandomCrewPanel = true;
         private bool isHideQuestPanel;
+        private bool isFacilityWorkProgress;
         private int currentMissionLevel = 1;
         private int currentZoneLevel = 1;
         // 속성 (Properties)
@@ -74,6 +75,11 @@ namespace SkyDragonHunter.Test
             if (waveControlerScript.isRewardSet)
             {
                 SetRewardItmes();
+            }
+
+            if (!facilityPanelLevelUpPanel.activeInHierarchy)
+            {
+                isHideFacilityLevelUpPanel = true;
             }
         }
 
@@ -117,15 +123,21 @@ namespace SkyDragonHunter.Test
 
         public void OnOffFacilityLevelUpPanel()
         {
-            if (isHideFacilityLevelUpPanel)
+            GameObject clicked = EventSystem.current.currentSelectedGameObject;
+            if (clicked != null)
+            {
+                // 클릭된 버튼의 부모 중에서 FacilitySlotHandler를 탐색
+                FacilitySlotHandler handler = clicked.GetComponentInParent<FacilitySlotHandler>();
+                if (handler != null)
+                {
+                    isFacilityWorkProgress = handler.isLevelUpCompleteReady;
+                }
+            }
+
+            if (isHideFacilityLevelUpPanel && isFacilityWorkProgress)
             {
                 facilityPanelLevelUpPanel.SetActive(true);
                 isHideFacilityLevelUpPanel = false;
-            }
-            else
-            {
-                facilityPanelLevelUpPanel.SetActive(false);
-                isHideFacilityLevelUpPanel = true;
             }
         }
 
