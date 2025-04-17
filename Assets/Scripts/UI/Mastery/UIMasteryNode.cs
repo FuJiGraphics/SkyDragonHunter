@@ -24,13 +24,16 @@ namespace SkyDragonHunter.UI {
 
         // 속성 (Properties)
         public int LevelGroup { get; set; }
-        public bool IsMaxLevel => ( m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
+        public bool IsMaxLevel => (m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
         public bool IsActiveNode { get; private set; } = false;
+        public int CurrentLevel => m_SocketInstance.CurrentLevel;
+        public UIMasterySocket CurrentSocket => m_SocketInstance;
         public UIMasteryEdgeContent MasteryEdgeContent = null;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         public UnityEvent onLevelup;
+        public UnityEvent onClickedEvent;
 
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
@@ -38,7 +41,7 @@ namespace SkyDragonHunter.UI {
             m_Button = GetComponent<Button>();
             m_Icon = GetComponent<Image>();
             m_Text = GetComponentInChildren<TextMeshProUGUI>(true);
-            m_Button.onClick.AddListener(SocketLevelUp);
+            m_Button.onClick.AddListener(() => { onClickedEvent?.Invoke(); } );
         }
 
         // Public 메서드

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SkyDragonHunter.UI {
@@ -31,6 +32,7 @@ namespace SkyDragonHunter.UI {
         // 속성 (Properties)
         public int ID { get; private set; }
         public string SocketName { get; private set; }
+        public string Description { get; private set; }
         public MasterySockeyType Type { get; private set; } = MasterySockeyType.Damage;
         public BigInteger Stat { get; private set; }
         public double Multiplier { get; private set; }
@@ -38,6 +40,8 @@ namespace SkyDragonHunter.UI {
         public string SlotCountString { get; private set; }
         public bool IsActive { get; private set; } = false;
         public bool IsMaxLevel { get; private set; } = false;
+        public UIMasterySocket NextLevelSocket => (NextID == -1) ? null : new UIMasterySocket(NextID);
+        public int CurrentLevel => m_CurrentCount;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -78,6 +82,7 @@ namespace SkyDragonHunter.UI {
                 var newData = DataTableMgr.MasterySocketTable.Get(NextID);
                 ID = newData.ID;
                 SocketName = newData.SocketName;
+                Description = newData.Description;
                 Type = (MasterySockeyType)newData.StatType;
                 Stat = BigInteger.Parse(newData.Stat);
                 Multiplier = newData.Multiplier;
@@ -98,6 +103,7 @@ namespace SkyDragonHunter.UI {
             var newData = DataTableMgr.MasterySocketTable.Get(id);
             ID = newData.ID;
             SocketName = newData.SocketName;
+            Description = newData.Description;
             Type = (MasterySockeyType)newData.StatType;
             Stat = BigInteger.Parse(newData.Stat);
             NextID = newData.NextSocketID;
