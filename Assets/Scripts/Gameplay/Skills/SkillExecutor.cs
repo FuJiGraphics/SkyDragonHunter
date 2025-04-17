@@ -1,6 +1,7 @@
 using SkyDragonHunter.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace SkyDragonHunter {
     public class SkillSlotUI
     {
         public Button button;       // 스킬이 발동할 버튼
+        public Slider cooldown;     // 스킬 쿨다운
         public SkillBase skill;     // 스킬 프리팹에 붙어있는 스킬 베이스
         public string[] targetTags;
     }
@@ -18,8 +20,36 @@ namespace SkyDragonHunter {
     {
         // 필드 (Fields)
         [SerializeField] private SkillSlotUI[] m_Slots;
+        [SerializeField] private float m_SkillCooldown;
+        [SerializeField] private bool m_IsAutoExecute;
+
+        private float m_EndTime;
 
         // 속성 (Properties)
+        public float CooldownProgress
+        {
+            get
+            {
+                if (Time.time >= m_EndTime)
+                    return 1f;
+                return 1f - Mathf.Clamp01((m_EndTime - Time.time) / m_SkillCooldown);
+            }
+        }
+
+        public bool IsAutoExecute
+        {
+            get
+            {
+                return m_IsAutoExecute;
+            }
+            set
+            {
+                m_IsAutoExecute = value;
+                ActiveButtons(!value);
+            }
+        }
+        public bool IsCooldownComplete => Time.time >= m_EndTime;
+
         // 외부 종속성 필드 (External dependencies field)
         [SerializeField] private EnemySearchProvider m_EnemySearchProvider;
 
@@ -30,13 +60,32 @@ namespace SkyDragonHunter {
             Init();
         }
 
+        private void Update()
+        {
+            if (IsAutoExecute)
+            {
+                for (int i = 0; i < m_Slots.Length; ++i)
+                {
+                    Execute(i);
+                }
+            }
+        }
+
         // Public 메서드
         public void Execute(int index)
         {
+            if (!IsCooldownComplete)
+            {
+                UpdateCooldownSlider(index);
+                return;
+            }
+
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
                 return;
             if (m_EnemySearchProvider.Target == null)
                 return;
+
+            ResetEndTime();
 
             // TODO: 임시 구현
             SkillBase skill = Instantiate(m_Slots[index].skill);
@@ -74,6 +123,31 @@ namespace SkyDragonHunter {
                 m_Slots[i].button.onClick.AddListener(() => { Execute(capturedIndex); });
             }
             m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
+            ResetEndTime();
+            ActiveButtons(!m_IsAutoExecute);
+        }
+
+        private void UpdateCooldownSlider(int slotIndex)
+        {
+            if (m_Slots == null || slotIndex < 0 || slotIndex > m_Slots.Length)
+                return;
+            if (m_Slots[slotIndex].cooldown == null)
+                return;
+
+            m_Slots[slotIndex].cooldown.value = 1f - CooldownProgress;
+        }
+
+        private void ResetEndTime()
+        {
+            m_EndTime = Time.time + m_SkillCooldown;
+        }
+
+        private void ActiveButtons(bool enabled)
+        {
+            foreach (var slot in m_Slots)
+            {
+                slot.button.enabled = enabled;
+            }
         }
 
         // Others
