@@ -236,6 +236,7 @@ namespace SkyDragonHunter
                     {
                         currentZonelLevel = 1;
                         currentMissionLevel++;
+
                     }
 
                     SetStageText(currentMissionLevel, currentZonelLevel);
@@ -245,6 +246,7 @@ namespace SkyDragonHunter
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
 
+                    OnChangeBackGround(currentZonelLevel - 1);
                     // TODO: 데이터 세이브
                     AccountMgr.SaveUserData();
                 }
@@ -412,7 +414,6 @@ namespace SkyDragonHunter
         private void OnUnActiveClearPanel()
         {
             clearPanel.SetActive(false);
-            OnChangeBackGround(currentZonelLevel);
             OnFadeSlider();
             isRewardSet = false;
             ItemMgr.Reset();
