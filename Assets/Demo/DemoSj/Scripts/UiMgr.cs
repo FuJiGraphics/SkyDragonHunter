@@ -139,6 +139,11 @@ namespace SkyDragonHunter.Test
                 facilityPanelLevelUpPanel.SetActive(true);
                 isHideFacilityLevelUpPanel = false;
             }
+            else
+            {
+                facilityPanelLevelUpPanel.SetActive(false);
+                isHideFacilityLevelUpPanel = true;
+            }
         }
 
         public void OnFacilityPanel()

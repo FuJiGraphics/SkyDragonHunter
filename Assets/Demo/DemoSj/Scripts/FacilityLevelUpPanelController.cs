@@ -54,6 +54,7 @@ namespace SkyDragonHunter
             nextLevelText.text = $"Lv. {data.level + 1}";
 
             currentProduceAmountText.text = $"{data.perGenerate}";
+            currentMaxAmountText.text = $"{data.level * 20}";
             TimeSpan currentInterval = TimeSpan.FromSeconds(data.generateInterval);
             currentIntervalText.text = currentInterval.ToString(@"mm\:ss");
 
