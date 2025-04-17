@@ -5,7 +5,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter
+{
 
     public class UIDungeonEntryPanel : MonoBehaviour
     {
@@ -14,7 +15,7 @@ namespace SkyDragonHunter {
 
         // Fields
         [SerializeField] private Button[] m_DungeonTypeButtons;
-        [SerializeField] private int[] m_DungeonStageCounts = {5,6,7};
+        [SerializeField] private int[] m_DungeonStageCounts = { 5, 6, 7 };
         [SerializeField] private DungeonType m_SelectedDungeonType;
         [SerializeField] private int m_SelectedDungeonIndex;
 
@@ -33,7 +34,7 @@ namespace SkyDragonHunter {
 
         // Private Methods
         private void Init()
-        {            
+        {
             AddListeners();
         }
 
@@ -60,7 +61,7 @@ namespace SkyDragonHunter {
 
         private void OnClickDungoenType(int dungeonTypeIndex)
         {
-            if(m_SelectedDungeonType != (DungeonType)dungeonTypeIndex)
+            if (m_SelectedDungeonType != (DungeonType)dungeonTypeIndex)
             {
                 ChangeDungeonType((DungeonType)dungeonTypeIndex);
             }
@@ -69,12 +70,12 @@ namespace SkyDragonHunter {
 
         private void ChangeDungeonType(DungeonType dungeonType)
         {
-            m_SelectedDungeonType = dungeonType;            
+            m_SelectedDungeonType = dungeonType;
         }
 
         private void InstantiateStagePrefabs()
         {
-            if(m_StageList == null)
+            if (m_StageList == null)
                 m_StageList = new List<GameObject>();
             foreach (var stagePrefab in m_StageList)
             {
@@ -85,14 +86,14 @@ namespace SkyDragonHunter {
             for (int i = 0; i < m_DungeonStageCounts[(int)m_SelectedDungeonType]; ++i)
             {
                 var stageButton = Instantiate(m_DungeonStagePrefab, m_ScrollViewContent);
-                
+
                 StringBuilder sb = new StringBuilder();
                 sb.Append(StagePrefabName);
                 sb.Append(i + 1);
                 stageButton.name = sb.ToString();
                 stageButton.SetLevel(i + 1);
-                stageButton.AddListener(() => 
-                { 
+                stageButton.AddListener(() =>
+                {
                     m_SelectedDungeonIndex = stageButton.Level;
                 });
                 m_StageList.Add(stageButton.gameObject);
