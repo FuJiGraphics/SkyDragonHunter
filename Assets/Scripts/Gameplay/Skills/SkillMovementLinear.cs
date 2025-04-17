@@ -38,6 +38,7 @@ namespace SkyDragonHunter {
         private void Init()
         {
             m_SkillBase = GetComponent<SkillBase>();
+            speed = m_SkillBase.SkillData.projectileSpeed;
         }
 
         private void Move()

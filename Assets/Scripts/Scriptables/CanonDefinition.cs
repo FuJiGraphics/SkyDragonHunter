@@ -9,21 +9,23 @@ namespace SkyDragonHunter.Scriptables {
     public class CanonDefinition : ScriptableObject
     {
         // 필드 (Fields)
-        public int id;                  // 대포ID
-        public string canName;          // 대포 이름
-        public int canGrade;            // 노말=0 레어=1 유니크=2 레전드=3 
-        public string canEqATK;         // 기본 장착 공격력
-        public string canEqDEF;         // 기본 장착 방어력
-        public string canHoldATK;       // 기본 보유 공격력
-        public string canHoldDEF;       // 기본 보유 방어력
-        public string canLvUpCost;      // 레벨 업 비용 기준 값
-        public string canEqATKup;       // 장착 공격력 상승량
-        public string canEqDEFup;       // 장착 방어력 상승량
-        public string canHoldATKup;     // 보유 공격력 상승량
-        public string canHoldDEFup;     // 보유 방어력 상승량
-        public int canEffectID;         // 대포 특수 효과 ID
-        public int canUpgradeID;        // 대포 합성 결과 ID
-        public float canCooldown;       // 대포 쿨다운
+        public int id;                      // 대포ID
+        public string canName;              // 대포 이름
+        public int canGrade;                // 노말=0 레어=1 유니크=2 레전드=3 
+        public string canEqATK;             // 기본 장착 공격력
+        public string canEqDEF;             // 기본 장착 방어력
+        public string canHoldATK;           // 기본 보유 공격력
+        public string canHoldDEF;           // 기본 보유 방어력
+        public string canLvUpCost;          // 레벨 업 비용 기준 값
+        public string canEqATKup;           // 장착 공격력 상승량
+        public string canEqDEFup;           // 장착 방어력 상승량
+        public string canHoldATKup;         // 보유 공격력 상승량
+        public string canHoldDEFup;         // 보유 방어력 상승량
+        public int canEffectID;             // 대포 특수 효과 ID
+        public int canUpgradeID;            // 대포 합성 결과 ID
+        public float canCooldown;           // 대포 쿨다운
+        public int canAilmentID;            // 상태 이상 ID
+        public float canAilmentDuration;    // 상태 이상 지속 시간
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

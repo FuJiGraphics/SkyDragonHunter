@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter {
     public class BallOnHitDestroyImmediatly : MonoBehaviour
-        , ISkillLifecycleHandler
+        , ISkillEffectLifecycleHandler
     {
         // 필드 (Fields)
         // 속성 (Properties)
@@ -15,18 +15,14 @@ namespace SkyDragonHunter {
         // Public 메서드
         // Private 메서드
         // Others
-        public void OnSkillCast(GameObject caster) { }
-        public void OnSkillEnd(GameObject caster) { }
-
-        public void OnSkillHitAfter(GameObject caster)
+        public void OnHitEnterEffect(GameObject caster, GameObject receiver)
         {
             Destroy(gameObject);
         }
 
-        public void OnSkillHitBefore(GameObject caster) { }
-        public void OnSkillHitEnter(GameObject defender) { }
-        public void OnSkillHitExit(GameObject defender) { }
-        public void OnSkillHitStay(GameObject defender) { }
+        public void OnHitStayEffect(GameObject caster, GameObject receiver)
+        {
+        }
 
     } // Scope by class SkillOnHitDestroyImmediatly
 } // namespace SkyDragonHunter

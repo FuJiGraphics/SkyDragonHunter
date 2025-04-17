@@ -330,7 +330,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7434643913460656674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc5046287e50e44dbf156d64bd0816d, type: 3}
+  m_Script: {fileID: 11500000, guid: 02371324db89cac41ab0f866e7f1fee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &-5015490716612036505
@@ -386,6 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ebbcc907b2a9204f906f8f99c5793f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AttackAnimTriggers: []
+  m_SkillAnimTriggers: []
   m_Speed: 0
   m_ChaseSpeed: 0
   m_AggroRange: 0
@@ -399,11 +401,14 @@ MonoBehaviour:
   m_Target: {fileID: 0}
   isDirectionToRight: 0
   isMoving: 0
-  isChasing: 0
+  lastAttackTime: 0
+  attackAnimationPlaying: 0
   m_AttackType: 0
   skillId: 0
   lastSkillCasted: 0
   IsSkillAvailable: 0
+  m_CrewTarget: {fileID: 0}
+  tempAnimController: {fileID: 0}
 --- !u!1001 &7597109240998436959
 PrefabInstance:
   m_ObjectHideFlags: 0

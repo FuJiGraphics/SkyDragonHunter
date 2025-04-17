@@ -8,7 +8,7 @@ namespace SkyDragonHunter.Gameplay {
         , IBallLifecycleHandler
     {
         // 필드 (Fields)
-        public StatusAilmentDefinition[] ailments;
+        public AilmentType[] ailments;
 
         private BallBase m_BallBase;
 
@@ -44,7 +44,10 @@ namespace SkyDragonHunter.Gameplay {
         {
             foreach (var ailment in ailments)
             {
-                ailment.Execute(m_BallBase.Caster, target);
+                if (target.TryGetComponent<AilmentAffectable>(out var ailmentComp))
+                {
+                    ailmentComp.Execute(ailment, 5f, m_BallBase.Caster);
+                }
             }
         }
 

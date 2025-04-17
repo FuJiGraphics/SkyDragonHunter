@@ -17,6 +17,7 @@ namespace SkyDragonHunter {
 
         // 외부 종속성 필드 (External dependencies field)
         private ISkillLifecycleHandler[] m_Handlers;
+        private ISkillEffectLifecycleHandler[] m_EffectHandlers;
         private IAttackTargetProvider m_AttackTargetSelector;
 
         // 이벤트 (Events)
@@ -24,6 +25,7 @@ namespace SkyDragonHunter {
         private void Awake()
         {
             m_Handlers = GetComponents<ISkillLifecycleHandler>();
+            m_EffectHandlers = GetComponents<ISkillEffectLifecycleHandler>();
             m_AttackTargetSelector = GetComponent<IAttackTargetProvider>();
             if (m_AttackTargetSelector == null)
             {
@@ -51,6 +53,7 @@ namespace SkyDragonHunter {
 
             OnHitBefore();
             OnHitEnter(collision.gameObject);
+            OnHitEnterEffect(Caster, collision.gameObject);
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -59,6 +62,7 @@ namespace SkyDragonHunter {
                 return;
 
             OnHitStay(collision.gameObject);
+            OnHitStayEffect(Caster, collision.gameObject);
         }
 
         private void OnCollisionExit2D(Collision2D collision)
@@ -122,11 +126,27 @@ namespace SkyDragonHunter {
             }
         }
 
+        private void OnHitEnterEffect(GameObject caster, GameObject receiver)
+        {
+            foreach (var handler in m_EffectHandlers)
+            {
+                handler.OnHitEnterEffect(caster, receiver);
+            }
+        }
+
         private void OnHitStay(GameObject defender)
         {
             foreach (var handler in m_Handlers)
             {
                 handler.OnSkillHitStay(defender);
+            }
+        }
+
+        private void OnHitStayEffect(GameObject caster, GameObject receiver)
+        {
+            foreach (var handler in m_EffectHandlers)
+            {
+                handler.OnHitStayEffect(caster, receiver);
             }
         }
 
