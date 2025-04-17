@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {
@@ -20,9 +21,6 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             Debug.Log("GameMgr Init");
-            Application.targetFrameRate = 60;
-            m_LoadObjects = new Dictionary<string, List<GameObject>>();
-            AccountMgr.Init();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
@@ -32,9 +30,11 @@ namespace SkyDragonHunter.Managers
             if (!Application.isPlaying)
                 return;
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
-
+            Application.targetFrameRate = 60;
+            m_LoadObjects = new Dictionary<string, List<GameObject>>();
+            AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
-            AccountMgr.LoadUserData();
+            AccountMgr.LoadUserData(scene.name);
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -44,7 +44,7 @@ namespace SkyDragonHunter.Managers
 
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects.Clear();
-            //AccountMgr.Release();
+            AccountMgr.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 
@@ -88,6 +88,9 @@ namespace SkyDragonHunter.Managers
             return findGo;
         }
 
+        public static T FindObject<T>(string id)
+            => FindObject(id).GetComponent<T>();
+
         public static GameObject[] FindObjects(string id)
         {
             GameObject[] findGos = null;
@@ -105,8 +108,12 @@ namespace SkyDragonHunter.Managers
             foreach (RegisterObject comp in components)
             {
                 RegisterObject(comp.id, comp.gameObject);
-                comp.onInitEvents.Invoke();
                 Debug.Log($"게임 매니저에 등록됨: {comp.id}");
+            }
+            foreach (RegisterObject comp in components)
+            {
+                comp.onInitEvents.Invoke();
+                Debug.Log($"초기화 이벤트 호출: {comp.id}");
             }
         }
 

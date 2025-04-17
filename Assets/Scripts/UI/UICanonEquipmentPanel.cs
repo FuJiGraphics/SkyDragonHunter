@@ -32,11 +32,6 @@ namespace SkyDragonHunter.UI {
             m_UiCanonEquipButton.onClick.AddListener(Equip);
             m_UiCanonUnequipButton.onClick.AddListener(Unequip);
         }
-    
-        private void Update()
-        {
-            
-        }
 
         // Public 메서드
         public void AddCanonNode(GameObject canonInstance)

@@ -1,11 +1,13 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Test;
 using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {
@@ -17,6 +19,8 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<MasterySockeyType, List<UIMasterySocket>> s_CollectedSockets;
 
         // 속성 (Properties)
+        public static int CurrentStageLevel { get; set; } = 1;
+        public static int CurrentStageZoneLevel { get; set; } = 1;
         public static int CurrentLevel => Crystal.CurrentLevel;
         public static CommonStats AccountStats { get; private set; }
         public static Crystal Crystal { get; private set; }
@@ -48,6 +52,21 @@ namespace SkyDragonHunter.Managers
             AccountStats = null;
             Crystal = null;
             s_CollectedCanons = null;
+            onLevelUpEvents = null;
+            onSocketUpdateEvents = null;
+        }
+
+        public static void SetLevel(int id)
+        {
+            // 크리스탈 등급 증가
+            var crystalData = DataTableMgr.CrystalLevelTable.Get(id);
+            if (crystalData == null)
+                return;
+
+            InitAccountData(crystalData);
+
+            // 이벤트 호출
+            onLevelUpEvents?.Invoke();
         }
 
         public static void LevelUp()
@@ -64,6 +83,7 @@ namespace SkyDragonHunter.Managers
 
             // 이벤트 호출
             onLevelUpEvents?.Invoke();
+            SaveUserData();
         }
 
         public static void OnSocketLevelUp()
@@ -193,7 +213,7 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        public static void LoadUserData()
+        public static void LoadUserData(string sceneName)
         {
             Debug.Log("[AccountMgr]: 계정 데이터 로드");
             Debug.Log("[AccountMgr]: 단원 데이터 로드");
@@ -202,20 +222,56 @@ namespace SkyDragonHunter.Managers
             var tempUserData = GameMgr.FindObject("TempUserData");
             if (tempUserData.TryGetComponent<TempUserData>(out var comp))
             {
+                comp.LoadStaticData();
+
+                // 크리스탈 레벨 로드
+                SetLevel(comp.crystalLevelID);
+
+                // 스테이지 초기화
+                GameObject stageGo = GameMgr.FindObject("WaveController");
+                var waveController = stageGo?.GetComponent<TestWaveController>();
+                if (waveController != null)
+                {
+                    CurrentStageLevel = comp.stageLevel;
+                    CurrentStageZoneLevel = comp.stageZoneLevel;
+                    waveController.Init();
+                }
+                
+
                 foreach (var crew in comp.crewDataPrefabs)
                 {
                     GameObject instance = GameObject.Instantiate<GameObject>(crew);
-                    instance.SetActive(false);
                     SyncCrewData(instance);
                     RegisterCrew(instance);
+                    instance.GetComponent<AccountStatProvider>().Init();
+                    instance.SetActive(false);
                 }
                 foreach (var canon in comp.canonDataPrefabs)
                 {
                     GameObject instance = GameObject.Instantiate<GameObject>(canon);
-                    instance.SetActive(false);
                     SyncCanonData(instance);
                     RegisterCanon(instance);
+                    instance.SetActive(false);
                 }
+
+                foreach (var crewEquipStorage in comp.airshipEquipSlots)
+                {
+                    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
+                    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
+                    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
+                    if (crewEquipStorage.crewPrefab == null)
+                        continue;
+
+                    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
+                    {
+                        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
+                        {
+                            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
+                            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
+                        }
+                    }
+                }
+
             }
         }
 
@@ -224,6 +280,57 @@ namespace SkyDragonHunter.Managers
             Debug.Log("[AccountMgr]: 계정 데이터 세이브");
             Debug.Log("[AccountMgr]: 단원 데이터 세이브");
             Debug.Log("[AccountMgr]: 유저 데이터 세이브 완료");
+
+            var tempUserData = GameMgr.FindObject("TempUserData");
+
+            if (tempUserData.TryGetComponent<TempUserData>(out var comp))
+            {
+                // 비공정 탑승 정보 저장
+                GameObject airshipInstance = GameMgr.FindObject("Airship");
+                if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
+                {
+                    var equipSlots = equipController.EquipSlots;
+                    comp.airshipEquipSlots = new List<SaveEquipStorage>();
+                    for (int i = 0; i < equipSlots.Length; ++i)
+                    {
+                        int slotIndex = i;
+                        GameObject crewPrefab = null;
+                        // 크루 프리팹 찾기
+                        foreach (var findGo in comp.crewDataPrefabs)
+                        {
+                            if (equipSlots[i] == null)
+                                continue;
+
+                            var equipCrewInfo = equipSlots[i].GetComponent<CrewInfoProvider>();
+                            var findCrewInfo = findGo.GetComponent<CrewInfoProvider>();
+                            if (equipCrewInfo.Name == findCrewInfo.Name)
+                            {
+                                crewPrefab = findGo;
+                                break;
+                            }
+                        }
+                        SaveEquipStorage saveData = new SaveEquipStorage();
+                        saveData.slotIndex = slotIndex;
+                        saveData.crewPrefab = crewPrefab;
+                        comp.airshipEquipSlots.Add(saveData);
+                    }
+                }
+
+                // 크리스탈 레벨 저장
+                comp.crystalLevelID = Crystal.CurrLevelId;
+
+                // TODO: 스테이지 정보 저장 (임시)
+                GameObject stageGo = GameMgr.FindObject("WaveController");
+                var waveController = stageGo?.GetComponent<TestWaveController>();
+                if (waveController != null)
+                {
+                    comp.stageLevel = waveController.CurrentTriedMissionLevel;
+                    comp.stageZoneLevel = waveController.CurrentTriedZonelLevel;
+                }
+
+                // 스테이지 정보 최신화
+                comp.DirtyStaticData();
+            }
         }
 
         private static void SyncCrewData(GameObject crewInstance)

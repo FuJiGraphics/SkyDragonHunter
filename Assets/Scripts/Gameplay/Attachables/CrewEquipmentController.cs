@@ -20,6 +20,8 @@ namespace SkyDragonHunter {
         [SerializeField] private GameObject[] m_EquipSlots;
 
         // 속성 (Properties)
+        public GameObject[] EquipSlots => m_EquipSlots;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)

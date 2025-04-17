@@ -82,11 +82,6 @@ namespace SkyDragonHunter.Entities
         // Unity Methods
         private void Awake()
         {
-            
-        }
-
-        private void Start()
-        {
             Init();
             GetAirshipPosX();
         }
@@ -151,8 +146,8 @@ namespace SkyDragonHunter.Entities
         public void AllocateMountSlot(MountableSlot slot)
         {
             animController.PlayIdleAnimation();
-            isMounted = false;
             m_MountSlot = slot;
+            isMounted = false;
             MountAction(true);
             transform.position = m_MountSlot.transform.position;
             exhaustionRemainingTime = 0.3f;
@@ -199,6 +194,7 @@ namespace SkyDragonHunter.Entities
             skillTimer = 1f;            
             // ~TODO
         }
+
         private void SetAggroBox()
         {
             var airshipGO = GameMgr.FindObject("Airship");

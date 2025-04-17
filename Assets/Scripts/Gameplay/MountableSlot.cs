@@ -45,6 +45,7 @@ namespace SkyDragonHunter.Gameplay {
 
             slot.transform.SetParent(null);
             m_BackupPos.ApplyTo(slot.transform);
+            slot.transform.localScale = Vector3.one;
             slot = null;
         }
 

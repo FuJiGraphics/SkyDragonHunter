@@ -40,21 +40,22 @@ namespace SkyDragonHunter {
 
         private void TestSetCrews()
         {
-            var testCrewIdArr = new int[4];
-            
-            for(int i = 0; i < 4; ++i)
-            {
-                testCrewIdArr[i] = 100001 + i;
-            }
+            //var testCrewIdArr = new int[4];
 
-            foreach (var crewSlot in testCrewIdArr)
-            {
-                if (crewSlot == 0)
-                    continue;
+            //// TODO: CCJ) 슬롯 범위 조정
+            //for (int i = 0; i < 4; ++i)
+            //{
+            //    testCrewIdArr[i] = 100001 + i;
+            //}
 
-                var crewBT = Instantiate(m_PrefabLoader.GetCrewController(crewSlot), Vector3.zero, Quaternion.identity);
-                m_AirshipEquipController.EquipSlot(crewSlot, crewBT.gameObject);
-            }
+            //foreach (var crewSlot in testCrewIdArr)
+            //{
+            //    if (crewSlot == 0)
+            //        continue;
+
+            //    var crewBT = Instantiate(m_PrefabLoader.GetCrewController(crewSlot), Vector3.zero, Quaternion.identity);
+            //    m_AirshipEquipController.EquipSlot(crewSlot, crewBT.gameObject);
+            //}
         }
     } // Scope by class InDungeonCrewSpawner
 
