@@ -92,6 +92,8 @@ namespace SkyDragonHunter
         // Public 메서드
         public void Init()
         {
+            stageInfo.missionLevel = 1;
+            stageInfo.zoneLevel = 1;
             maxWaveTime = 10f;
             currentWaveTime = 0f;
             waveSlider.maxValue = maxWaveTime;
