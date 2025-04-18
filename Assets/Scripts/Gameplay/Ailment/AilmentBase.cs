@@ -2,11 +2,12 @@ using NPOI.SS.Formula.Functions;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Gameplay{
+namespace SkyDragonHunter.Gameplay {
 
     public class AilmentBase : MonoBehaviour
         , IAilmentEffect
