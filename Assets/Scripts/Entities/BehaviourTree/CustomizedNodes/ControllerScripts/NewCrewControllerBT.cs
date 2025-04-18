@@ -4,7 +4,7 @@ using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Managers;
 
-namespace SkyDragonHunter.Entities 
+namespace SkyDragonHunter.Entities
 {
     public enum CrewType
     {
@@ -24,7 +24,7 @@ namespace SkyDragonHunter.Entities
         private BehaviourTree<NewCrewControllerBT> m_BehaviourTree;
         private float slowMultiplier;
         private float skillTimer;
-        private float exhaustionTime = 10f;
+        private float exhaustionTime;
         private Vector2 airshipPos;
         [SerializeField] private bool isMounted;
 
@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Entities
         public Vector2 onFieldOriginPosition;
         public float targetPosY;
         public float exhaustionRemainingTime;
-
+        
         // External Dependencies Field
         public CrewStats crewStatus;
         public FloatingEffect floater;
@@ -44,10 +44,12 @@ namespace SkyDragonHunter.Entities
         public MountableSlot m_MountSlot;
 
         // Properties
+        public bool IsOnboard => m_CrewType == CrewType.OnBoard;
+        public bool IsExhausted => exhaustionRemainingTime > 0;
         public int ID => m_Id;
         public float ExhaustionTime => 5f;
         public Vector2 MountSlotPosition => m_MountSlot.transform.position;
-        public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
+        //public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
         public bool IsSkillAvailable => !(skillTimer > 0);
@@ -59,7 +61,7 @@ namespace SkyDragonHunter.Entities
         public float AttackInterval => crewStatus.attackInterval;
         public float AggroRange => crewStatus.aggroRange;
         public float AttackRange => crewStatus.attackRange;
-        
+
 
 
         public float TargetDistance
@@ -75,7 +77,24 @@ namespace SkyDragonHunter.Entities
                 Vector2 targetPos = new Vector2(m_Target.position.x, targetPosY);
                 Vector2 selfPos = new Vector2(transform.position.x, floater.StartY);
 
-                return Vector2.Distance(targetPos,selfPos);
+                return Vector2.Distance(targetPos, selfPos);
+            }
+        }
+
+        public float TargetFloatingDistance
+        {
+            get
+            {
+                if (m_Target == null)
+                {
+                    return float.MaxValue;
+                }
+                var distanceX = Mathf.Abs(m_Target.position.x - transform.position.x);
+
+                Vector2 targetPos = new Vector2(m_Target.position.x, targetPosY);
+                Vector2 selfPos = new Vector2(transform.position.x, floater.StartY);
+
+                return Vector2.Distance(targetPos, selfPos);
             }
         }
 
@@ -83,6 +102,10 @@ namespace SkyDragonHunter.Entities
         private void Awake()
         {
             Init();
+        }
+
+        private void Start()
+        {
             GetAirshipPosX();
         }
 
@@ -91,7 +114,7 @@ namespace SkyDragonHunter.Entities
             if (m_CrewType == CrewType.OnField && isMounted)
             {
                 exhaustionRemainingTime -= Time.deltaTime;
-                if(exhaustionRemainingTime <= 0)
+                if (exhaustionRemainingTime <= 0)
                 {
                     exhaustionRemainingTime = exhaustionTime;
                     crewStatus.status.ResetAll();
@@ -104,6 +127,7 @@ namespace SkyDragonHunter.Entities
                 m_BehaviourTree.Update();
             }
         }
+
         private void FixedUpdate()
         {
             ResetTarget();
@@ -119,6 +143,36 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public Methods
+        public void SetDataFromTable(int id)
+        {
+            if (id == 0)
+                return;
+
+            this.m_Id = id;
+            var data = DataTableMgr.CrewTable.Get(id);
+            if (data == null)
+            {
+                Debug.LogError($"Set Crew Data Failed : ID '{id}' not found in Crew table.");
+                return;
+            }
+
+            int level = AccountMgr.CurrentLevel;
+
+            name = data.Name;
+            m_CrewType = data.Type;
+
+            // Status
+            crewStatus.status.MaxHealth = data.BasicHP + data.IncreasingHP * level;
+            crewStatus.status.MaxDamage = data.BasicATK + data.IncreasingATK * level;
+            crewStatus.status.MaxArmor = data.BasicDEF + data.IncreasingDEF * level;
+            crewStatus.status.MaxResilient = data.BasicREG + data.IncreasingREG * level;
+            crewStatus.status.CriticalChance = data.CritRate;
+            crewStatus.status.CriticalMultiplier = data.CritMultiplier;
+            crewStatus.attackInterval = data.AttackInterval;
+            crewStatus.attackRange = data.AttackRange;
+
+        }
+
         public void SetTarget(Transform targetTransform)
         {
             m_Target = targetTransform;
@@ -146,8 +200,8 @@ namespace SkyDragonHunter.Entities
         public void AllocateMountSlot(MountableSlot slot)
         {
             animController.PlayIdleAnimation();
-            m_MountSlot = slot;
             isMounted = false;
+            m_MountSlot = slot;
             MountAction(true);
             transform.position = m_MountSlot.transform.position;
             exhaustionRemainingTime = 0.3f;
@@ -191,10 +245,9 @@ namespace SkyDragonHunter.Entities
             InitBehaviourTree();
 
             // TODO: LJH Temp Skill Timer
-            skillTimer = 1f;            
+            skillTimer = 1f;
             // ~TODO
         }
-
         private void SetAggroBox()
         {
             var airshipGO = GameMgr.FindObject("Airship");
@@ -207,7 +260,7 @@ namespace SkyDragonHunter.Entities
 
         private void InitBehaviourTree()
         {
-            switch(m_CrewType)
+            switch (m_CrewType)
             {
                 case CrewType.OnBoard:
                     InitOnBoardCrewBT();

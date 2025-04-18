@@ -23,7 +23,7 @@ namespace SkyDragonHunter {
             m_PrefabLoader = GameMgr.FindObject("CrewPrefabLoader").GetComponent<CrewPrefabLoader>();
             m_AirshipEquipController = GameMgr.FindObject("Airship").GetComponent<CrewEquipmentController>();
             //SetCrews();
-            TestSetCrews();
+            //TestSetCrews();
         }
 
         private void SetCrews()

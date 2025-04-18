@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
-        public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
+        //public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < monsterStatus.attackRange;
@@ -48,6 +48,23 @@ namespace SkyDragonHunter.Entities
         public float AttackInterval => monsterStatus.attackInterval;
         public float m_TargetDistance;
         public float TargetDistance
+        {
+            get
+            {
+                if (m_Target == null)
+                {
+                    return float.MaxValue;
+                }
+
+                var distance = Mathf.Abs(m_Target.position.x - transform.position.x);
+                var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+                var halfwidth = sr.bounds.size.x * 0.5f;
+                m_TargetDistance = distance - halfwidth;
+                return distance - halfwidth;
+            }
+        }
+
+        public float TargetFloatingDistance
         {
             get
             {

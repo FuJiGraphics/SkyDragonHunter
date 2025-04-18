@@ -1,6 +1,7 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using UnityEngine;
 
 namespace SkyDragonHunter.Entities
@@ -36,12 +37,14 @@ namespace SkyDragonHunter.Entities
 
         // Properties
         public bool IsSkillAvailable => false;
-        public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
+        //public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < bossStatus.attackRange;
         public bool IsTargetInAggroRange => TargetDistance < bossStatus.aggroRange;
         public bool IsTargetAllocated => m_Target != null;
+        public AlphaUnit HP => bossStatus.status.Health;
+        public AlphaUnit MaxHP => bossStatus.status.MaxHealth;
         public float Speed => bossStatus.speed;
         public float ChaseSpeed => bossStatus.chaseSpeed;
         public float AggroRange => bossStatus.aggroRange;
@@ -49,6 +52,23 @@ namespace SkyDragonHunter.Entities
         public float AttackInterval => bossStatus.attackInterval;
         public float m_TargetDistance;
         public float TargetDistance
+        {
+            get
+            {
+                if (m_Target == null)
+                {
+                    return float.MaxValue;
+                }
+
+                var distance = Mathf.Abs(m_Target.position.x - transform.position.x);
+                var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+                var halfwidth = sr.bounds.size.x * 0.5f;
+                m_TargetDistance = distance;
+                return distance;
+            }
+        }
+
+        public float TargetFloatingDistance
         {
             get
             {
@@ -135,8 +155,9 @@ namespace SkyDragonHunter.Entities
                             Debug.LogError($"Missing NewCrewControllerBT");
                             return;
                         }
-                        //if (crewBT.IsMounted)
-                        //    continue;
+                        if (crewBT.IsOnboard || crewBT.IsExhausted)
+                            continue;
+
                         m_CrewTarget = crewBT;
                         m_Target = m_CrewTarget.transform;
                         return;
