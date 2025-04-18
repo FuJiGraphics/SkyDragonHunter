@@ -9,7 +9,7 @@ namespace SkyDragonHunter.Tables
     public class MonsterData : DataTableData
     {
         public string Name { get; set; }
-        public AttackType Type { get; set; }
+        public MonsterType Type { get; set; }
         public double HP { get; set; }
         public double ATK { get; set; }
         public int DEF { get; set; }

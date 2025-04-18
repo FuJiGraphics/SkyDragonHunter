@@ -1,6 +1,7 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using UnityEngine;
 
 namespace SkyDragonHunter.Entities
@@ -35,8 +36,10 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
+        public AlphaUnit HP => bossStatus.status.Health;
+        public AlphaUnit MaxHP => bossStatus.status.MaxHealth;
         public bool IsSkillAvailable => false;
-        public Vector2 AdjustedPosition => transform.position;
+        //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < bossStatus.attackRange;

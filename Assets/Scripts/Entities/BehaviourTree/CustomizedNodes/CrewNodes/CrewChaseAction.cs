@@ -33,13 +33,13 @@ namespace SkyDragonHunter {
         private void UpdatePosition()
         {            
             var newPos = m_Context.transform.position;
-            var direction = Vector2.zero;
+            var direction = m_Context.Target.position - m_Context.transform.position;
 
             // direction.y = m_Context.targetPosY - m_Context.floater.StartY;
-            direction.x = m_Context.Target.position.x - m_Context.transform.position.x;
+            //direction.x = m_Context.Target.position.x - m_Context.transform.position.x;
             direction.Normalize();
 
-            newPos.x += direction.x * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
+            newPos += direction * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
             // m_Context.floater.StartY += direction.y * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
             m_Context.transform.position = newPos;
         }

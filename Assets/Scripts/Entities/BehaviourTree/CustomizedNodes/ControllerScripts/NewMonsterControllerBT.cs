@@ -18,7 +18,7 @@ namespace SkyDragonHunter.Entities
         protected static readonly string s_CrewTag = "Crew";
 
         // Private Fields
-        [SerializeField] private AttackType m_MonsterType;
+        [SerializeField] private MonsterType m_MonsterType;
         [SerializeField] private Transform m_Target;
         [SerializeField] private NewCrewControllerBT m_CrewTarget;
         private BehaviourTree<NewMonsterControllerBT> m_BehaviourTree;
@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
-        public Vector2 AdjustedPosition => transform.position;
+        //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < monsterStatus.attackRange;
@@ -191,8 +191,8 @@ namespace SkyDragonHunter.Entities
         {
             switch (m_MonsterType)
             {
-                case AttackType.Melee:
-                case AttackType.Ranged:
+                case MonsterType.Melee:
+                case MonsterType.Ranged:
                     InitRangedBT();
                     break;
             }

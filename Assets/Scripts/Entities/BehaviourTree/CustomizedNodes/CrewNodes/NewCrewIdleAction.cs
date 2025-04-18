@@ -5,31 +5,23 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Entities {
 
-    public class EntityMoveAction<T> : ActionNode<T> where T : BaseControllerBT<T>
+    public class NewCrewIdleAction : ActionNode<NewCrewControllerBT>
     {
-        // Public 메서드
-        public EntityMoveAction(T context) : base(context)
+        public NewCrewIdleAction(NewCrewControllerBT context) : base(context)
         {
-
         }
 
-        // Protected 메서드
         protected override void OnStart()
         {
             base.OnStart();
-            m_Context.isMoving = true;
+            m_Context.floater.enabled = true;
         }
 
         protected override NodeStatus OnUpdate()
         {
-            if (m_Context.IsSkillAvailable)
+            if(m_Context.IsTargetAllocated)
             {
                 return NodeStatus.Failure;
-            }
-
-            if (m_Context.IsTargetInAggroRange)
-            {
-                return NodeStatus.Failure; 
             }
 
             return NodeStatus.Running;
@@ -38,9 +30,8 @@ namespace SkyDragonHunter.Entities {
         protected override void OnEnd()
         {
             base.OnEnd();
-            m_Context.isMoving = false;
-            m_Context.ResetTarget();
+            m_Context.floater.enabled = false;
         }
-    } // Scope by class EnemyMove
+    } // Scope by class NewScript
 
 } // namespace Root

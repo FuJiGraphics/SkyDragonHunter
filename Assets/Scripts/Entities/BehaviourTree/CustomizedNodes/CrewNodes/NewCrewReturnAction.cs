@@ -8,10 +8,10 @@ namespace SkyDragonHunter {
 
     public class NewCrewReturnAction : ActionNode<NewCrewControllerBT>
     {
-        private Vector2 targetPos;
+        private Vector3 targetPos;
         private static readonly float s_Threshold = 0.15f;
 
-        private float DistanceToTargetPos => Vector2.Distance(targetPos, m_Context.AdjustedPosition);
+        private float DistanceToTargetPos => Vector3.Distance(targetPos, m_Context.transform.position);
 
         public NewCrewReturnAction(NewCrewControllerBT context) : base(context)
         {
@@ -33,8 +33,9 @@ namespace SkyDragonHunter {
 
             if(DistanceToTargetPos < s_Threshold)
             {
-                var newPos = new Vector2(m_Context.onFieldOriginPosition.x, m_Context.transform.position.y);
-                m_Context.transform.position = newPos;
+                m_Context.transform.position = m_Context.onFieldOriginPosition;
+                //var newPos = new Vector2(m_Context.onFieldOriginPosition.x, m_Context.transform.position.y);
+                //m_Context.transform.position = newPos;
                 // m_Context.floater.StartY = m_Context.onFieldOriginPosition.y;
                 return NodeStatus.Success;
             }
@@ -50,14 +51,17 @@ namespace SkyDragonHunter {
         private bool UpdatePos()
         {
             bool success = false;
-            var direction = (targetPos - m_Context.AdjustedPosition).normalized;
+            var direction = (targetPos - m_Context.transform.position).normalized;
 
-            var newPos = m_Context.AdjustedPosition + direction * Time.deltaTime * m_Context.Speed;
-            newPos.y = m_Context.transform.position.y;
+            var newPos = m_Context.transform.position + direction * Time.deltaTime * m_Context.Speed;
+
+            //var newPos = m_Context.AdjustedPosition + direction * Time.deltaTime * m_Context.Speed;
+            //newPos.y = m_Context.transform.position.y;
 
             if (DistanceToTargetPos < m_Context.Speed * Time.deltaTime)
             {
-                newPos.x = targetPos.x;
+                //newPos.x = targetPos.x;
+                newPos = targetPos;
                 success = true;
             }
 

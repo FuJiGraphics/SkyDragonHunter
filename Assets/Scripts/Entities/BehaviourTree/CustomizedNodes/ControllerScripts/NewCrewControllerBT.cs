@@ -11,6 +11,15 @@ namespace SkyDragonHunter.Entities
         OnBoard,
         OnField,
     }
+    public enum PossessionBonusStatType
+    {
+        ATK,
+        HP,
+        DEF,
+        REG,        
+        CritMultiplier,
+    }
+
 
     public class NewCrewControllerBT : MonoBehaviour, ISlowable
     {
@@ -47,7 +56,7 @@ namespace SkyDragonHunter.Entities
         public int ID => m_Id;
         public float ExhaustionTime => 5f;
         public Vector2 MountSlotPosition => m_MountSlot.transform.position;
-        public Vector2 AdjustedPosition => transform.position;
+        //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
         public bool IsSkillAvailable => !(skillTimer > 0);
@@ -186,6 +195,7 @@ namespace SkyDragonHunter.Entities
             slowMultiplier = 1f;
             crewStatus = GetComponent<CrewStats>();
             floater = GetComponent<FloatingEffect>();
+            floater.enabled = false;
             animController = GetComponent<CrewAnimationController>();
             SetAggroBox();
             InitBehaviourTree();
@@ -255,6 +265,7 @@ namespace SkyDragonHunter.Entities
             var returnSequence = new SequenceNode<NewCrewControllerBT>(this);
             returnSequence.AddChild(new NewCrewReturnCondition(this));
             returnSequence.AddChild(new NewCrewReturnAction(this));
+            returnSequence.AddChild(new NewCrewIdleAction(this));
             rootSelector.AddChild(returnSequence);
 
             m_BehaviourTree = new BehaviourTree<NewCrewControllerBT>(this);
