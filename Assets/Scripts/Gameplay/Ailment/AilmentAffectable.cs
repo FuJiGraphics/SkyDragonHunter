@@ -3,6 +3,7 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay
@@ -29,6 +30,7 @@ namespace SkyDragonHunter.Gameplay
 
         private void OnDisable()
         {
+            RemoveAllStorage();
             StopAllCoroutines();
         }
 
@@ -42,7 +44,7 @@ namespace SkyDragonHunter.Gameplay
                 ailmentInstance.Duration = duration;
                 ailmentInstance.Caster = caster;
                 ailmentInstance.Type = type;
-                AilmentStorage storage = SetStorage(ailmentInstance);
+                var storage = SetStorage(ailmentInstance);
                 m_AilmentExecutor.Add(ailmentInstance.Type, storage);
                 StartCoroutine(CoExecute(storage));
             }
@@ -75,26 +77,58 @@ namespace SkyDragonHunter.Gameplay
         private IEnumerator CoExecute(AilmentStorage storage)
         {
             var currInstance = storage.instance;
-            var currType = storage.instance.Type;
             currInstance.OnEnter(gameObject);
+            float immuneTime = storage.instance.ImmuneTime;
+
+            CrewInfoProvider provider = null;
+            if (storage.instance != null && storage.instance.Caster != null)
+            {
+                provider = storage.instance.Caster.GetComponent<CrewInfoProvider>();
+            }
 
             while (Time.time < storage.endTime)
             {
                 currInstance.OnStay();
                 yield return new WaitForSeconds(storage.instance.Tick);
 
+                if (provider != null && !provider.IsMounted)
+                {
+                    break;
+                }
                 if (storage.instance == null)
-                    yield break;
-
+                {
+                    break;
+                }
                 if (storage.instance.Caster == null)
-                    yield break;
+                {
+                    break;
+                }
             }
 
             storage.instance.OnExit();
+            yield return new WaitForSeconds(immuneTime);
 
-            yield return new WaitForSeconds(storage.instance.ImmuneTime);
-            Destroy(storage.instance);
-            m_AilmentExecutor.Remove(currType);
+            RemoveStorage(storage);
+        }
+
+        private void RemoveStorage(AilmentStorage storage)
+        {
+            if (storage == null)
+                return;
+            if (storage.instance == null)
+                return;
+
+            m_AilmentExecutor.Remove(storage.instance.Type);
+            Destroy(storage.instance.gameObject);
+        }
+
+        private void RemoveAllStorage()
+        {
+            foreach (var storage in m_AilmentExecutor)
+            {
+                RemoveStorage(storage.Value);
+            }
+            m_AilmentExecutor.Clear();
         }
 
         // Others
