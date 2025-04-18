@@ -14,13 +14,20 @@ namespace SkyDragonHunter.Test {
     public class TempUserData : MonoBehaviour
     {
         // 필드 (Fields)
-        public GameObject[] crewDataPrefabs;
-        public GameObject[] canonDataPrefabs;
-        [SerializeField] public List<SaveEquipStorage> airshipEquipSlots = new List<SaveEquipStorage>();
+        [Header("Account Data")]
+        public string nickname = "Default";
         public int crystalLevelID;
+
+        [Header("Stage Data")]
         public int stageLevel = 1;
         public int stageZoneLevel = 1;
 
+        [Header("Airship Data")]
+        public GameObject[] crewDataPrefabs;
+        public GameObject[] canonDataPrefabs;
+        [SerializeField] public List<SaveEquipStorage> airshipEquipSlots = new List<SaveEquipStorage>();
+
+        public static string s_Nickname = "default";
         public static int s_StageLevel = 1;
         public static int s_StageZoneLevel = 1;
         public static List<GameObject> s_CrewDataPrefabs;
@@ -33,6 +40,7 @@ namespace SkyDragonHunter.Test {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
+
         public void DirtyStaticData()
         {
             s_CrewDataPrefabs = new List<GameObject>(crewDataPrefabs);
