@@ -34,10 +34,7 @@ namespace SkyDragonHunter {
         // Private 메서드
         private void LevelUp()
         {
-            for (int i = 0; i < m_LevelUpInc; ++i)
-            {
-                AccountMgr.LevelUp();
-            }
+            AccountMgr.LevelUp(m_LevelUpInc);
         }
 
         // Others

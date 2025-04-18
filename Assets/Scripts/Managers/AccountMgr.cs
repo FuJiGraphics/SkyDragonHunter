@@ -67,21 +67,42 @@ namespace SkyDragonHunter.Managers
 
             // 이벤트 호출
             onLevelUpEvents?.Invoke();
+            SaveUserData();
         }
 
-        public static void LevelUp()
+        public static void LevelUp(int level)
         {
-            if (Crystal.NextLevelId == 0)
+            if (Crystal.NextLevelId <= 0)
+                return;
+
+            int currLevelId = Crystal.CurrLevelId;
+            CrystalLevelData currLevelData = DataTableMgr.CrystalLevelTable.Get(currLevelId);
+            CrystalLevelData prevLevelData = null;
+
+            if (currLevelData == null)
             {
-                Debug.Log("Max Level!!");
+                Debug.LogError($"[AccountMgr]: LevelUp 실패. {currLevelId}");
                 return;
             }
 
-            // 크리스탈 등급 증가
-            var crystalData = DataTableMgr.CrystalLevelTable.Get(Crystal.NextLevelId);
-            InitAccountData(crystalData);
+            for (int i = 0; i < level; ++i)
+            {
+                prevLevelData = currLevelData;
+                currLevelData = DataTableMgr.CrystalLevelTable.Get(currLevelData.NextLvID);
+                if (currLevelData == null)
+                {
+                    break;
+                }
+            }
 
-            // 이벤트 호출
+            if (currLevelData != null)
+            {
+                InitAccountData(currLevelData);
+            }
+            else
+            {
+                InitAccountData(prevLevelData);
+            }
             onLevelUpEvents?.Invoke();
             SaveUserData();
         }

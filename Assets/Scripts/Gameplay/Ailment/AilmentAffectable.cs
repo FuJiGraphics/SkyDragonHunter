@@ -124,9 +124,14 @@ namespace SkyDragonHunter.Gameplay
 
         private void RemoveAllStorage()
         {
+            List<AilmentStorage> delStorageList = new List<AilmentStorage>();
             foreach (var storage in m_AilmentExecutor)
             {
-                RemoveStorage(storage.Value);
+                delStorageList.Add(storage.Value);
+            }
+            foreach (var stroage in delStorageList)
+            {
+                RemoveStorage(stroage);
             }
             m_AilmentExecutor.Clear();
         }

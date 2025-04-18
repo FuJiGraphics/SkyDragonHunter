@@ -26,12 +26,6 @@ namespace SkyDragonHunter.Gameplay {
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        [ContextMenu("테스트용 레벨 업")]
-        private void LevelUp()
-        {
-            AccountMgr.LevelUp();
-        }
-
         // Public 메서드
         public void MergedAccountStatsForCharacter()
         {
