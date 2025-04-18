@@ -43,6 +43,11 @@ namespace SkyDragonHunter
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnEnable()
+        {
+            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick.AddListener(TryBuy);
+        }
         // Public 메서드
         public void UpdateDiscountedPrice(float discountRate)
         {

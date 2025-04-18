@@ -105,10 +105,13 @@ namespace SkyDragonHunter
             currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
             isSuccessChangeBackGround = true;
             SetStageText(currentMissionLevel, currentZonelLevel);
-            OnSaveLastClearWave();
+            //OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
-            OnSetCurrentWave();
+            if (currentMissionLevel >= 1 && currentZonelLevel > 1)
+            {
+                OnGoToLoadCurrentWave();
+            }
         }
 
         public void SetStageText(int stageLevel, int stageZoneLevel)
@@ -137,6 +140,7 @@ namespace SkyDragonHunter
             {
                 currentZonelLevel = zone;
             }
+            AccountMgr.SaveUserData();
             OnGoSelectCurrentWave();
         }
 
@@ -308,6 +312,25 @@ namespace SkyDragonHunter
             OnFadeSlider();
         }
 
+        private void OnGoToLoadCurrentWave()
+        {
+            OnClearMonster();
+            isCanSpawn = true;
+            currentWaveTime = 0f;
+            if (lastTriedMissionLevel > currentMissionLevel ||
+                lastTriedZonelLevel > currentZonelLevel)
+            {
+                isInfiniteMode = true;
+            }
+            else
+            {
+                isInfiniteMode = false;
+            }
+            waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
+            OnChangeBackGround(currentZonelLevel - 1);
+            OnFadeSlider();
+        }
+
         private void OnSaveLastClearWave()
         {
             stageInfo.missionLevel = currentMissionLevel;
@@ -465,15 +488,15 @@ namespace SkyDragonHunter
                 {
                     if (ctrl.gameObject.name == "BackGround")
                     {
-                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "MidGround")
                     {
-                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                     else if (ctrl.gameObject.name == "ForeGround")
                     {
-                       StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
+                        StartCoroutine(ChangeBackgroundWithFade(ctrl, backGroundIndex));
                     }
                 }
             }
