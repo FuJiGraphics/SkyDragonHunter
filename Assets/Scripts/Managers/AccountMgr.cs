@@ -19,6 +19,7 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<MasterySockeyType, List<UIMasterySocket>> s_CollectedSockets;
 
         // 속성 (Properties)
+        public static string Nickname { get; set; } = "Default";
         public static int CurrentStageLevel { get; set; } = 1;
         public static int CurrentStageZoneLevel { get; set; } = 1;
         public static int CurrentLevel => Crystal.CurrentLevel;
@@ -56,7 +57,7 @@ namespace SkyDragonHunter.Managers
             onSocketUpdateEvents = null;
         }
 
-        public static void SetLevel(int id)
+        public static void LoadLevel(int id)
         {
             // 크리스탈 등급 증가
             var crystalData = DataTableMgr.CrystalLevelTable.Get(id);
@@ -67,7 +68,6 @@ namespace SkyDragonHunter.Managers
 
             // 이벤트 호출
             onLevelUpEvents?.Invoke();
-            SaveUserData();
         }
 
         public static void LevelUp(int level)
@@ -104,6 +104,23 @@ namespace SkyDragonHunter.Managers
                 InitAccountData(prevLevelData);
             }
             onLevelUpEvents?.Invoke();
+
+            #region Account Info Panel UI에 적용
+            var inGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel");
+            inGameMainFramePanel.Nickname = AccountMgr.Nickname;
+            if (currLevelData != null)
+            {
+                inGameMainFramePanel.Level = currLevelData.Level.ToString();
+            }
+            else
+            {
+                inGameMainFramePanel.Level = prevLevelData.Level.ToString();
+            }
+            inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
+            inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+
+            #endregion
+
             SaveUserData();
         }
 
@@ -245,10 +262,11 @@ namespace SkyDragonHunter.Managers
             {
                 comp.LoadStaticData();
 
-                // 크리스탈 레벨 로드
-                SetLevel(comp.crystalLevelID);
+                #region 계정 크리스탈 레벨 로드
+                LoadLevel(comp.crystalLevelID);
+                #endregion
 
-                // 스테이지 초기화
+                #region 스테이지 초기화 및 웨이브 컨트롤러 UI 적용
                 GameObject stageGo = GameMgr.FindObject("WaveController");
                 var waveController = stageGo?.GetComponent<TestWaveController>();
                 if (waveController != null)
@@ -257,8 +275,9 @@ namespace SkyDragonHunter.Managers
                     CurrentStageZoneLevel = comp.stageZoneLevel;
                     waveController.Init();
                 }
-                
+                #endregion
 
+                #region 단원 인스턴스화 및 저장
                 foreach (var crew in comp.crewDataPrefabs)
                 {
                     GameObject instance = GameObject.Instantiate<GameObject>(crew);
@@ -267,6 +286,9 @@ namespace SkyDragonHunter.Managers
                     instance.GetComponent<AccountStatProvider>().Init();
                     instance.SetActive(false);
                 }
+                #endregion
+
+                #region 대포 인스턴스화 및 저장
                 foreach (var canon in comp.canonDataPrefabs)
                 {
                     GameObject instance = GameObject.Instantiate<GameObject>(canon);
@@ -274,7 +296,9 @@ namespace SkyDragonHunter.Managers
                     RegisterCanon(instance);
                     instance.SetActive(false);
                 }
+                #endregion
 
+                #region 단원 탑승 정보 UI 적용
                 foreach (var crewEquipStorage in comp.airshipEquipSlots)
                 {
                     var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
@@ -292,6 +316,16 @@ namespace SkyDragonHunter.Managers
                         }
                     }
                 }
+                #endregion
+
+                #region 계정 정보 UI 적용
+                AccountMgr.Nickname = comp.nickname;
+                var inGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel"); ;
+                inGameMainFramePanel.Nickname = comp.nickname;
+                inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
+                inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
+                inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+                #endregion
 
             }
         }
@@ -306,7 +340,7 @@ namespace SkyDragonHunter.Managers
 
             if (tempUserData.TryGetComponent<TempUserData>(out var comp))
             {
-                // 비공정 탑승 정보 저장
+                #region 비공정 탑승 정보 저장
                 GameObject airshipInstance = GameMgr.FindObject("Airship");
                 if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
                 {
@@ -336,11 +370,13 @@ namespace SkyDragonHunter.Managers
                         comp.airshipEquipSlots.Add(saveData);
                     }
                 }
+                #endregion
 
-                // 크리스탈 레벨 저장
+                #region 크리스탈 레벨 저장
                 comp.crystalLevelID = Crystal.CurrLevelId;
+                #endregion
 
-                // TODO: 스테이지 정보 저장 (임시)
+                #region 스테이지 정보 저장 (임시)
                 GameObject stageGo = GameMgr.FindObject("WaveController");
                 var waveController = stageGo?.GetComponent<TestWaveController>();
                 if (waveController != null)
@@ -348,6 +384,11 @@ namespace SkyDragonHunter.Managers
                     comp.stageLevel = waveController.CurrentTriedMissionLevel;
                     comp.stageZoneLevel = waveController.CurrentTriedZonelLevel;
                 }
+                #endregion
+
+                #region 계정 정보 저장
+                comp.nickname = AccountMgr.Nickname;
+                #endregion
 
                 // 스테이지 정보 최신화
                 comp.DirtyStaticData();
