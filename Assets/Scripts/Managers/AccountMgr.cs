@@ -56,7 +56,7 @@ namespace SkyDragonHunter.Managers
             onSocketUpdateEvents = null;
         }
 
-        public static void SetLevel(int id)
+        public static void LoadLevel(int id)
         {
             // 크리스탈 등급 증가
             var crystalData = DataTableMgr.CrystalLevelTable.Get(id);
@@ -67,7 +67,6 @@ namespace SkyDragonHunter.Managers
 
             // 이벤트 호출
             onLevelUpEvents?.Invoke();
-            SaveUserData();
         }
 
         public static void LevelUp(int level)
@@ -246,7 +245,7 @@ namespace SkyDragonHunter.Managers
                 comp.LoadStaticData();
 
                 // 크리스탈 레벨 로드
-                SetLevel(comp.crystalLevelID);
+                LoadLevel(comp.crystalLevelID);
 
                 // 스테이지 초기화
                 GameObject stageGo = GameMgr.FindObject("WaveController");
