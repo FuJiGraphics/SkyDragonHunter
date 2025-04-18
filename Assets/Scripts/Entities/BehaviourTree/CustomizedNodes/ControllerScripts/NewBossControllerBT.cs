@@ -27,6 +27,8 @@ namespace SkyDragonHunter.Entities
 
         private int projectileId;
 
+
+
         // Public Fields
         public int ID;
 
@@ -50,7 +52,6 @@ namespace SkyDragonHunter.Entities
         public float AggroRange => bossStatus.aggroRange;
         public float AttackRange => bossStatus.attackRange;
         public float AttackInterval => bossStatus.attackInterval;
-        public float m_TargetDistance;
         public float TargetDistance
         {
             get
@@ -60,10 +61,20 @@ namespace SkyDragonHunter.Entities
                     return float.MaxValue;
                 }
 
+                var colliderInfo = m_Target.GetComponent<ColliderInfoProvider>();
+                float halfWidth = 0f;
+                if (colliderInfo != null)
+                {
+                    halfWidth = colliderInfo.ColliderHalfWidth;
+                }
+                else
+                {
+                    Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {m_Target.name}");
+                }
+
                 var distance = Mathf.Abs(m_Target.position.x - transform.position.x);
-                var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
-                var halfwidth = sr.bounds.size.x * 0.5f;
-                m_TargetDistance = distance;
+                //var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+                //var halfwidth = sr.bounds.size.x * 0.5f;
                 return distance;
             }
         }
@@ -111,7 +122,7 @@ namespace SkyDragonHunter.Entities
         // Private Methods
         private void ResetTarget()
         {
-            if (m_CrewTarget != null && !m_CrewTarget.IsMounted)
+            if (m_CrewTarget != null && m_CrewTarget.isActiveAndEnabled && !m_CrewTarget.IsMounted)
             {
                 m_Target = m_CrewTarget.transform;
                 return;
@@ -138,8 +149,8 @@ namespace SkyDragonHunter.Entities
                             Debug.LogError($"Missing NewCrewControllerBT");
                             return;
                         }
-                        //if (crewBT.IsMounted)
-                        //    continue;
+                        if (crewBT.IsMounted)
+                            continue;
                         m_CrewTarget = crewBT;
                         m_Target = m_CrewTarget.transform;
                         return;
@@ -155,6 +166,7 @@ namespace SkyDragonHunter.Entities
             bossStatus.ForceInit();
             animController = GetComponent<TestAniController>();
             floater = GetComponent<FloatingEffect>();
+            floater.enabled = false;
             this.ID = animController.ID;
             SetDataFromTable(ID);
             InitBehaviourTree();

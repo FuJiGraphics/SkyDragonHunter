@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 2615573597881103800}
   - component: {fileID: 7054064997497185201}
   - component: {fileID: -4687836916842832856}
+  - component: {fileID: 2435091490861870366}
   m_Layer: 0
   m_Name: GreenDragon
   m_TagString: Monster
@@ -213,10 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ae25ba7a4ec0643a1738daa944d3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 1
-  floatSpeedOffset: 1
-  floatAmount: 0.5
-  m_StartY: 0
+  m_FloatSpeed: 1
+  m_FloatAmount: 0.5
 --- !u!114 &7157731956163863175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,3 +368,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 10
+--- !u!114 &2435091490861870366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8052884181216422829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

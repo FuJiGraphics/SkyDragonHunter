@@ -34,14 +34,13 @@ namespace SkyDragonHunter.Entities
         private float slowMultiplier;
         private float skillTimer;
         private float exhaustionTime = 10f;
-        private Vector2 airshipPos;
-        [SerializeField] private bool isMounted;
+        private Vector2 airshipPos;        
+        [SerializeField] private bool isMounted;        
 
         // Public Fields
         public bool IsMounted => isMounted;
         public Vector2 aggroBox;
         public Vector2 onFieldOriginPosition;
-        public float targetPosY;
         public float exhaustionRemainingTime;
 
         // External Dependencies Field
@@ -79,12 +78,20 @@ namespace SkyDragonHunter.Entities
                 {
                     return float.MaxValue;
                 }
-                var distanceX = Mathf.Abs(m_Target.position.x - transform.position.x);
+                var distance = Vector2.Distance(m_Target.position, transform.position);
 
-                Vector2 targetPos = new Vector2(m_Target.position.x, targetPosY);
-                Vector2 selfPos = transform.position;
+                var colliderInfo = m_Target.GetComponent<ColliderInfoProvider>();
+                float halfWidth = 0f;
+                if (colliderInfo != null)
+                {
+                    halfWidth = colliderInfo.ColliderHalfWidth;
+                }
+                else
+                {
+                    Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {m_Target.name}");
+                }
 
-                return Vector2.Distance(targetPos,selfPos);
+                return distance - halfWidth;
             }
         }
 
@@ -136,9 +143,7 @@ namespace SkyDragonHunter.Entities
         public void ResetTarget()
         {
             if (m_Target != null)
-                return;
-            else
-                targetPosY = 0f;
+                return;            
 
             CrewResetTargetInBox();
 
@@ -156,6 +161,7 @@ namespace SkyDragonHunter.Entities
         {
             animController.PlayIdleAnimation();
             m_MountSlot = slot;
+            transform.position = m_MountSlot.transform.position;
             isMounted = false;
             MountAction(true);
             transform.position = m_MountSlot.transform.position;
@@ -182,7 +188,6 @@ namespace SkyDragonHunter.Entities
                 }
                 else
                 {
-                    floater.enabled = true;
                     m_MountSlot.Dismounting();
                 }
             }
@@ -196,7 +201,7 @@ namespace SkyDragonHunter.Entities
             crewStatus = GetComponent<CrewStats>();
             floater = GetComponent<FloatingEffect>();
             floater.enabled = false;
-            animController = GetComponent<CrewAnimationController>();
+            animController = GetComponent<CrewAnimationController>();            
             SetAggroBox();
             InitBehaviourTree();
 
@@ -230,7 +235,6 @@ namespace SkyDragonHunter.Entities
 
         private void InitOnBoardCrewBT()
         {
-            floater.enabled = false;
             var rootSelector = new SelectorNode<NewCrewControllerBT>(this);
 
             var attackSequence = new SequenceNode<NewCrewControllerBT>(this);
@@ -243,8 +247,7 @@ namespace SkyDragonHunter.Entities
         }
 
         private void InitOnFieldCrewBT()
-        {
-            floater.enabled = true;
+        {            
             var rootSelector = new SelectorNode<NewCrewControllerBT>(this);
 
             //var skillSequence = new SequenceNode<NewCrewControllerBT>(this);
@@ -284,7 +287,6 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            targetPosY = m_Target.position.y;
                         }
                     }
                 }
@@ -306,7 +308,6 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            targetPosY = m_Target.position.y;
                         }
                     }
                 }
@@ -335,7 +336,6 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            targetPosY = m_Target.position.y;
                         }
                     }
                 }

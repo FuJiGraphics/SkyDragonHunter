@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 2545316259581625138}
   - component: {fileID: -2951749373233265620}
   - component: {fileID: -1348452390269496965}
+  - component: {fileID: 6643927339553391452}
   m_Layer: 0
   m_Name: PurpleLight
   m_TagString: Monster
@@ -232,10 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ae25ba7a4ec0643a1738daa944d3e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatSpeed: 1
-  floatSpeedOffset: 1
-  floatAmount: 0.5
-  m_StartY: 0
+  m_FloatSpeed: 1
+  m_FloatAmount: 0.5
 --- !u!114 &3034680707677816481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,3 +352,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 5
+--- !u!114 &6643927339553391452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722216775962412766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
