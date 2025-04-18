@@ -35,7 +35,7 @@ namespace SkyDragonHunter {
             {
                 var newPos = new Vector2(m_Context.onFieldOriginPosition.x, m_Context.transform.position.y);
                 m_Context.transform.position = newPos;
-                m_Context.floater.StartY = m_Context.onFieldOriginPosition.y;
+                // m_Context.floater.StartY = m_Context.onFieldOriginPosition.y;
                 return NodeStatus.Success;
             }
 
@@ -62,7 +62,7 @@ namespace SkyDragonHunter {
             }
 
             m_Context.transform.position = newPos;
-            m_Context.floater.StartY += direction.y * Time.deltaTime * m_Context.Speed;
+            // m_Context.floater.StartY += direction.y * Time.deltaTime * m_Context.Speed;
 
             return success;
         }

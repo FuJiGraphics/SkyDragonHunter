@@ -35,12 +35,12 @@ namespace SkyDragonHunter {
             var newPos = m_Context.transform.position;
             var direction = Vector2.zero;
 
-            direction.y = m_Context.targetPosY - m_Context.floater.StartY;
+            // direction.y = m_Context.targetPosY - m_Context.floater.StartY;
             direction.x = m_Context.Target.position.x - m_Context.transform.position.x;
             direction.Normalize();
 
             newPos.x += direction.x * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
-            m_Context.floater.StartY += direction.y * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
+            // m_Context.floater.StartY += direction.y * Time.deltaTime * m_Context.crewStatus.chaseSpeed;
             m_Context.transform.position = newPos;
         }
     } // Scope by class CrewChaseAction

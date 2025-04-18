@@ -5,34 +5,24 @@ using UnityEngine;
 public class FloatingEffect : MonoBehaviour
 {
     // 필드 (Fields)
-    public float floatSpeed = 1f;
-    public float floatSpeedOffset = 1f; 
-    public float floatAmount = 0.5f;
+    [SerializeField] private float m_FloatSpeed = 1f;
+    [SerializeField] private float m_FloatAmount = 0.5f;
 
-    [SerializeField] private float m_StartY;
     private float m_lastAngle;
 
     // 속성 (Properties)
-    public float StartY { get { return m_StartY; } set { m_StartY = value; } }
-       
-    public float SetStartY(float y) 
-        => m_StartY = y;
+    public float FloatSpeedOffset { get; set; } = 1f;
 
     // 외부 종속성 필드 (External dependencies field)
     // 이벤트 (Events)
     // 유니티 (MonoBehaviour 기본 메서드)
-    private void Awake()
-    {
-        m_StartY = transform.position.y;
-    }
-
     private void Update()
     {
-        m_lastAngle += Time.deltaTime * floatSpeed * floatSpeedOffset;
+        m_lastAngle += Time.deltaTime * (m_FloatSpeed * 0.1f) * FloatSpeedOffset;
 
-        float offset = Mathf.Cos(m_lastAngle) * floatAmount;
+        float offset = Mathf.Cos(m_lastAngle) * (m_FloatAmount * 0.01f);
         var pos = transform.position;
-        pos.y = m_StartY + offset;
+        pos.y += offset;
         transform.position = pos;
     }
 

@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Entities {
             {
                 var newPos = new Vector3(m_Context.onFieldOriginPosition.x, m_Context.transform.position.y, 0);
                 m_Context.transform.position = newPos;
-                m_Context.floatingEffect.StartY = m_Context.onFieldOriginPosition.y;
+                // m_Context.floatingEffect.StartY = m_Context.onFieldOriginPosition.y;
                 return NodeStatus.Failure;
             }
 
@@ -54,8 +54,7 @@ namespace SkyDragonHunter.Entities {
         private void UpdatePos()
         {
             var contextPos = Vector3.zero;
-            contextPos.x = m_Context.transform.position.x;
-            contextPos.y = m_Context.floatingEffect.StartY;
+            contextPos = m_Context.transform.position;
 
             var direction = (m_Context.onFieldOriginPosition - contextPos).normalized;
 
@@ -69,7 +68,7 @@ namespace SkyDragonHunter.Entities {
             }
 
             m_Context.transform.position = newPos;
-            m_Context.floatingEffect.StartY += direction.y * Time.deltaTime * m_Context.Speed;
+            // m_Context.floatingEffect.StartY += direction.y * Time.deltaTime * m_Context.Speed;
         }
 
     } // Scope by class CrewReturnAction

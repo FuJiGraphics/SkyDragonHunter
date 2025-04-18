@@ -36,7 +36,7 @@ namespace SkyDragonHunter.Entities
 
         // Properties
         public bool IsSkillAvailable => false;
-        public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
+        public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < bossStatus.attackRange;

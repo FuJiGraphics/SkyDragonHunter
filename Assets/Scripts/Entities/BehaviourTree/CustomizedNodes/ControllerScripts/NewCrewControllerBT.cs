@@ -47,7 +47,7 @@ namespace SkyDragonHunter.Entities
         public int ID => m_Id;
         public float ExhaustionTime => 5f;
         public Vector2 MountSlotPosition => m_MountSlot.transform.position;
-        public Vector2 AdjustedPosition => new Vector2(transform.position.x, floater.StartY);
+        public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
         public bool IsSkillAvailable => !(skillTimer > 0);
@@ -73,7 +73,7 @@ namespace SkyDragonHunter.Entities
                 var distanceX = Mathf.Abs(m_Target.position.x - transform.position.x);
 
                 Vector2 targetPos = new Vector2(m_Target.position.x, targetPosY);
-                Vector2 selfPos = new Vector2(transform.position.x, floater.StartY);
+                Vector2 selfPos = transform.position;
 
                 return Vector2.Distance(targetPos,selfPos);
             }
@@ -273,15 +273,7 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
-                            if (floatingEffectComp != null)
-                            {
-                                targetPosY = floatingEffectComp.StartY;
-                            }
-                            else
-                            {
-                                Debug.LogError($"no floatingEffect Comp");
-                            }
+                            targetPosY = m_Target.position.y;
                         }
                     }
                 }
@@ -303,15 +295,7 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
-                            if (floatingEffectComp != null)
-                            {
-                                targetPosY = floatingEffectComp.StartY;
-                            }
-                            else
-                            {
-                                Debug.LogError($"no floatingEffect Comp");
-                            }
+                            targetPosY = m_Target.position.y;
                         }
                     }
                 }
@@ -340,15 +324,7 @@ namespace SkyDragonHunter.Entities
                         if (m_Target == null || !m_Target.Equals(collider.transform))
                         {
                             m_Target = collider.transform;
-                            var floatingEffectComp = m_Target.gameObject.GetComponent<FloatingEffect>();
-                            if (floatingEffectComp != null)
-                            {
-                                targetPosY = floatingEffectComp.StartY;
-                            }
-                            else
-                            {
-                                Debug.LogError($"no floatingEffect Comp");
-                            }
+                            targetPosY = m_Target.position.y;
                         }
                     }
                 }
