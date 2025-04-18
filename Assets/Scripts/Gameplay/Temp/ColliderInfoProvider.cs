@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Test {
 
     public class ColliderInfoProvider : MonoBehaviour
     {

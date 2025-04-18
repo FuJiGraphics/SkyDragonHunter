@@ -320,11 +320,15 @@ namespace SkyDragonHunter.Managers
 
                 #region 계정 정보 UI 적용
                 AccountMgr.Nickname = comp.nickname;
-                var inGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel"); ;
-                inGameMainFramePanel.Nickname = comp.nickname;
-                inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
-                inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
-                inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+                var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
+                if (inGameMainFramePanelGo != null && 
+                    inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
+                {
+                    inGameMainFramePanel.Nickname = comp.nickname;
+                    inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
+                    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
+                    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+                }
                 #endregion
 
             }

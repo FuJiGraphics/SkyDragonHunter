@@ -7,7 +7,7 @@ namespace SkyDragonHunter {
     public class InDungeonCrewSpawner : MonoBehaviour
     {
         // Fields
-        private CrewPrefabLoader m_PrefabLoader;
+        //private CrewPrefabLoader m_PrefabLoader;
         private CrewEquipmentController m_AirshipEquipController;
         [SerializeField] private MountableSlot[] m_MountSlots;
 
@@ -20,7 +20,7 @@ namespace SkyDragonHunter {
         // Private Methods
         private void Init()
         {
-            m_PrefabLoader = GameMgr.FindObject("CrewPrefabLoader").GetComponent<CrewPrefabLoader>();
+            //m_PrefabLoader = GameMgr.FindObject("CrewPrefabLoader").GetComponent<CrewPrefabLoader>();
             m_AirshipEquipController = GameMgr.FindObject("Airship").GetComponent<CrewEquipmentController>();
             //SetCrews();
             //TestSetCrews();
@@ -33,8 +33,8 @@ namespace SkyDragonHunter {
                 if (crewSlot == 0)
                     continue;
 
-                var crewBT = Instantiate(m_PrefabLoader.GetCrewController(crewSlot), Vector3.zero, Quaternion.identity);
-                m_AirshipEquipController.EquipSlot(crewSlot, crewBT.gameObject);
+                //var crewBT = Instantiate(m_PrefabLoader.GetCrewController(crewSlot), Vector3.zero, Quaternion.identity);
+                //m_AirshipEquipController.EquipSlot(crewSlot, crewBT.gameObject);
             }
         }
 
