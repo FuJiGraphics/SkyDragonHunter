@@ -3,20 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter
+{
 
     public class DungeonUIMgr : MonoBehaviour
     {
         // Fields
-        [SerializeField] private UIDungeonButtonsPanel      m_ButtonsPanel;
-        [SerializeField] private UIDungeonInfosPanel        m_InfoPanel;
-        [SerializeField] private UIDungeonClearedPanel      m_ClearedPanel;
-        [SerializeField] private UIDungeonFailedPanel       m_FailedPanel;
-        [SerializeField] private UIDungeonPausedPanel       m_PausedPanel;
-        [SerializeField] private UIDungeonEnteredMsgPanel   m_EnteredMsgPanel;
+        [SerializeField] private UIDungeonButtonsPanel m_ButtonsPanel;
+        [SerializeField] private UIDungeonInfosPanel m_InfoPanel;
+        [SerializeField] private UIDungeonClearedPanel m_ClearedPanel;
+        [SerializeField] private UIDungeonFailedPanel m_FailedPanel;
+        [SerializeField] private UIDungeonPausedPanel m_PausedPanel;
+        [SerializeField] private UIDungeonEnteredMsgPanel m_EnteredMsgPanel;
 
         // Properties
         private float TimeScale => m_ButtonsPanel.TimeScaleMultipler;
+        public UIDungeonInfosPanel InfoPanel => m_InfoPanel;
 
         // Unity Methods
         public void Awake()
@@ -36,7 +38,34 @@ namespace SkyDragonHunter {
             m_ClearedPanel.gameObject.SetActive(enabled);
         }
 
+        public void OnDungeonClearFailed()
+        {
+            StartCoroutine(FailedTimeScaling());
+        }
+
+        public void EnableFailedPanel(bool enabled)
+        {
+            m_FailedPanel.gameObject.SetActive(enabled);
+            m_InfoPanel.gameObject.SetActive(!enabled);
+            m_ButtonsPanel.gameObject.SetActive(!enabled);
+            Time.timeScale = enabled ? 0f : TimeScale;
+        }
+
         // Private Methods
+        private IEnumerator FailedTimeScaling()
+        {
+            float duration = 2f;
+            float remaining = duration;
+
+            while (remaining > 0f)
+            {
+                yield return null;
+                remaining = Mathf.Max(0, remaining -= Time.unscaledDeltaTime);
+                Time.timeScale = Mathf.Lerp(0f, 1f, remaining / duration);
+            }
+            EnableFailedPanel(true);
+        }
+
         private void InitDungeonUIMgr()
         {
             m_ButtonsPanel.SetUIMgr(this);
@@ -51,7 +80,7 @@ namespace SkyDragonHunter {
             m_ClearedPanel.gameObject.SetActive(false);
             m_FailedPanel.gameObject.SetActive(false);
             m_PausedPanel.gameObject.SetActive(false);
-            m_EnteredMsgPanel.gameObject.SetActive(true);
+            m_EnteredMsgPanel.gameObject.SetActive(false);
         }
     } // Scope by class InDungeonUI
 

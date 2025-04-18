@@ -1,24 +1,31 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter
+{
 
     public class UIDungeonInfosPanel : MonoBehaviour
     {
-        [SerializeField] private DungeonUIMgr       m_DungeonUIMgr;
+        private const string c_TimerTextFormat = "<color=#FFFF00>남은 시간</color> {0}초";
 
-        [SerializeField] private TextMeshProUGUI    m_DungeonInfoText;
-        [SerializeField] private Slider             m_ProgressSlider;
-        [SerializeField] private TextMeshProUGUI    m_ProgressText;
-        [SerializeField] private Slider             m_TimerSlider;
-        [SerializeField] private TextMeshProUGUI    m_TimerText;
-        [SerializeField] private Button             m_EscapeButton;
+        // Fields
+        [SerializeField] private DungeonUIMgr m_DungeonUIMgr;
+
+        [SerializeField] private TextMeshProUGUI m_DungeonInfoText;
+        [SerializeField] private Slider m_ProgressSlider;
+        [SerializeField] private TextMeshProUGUI m_ProgressText;
+        [SerializeField] private Slider m_TimerSlider;
+        [SerializeField] private TextMeshProUGUI m_TimerText;
+        [SerializeField] private Button m_EscapeButton;
 
         // Unity Methods
         public void Start()
         {
-            AddListeners();
+            Init();
         }
 
         // Public Methods
@@ -27,12 +34,55 @@ namespace SkyDragonHunter {
             m_DungeonUIMgr = uiMgr;
         }
 
+        public void SetDungeonInfoText(string dungeonInfo)
+        {
+
+        }
+
+        public void SetDungeonProgress(AlphaUnit bossHP, AlphaUnit bossMaxHP)
+        {
+            var sb = new StringBuilder();
+            sb.Append(bossHP.ToString());
+            sb.Append(" / ");
+            sb.Append(bossMaxHP.ToString());
+            m_ProgressText.text = sb.ToString();
+
+            float hpPercentage = (float)bossHP.Value / (float)bossMaxHP.Value;
+            m_ProgressSlider.value = hpPercentage;
+        }
+
+        public void SetDungeonProgress(int killCount, int goalKillCount)
+        {
+
+        }
+
+        public void SetDungeonTimer(float remainingTime, float initialTime)
+        {
+            string.Format(c_TimerTextFormat, Mathf.FloorToInt(remainingTime));
+            m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.FloorToInt(remainingTime));
+            m_TimerSlider.value = remainingTime / initialTime;
+        }
+
         // Private Methods
+        private void Init()
+        {
+            InitializeSliders();
+            AddListeners();
+        }
+        private void InitializeSliders()
+        {
+            m_ProgressSlider.minValue = 0f;
+            m_ProgressSlider.maxValue = 1f;
+
+            m_TimerSlider.minValue = 0f;
+            m_TimerSlider.maxValue = 1f;
+        }
+
         private void AddListeners()
         {
             m_EscapeButton.onClick.AddListener(OnClickEscapeButton);
         }
-        
+
         private void OnClickEscapeButton()
         {
             m_DungeonUIMgr.EnablePausedPanel(true);

@@ -1,12 +1,11 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter
+{
 
     public class DungeonSceneController : MonoBehaviour
     {
@@ -19,8 +18,12 @@ namespace SkyDragonHunter {
         private MonsterPrefabLoader m_MonsterPrefabLoader;
         [SerializeField] private Transform m_SpawnPosition;
 
-        private NewBossControllerBT m_cachedBoss;
+        private NewBossControllerBT m_CachedBoss;
         private bool m_Cleared;
+        private bool m_Failed;
+
+        private float m_InitialTimeLimit;
+        private float m_RemainingTime;
 
         // Unity Methods
         private void Awake()
@@ -39,7 +42,7 @@ namespace SkyDragonHunter {
 
         private void Start()
         {
-            Init();            
+            Init();
         }
 
         private void Update()
@@ -64,18 +67,18 @@ namespace SkyDragonHunter {
         }
 
         // Public Methods
-        
+
 
         // Private Methods
         public void TestKillBoss()
         {
-            if(m_cachedBoss == null)
+            if (m_CachedBoss == null)
             {
                 Debug.LogError($"Boss Null");
                 return;
             }
 
-            var destructables = m_cachedBoss.GetComponents<IDestructible>();
+            var destructables = m_CachedBoss.GetComponents<IDestructible>();
             foreach (var destructable in destructables)
             {
                 destructable.OnDestruction(gameObject);
@@ -84,15 +87,25 @@ namespace SkyDragonHunter {
 
         private void UpdateDungeonType1()
         {
-            if (m_Cleared)
+            if (m_Cleared || m_Failed)
                 return;
 
-            if (m_cachedBoss == null)
+            if (m_CachedBoss == null)
             {
                 Debug.LogError($"Boss Cannot be null in dungeon type 1");
                 return;
             }
-            
+            m_RemainingTime -= Time.deltaTime;
+            if (m_RemainingTime < 0f)
+            {
+                m_RemainingTime = 0f;
+                m_Failed = true;
+                m_UIMgr.OnDungeonClearFailed();
+            }
+
+            m_UIMgr.InfoPanel.SetDungeonProgress(m_CachedBoss.HP, m_CachedBoss.MaxHP);
+            m_UIMgr.InfoPanel.SetDungeonTimer(m_RemainingTime, m_InitialTimeLimit);
+
         }
         private void UpdateDungeonType2()
         {
@@ -125,19 +138,19 @@ namespace SkyDragonHunter {
                     break;
             }
         }
-        
+
         private void SetStageType1()
         {
             var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(300004), m_SpawnPosition.position, Quaternion.identity);
-            m_cachedBoss = boss.GetComponent<NewBossControllerBT>();
-            var destructableEvent = m_cachedBoss.AddComponent<DestructableEvent>();
-            if(destructableEvent.destructEvent == null)
+            m_CachedBoss = boss.GetComponent<NewBossControllerBT>();
+            m_InitialTimeLimit = 40f;
+            m_RemainingTime = m_InitialTimeLimit;
+            var destructableEvent = m_CachedBoss.AddComponent<DestructableEvent>();
+            if (destructableEvent.destructEvent == null)
             {
                 destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
             }
             destructableEvent.destructEvent.AddListener(OnStageClear);
-
-            
         }
 
         private void SetStageType2()
@@ -150,7 +163,7 @@ namespace SkyDragonHunter {
 
         }
 
-        private void OnStageClear() 
+        private void OnStageClear()
         {
             m_UIMgr.EnableClearedPanel(true);
             m_Cleared = true;
