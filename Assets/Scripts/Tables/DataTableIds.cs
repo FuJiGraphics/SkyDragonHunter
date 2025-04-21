@@ -20,6 +20,7 @@ namespace SkyDragonHunter.Tables {
         public static readonly string MasterySocket = "MasterySocketTable";
         public static readonly string MasteryNode = "MasteryNodeTable";
         public static readonly string Ailment = "AilmentTable";
+        public static readonly string DefaultGrowth = "DefaultGrowthTable";
 
     } // Scope by class DataTableIds
 

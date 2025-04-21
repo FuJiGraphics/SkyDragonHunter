@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,9 +23,9 @@ namespace SkyDragonHunter {
         [SerializeField] private SkillSlotUI[] m_Slots;
         [SerializeField] private float m_SkillCooldown;
         [SerializeField] private bool m_IsAutoExecute;
+        [SerializeField] private float m_Distance;
 
         private float m_EndTime;
-
         // 속성 (Properties)
         public float CooldownProgress
         {
@@ -52,6 +53,7 @@ namespace SkyDragonHunter {
 
         // 외부 종속성 필드 (External dependencies field)
         [SerializeField] private EnemySearchProvider m_EnemySearchProvider;
+        private SkillAnchorProvider m_SkillAnchor;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -83,6 +85,23 @@ namespace SkyDragonHunter {
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
                 return;
             if (m_EnemySearchProvider.Target == null)
+                return;
+
+            float targetDistance = 0f;
+            if (m_SkillAnchor != null)
+            {
+                targetDistance = Vector2.Distance(
+                    m_SkillAnchor.firePoint.position, 
+                    m_EnemySearchProvider.Target.transform.position);
+            }
+            else
+            {
+                targetDistance = Vector2.Distance(
+                    transform.position, 
+                    m_EnemySearchProvider.Target.transform.position);
+            }
+
+            if (targetDistance > m_Distance)
                 return;
 
             ResetEndTime();
@@ -123,6 +142,7 @@ namespace SkyDragonHunter {
                 m_Slots[i].button.onClick.AddListener(() => { Execute(capturedIndex); });
             }
             m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
+            m_SkillAnchor = GetComponent<SkillAnchorProvider>();
             ResetEndTime();
             ActiveButtons(!m_IsAutoExecute);
         }

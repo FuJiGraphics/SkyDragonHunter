@@ -3,7 +3,6 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay

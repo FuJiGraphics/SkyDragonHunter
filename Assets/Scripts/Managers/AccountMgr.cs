@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {
@@ -24,14 +23,16 @@ namespace SkyDragonHunter.Managers
         public static int CurrentStageZoneLevel { get; set; } = 1;
         public static int CurrentLevel => Crystal.CurrentLevel;
         public static CommonStats AccountStats { get; private set; }
+        public static CommonStats DefaultGrowthStats { get; set; }
         public static Crystal Crystal { get; private set; }
         public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
         public static Dictionary<MasterySockeyType, List<UIMasterySocket>> SocketMap => s_CollectedSockets;
 
         // 외부 종속성 필드 (External dependencies field)
+        private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
+
         // 이벤트 (Events)
         public static event Action onLevelUpEvents;
-        public static event Action onSocketUpdateEvents; // 소켓 쪽과 의존성 엮여있음
 
         // Public 메서드
         public static void Init()
@@ -42,8 +43,19 @@ namespace SkyDragonHunter.Managers
             var crystalData = DataTableMgr.CrystalLevelTable.First;
             InitAccountData(crystalData);
 
+            DefaultGrowthStats = new CommonStats();
+            DefaultGrowthStats.ResetAllZero();
+
             s_CollectedCanons = new Dictionary<string, GameObject>();
             s_CollectedSockets = new Dictionary<MasterySockeyType, List<UIMasterySocket>>();
+        }
+
+        public static void LateInit()
+        {
+            if (m_CrystalLevelUpHandlers == null)
+            {
+                m_CrystalLevelUpHandlers = GameMgr.FindObjects<ICrystalLevelUpHandler>();
+            }
         }
 
         public static void Release()
@@ -54,7 +66,7 @@ namespace SkyDragonHunter.Managers
             Crystal = null;
             s_CollectedCanons = null;
             onLevelUpEvents = null;
-            onSocketUpdateEvents = null;
+            m_CrystalLevelUpHandlers = null;
         }
 
         public static void LoadLevel(int id)
@@ -118,7 +130,13 @@ namespace SkyDragonHunter.Managers
             }
             inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
             inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+            #endregion
 
+            #region 레벨 업 핸들러 이벤트 호출
+            foreach (var handler in m_CrystalLevelUpHandlers)
+            {
+                handler.OnCrystalLevelUp();
+            }
             #endregion
 
             SaveUserData();
@@ -127,7 +145,16 @@ namespace SkyDragonHunter.Managers
         public static void OnSocketLevelUp()
         {
             // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
-            onSocketUpdateEvents.Invoke();
+            onLevelUpEvents?.Invoke();
+        }
+
+        public static void DirtyAccountAndAirshipStat()
+        {
+            // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
+            onLevelUpEvents?.Invoke();
+            var inGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel");
+            inGameMainFramePanel.AtkText = (Crystal.IncreaseDamage + DefaultGrowthStats.MaxDamage).ToString();
+            inGameMainFramePanel.HpText = (Crystal.IncreaseHealth + DefaultGrowthStats.MaxHealth).ToString();
         }
 
         // Private 메서드

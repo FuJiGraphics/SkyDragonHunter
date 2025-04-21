@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {
@@ -35,6 +32,7 @@ namespace SkyDragonHunter.Managers
             AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
             AccountMgr.LoadUserData(scene.name);
+            AccountMgr.LateInit();
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -80,25 +78,61 @@ namespace SkyDragonHunter.Managers
 
         public static GameObject FindObject(string id)
         {
-            GameObject findGo = null;
-            if (m_LoadObjects.ContainsKey(id))
+            if (m_LoadObjects.TryGetValue(id, out var list) && list.Count > 0)
             {
-                findGo = m_LoadObjects[id][0];
+                return list[0];
             }
-            return findGo;
+            return null;
         }
 
-        public static T FindObject<T>(string id)
-            => FindObject(id).GetComponent<T>();
+        public static T FindObject<T>(string id) where T : Component
+        {
+            var go = FindObject(id);
+            return go != null ? go.GetComponent<T>() : null;
+        }
 
         public static GameObject[] FindObjects(string id)
         {
-            GameObject[] findGos = null;
-            if (m_LoadObjects.ContainsKey(id))
+            if (m_LoadObjects.TryGetValue(id, out var list))
             {
-                findGos = m_LoadObjects[id].ToArray();
+                return list.ToArray();
             }
-            return findGos;
+            return null;
+        }
+
+        public static T[] FindObjects<T>(string id) where T : Component
+        {
+            var gos = FindObjects(id);
+            if (gos == null)
+                return null;
+
+            List<T> result = new List<T>();
+            foreach (var go in gos)
+            {
+                var comp = go.GetComponent<T>();
+                if (comp != null)
+                    result.Add(comp);
+            }
+
+            return result.ToArray();
+        }
+
+        public static T[] FindObjects<T>()
+        {
+            List<T> result = new List<T>();
+            foreach (var go in m_LoadObjects)
+            {
+                var list = go.Value;
+
+                foreach (var findGo in list)
+                {
+                    if (findGo.TryGetComponent<T>(out var comp))
+                    {
+                        result.Add(comp);
+                    }
+                }
+            }
+            return result.ToArray();
         }
 
         // Private 메서드

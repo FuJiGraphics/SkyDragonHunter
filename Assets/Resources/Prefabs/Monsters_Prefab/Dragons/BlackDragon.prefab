@@ -159,10 +159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eabab7dc3efd1145bad4559de3a6711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  health: 100
-  shield: 50
-  armor: 5
+  damage: 1200
+  health: 30000
+  shield: 10000
+  armor: 3000
   resilient: 0
   criticalChance: 0
   criticalMultiplier: 2
@@ -293,7 +293,6 @@ MonoBehaviour:
   bossStatus: {fileID: 0}
   floater: {fileID: 0}
   animController: {fileID: 0}
-  m_TargetDistance: 0
 --- !u!114 &-6092377752406353842
 MonoBehaviour:
   m_ObjectHideFlags: 0

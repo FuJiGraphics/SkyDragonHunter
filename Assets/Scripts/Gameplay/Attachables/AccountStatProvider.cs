@@ -35,11 +35,11 @@ namespace SkyDragonHunter.Gameplay {
 
             AlphaUnit prevLostHealth = m_Stats.MaxHealth - m_Stats.Health;
 
-            var mergeDamage = (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value);
-            var mergeHealth = (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value);
-            var mergeArmor = (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value);
-            var mergeRes = accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value;
-            var mergeCriMul = (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier);
+            var mergeDamage = (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value + AccountMgr.DefaultGrowthStats.MaxDamage);
+            var mergeHealth = (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value + AccountMgr.DefaultGrowthStats.MaxHealth);
+            var mergeArmor = (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value + AccountMgr.DefaultGrowthStats.MaxArmor);
+            var mergeRes = accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value + AccountMgr.DefaultGrowthStats.MaxResilient;
+            var mergeCriMul = (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier + AccountMgr.DefaultGrowthStats.CriticalMultiplier);
             var mergeBossDamMul = (accStats.BossDamageMultiplier + m_SocketStats.BossDamageMultiplier);
             var mergeSkillMul = (accStats.SkillEffectMultiplier + m_SocketStats.SkillEffectMultiplier);
 
@@ -121,7 +121,6 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.ResetAll();
 
             AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
-            AccountMgr.onSocketUpdateEvents += MergedAccountStatsForCharacter;
 
             MergedAccountStatsForCharacter();
         }
