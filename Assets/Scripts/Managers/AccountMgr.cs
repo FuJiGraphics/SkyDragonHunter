@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
 using SkyDragonHunter.UI;
@@ -27,9 +28,15 @@ namespace SkyDragonHunter.Managers
         public static Crystal Crystal { get; private set; }
         public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
         public static Dictionary<MasterySockeyType, List<UIMasterySocket>> SocketMap => s_CollectedSockets;
-
+        public static AlphaUnit Coin
+        {
+            get => ItemMgr.GetItem(ItemType.Coin).ItemCount;
+            set => ItemMgr.GetItem(ItemType.Coin).ItemCount = value;
+        }
+        
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
+        private static ISaveLoadHandler[] m_SaveLoadHandlers;
 
         // 이벤트 (Events)
         public static event Action onLevelUpEvents;
@@ -56,6 +63,11 @@ namespace SkyDragonHunter.Managers
             {
                 m_CrystalLevelUpHandlers = GameMgr.FindObjects<ICrystalLevelUpHandler>();
             }
+            if (m_SaveLoadHandlers == null)
+            {
+                m_SaveLoadHandlers = GameMgr.FindObjects<ISaveLoadHandler>();
+            }
+
         }
 
         public static void Release()
@@ -281,9 +293,6 @@ namespace SkyDragonHunter.Managers
         public static void LoadUserData(string sceneName)
         {
             Debug.Log("[AccountMgr]: 계정 데이터 로드");
-            Debug.Log("[AccountMgr]: 단원 데이터 로드");
-            Debug.Log("[AccountMgr]: 유저 데이터 로드 완료");
-
             var tempUserData = GameMgr.FindObject("TempUserData");
             if (tempUserData.TryGetComponent<TempUserData>(out var comp))
             {
@@ -358,7 +367,15 @@ namespace SkyDragonHunter.Managers
                 }
                 #endregion
 
+                #region 아이템 로드
+                #endregion
+
+                foreach (var handler in m_SaveLoadHandlers)
+                {
+                    handler.OnLoad(comp);
+                }
             }
+            Debug.Log("[AccountMgr]: 계정 데이터 로드 완료");
         }
 
         public static void SaveUserData()
@@ -421,6 +438,13 @@ namespace SkyDragonHunter.Managers
                 comp.nickname = AccountMgr.Nickname;
                 #endregion
 
+                #region 아이템 정보 저장
+                #endregion
+
+                foreach (var handler in m_SaveLoadHandlers)
+                {
+                    handler.OnSave(comp);
+                }
                 // 스테이지 정보 최신화
                 comp.DirtyStaticData();
             }

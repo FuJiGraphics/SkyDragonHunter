@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace SkyDragonHunter.Test
         private bool isFacilityWorkProgress;
         private int currentMissionLevel = 1;
         private int currentZoneLevel = 1;
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -422,7 +424,7 @@ namespace SkyDragonHunter.Test
         private void SetRewardItmes()
         {
             // DropTracker에 기록된 드롭 아이템 종류별 수량을 가져옴
-            var dropDict = ItemMgr.GetDropCounts();
+            var dropDict = RewardMgr.GetRewards();
 
             int index = 0; // rewardSlots 배열 인덱스용
 

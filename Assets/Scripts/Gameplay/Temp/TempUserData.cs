@@ -1,3 +1,5 @@
+using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +11,13 @@ namespace SkyDragonHunter.Test {
     {
         public int slotIndex;
         public GameObject crewPrefab;
+    }
+
+    [System.Serializable]
+    public struct SaveItemStorage
+    {
+        public int count;
+        public ItemType itemType;
     }
 
     public class TempUserData : MonoBehaviour
@@ -27,12 +36,16 @@ namespace SkyDragonHunter.Test {
         public GameObject[] canonDataPrefabs;
         [SerializeField] public List<SaveEquipStorage> airshipEquipSlots = new List<SaveEquipStorage>();
 
+        [Header("Item Data")]
+        [SerializeField] public List<SaveItemStorage> itemData;
+
         public static string s_Nickname = "default";
         public static int s_StageLevel = 1;
         public static int s_StageZoneLevel = 1;
         public static List<GameObject> s_CrewDataPrefabs;
         public static List<GameObject> s_CanonDataPrefabs;
         public static List<SaveEquipStorage> s_AirshipEquipSlots;
+        public static List<SaveItemStorage> s_ItemData;
         public static int s_CrystalLevelID;
 
         // 속성 (Properties)
@@ -49,6 +62,7 @@ namespace SkyDragonHunter.Test {
             s_CrystalLevelID = crystalLevelID;
             s_StageLevel = stageLevel;
             s_StageZoneLevel = stageZoneLevel;
+            s_ItemData = new List<SaveItemStorage>(itemData);
         }
 
         public void LoadStaticData()
@@ -62,6 +76,8 @@ namespace SkyDragonHunter.Test {
             crystalLevelID = s_CrystalLevelID;
             stageLevel = s_StageLevel;
             stageZoneLevel = s_StageZoneLevel;
+            if (s_ItemData != null)
+                itemData =  new List<SaveItemStorage>(s_ItemData);
         }
 
         // Private 메서드

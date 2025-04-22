@@ -29,10 +29,11 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
             Application.targetFrameRate = 60;
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
+            ItemMgr.Init();
             AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
-            AccountMgr.LoadUserData(scene.name);
             AccountMgr.LateInit();
+            AccountMgr.LoadUserData(scene.name);
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -43,6 +44,7 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects.Clear();
             AccountMgr.Release();
+            ItemMgr.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 

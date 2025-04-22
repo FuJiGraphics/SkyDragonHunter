@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Test;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace SkyDragonHunter {
 
             if (spriteRenderer.color.a <= 0.01f) // 부동소수점 비교는 정확히 0f 대신 작은 값 사용
             {
-                ItemMgr.Add(itemType);
+                // ItemMgr.Add(itemType);
                 Destroy(gameObject);
             }
         }

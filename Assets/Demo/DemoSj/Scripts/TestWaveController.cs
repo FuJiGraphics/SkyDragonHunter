@@ -441,7 +441,7 @@ namespace SkyDragonHunter
             clearPanel.SetActive(false);
             OnFadeSlider();
             isRewardSet = false;
-            ItemMgr.Reset();
+            // ItemMgr.Reset();
         }
 
         private void OnFadeSlider()
