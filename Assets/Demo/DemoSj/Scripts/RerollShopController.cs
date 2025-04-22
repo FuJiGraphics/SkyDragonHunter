@@ -6,6 +6,21 @@ using UnityEngine;
 
 namespace SkyDragonHunter {
 
+    [System.Serializable]
+    public class RerollShopSlotState
+    {
+        public ItemStatus item;
+        public bool isLocked;
+        public bool isPurchased;
+
+        public RerollShopSlotState(ItemStatus item, bool isLocked = false, bool isPurchased = false)
+        {
+            this.item = item;
+            this.isLocked = isLocked;
+            this.isPurchased = isPurchased;
+        }
+    }
+
     public class RerollShopController : MonoBehaviour
     {
         // 필드 (Fields)
@@ -15,8 +30,10 @@ namespace SkyDragonHunter {
         [SerializeField] private Transform contentParent;               // 6개의 슬롯이 배치된 Content 오브젝트
         [SerializeField] private float rerollInterval = 10800f;         // 자동 리롤 시간 (초 단위, 기본 3시간)
         [SerializeField] private List<ItemStatus> shopItemPool;        // 전체 리롤 상점 아이템 풀
+        [SerializeField] private RerollShopLockConfirmPanel lockConfirmPanel;
 
         private List<RerollShopSlotHandler> slotHandlers = new();      // 슬롯 핸들러 리스트
+        private List<RerollShopSlotState> currentSlotStates = new(); // 현재 상태 저장용
         private Coroutine autoRerollRoutine;                            // 자동 리롤 코루틴 참조
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -35,10 +52,20 @@ namespace SkyDragonHunter {
 
         private void OnEnable()
         {
-            // 상점이 켜질 때 리롤 수행
-            ManualReroll();
+            if (currentSlotStates.Count == slotHandlers.Count)
+            {
+                // 기존 상태 복원
+                for (int i = 0; i < slotHandlers.Count; i++)
+                {
+                    slotHandlers[i].InitializeWithState(currentSlotStates[i], this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
+                }
+            }
+            else
+            {
+                // 신규 진입 시 리롤
+                ManualReroll();
+            }
 
-            // 자동 리롤 코루틴 시작
             autoRerollRoutine = StartCoroutine(AutoRerollTimer());
         }
 
@@ -55,21 +82,39 @@ namespace SkyDragonHunter {
         /// </summary>
         public void ManualReroll()
         {
+            currentSlotStates.Clear();
+
             foreach (var slot in slotHandlers)
             {
                 if (!slot.IsLocked())
                 {
                     var item = GetWeightedRandomItem(shopItemPool);
-                    slot.Initialize(item, favorailityMgr, favorabilityUIController);
+                    slot.Initialize(item, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
                 }
+
+                currentSlotStates.Add(slot.GetSlotState());
             }
         }
+
+        public void SaveAllSlotStates()
+        {
+            currentSlotStates.Clear();
+            foreach (var slot in slotHandlers)
+            {
+                currentSlotStates.Add(slot.GetSlotState());
+            }
+        }
+
         // Private 메서드
 
-        /// <summary>
-        /// 주기적으로 자동 리롤 수행
-        /// </summary>
-   
+        private void RestoreSlotStates()
+        {
+            for (int i = 0; i < slotHandlers.Count; i++)
+            {
+                var state = currentSlotStates[i];
+                slotHandlers[i].InitializeWithState(state, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
+            }
+        }
         /// <summary>
         /// 주기적으로 자동 리롤 수행
         /// </summary>
