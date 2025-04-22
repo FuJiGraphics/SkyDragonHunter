@@ -22,7 +22,6 @@ namespace SkyDragonHunter.Scriptables
         public string fireDummyName;
 
         // 속성 (Properties)
-        public override ItemType Type => ItemType.Weapon;
         public AttackDefinition WeaponData => this;
 
         // 외부 종속성 필드 (External dependencies field)

@@ -30,7 +30,9 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
+
+        // Public 메서드
+        public void Init()
         {
             foreach (var node in growthNodes)
             {
@@ -40,11 +42,10 @@ namespace SkyDragonHunter.UI {
                 node.NextArrowIcon = m_NextArrowIcon;
                 node.LevelUpIcon = m_LevelUpIcon;
             }
-            m_AirshipStats = GameMgr.FindObject<CharacterStatus>("Airship"); 
+            m_AirshipStats = GameMgr.FindObject<CharacterStatus>("Airship");
             UpdateAirshipAndAccountInfo();
         }
-    
-        // Public 메서드
+
         public void OnLevelUp(UIGrowthNode node)
         {
             node.LevelUp(m_LevelUpInc);

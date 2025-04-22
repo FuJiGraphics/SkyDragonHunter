@@ -16,6 +16,9 @@ public class FloatingEffect : MonoBehaviour
     // 유니티 (MonoBehaviour 기본 메서드)
     private void Update()
     {
+        if (Time.timeScale == 0f)
+            return;
+
         m_lastAngle += Time.deltaTime * (m_FloatSpeed * 0.1f) * FloatSpeedOffset;
 
         float offset = Mathf.Cos(m_lastAngle) * (m_FloatAmount * 0.01f);
