@@ -30,9 +30,8 @@ namespace SkyDragonHunter {
             }
 
             m_CrewController.transform.position = m_CrewController.MountSlotPosition;
-            //m_CrewController.isOnBoard = true;
-            m_CrewController.exhaustionRemainingTime = m_CrewController.ExhaustionTime;            
-            m_CrewController.MountAction(true);        
+            m_CrewController.exhaustionRemainingTime = m_CrewController.ExhaustionTime;
+            m_CrewController.MountAction(true);
         }
 
     } // Scope by class CrewDestructable

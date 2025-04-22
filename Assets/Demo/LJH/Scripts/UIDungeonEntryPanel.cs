@@ -21,7 +21,7 @@ namespace SkyDragonHunter
 
         [SerializeField] private Transform m_ScrollViewContent;
         [SerializeField] private UIDungeonStages m_DungeonStagePrefab;
-        [SerializeField] private List<GameObject> m_StageList;
+        [SerializeField] private List<UIDungeonStages> m_StageList;
 
         [SerializeField] private Button m_CloseButton;
         [SerializeField] private Button m_EnterButton;
@@ -61,6 +61,7 @@ namespace SkyDragonHunter
 
         private void OnClickDungoenType(int dungeonTypeIndex)
         {
+            m_EnterButton.interactable = false;
             if (m_SelectedDungeonType != (DungeonType)dungeonTypeIndex)
             {
                 ChangeDungeonType((DungeonType)dungeonTypeIndex);
@@ -76,10 +77,10 @@ namespace SkyDragonHunter
         private void InstantiateStagePrefabs()
         {
             if (m_StageList == null)
-                m_StageList = new List<GameObject>();
+                m_StageList = new List<UIDungeonStages>();
             foreach (var stagePrefab in m_StageList)
             {
-                Destroy(stagePrefab);
+                Destroy(stagePrefab.gameObject);
             }
             m_StageList.Clear();
 
@@ -91,13 +92,27 @@ namespace SkyDragonHunter
                 sb.Append(StagePrefabName);
                 sb.Append(i + 1);
                 stageButton.name = sb.ToString();
-                stageButton.SetLevel(i + 1);
+                stageButton.SetLevel(m_SelectedDungeonType, i + 1);
                 stageButton.AddListener(() =>
                 {
-                    m_SelectedDungeonIndex = stageButton.Level;
+                    m_SelectedDungeonIndex = stageButton.Level;                    
+                    OnSelectLevel();
                 });
-                m_StageList.Add(stageButton.gameObject);
+                stageButton.OnSelectStage(0);
+                m_StageList.Add(stageButton);
             }
+            var pos = m_ScrollViewContent.position;
+            pos.y = 0f;
+            m_ScrollViewContent.position = pos;
+        }
+
+        private void OnSelectLevel()
+        {
+            foreach (var stage in m_StageList)
+            {
+                stage.OnSelectStage(m_SelectedDungeonIndex);
+            }
+            m_EnterButton.interactable = true;
         }
     } // Scope by class UIDungeonEntryPanel
 

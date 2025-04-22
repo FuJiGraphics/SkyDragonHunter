@@ -53,11 +53,19 @@ namespace SkyDragonHunter
 
         public void SetDungeonProgress(int killCount, int goalKillCount)
         {
+            var sb = new StringBuilder();
+            sb.Append((goalKillCount - killCount).ToString());
+            sb.Append(" / ");
+            sb.Append(goalKillCount.ToString());
+            m_ProgressText.text = sb.ToString();
 
+            float progressPercentage = (float)(goalKillCount - killCount) / (float)goalKillCount;
+            m_ProgressSlider.value = progressPercentage;
         }
 
         public void SetDungeonTimer(float remainingTime, float initialTime)
         {
+            remainingTime = Mathf.Clamp(remainingTime, 0f, initialTime);
             string.Format(c_TimerTextFormat, Mathf.FloorToInt(remainingTime));
             m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.FloorToInt(remainingTime));
             m_TimerSlider.value = remainingTime / initialTime;
@@ -66,8 +74,17 @@ namespace SkyDragonHunter
         // Private Methods
         private void Init()
         {
+            SetDungeonInfos();
             InitializeSliders();
             AddListeners();
+        }
+        private void SetDungeonInfos()
+        {
+            StringBuilder sb = new StringBuilder();
+            DungeonMgr.TryGetStageData(out var dungeonType, out var level);
+            sb.Append($"{level}´Ü°è ");
+            sb.Append($"{dungeonType}");
+            m_DungeonInfoText.text = sb.ToString();
         }
         private void InitializeSliders()
         {

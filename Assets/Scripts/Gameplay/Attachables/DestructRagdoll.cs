@@ -15,6 +15,7 @@ namespace SkyDragonHunter {
             var animController = GetComponent<TestAniController>();
             var id = animController.ID;
             var instantiated = Instantiate(prefabLoader.GetRagdollAnimController(id), transform.position, transform.rotation);
+            instantiated.transform.localScale = transform.localScale;
             var droppingBody = instantiated.AddComponent<DroppingBody>();
             droppingBody.StartDrop();
         }

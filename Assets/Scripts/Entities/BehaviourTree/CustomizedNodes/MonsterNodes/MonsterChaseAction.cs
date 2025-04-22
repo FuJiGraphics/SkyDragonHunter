@@ -55,6 +55,12 @@ namespace SkyDragonHunter {
 
             newPos.x += Time.deltaTime * m_Context.ChaseSpeed * toRight;
 
+            foreach(var healthBar in m_Context.HealthBars)
+            {
+                healthBar.transform.localScale = scale;
+            }
+
+            m_Context.transform.localScale = scale;
             m_Context.transform.position = newPos;
         }
     } // Scope by class MonsterChaseAction

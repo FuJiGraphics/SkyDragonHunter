@@ -404,11 +404,12 @@ namespace SkyDragonHunter
             {
                 var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
                 spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
-
+                var bt = spawned.GetComponent<NewMonsterControllerBT>();
+                bt.SetDataFromTable(tempId);
                 currentEnemy.Add(spawned.gameObject);
                 currentSpawnMonsters++;
             }
-            // ~ TODO
+            // ~TODO
 
             isCanSpawn = false;
         }

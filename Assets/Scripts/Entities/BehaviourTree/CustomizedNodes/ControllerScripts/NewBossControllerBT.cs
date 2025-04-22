@@ -39,8 +39,20 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
-        public AlphaUnit HP => bossStatus.status.Health;
-        public AlphaUnit MaxHP => bossStatus.status.MaxHealth;
+        public AlphaUnit HP
+        {
+            get => bossStatus.status.Health;
+        }
+        public AlphaUnit MaxHP
+        {
+            get => bossStatus.status.MaxHealth;
+            set
+            {
+                bossStatus.status.MaxHealth = value;
+                bossStatus.status.Health = value;
+                bossStatus.status.ResetAll();
+            }
+        }
         public bool IsSkillAvailable => false;
         //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;

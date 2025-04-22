@@ -4,8 +4,7 @@ using System.Text;
 using UnityEngine;
 
 namespace SkyDragonHunter.Tables
-{
-    
+{    
     public class MonsterData : DataTableData
     {
         public string Name { get; set; }
