@@ -23,6 +23,9 @@ namespace SkyDragonHunter.test
 
         [SerializeField] private GoldShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
 
+        [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
+
+
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
         // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
@@ -90,9 +93,19 @@ namespace SkyDragonHunter.test
             }
 
             ApplyItemsToSlots(categoryItems[category]);
+
+            ResetScrollPosition();
         }
 
         // Private 메서드
+
+        private void ResetScrollPosition()
+        {
+            // 캔버스 강제 갱신 후 최상단으로 이동
+            Canvas.ForceUpdateCanvases();
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
+
 
         // 카테고리에 대해 출현 확률 기반으로 아이템을 선택하고 저장
         private void GenerateRandomItemsFor(GoldShopCategory category)
