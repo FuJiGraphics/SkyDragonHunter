@@ -12,6 +12,7 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject inventoryPanel;
         public GameObject panelBackGroundImage;
         public GameObject facilityPanelPanel;
         public GameObject facilityPanelLevelUpPanel;
@@ -39,6 +40,7 @@ namespace SkyDragonHunter.Test
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideInventoryPanel = true;
         private bool isHideFacilityLevelUpPanel = true;
         private bool isHideDungeonEntryPanel = true;
         private bool isHideProfileSettingsPanel = true;
@@ -57,6 +59,7 @@ namespace SkyDragonHunter.Test
             rectTransform = questPanel.GetComponent<RectTransform>();
             waveControler = GameMgr.FindObject("WaveController");
             waveControlerScript = waveControler.GetComponent<TestWaveController>();
+            OnInGamePanels();
         }
 
         private void Update()
@@ -91,6 +94,20 @@ namespace SkyDragonHunter.Test
             inGameWaveInfoPanel.SetActive(true);
             questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
+        }
+
+        public void OnOffInventoryPanel()
+        {
+            if (isHideInventoryPanel)
+            {
+                inventoryPanel.SetActive(true);
+                isHideInventoryPanel = false;
+            }
+            else
+            {
+                inventoryPanel.SetActive(false);
+                isHideInventoryPanel = true;
+            }
         }
 
         public void OnOffDungeonEntryPanel()
@@ -476,6 +493,7 @@ namespace SkyDragonHunter.Test
             growthPanel.SetActive(false);
             masteryPanelPicks.SetActive(false);
             facilityPanelPanel.SetActive(false);
+            inventoryPanel.SetActive(false);
             foreach (var panel in pickPanels)
             {
                 panel.SetActive(false);

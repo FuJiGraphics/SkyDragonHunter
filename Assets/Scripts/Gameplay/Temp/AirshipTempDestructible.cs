@@ -20,7 +20,7 @@ namespace SkyDragonHunter {
                 var wavecomp = waveController.GetComponent<TestWaveController>();
                 if (wavecomp != null)
                 {
-                    wavecomp.feildPanel.gameObject.SetActive(true);
+                    wavecomp.OnTestWaveFailedActive();
                 }
                 else
                 {
