@@ -9,7 +9,7 @@ namespace SkyDragonHunter.Gameplay
     {
         // 필드 (Fields)
         [Header("Settings")]
-        [SerializeField] private ItemDefinition[] itemPrefabs;
+        [SerializeField] private AttackDefinition[] itemPrefabs;
 
         // 속성 (Properties)
         public GameObject CurrentEquipPreview { get; private set; }

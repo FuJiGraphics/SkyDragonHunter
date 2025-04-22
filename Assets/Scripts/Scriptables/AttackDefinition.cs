@@ -9,7 +9,9 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
 
-    public abstract class AttackDefinition : ItemDefinition
+    public abstract class AttackDefinition : ScriptableObject
+        , IUsable
+        , IInventoryItem
     {
         // 필드 (Fields)
         public float coolDown;                      // 쿨다운
@@ -18,8 +20,10 @@ namespace SkyDragonHunter.Scriptables {
         public float criticalChance = 0.0f;         // 크리티컬 확률
         public float criticalMultiplier = 1.0f;     // 크리티컬 피해 배율
         public float bossDamageMultiplier = 1.0f;   // 보스 피해량 증가 배율
+        public GameObject previewPrefab;
 
         // 속성 (Properties)
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (ScriptableObject 기본 메서드)
@@ -51,6 +55,12 @@ namespace SkyDragonHunter.Scriptables {
             }
             return attack;
         }
+
+
+        public abstract Sprite GetIcon();
+        public abstract string GetName();
+
+        public abstract void Use(GameObject caster, GameObject receiver);
 
         // Others
 

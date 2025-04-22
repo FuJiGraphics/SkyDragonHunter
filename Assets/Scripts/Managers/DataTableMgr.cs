@@ -19,6 +19,8 @@ namespace SkyDragonHunter.Managers
         public static MasterySocketTable MasterySocketTable => Get<MasterySocketTable>(DataTableIds.MasterySocket);
         public static AilmentTable AilmentTable => Get<AilmentTable>(DataTableIds.Ailment);
         public static DefaultGrowthTable DefaultGrowthTable => Get<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+        public static ItemTable ItemTable => Get<ItemTable>(DataTableIds.Item);
+
 
         // Static Constructor
         static DataTableMgr()
@@ -32,6 +34,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+            LoadTable<ItemTable>(DataTableIds.Item);
         }
 
         public static void InitForGameScene()
@@ -45,6 +48,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+            LoadTable<ItemTable>(DataTableIds.Item);
         }
 
         // Public 메서드
