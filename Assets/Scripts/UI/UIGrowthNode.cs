@@ -2,6 +2,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using System;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -35,6 +36,7 @@ namespace SkyDragonHunter.UI{
         [SerializeField] private TextMeshProUGUI nextStatText;
         [SerializeField] private TextMeshProUGUI needCoinText;
         [SerializeField] private Button levelUpButton;
+        [SerializeField] private UIGrowthLevelUp growthLevelUp;
 
         private int m_CurrentLevel = 0;
         private AlphaUnit m_BasicStat;
@@ -145,9 +147,10 @@ namespace SkyDragonHunter.UI{
             BasicStat = new AlphaUnit(tableData.BasicStat);
             BasicCost = new AlphaUnit(tableData.BasicCost);
             NextStat = new AlphaUnit(tableData.BasicStat);
-            NeedCoin = new AlphaUnit(tableData.BasicCost);
+            NeedCoin = new AlphaUnit(tableData.BasicCost) + new AlphaUnit(tableData.CostIncrease);
             StatIncrease = new AlphaUnit(tableData.StatIncrease);
             CostIncrease = new AlphaUnit(tableData.CostIncrease);
+            UpdateLevelUpArrowState();
         }
 
         public void Clear()
@@ -164,6 +167,19 @@ namespace SkyDragonHunter.UI{
             UpdatetStatText(currStatText, ref m_CurrentStat);
             UpdatetStatText(nextStatText, ref m_NextStat);
             needCoinText.text = m_NeedCoin.ToString();
+            UpdateLevelUpArrowState();
+        }
+
+        public void SetNeedCoin(int nextIncreaseLevel)
+        {
+            if (nextIncreaseLevel > 0)
+            {
+                int nextLevel = Mathf.Min(Level + nextIncreaseLevel - 1, MaxLevel);
+                int weight = 1 + (nextLevel / 100);
+                AlphaUnit currCostInc = weight * nextLevel * CostIncrease;
+                NeedCoin = BasicCost + currCostInc;
+                UpdateLevelUpArrowState();
+            }
         }
 
         public void LevelUp(int increase)
@@ -172,17 +188,11 @@ namespace SkyDragonHunter.UI{
                 return;
             if (IsMaxLevel)
                 return;
+            if (AccountMgr.Coin < NeedCoin)
+                return;
 
-            // ccj) 레벨의 UI는 1로 보이지만, 계산은 0부터 시작하도록 보정
-            if (m_FirstLevelUp)
-            {
-                m_FirstLevelUp = false;
-                Level = Mathf.Min(-1 + increase, MaxLevel);
-            }
-            else
-            {
-                Level = Mathf.Min(Level + increase, MaxLevel);
-            }
+            Level = Mathf.Min(Level + increase, MaxLevel);
+            AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin).Value, 0);
 
             if (levelUpType == GrowthLevelUpType.Table)
             {
@@ -209,10 +219,15 @@ namespace SkyDragonHunter.UI{
                 NeedCoin = BasicCost * costMultiplier;
             }
 
-            if (Level <= 0)
-            {
-                Level = 1;
-            }
+            UpdateLevelUpArrowState();
+        }
+
+        public void UpdateLevelUpArrowState()
+        {
+            if (AccountMgr.Coin >= NeedCoin && !IsMaxLevel)
+                growthLevelUp.gameObject.SetActive(true);
+            else
+                growthLevelUp.gameObject.SetActive(false);
         }
 
         private void UpdatetStatText(TextMeshProUGUI textUGUI, ref AlphaUnit stats)
@@ -231,7 +246,5 @@ namespace SkyDragonHunter.UI{
             }
         }
 
-    }
-
-
+    } // class UIGrowthNode
 } // namespace Root

@@ -33,7 +33,7 @@ namespace SkyDragonHunter.UI {
         {
             m_Item = item;
             m_ItemIcon.sprite = item.Icon;
-            m_ItemCountText.text = AccountMgr.Coin.ToString();
+            m_ItemCountText.text = item.ItemCount.ToString();
         }
 
         public void SetSelectState(bool enabled)
