@@ -1,12 +1,11 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
 using SkyDragonHunter.UI;
-using SkyDragonHunter.Utility;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -18,7 +17,6 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<string, GameObject> s_CollectedCanons; // 인스턴스
         private static Dictionary<MasterySockeyType, List<UIMasterySocket>> s_CollectedSockets;
-        private static Dictionary<string, Item> s_CollectedItems;
 
         // 속성 (Properties)
         public static string Nickname { get; set; } = "Default";
@@ -30,7 +28,12 @@ namespace SkyDragonHunter.Managers
         public static Crystal Crystal { get; private set; }
         public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
         public static Dictionary<MasterySockeyType, List<UIMasterySocket>> SocketMap => s_CollectedSockets;
-
+        public static AlphaUnit Coin
+        {
+            get => ItemMgr.GetItem(ItemType.Coin).ItemCount;
+            set => ItemMgr.GetItem(ItemType.Coin).ItemCount = value;
+        }
+        
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
         private static ISaveLoadHandler[] m_SaveLoadHandlers;
@@ -52,7 +55,6 @@ namespace SkyDragonHunter.Managers
 
             s_CollectedCanons = new Dictionary<string, GameObject>();
             s_CollectedSockets = new Dictionary<MasterySockeyType, List<UIMasterySocket>>();
-            s_CollectedItems = new Dictionary<string, Item>();
         }
 
         public static void LateInit()
@@ -256,21 +258,6 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        public static void RegisterItem(Item item)
-        {
-            if (item == null)
-            {
-                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 null입니다.");
-                return;
-            }
-            if (s_CollectedItems.ContainsKey(item.Name))
-            {
-                Debug.LogWarning($"[AccountMgr]: 이미 등록된 아이템입니다. {item.Name}");
-                return;
-            }
-            s_CollectedItems.Add(item.Name, item);
-        }
-
         public static GameObject[] GetCrewInstanceList()
             => s_CollectedCrews.Values.ToArray();
 
@@ -381,22 +368,6 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 아이템 로드
-                foreach (var item in comp.itemData)
-                {
-                    string itemPath = Path.Combine("Prefabs/Items", item.itemName);
-                    var itemPrefab = ResourcesMgr.Load<GameObject>(itemPath);
-                    var itemInstance = GameObject.Instantiate<GameObject>(itemPrefab);
-                    if (itemInstance.TryGetComponent<Item>(out var itemComp))
-                    {
-                        RegisterItem(itemComp);
-                        // UI 채우기
-                    }
-                    else
-                    {
-                        Debug.LogError($"[AccountMgr]: 아이템이 아닙니다. {item}");
-                        GameObject.Destroy(itemInstance);
-                    }
-                }
                 #endregion
 
                 foreach (var handler in m_SaveLoadHandlers)
@@ -468,16 +439,6 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 아이템 정보 저장
-                comp.itemData = new List<SaveItemStorage>();
-                foreach (var item in s_CollectedItems)
-                {
-                    var itemName = item.Key;
-                    var itemCount = item.Value.ItemCount;
-                    var storage = new SaveItemStorage();
-                    storage.itemName = itemName;
-                    storage.count = itemCount;
-                    comp.itemData.Add(storage);
-                }
                 #endregion
 
                 foreach (var handler in m_SaveLoadHandlers)

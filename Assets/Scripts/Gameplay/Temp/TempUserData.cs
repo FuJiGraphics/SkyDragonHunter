@@ -13,10 +13,11 @@ namespace SkyDragonHunter.Test {
         public GameObject crewPrefab;
     }
 
+    [System.Serializable]
     public struct SaveItemStorage
     {
         public int count;
-        public string itemName;
+        public ItemType itemType;
     }
 
     public class TempUserData : MonoBehaviour
