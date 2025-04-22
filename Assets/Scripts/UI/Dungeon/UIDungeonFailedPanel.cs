@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter
 {
-
     public class UIDungeonFailedPanel : MonoBehaviour
     {
         [SerializeField] private DungeonUIMgr m_DungeonUIMgr;

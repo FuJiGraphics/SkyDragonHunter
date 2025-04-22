@@ -14,7 +14,7 @@ namespace SkyDragonHunter {
         // Unity Methods
         private void Start()
         {
-            Init();            
+            Init();
         }
 
         // Private Methods

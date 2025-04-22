@@ -1,7 +1,10 @@
+using MathNet.Numerics.Providers.SparseSolver;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Test;
+using SkyDragonHunter.UI;
 using UnityEngine;
 
 namespace SkyDragonHunter.Entities 
@@ -22,7 +25,9 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private MonsterType m_MonsterType;
         [SerializeField] private Transform m_Target;
         [SerializeField] private NewCrewControllerBT m_CrewTarget;
+        [SerializeField] private Transform m_AirshipTarget;
         private BehaviourTree<NewMonsterControllerBT> m_BehaviourTree;
+        private UIHealthBar[] m_UIHealthBars;
         private float slowMultiplier;
 
         private int projectileId;
@@ -36,7 +41,30 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
-        //public Vector2 AdjustedPosition => transform.position;
+        public UIHealthBar[] HealthBars => m_UIHealthBars;
+        public AlphaUnit HP
+        {
+            get => monsterStatus.status.Health;
+        }
+        public AlphaUnit MaxHP
+        {
+            get => monsterStatus.status.MaxHealth;
+            set
+            {
+                monsterStatus.status.MaxHealth = value;
+                monsterStatus.status.Health = monsterStatus.status.MaxHealth;
+                monsterStatus.status.ResetAll();
+            }
+        }
+        public AlphaUnit Damage
+        {
+            get => monsterStatus.status.MaxDamage;
+            set
+            {
+                monsterStatus.status.MaxDamage = value;
+                monsterStatus.status.ResetAll();
+            }
+        }
         public Transform Target => m_Target;
         public bool IsTargetNull => m_Target == null;
         public bool IsTargetInAttackRange => TargetDistance < monsterStatus.attackRange;
@@ -75,11 +103,15 @@ namespace SkyDragonHunter.Entities
                 return distance - halfWidth;
             }
         }
-
+        
         // Unity Methods
         private void Awake()
         {
             Init();
+        }
+        private void Start()
+        {
+            
         }
         private void Update()
         {
@@ -122,7 +154,7 @@ namespace SkyDragonHunter.Entities
         }
 
         // Private Methods
-        private void ResetTarget()
+        public void ResetTarget()
         {
             if(m_CrewTarget != null && m_CrewTarget.isActiveAndEnabled && !m_CrewTarget.IsMounted)
             {
@@ -153,6 +185,9 @@ namespace SkyDragonHunter.Entities
                         }
                         if (crewBT.IsMounted)
                             continue;
+                        if (DistanceToTargetTransform(collider.transform) > DistanceToTargetTransform(m_AirshipTarget))
+                            continue;
+                        
                         m_CrewTarget = crewBT;
                         m_Target = m_CrewTarget.transform;
                         return;
@@ -164,17 +199,27 @@ namespace SkyDragonHunter.Entities
 
         private void Init()
         {
+            m_UIHealthBars = GetComponentsInChildren<UIHealthBar>();
             monsterStatus = GetComponent<MonsterStats>();
             monsterStatus.ForceInit();
             animController = GetComponent<TestAniController>();
             floater = GetComponent<FloatingEffect>();
             floater.enabled = false;
+            var airshipGo = GameMgr.FindObject($"Airship");
+            if( airshipGo != null )
+            {
+                m_AirshipTarget = airshipGo.transform;
+            }
+            else
+            {
+                Debug.LogError($"Airship Null");
+            }
             this.ID = animController.ID;
             SetDataFromTable(ID);
             InitBehaviourTree();
         }
 
-        private void SetDataFromTable(int id)
+        public void SetDataFromTable(int id)
         {
             ID = id;
             var data = DataTableMgr.MonsterTable.Get(id);
@@ -196,7 +241,8 @@ namespace SkyDragonHunter.Entities
             monsterStatus.aggroRange = data.AggroRange;
             monsterStatus.speed = data.Speed;
             monsterStatus.chaseSpeed = data.ChaseSpeed;
-            monsterStatus.status.ResetAll();
+            monsterStatus.status.ResetAll();            
+            Debug.Log($"Monster '{name}' Data Set. HP: ({monsterStatus.status.Health}/{monsterStatus.status.MaxHealth}), ATK: ({monsterStatus.status.MaxDamage})");
         }
 
         private void InitBehaviourTree()
@@ -240,10 +286,30 @@ namespace SkyDragonHunter.Entities
             m_BehaviourTree.SetRoot(rootSelector);
         }
 
-        private void InitBossBT()
-        {
+        private float DistanceToTargetTransform(Transform target)
+        {            
+            if (target == null)
+            {
+                return float.MaxValue;
+            }
 
+            var colliderInfo = target.GetComponent<ColliderInfoProvider>();
+            float halfWidth = 0f;
+            if (colliderInfo != null)
+            {
+                halfWidth = colliderInfo.ColliderHalfWidth;
+            }
+            else
+            {
+                Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {target.name}");
+            }
+
+            var distance = Mathf.Abs(target.position.x - transform.position.x);
+            //var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+            //var halfwidth = sr.bounds.size.x * 0.5f;
+            return distance - halfWidth;            
         }
+    
     } // Scope by class NewMonsterControllerBT
 
 } // namespace Root

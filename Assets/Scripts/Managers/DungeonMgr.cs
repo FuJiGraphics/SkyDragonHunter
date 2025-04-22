@@ -1,3 +1,4 @@
+using Org.BouncyCastle.Security;
 using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,7 @@ namespace SkyDragonHunter.Managers
         private static DungeonType s_DungeonType = DungeonType.Type1;
         private static int s_StageIndex;
         private static List<int> s_CrewSlots;
+        private static int[] s_ClearedStageIndex;
 
         // Temp
         private static int s_SlotCount = 4;
@@ -35,6 +37,7 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             s_CrewSlots = new List<int>(s_SlotCount);
+            s_ClearedStageIndex = new int[3];
         }
 
         public static void EnterDungeon(DungeonType dungeonType, int stageIndex)
@@ -49,6 +52,19 @@ namespace SkyDragonHunter.Managers
             dungeonType = s_DungeonType;
             stageIndex = s_StageIndex;
             return true;
+        }
+
+        public static void OnStageClear()
+        {
+            if(s_ClearedStageIndex[(int)s_DungeonType] < s_StageIndex)
+            {
+                s_ClearedStageIndex[(int)s_DungeonType] = s_StageIndex;
+            }
+        }
+
+        public static int GetClearedStage(DungeonType dungeonType)
+        {
+            return s_ClearedStageIndex[(int)dungeonType];
         }
 
         public static void RegisterCrew(int index, int id)

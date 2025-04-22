@@ -17,10 +17,9 @@ namespace SkyDragonHunter.Entities
         ATK,
         HP,
         DEF,
-        REG,        
+        REG,
         CritMultiplier,
     }
-
 
     public class NewCrewControllerBT : MonoBehaviour, ISlowable
     {
@@ -35,8 +34,8 @@ namespace SkyDragonHunter.Entities
         private float slowMultiplier;
         private float skillTimer;
         private float exhaustionTime = 10f;
-        private Vector2 airshipPos;        
-        [SerializeField] private bool isMounted;        
+        private Vector2 airshipPos;
+        [SerializeField] private bool isMounted;
 
         // Public Fields
         public bool IsMounted => isMounted;
@@ -68,9 +67,6 @@ namespace SkyDragonHunter.Entities
         public float AttackInterval => crewStatus.attackInterval;
         public float AggroRange => crewStatus.aggroRange;
         public float AttackRange => crewStatus.attackRange;
-        
-
-
         public float TargetDistance
         {
             get
@@ -248,7 +244,7 @@ namespace SkyDragonHunter.Entities
         }
 
         private void InitOnFieldCrewBT()
-        {            
+        {
             var rootSelector = new SelectorNode<NewCrewControllerBT>(this);
 
             //var skillSequence = new SequenceNode<NewCrewControllerBT>(this);

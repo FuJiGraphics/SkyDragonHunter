@@ -23,7 +23,7 @@ namespace SkyDragonHunter {
         protected override NodeStatus OnUpdate()
         {
             if (!m_Context.IsTargetInAttackRange)
-            {                
+            {
                 return NodeStatus.Failure;
             }
 
@@ -36,6 +36,12 @@ namespace SkyDragonHunter {
             }
 
             return NodeStatus.Running;
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            m_Context.ResetTarget();
         }
     } // Scope by class MonsterAttackAction
 
