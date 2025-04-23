@@ -10,6 +10,12 @@ using UnityEngine.UI;
 
 namespace SkyDragonHunter.UI {
 
+    public struct CrewNode
+    {
+        public GameObject crewNode;
+        public GameObject crewInstance;
+    }
+
     public class UICrewInfoPanel : MonoBehaviour
     {
         // 필드 (Fields)
@@ -49,7 +55,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private GameObject m_UiCrewListContent;
         [SerializeField] private GameObject m_UiCrewListNodePrefab;
 
-        private List<GameObject> m_CrewListNodeObjects;
+        private List<CrewNode> m_CrewListNodeObjects;
         private Button m_PrevClickButton = null;
 
         // 속성 (Properties)
@@ -62,7 +68,7 @@ namespace SkyDragonHunter.UI {
             {
                 if (m_CrewListNodeObjects != null)
                 {
-                    Button button = m_CrewListNodeObjects.First().gameObject.GetComponent<Button>();
+                    Button button = m_CrewListNodeObjects.First().crewNode.GetComponent<Button>();
                     button.onClick.Invoke();
                 }
             }
@@ -70,6 +76,7 @@ namespace SkyDragonHunter.UI {
             {
                 m_PrevClickButton.onClick.Invoke();
             }
+            SortedEquipCrewNode();
         }
 
         // Public 메서드
@@ -100,20 +107,20 @@ namespace SkyDragonHunter.UI {
         {
             if (m_CrewListNodeObjects == null)
             {
-                m_CrewListNodeObjects = new List<GameObject>();
+                m_CrewListNodeObjects = new List<CrewNode>();
             }
 
             if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewListNodePrefab);
-                m_CrewListNodeObjects.Add(nodeGo);
+                m_CrewListNodeObjects.Add(new CrewNode{ crewNode = nodeGo, crewInstance = crew });
                 if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
                 {
                     nodeIcon.sprite = provider.Icon;
                 }
                 if (nodeGo.TryGetComponent<Button>(out var nodeButton))
                 {
-                    nodeButton.onClick.AddListener(() => { 
+                    nodeButton.onClick.AddListener(() => {
                         SetName(provider.Name);
                         SetDamage(provider.Damage);
                         SetHealth(provider.Health);
@@ -129,6 +136,20 @@ namespace SkyDragonHunter.UI {
             else
             {
                 Debug.LogWarning("[UICrewInfoPanel]: ICrewInfoProvider를 찾을 수 없습니다.");
+            }
+        }
+
+        public void SortedEquipCrewNode()
+        {
+            foreach (var node in m_CrewListNodeObjects)
+            {
+                if (node.crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
+                {
+                    if (provider.IsEquip)
+                    {
+                        node.crewNode.transform.SetAsFirstSibling();
+                    }
+                }
             }
         }
         
