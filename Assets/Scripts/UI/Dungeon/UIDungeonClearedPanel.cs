@@ -112,7 +112,7 @@ namespace SkyDragonHunter
             {
                 Time.timeScale = 1f;
                 DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);
-                DungeonMgr.EnterDungeon(dungeonType, stageIndex);
+                DungeonMgr.EnterDungeon(dungeonType, stageIndex + 1);
             }
             else
             {
