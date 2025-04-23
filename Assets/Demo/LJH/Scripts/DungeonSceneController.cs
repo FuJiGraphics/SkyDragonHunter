@@ -235,6 +235,11 @@ namespace SkyDragonHunter
             destructableEvent.destructEvent.AddListener(OnStageClear);
         }
 
+        private void OnEvent(int a)
+        {
+
+        }
+
         private void SetStageType2()
         {
             m_StatMultiplier = 1;
