@@ -73,7 +73,6 @@ namespace SkyDragonHunter
             m_ClearedTimer -= Time.unscaledDeltaTime;
             int ceiled = Mathf.CeilToInt(m_ClearedTimer);
             m_TimerText.SetText(c_TimerTextFormat, ceiled);
-            Debug.Log($"{string.Format(c_TimerTextFormat, ceiled)}");
             if (m_ClearedTimer <= 0)
             {
                 OnClickExitButton();
