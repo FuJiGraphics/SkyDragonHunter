@@ -1,6 +1,7 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

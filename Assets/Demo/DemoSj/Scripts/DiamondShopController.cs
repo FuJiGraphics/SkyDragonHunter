@@ -1,4 +1,6 @@
 using SixLabors.ImageSharp.PixelFormats;
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.test;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,6 +69,7 @@ namespace SkyDragonHunter.test
         {
             RefreshCategory(currentCategory);
         }
+
         // Public 메서드
 
         // 외부 탭 버튼에서 호출되는 메서드

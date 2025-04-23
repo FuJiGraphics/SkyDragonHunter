@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Unity.VisualScripting;
+using SkyDragonHunter.Structs;
 
 namespace SkyDragonHunter.UI {
 
@@ -35,6 +36,7 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        // Public 메서드
         public void Init()
         {
             m_GenNodeMap = new Dictionary<int, List<UIMasteryNode>>();
@@ -66,7 +68,6 @@ namespace SkyDragonHunter.UI {
             DirtyMastery();
         }
 
-        // Public 메서드
         public void OnNodeLevelUp()
         {
             if (m_CilckedNode != null)

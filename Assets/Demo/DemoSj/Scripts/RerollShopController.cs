@@ -1,7 +1,10 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.test;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -35,6 +38,7 @@ namespace SkyDragonHunter {
         private List<RerollShopSlotHandler> slotHandlers = new();      // 슬롯 핸들러 리스트
         private List<RerollShopSlotState> currentSlotStates = new(); // 현재 상태 저장용
         private Coroutine autoRerollRoutine;                            // 자동 리롤 코루틴 참조
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -75,6 +79,7 @@ namespace SkyDragonHunter {
             if (autoRerollRoutine != null)
                 StopCoroutine(autoRerollRoutine);
         }
+
         // Public 메서드
 
         /// <summary>
