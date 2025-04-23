@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 namespace SkyDragonHunter
 {
-
     public class UIDungeonInfosPanel : MonoBehaviour
     {
         private const string c_TimerTextFormat = "<color=#FFFF00>남은 시간</color> {0}초";

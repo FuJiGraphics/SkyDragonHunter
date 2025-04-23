@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -406,6 +407,22 @@ namespace SkyDragonHunter
                 spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
                 var bt = spawned.GetComponent<NewMonsterControllerBT>();
                 bt.SetDataFromTable(tempId);
+
+                var destructableEvent = spawned.AddComponent<DestructableEvent>();
+                destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+                destructableEvent.destructEvent.AddListener(() =>
+                {
+                    var randVal = Random.Range(0, 1f);
+                    bool isGenerateDungenTicket = randVal < 0.2f;
+                    Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
+                    if(isGenerateDungenTicket)
+                    {
+                        ItemMgr.GetItem(ItemType.Ticket).ItemCount += 1;
+                        DungeonMgr.TicketCount++;
+                        Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {DungeonMgr.TicketCount}");
+                    }
+                });
+
                 currentEnemy.Add(spawned.gameObject);
                 currentSpawnMonsters++;
             }
