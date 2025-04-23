@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SkyDragonHunter {
-
+    
     public class DestructDeadAnimation : Destructable
     {
         private static int DeadHash = Animator.StringToHash("Dead");
@@ -15,8 +15,9 @@ namespace SkyDragonHunter {
             var animController = GetComponent<TestAniController>();
             var id = animController.ID;
             var instantiated = Instantiate(prefabLoader.GetRagdollAnimController(id), transform.position, transform.rotation);
+            instantiated.transform.localScale = transform.localScale;
             var animator = instantiated.GetComponent<Animator>();
-            if(animator != null )
+            if( animator != null )
             {
                 animator.enabled = true;
                 animator.SetTrigger(DeadHash);
