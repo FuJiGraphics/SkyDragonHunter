@@ -1,5 +1,8 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace SkyDragonHunter {
@@ -7,8 +10,10 @@ namespace SkyDragonHunter {
     public class FacilityPanelController : MonoBehaviour
     {
         // 필드 (Fields)
+        [Header("Facility Control Panel")]
         [SerializeField] private FacilitySystemMgr systemMgr;
         [SerializeField] private List<FacilitySlotHandler> slotHandlers;
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -24,6 +29,7 @@ namespace SkyDragonHunter {
             foreach (var slot in slotHandlers)
                 slot.UpdateUI();
         }
+
         // Public 메서드
         public void OnOpenFacilityPanel()
         {

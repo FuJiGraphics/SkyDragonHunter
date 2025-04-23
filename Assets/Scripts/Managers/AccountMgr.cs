@@ -31,12 +31,17 @@ namespace SkyDragonHunter.Managers
         public static AlphaUnit Coin
         {
             get => ItemMgr.GetItem(ItemType.Coin).ItemCount;
-            set => ItemMgr.GetItem(ItemType.Coin).ItemCount = value;
+            set
+            {
+                ItemMgr.GetItem(ItemType.Coin).ItemCount = value;
+                s_InGameMainFramePanel.CoinText = ItemMgr.GetItem(ItemType.Coin).ItemCount.ToString();
+            }
         }
         
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
         private static ISaveLoadHandler[] m_SaveLoadHandlers;
+        private static UIInGameMainFramePanel s_InGameMainFramePanel;
 
         // 이벤트 (Events)
         public static event Action onLevelUpEvents;
@@ -67,7 +72,10 @@ namespace SkyDragonHunter.Managers
             {
                 m_SaveLoadHandlers = GameMgr.FindObjects<ISaveLoadHandler>();
             }
-
+            if (s_InGameMainFramePanel == null)
+            {
+                s_InGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel");
+            }
         }
 
         public static void Release()

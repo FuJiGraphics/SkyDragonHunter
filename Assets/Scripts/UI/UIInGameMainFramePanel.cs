@@ -20,6 +20,11 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Image m_HpIcon;
         [SerializeField] private TextMeshProUGUI m_HpText;
 
+        [Header("Top Right Panel")]
+        [SerializeField] private TextMeshProUGUI m_CoinText;
+        [SerializeField] private TextMeshProUGUI m_DiamondText;
+        [SerializeField] private TextMeshProUGUI m_SpoilsText;
+
         // 속성 (Properties)
         public string Nickname { get => m_Nickname.text; set => m_Nickname.text = value; }
         public string Level { get => m_Level.text; set => m_Level.text = "Lv: " + value; }
@@ -30,12 +35,16 @@ namespace SkyDragonHunter.UI {
         public Image HpIcon { get => m_HpIcon; set => m_HpIcon = value; }
         public string HpText { get => m_HpText.text; set => m_HpText.text = value; }
 
+        public string CoinText { get => m_CoinText.text; set => m_CoinText.text = value; }
+        public string DiamondText { get => m_DiamondText.text; set => m_DiamondText.text = value; }
+        public string SpoilsText { get => m_SpoilsText.text; set => m_SpoilsText.text = value; }
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
         // Private 메서드
         // Others
-    
+
     } // Scope by class UIInGameMainFramePanel
 } // namespace SkyDragonHunter
