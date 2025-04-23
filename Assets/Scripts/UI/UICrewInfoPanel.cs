@@ -1,5 +1,6 @@
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter.UI {
-
-    public struct CrewNode
-    {
-        public GameObject crewNode;
-        public GameObject crewInstance;
-    }
 
     public class UICrewInfoPanel : MonoBehaviour
     {
@@ -148,6 +143,21 @@ namespace SkyDragonHunter.UI {
                     if (provider.IsEquip)
                     {
                         node.crewNode.transform.SetAsFirstSibling();
+                    }
+                }
+            }
+        }
+
+        public void SetClickNode(GameObject crewInstance)
+        {
+            foreach (var node in m_CrewListNodeObjects)
+            {
+                if (node.crewNode.TryGetComponent<Button>(out var button))
+                {
+                    if (node.crewInstance == crewInstance)
+                    {
+                        button.onClick.Invoke();
+                        m_PrevClickButton = button;
                     }
                 }
             }

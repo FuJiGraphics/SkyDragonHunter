@@ -3,6 +3,7 @@ using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Test;
 using Spine;
 using System;
 using System.Collections.Generic;
@@ -92,7 +93,8 @@ namespace SkyDragonHunter.UI {
 
         private List<GameObject> m_CrewPickNodeObjects;
         private GameObject m_PrevClickedCrew;
-        private CrewEquipmentController m_AirshipEquipController; 
+        private CrewEquipmentController m_AirshipEquipController;
+        private List<CrewNode> m_CrewListNodeObjects;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -130,12 +132,24 @@ namespace SkyDragonHunter.UI {
             {
                 m_CrewPickNodeObjects = new List<GameObject>();
             }
+            if (m_CrewListNodeObjects == null)
+            {
+                m_CrewListNodeObjects = new List<CrewNode>();
+            }
 
             if (crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewPickNodePrefab);
                 m_CrewPickNodeObjects.Add(nodeGo);
                 nodeGo.name = provider.Name + "(Slot)";
+
+                m_CrewListNodeObjects.Add(new CrewNode { crewNode = nodeGo, crewInstance = crewInstance });
+                if (nodeGo.TryGetComponent<UICrewInfoNode>(out var crewInfoNode))
+                {
+                    GameObject target = crewInstance;
+                    crewInfoNode.UIDetailsButton.onClick.AddListener(
+                        () => { OnClickedNodeDetails(target); });
+                }
                 if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
                 {
                     nodeIcon.sprite = provider.Icon;
@@ -149,6 +163,8 @@ namespace SkyDragonHunter.UI {
                         nodeButton.onClick.AddListener(() =>
                         {
                             m_PrevClickedCrew = crewGo;
+                            ClearAllNodeDetails();
+                            crewInfoNode.UIDetails.SetActive(true);
                         });
                         nodeGo.transform.SetParent(m_UiCrewPickContent.transform);
                         nodeGo.transform.localScale = Vector3.one;
@@ -276,6 +292,28 @@ namespace SkyDragonHunter.UI {
                 }
             }
             return result;
+        }
+
+        private void ClearAllNodeDetails()
+        {
+            foreach (var node in m_CrewListNodeObjects)
+            {
+                if (node.crewNode.TryGetComponent<UICrewInfoNode>(out var crewNode))
+                {
+                    crewNode.UIDetails.SetActive(false);
+                }
+            }
+        }
+
+        private void OnClickedNodeDetails(GameObject targetCrew)
+        {
+            var ui = GameMgr.FindObject<UiMgr>("UiMgr");
+            ui.AllPanelsOff();
+            ui.characterInfoPanel.SetActive(true);
+            if (ui.characterInfoPanel.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
+            {
+                crewInfoPanel.SetClickNode(targetCrew);
+            }
         }
 
         // Others
