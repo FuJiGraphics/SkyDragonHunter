@@ -298,6 +298,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            fortressPickPanels[4].SetActive(false);
             panelBackGroundImage.SetActive(false);
 
         }
@@ -309,6 +310,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            fortressPickPanels[4].SetActive(false);
             panelBackGroundImage.SetActive(false);
         }
 
@@ -319,6 +321,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            fortressPickPanels[4].SetActive(false);
             panelBackGroundImage.SetActive(false);
         }
 
@@ -329,6 +332,17 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[0].SetActive(false);
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
+            fortressPickPanels[4].SetActive(false);
+            panelBackGroundImage.SetActive(true);
+        }
+        public void OnFortressPickPanel4()
+        {
+            AllPanelsOff();
+            fortressPickPanels[4].SetActive(true);
+            fortressPickPanels[0].SetActive(false);
+            fortressPickPanels[1].SetActive(false);
+            fortressPickPanels[2].SetActive(false);
+            fortressPickPanels[3].SetActive(false);
             panelBackGroundImage.SetActive(true);
         }
 
