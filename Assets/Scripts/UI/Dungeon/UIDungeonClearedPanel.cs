@@ -103,6 +103,9 @@ namespace SkyDragonHunter
             else
             {
                 Debug.LogError($"Insufficient Dungeon Ticket");
+                Time.timeScale = 1f;
+                DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);
+                DungeonMgr.EnterDungeon(dungeonType, stageIndex);
             }
         }
 
@@ -117,6 +120,9 @@ namespace SkyDragonHunter
             else
             {
                 Debug.LogError($"Insufficient Dungeon Ticket");
+                Time.timeScale = 1f;
+                DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);
+                DungeonMgr.EnterDungeon(dungeonType, stageIndex + 1);
             }
         }
 
