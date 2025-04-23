@@ -64,6 +64,7 @@ namespace SkyDragonHunter
         private bool changeSuccess = true;
         private Coroutine coroutine;
         private Dictionary<Image, Color> waveSliderOriginalColors = new Dictionary<Image, Color>();
+        private Dictionary<Image, Color> bossSliderOriginalColors = new Dictionary<Image, Color>();
 
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
@@ -110,6 +111,7 @@ namespace SkyDragonHunter
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
             CacheWaveSliderColors();
+            CacheBossSliderColors();
             if (currentMissionLevel >= 1 && currentZonelLevel > 1)
             {
                 OnGoToLoadCurrentWave();
@@ -435,6 +437,7 @@ namespace SkyDragonHunter
 
             waveSlider.gameObject.SetActive(false);
             bossSlider.gameObject.SetActive(true);
+            RestoreBossSliderColors();
 
             int tempId = 300_001;
             var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
@@ -677,6 +680,31 @@ namespace SkyDragonHunter
                 if (name == "Background" || name == "Fill" || name == "Handle")
                 {
                     waveSliderOriginalColors[image] = image.color;
+                }
+            }
+        }
+
+        private void CacheBossSliderColors()
+        {
+            bossSliderOriginalColors.Clear();
+            foreach (Image image in bossSlider.GetComponentsInChildren<Image>())
+            {
+                string name = image.gameObject.name;
+                if (name == "HealthBackground" || name == "HealthFill" ||
+                    name == "TimerBackground" || name == "TimerFill")
+                {
+                    bossSliderOriginalColors[image] = image.color;
+                }
+            }
+        }
+
+        private void RestoreBossSliderColors()
+        {
+            foreach (var kv in bossSliderOriginalColors)
+            {
+                if (kv.Key != null)
+                {
+                    kv.Key.color = kv.Value;
                 }
             }
         }
