@@ -26,18 +26,26 @@ namespace SkyDragonHunter
         public static int instanceNo = 0;
 
         // 필드 (Fields)
-        public Slider waveSlider;
-        public TextMeshProUGUI waveLevelText;
-        public GameObject clearPanel;
-        public GameObject feildPanel;
-        public GameObject backGround;
-        public BackGroundController backGroundController;
-        public GameObject airship;
-        public GameObject monster;
-        public GameObject boss;
-        public BoxCollider2D spawnArea;
-        public float maxWaveTime;
+        [SerializeField] private Slider waveSlider;
+        [SerializeField] private TextMeshProUGUI waveLevelText;
+        [SerializeField] private GameObject clearPanel;
+        [SerializeField] private GameObject feildPanel;
+        [SerializeField] private GameObject backGround;
+        [SerializeField] private BackGroundController backGroundController;
+        [SerializeField] private GameObject airship;
+        [SerializeField] private GameObject monster;
+        [SerializeField] private GameObject boss;
+        [SerializeField] private BoxCollider2D spawnArea;
+        [SerializeField] private float maxWaveTime;
+        [SerializeField] private float bossTimer;
         [SerializeField] private List<GameObject> currentEnemy;
+        [SerializeField] private Sprite[] TestBackGround;
+        [SerializeField] private Sprite[] TestBackGroundMid;
+        [SerializeField] private Sprite[] TestBackGroundFront;
+        [SerializeField] private int spawnableMonsters = 10;
+        public Slider bossSlider;
+        public int CurrentTriedZonelLevel => currentZonelLevel;
+        public int CurrentTriedMissionLevel => currentMissionLevel;
         private float oldAllSpeed;
         private float currentWaveTime;
         private float inpiniteModSpawnDelay = 3;
@@ -45,14 +53,6 @@ namespace SkyDragonHunter
         private bool isStopped;
         private bool isCanSpawn;
         private bool isSuccessChangeBackGround;
-
-        // 테스트용
-        public Sprite[] TestBackGround;
-        public Sprite[] TestBackGroundMid;
-        public Sprite[] TestBackGroundFront;
-        public int spawnableMonsters = 10;
-        public bool isInfiniteMode { get; private set; } = false;
-        public bool isRewardSet { get; private set; } = false;
         private int backGroundIndex;
         private int currentMissionLevel = 1;
         private int currentZonelLevel = 1;
@@ -63,14 +63,11 @@ namespace SkyDragonHunter
         private StageInfo stageInfo;
         private bool changeSuccess = true;
         private Coroutine coroutine;
-        // 테스트용
-        // Test drop
+        private Dictionary<Image, Color> waveSliderOriginalColors = new Dictionary<Image, Color>();
 
-
-        // Test drop
         // 속성 (Properties)
-        public int CurrentTriedZonelLevel => currentZonelLevel;
-        public int CurrentTriedMissionLevel => currentMissionLevel;
+        public bool isInfiniteMode { get; private set; } = false;
+        public bool isRewardSet { get; private set; } = false;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -101,6 +98,7 @@ namespace SkyDragonHunter
             waveSlider.minValue = 0;
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
+            bossSlider.gameObject.SetActive(false);
             isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
@@ -111,6 +109,7 @@ namespace SkyDragonHunter
             //OnSaveLastClearWave();
             OnTestWaveFailedUnActive();
             SpwanAreaPositionSet();
+            CacheWaveSliderColors();
             if (currentMissionLevel >= 1 && currentZonelLevel > 1)
             {
                 OnGoToLoadCurrentWave();
@@ -149,7 +148,7 @@ namespace SkyDragonHunter
 
         public void OnOffInfiniteMod()
         {
-            if (isSuccessChangeBackGround)
+            if (isSuccessChangeBackGround && changeSuccess)
             {
                 if (isInfiniteMode)
                 {
@@ -252,7 +251,7 @@ namespace SkyDragonHunter
                     currentOpenPanel = 0f;
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
-
+                   
                     OnChangeBackGround(currentZonelLevel - 1);
                     // TODO: 데이터 세이브
                     AccountMgr.SaveUserData();
@@ -289,7 +288,6 @@ namespace SkyDragonHunter
             currentZonelLevel = lastTriedZonelLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
-            OnFadeSlider();
         }
 
         private void OnSetCurrentWave()
@@ -301,7 +299,6 @@ namespace SkyDragonHunter
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
-            OnFadeSlider();
         }
 
         private void OnGoSelectCurrentWave()
@@ -312,7 +309,6 @@ namespace SkyDragonHunter
             isInfiniteMode = true;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
-            OnFadeSlider();
         }
 
         private void OnGoToLoadCurrentWave()
@@ -331,7 +327,6 @@ namespace SkyDragonHunter
             }
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentZonelLevel - 1);
-            OnFadeSlider();
         }
 
         private void OnSaveLastClearWave()
@@ -438,6 +433,9 @@ namespace SkyDragonHunter
             //currentSpawnMonsters++;
             //isCanSpawn = false;
 
+            waveSlider.gameObject.SetActive(false);
+            bossSlider.gameObject.SetActive(true);
+
             int tempId = 300_001;
             var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
             Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
@@ -457,38 +455,31 @@ namespace SkyDragonHunter
         private void OnUnActiveClearPanel()
         {
             clearPanel.SetActive(false);
-            OnFadeSlider();
             isRewardSet = false;
             // ItemMgr.Reset();
         }
 
-        private void OnFadeSlider()
+        private void OnFadeInSlider()
         {
-            //foreach (Transform child in waveSlider.transform)
-            //{
-            //    Image childImage = child.GetComponent<Image>();
-            //    if (childImage != null)
-            //    {
-            //        if (childImage.gameObject.name == "Background")
-            //        {
-            //           StartCoroutine(WaveSliderFade(childImage));
-            //        }
-            //        else if (childImage.gameObject.name == "Fill")
-            //        {
-            //           StartCoroutine(WaveSliderFade(childImage));
-            //        }
-            //        else if (childImage.gameObject.name == "Handle")
-            //        {
-            //           StartCoroutine(WaveSliderFade(childImage));
-            //        }
-            //    }
-            //}
             foreach (Image image in waveSlider.GetComponentsInChildren<Image>())
             {
                 string name = image.gameObject.name;
                 if (name == "Background" || name == "Fill" || name == "Handle")
                 {
                     StartCoroutine(WaveSliderFade(image));
+                }
+            }
+        }
+
+        private void OnFadeOutSlider()
+        {
+            foreach (Image image in bossSlider.GetComponentsInChildren<Image>())
+            {
+                string name = image.gameObject.name;
+                if (name == "HealthBackground" || name == "HealthFill" || 
+                    name == "TimerBackground" || name == "TimerFill")
+                {
+                    StartCoroutine(BossSliderFadeOut(image));
                 }
             }
         }
@@ -555,20 +546,16 @@ namespace SkyDragonHunter
 
 
         // Others
-
-        IEnumerator WaveSliderFade(Image ctrl)
+        IEnumerator BossSliderFadeOut(Image ctrl)
         {
             if (ctrl == null) yield break;
+
             changeSuccess = false;
-            var ctrlR = ctrl.color.r;
-            var ctrlG = ctrl.color.g;
-            var ctrlB = ctrl.color.b;
-            var ctrlA = ctrl.color.a;
-            Color from = new Color(ctrlR, ctrlG, ctrlB, ctrlA); // 밝은 상태 (흰색)
-            Color to = new Color(0, 0, 0, 1);   // 검정색
+
+            Color from = ctrl.color;
+            Color to = new Color(0, 0, 0, 1);
             float duration = 1.5f;
 
-            // 1. 페이드 아웃
             float t = 0f;
             while (t < 1f)
             {
@@ -577,18 +564,60 @@ namespace SkyDragonHunter
                 yield return null;
             }
 
-            waveSlider.value = 0;
+            ctrl.color = to;
 
-            // 2. 페이드 인
-            t = 0f;
+            // 슬라이더 비활성화는 페이드 아웃 후 한 번만 처리
+            if (ctrl.transform == bossSlider.transform.Find("HealthBackground"))
+            {
+                bossSlider.gameObject.SetActive(false);
+            }
+        }
+
+        //IEnumerator BossTimerSliderFadeOut(Image ctrl)
+        //{
+        //    if (ctrl == null) yield break;
+        //    changeSuccess = false;
+        //    var ctrlR = ctrl.color.r;
+        //    var ctrlG = ctrl.color.g;
+        //    var ctrlB = ctrl.color.b;
+        //    var ctrlA = ctrl.color.a;
+        //    Color from = new Color(ctrlR, ctrlG, ctrlB, ctrlA); // 밝은 상태 (흰색)
+        //    Color to = new Color(0, 0, 0, 1);   // 검정색
+        //    float duration = 1.5f;
+
+        //    // 1. 페이드 아웃
+        //    float t = 0f;
+        //    while (t < 1f)
+        //    {
+        //        t += Time.deltaTime / duration;
+        //        ctrl.color = Color.Lerp(from, to, t);
+        //        yield return null;
+        //    }
+        //}
+
+        IEnumerator WaveSliderFade(Image ctrl)
+        {
+            if (ctrl == null || !waveSliderOriginalColors.ContainsKey(ctrl)) yield break;
+
+            changeSuccess = false;
+
+            waveSlider.gameObject.SetActive(true);
+
+            Color from = new Color(0f, 0f, 0f, 1f); // 검정에서 시작
+            Color to = waveSliderOriginalColors[ctrl]; // 원래 색상으로 복원
+            ctrl.color = from;
+
+            float duration = 1.5f;
+            float t = 0f;
+
             while (t < 1f)
             {
                 t += Time.deltaTime / duration;
-                ctrl.color = Color.Lerp(to, from, t);
+                ctrl.color = Color.Lerp(from, to, t);
                 yield return null;
             }
 
-            ctrl.color = from;
+            ctrl.color = to;
         }
 
         IEnumerator ChangeBackgroundWithFade(SpriteRenderer ctrl, int backGroundIndex)
@@ -599,7 +628,7 @@ namespace SkyDragonHunter
             Color from = new Color(1, 1, 1, 1); // 밝은 상태 (흰색)
             Color to = new Color(0, 0, 0, 1);   // 검정색
             float duration = 1.5f;
-
+            OnFadeOutSlider();
             // 1. 페이드 아웃
             float t = 0f;
             while (t < 1f)
@@ -608,6 +637,7 @@ namespace SkyDragonHunter
                 ctrl.color = Color.Lerp(from, to, t);
                 yield return null;
             }
+
 
             // 2. 배경 이미지 변경
             if (ctrl.gameObject.name == "BackGround")
@@ -623,6 +653,7 @@ namespace SkyDragonHunter
                 ctrl.sprite = TestBackGroundFront[backGroundIndex];
             }
 
+            OnFadeInSlider();
             // 3. 페이드 인
             t = 0f;
             while (t < 1f)
@@ -635,6 +666,19 @@ namespace SkyDragonHunter
             ctrl.color = from;
             changeSuccess = true;
             isSuccessChangeBackGround = true;
+        }
+
+        private void CacheWaveSliderColors()
+        {
+            waveSliderOriginalColors.Clear();
+            foreach (Image image in waveSlider.GetComponentsInChildren<Image>())
+            {
+                string name = image.gameObject.name;
+                if (name == "Background" || name == "Fill" || name == "Handle")
+                {
+                    waveSliderOriginalColors[image] = image.color;
+                }
+            }
         }
 
 

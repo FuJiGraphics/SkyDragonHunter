@@ -2,7 +2,6 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using System;
 using TMPro;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;

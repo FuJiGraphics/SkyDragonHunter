@@ -74,7 +74,14 @@ namespace SkyDragonHunter.Test
             else
             {
                 waveRetryButton.SetActive(false);
-                waveSlider.SetActive(true);
+                if (!waveControlerScript.bossSlider.gameObject.activeSelf)
+                {
+                    waveSlider.SetActive(true);
+                }
+                else
+                {
+                    waveSlider.SetActive(false);
+                }
             }
 
             if (waveControlerScript.isRewardSet)
