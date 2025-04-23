@@ -22,8 +22,12 @@ namespace SkyDragonHunter.Managers
         private static List<int> s_CrewSlots;
         private static int[] s_ClearedStageIndex;
 
+        // Public Fields
+        public static int[] m_DungeonStageCounts = { 5, 6, 7 };
+
         // Temp
         private static int s_SlotCount = 4;
+        public static int TicketCount;
 
         // Properties
         public static List<int> CrewSlots => s_CrewSlots;
@@ -60,6 +64,7 @@ namespace SkyDragonHunter.Managers
             {
                 s_ClearedStageIndex[(int)s_DungeonType] = s_StageIndex;
             }
+            TicketCount--;
         }
 
         public static int GetClearedStage(DungeonType dungeonType)

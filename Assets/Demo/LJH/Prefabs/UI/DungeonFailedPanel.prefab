@@ -129,7 +129,7 @@ MonoBehaviour:
   m_MinHeight: -1
   m_PreferredWidth: 0
   m_PreferredHeight: -1
-  m_FlexibleWidth: 5
+  m_FlexibleWidth: 4
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
 --- !u!1 &221187723515115565
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1080,7 +1080,7 @@ GameObject:
   - component: {fileID: 9118236532208306378}
   - component: {fileID: 3368947387245306711}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TicketText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1650,7 +1650,7 @@ GameObject:
   - component: {fileID: 9139985166645239009}
   - component: {fileID: 3101465311169309767}
   m_Layer: 5
-  m_Name: Text
+  m_Name: DiaText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2111,7 +2111,7 @@ MonoBehaviour:
   m_MinHeight: -1
   m_PreferredWidth: 0
   m_PreferredHeight: -1
-  m_FlexibleWidth: 72
+  m_FlexibleWidth: 67
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
 --- !u!1 &4886331034485976815
@@ -2126,7 +2126,7 @@ GameObject:
   - component: {fileID: 7451968729334143879}
   - component: {fileID: 7464188373789943949}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GoldText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2798,6 +2798,11 @@ MonoBehaviour:
   m_NextRoundButton: {fileID: 1725991016492348586}
   m_DungeonInfo: {fileID: 6161568685621769585}
   m_AutoExitText: {fileID: 4657442494179178482}
+  m_GoldText: {fileID: 7464188373789943949}
+  m_DiamondText: {fileID: 3101465311169309767}
+  m_TicketText: {fileID: 3368947387245306711}
+  m_StageInfo: {fileID: 6161568685621769585}
+  m_TimerText: {fileID: 4657442494179178482}
 --- !u!1 &5990392308718007938
 GameObject:
   m_ObjectHideFlags: 0

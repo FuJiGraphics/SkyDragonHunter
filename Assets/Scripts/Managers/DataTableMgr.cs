@@ -21,7 +21,6 @@ namespace SkyDragonHunter.Managers
         public static DefaultGrowthTable DefaultGrowthTable => Get<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
         public static ItemTable ItemTable => Get<ItemTable>(DataTableIds.Item);
 
-
         // Static Constructor
         static DataTableMgr()
         {

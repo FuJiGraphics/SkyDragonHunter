@@ -194,7 +194,7 @@ namespace SkyDragonHunter
             var airshipGo = GameMgr.FindObject("Airship");
             var airshipTempDestructable = airshipGo.GetComponent<AirshipTempDestructible>();
             if(airshipTempDestructable != null)
-            {
+            {                
                 Destroy(airshipTempDestructable);
             }
 
@@ -260,9 +260,11 @@ namespace SkyDragonHunter
         private void OnStageClear()
         {
             if (m_DungeonType == DungeonType.Type1)
-                m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);
+                m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);            
+            ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount -= 1;
             m_UIMgr.EnableClearedPanel(true);
             DungeonMgr.OnStageClear();
+            
             m_Cleared = true;
         }
 

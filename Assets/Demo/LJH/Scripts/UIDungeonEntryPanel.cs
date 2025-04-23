@@ -95,7 +95,7 @@ namespace SkyDragonHunter
                 stageButton.SetLevel(m_SelectedDungeonType, i + 1);
                 stageButton.AddListener(() =>
                 {
-                    m_SelectedDungeonIndex = stageButton.Level;                    
+                    m_SelectedDungeonIndex = stageButton.Level;
                     OnSelectLevel();
                 });
                 stageButton.OnSelectStage(0);
@@ -112,7 +112,15 @@ namespace SkyDragonHunter
             {
                 stage.OnSelectStage(m_SelectedDungeonIndex);
             }
-            m_EnterButton.interactable = true;
+
+            if(ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount > 0)
+            {
+                m_EnterButton.interactable = true;
+            }
+            else
+            {
+                m_EnterButton.interactable = false;
+            }
         }
     } // Scope by class UIDungeonEntryPanel
 
