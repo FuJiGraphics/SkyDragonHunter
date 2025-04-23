@@ -33,6 +33,6 @@ namespace SkyDragonHunter.Tables
     public class MonsterTable : DataTable<MonsterData>
     {
 
-    } // Scope by class CrystalLevelTable
+    }
 
 } // namespace Root
