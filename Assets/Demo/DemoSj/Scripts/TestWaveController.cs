@@ -2,10 +2,12 @@ using SkyDragonHunter.Entities;
 using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -38,12 +40,14 @@ namespace SkyDragonHunter
         [SerializeField] private BoxCollider2D spawnArea;
         [SerializeField] private float maxWaveTime;
         [SerializeField] private float bossTimer;
+        private const float c_InitialBossTimer = 40f;
         [SerializeField] private List<GameObject> currentEnemy;
         [SerializeField] private Sprite[] TestBackGround;
         [SerializeField] private Sprite[] TestBackGroundMid;
         [SerializeField] private Sprite[] TestBackGroundFront;
         [SerializeField] private int spawnableMonsters = 10;
         public Slider bossSlider;
+        public Slider bossTimerSlider;
         public int CurrentTriedZonelLevel => currentZonelLevel;
         public int CurrentTriedMissionLevel => currentMissionLevel;
         private float oldAllSpeed;
@@ -86,6 +90,9 @@ namespace SkyDragonHunter
             {
                 infiniteWaveUpdate();
             }
+            // TODO: LJH
+            UpdateBossSliders();
+            // ~TODO
         }
 
         // Public 메서드
@@ -223,12 +230,12 @@ namespace SkyDragonHunter
             if (currentWaveTime >= 1f && currentWaveTime <= 2f && isCanSpawn
                 || currentWaveTime >= 6f && currentWaveTime <= 7f && isCanSpawn)
             {
-                OnSpwanMonster();
+                OnSpawnMonster();
             }
 
             if (currentWaveTime >= 10f && isCanSpawn)
             {
-                OnSpwanBoss();
+                OnSpawnBoss();
             }
 
             if (currentWaveTime >= 10f && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
@@ -277,7 +284,7 @@ namespace SkyDragonHunter
 
             if (currentWaveTime > inpiniteModSpawnDelay && isCanSpawn)
             {
-                OnSpwanMonster();
+                OnSpawnMonster();
             }
         }
 
@@ -370,7 +377,7 @@ namespace SkyDragonHunter
             }
         }
 
-        private void OnSpwanMonster()
+        private void OnSpawnMonster()
         {
             // Original Code
             //for (int i = 0; i < spawnableMonsters; i++)
@@ -415,7 +422,6 @@ namespace SkyDragonHunter
                     if(isGenerateDungenTicket)
                     {
                         ItemMgr.GetItem(ItemType.Ticket).ItemCount += 1;
-                        DungeonMgr.TicketCount++;
                         Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {DungeonMgr.TicketCount}");
                     }
                 });
@@ -428,13 +434,14 @@ namespace SkyDragonHunter
             isCanSpawn = false;
         }
 
-        private void OnSpwanBoss()
+        private void OnSpawnBoss()
         {
             //GameObject spawned = Instantiate(boss, GetRandomSpawnAreaInPosition(), Quaternion.identity);
             //currentEnemy.Add(spawned);
             //currentSpawnMonsters++;
             //isCanSpawn = false;
 
+            bossTimer = c_InitialBossTimer;
             waveSlider.gameObject.SetActive(false);
             bossSlider.gameObject.SetActive(true);
             RestoreBossSliderColors();
@@ -443,6 +450,14 @@ namespace SkyDragonHunter
             var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
             Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
             var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), bossSpawnPos, Quaternion.identity);
+
+            AlphaUnit newHP = 20000;
+            int stage = 0;
+            stage += (currentMissionLevel - 1) * 20;
+            stage += currentZonelLevel;
+            float multiplier = Mathf.Pow(5, stage);
+            var bossBT = spawned.GetComponent<NewBossControllerBT>();
+            bossBT.MaxHP = newHP * multiplier;
 
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;
@@ -709,6 +724,35 @@ namespace SkyDragonHunter
             }
         }
 
+        // TODO: LJH
+        private void UpdateBossSliders()
+        {
+            if (!bossSlider.gameObject.activeSelf)
+                return;
+            bossTimer -= Time.deltaTime;
+            if(bossTimer < 0)
+            {
+                bossTimer = 0;
+                OnTestWaveFailedActive();
+            }
+            bossTimerSlider.value = bossTimer / c_InitialBossTimer;
+
+            var bossGo = currentEnemy.Last();
+            if (bossGo == null)
+            {
+                bossSlider.value = 0;
+                return;
+            }
+            
+            var bossBT = bossGo.GetComponent<NewBossControllerBT>();
+            if (bossBT == null)
+                return;
+
+            var sb = new StringBuilder();
+            float hpPercentage = (float)bossBT.HP.Value / (float)bossBT.MaxHP.Value;
+            bossSlider.value = hpPercentage;
+        }
+        // ~TODO
 
     } // Scope by class TestWaveController
 

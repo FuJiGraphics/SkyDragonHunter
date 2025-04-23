@@ -17,6 +17,7 @@ namespace SkyDragonHunter
 
         private MonsterPrefabLoader m_MonsterPrefabLoader;
         [SerializeField] private Transform m_BossSpawnPosition;
+        [SerializeField] private Transform m_SandbagSpawnPosition;
         [SerializeField] private Transform[] m_MonsterSpawnPositions;
 
         private NewBossControllerBT m_CachedBoss;
@@ -259,7 +260,25 @@ namespace SkyDragonHunter
 
         private void SetStageType3()
         {
+            var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(300004), m_SandbagSpawnPosition.position, Quaternion.identity);
+            
+            m_CachedBoss = boss.GetComponent<NewBossControllerBT>();
+            var health = m_CachedBoss.MaxHP;
+            for (int i = 1; i < m_StageIndex; ++i)
+            {
+                health *= 25;
+            }
+            m_CachedBoss.MaxHP = health;            
 
+            m_InitialTimeLimit = 40f;
+            m_RemainingTime = m_InitialTimeLimit;
+
+            var destructableEvent = m_CachedBoss.AddComponent<DestructableEvent>();
+            if (destructableEvent.destructEvent == null)
+            {
+                destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+            }
+            destructableEvent.destructEvent.AddListener(OnStageClear);
         }
 
         private void OnStageClear()
