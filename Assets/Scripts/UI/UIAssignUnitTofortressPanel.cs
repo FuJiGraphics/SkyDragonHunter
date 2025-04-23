@@ -31,6 +31,9 @@ namespace SkyDragonHunter.UI {
         public TextMeshProUGUI damageText;
         public Image armorIcon;
         public TextMeshProUGUI armorText;
+        public GameObject detailsAndUnequipGo;
+        public Button details;
+        public Button unequip;
 
         public void ResetSlot()
         {
@@ -90,6 +93,7 @@ namespace SkyDragonHunter.UI {
         [Header("Crew Pick Panel Settings")]
         [SerializeField] private GameObject m_UiCrewPickContent;
         [SerializeField] private GameObject m_UiCrewPickNodePrefab;
+        [SerializeField] private GameObject m_UiAllEquipArrows;
 
         private List<GameObject> m_CrewPickNodeObjects;
         private GameObject m_PrevClickedCrew;
@@ -100,6 +104,14 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnEnable()
+        {
+            m_UiAllEquipArrows.SetActive(false);
+            ClearAllNodeDetailsAndUnequipPanels();
+            ClearAllNodeDetails();
+            m_PrevClickedCrew = null;
+        }
+
         // Public 메서드
         public void Init()
         {
@@ -162,9 +174,11 @@ namespace SkyDragonHunter.UI {
                         GameObject crewGo = crewInstance;
                         nodeButton.onClick.AddListener(() =>
                         {
+                            ClearAllNodeDetailsAndUnequipPanels();
                             m_PrevClickedCrew = crewGo;
                             ClearAllNodeDetails();
                             crewInfoNode.UIDetails.SetActive(true);
+                            m_UiAllEquipArrows.SetActive(true);
                         });
                         nodeGo.transform.SetParent(m_UiCrewPickContent.transform);
                         nodeGo.transform.localScale = Vector3.one;
@@ -251,14 +265,63 @@ namespace SkyDragonHunter.UI {
             foreach (var slot in m_MountSlots)
             {
                 UIEquipmentMountSlot currentSlot = slot;
+
+                currentSlot.details.onClick.AddListener(() =>
+                {
+                    ClearAllNodeDetailsAndUnequipPanels();
+                    if (currentSlot.crewInstance != null)
+                    {
+                        OnClickedNodeDetails(currentSlot.crewInstance);
+                    }
+                    else
+                    {
+                        Debug.LogError("[UIAssignUnitTofortressPanel]: Crew Instance is null!");
+                    }
+                });
+
+                currentSlot.unequip.onClick.AddListener(() =>
+                {
+                    ClearAllNodeDetailsAndUnequipPanels();
+                    if (currentSlot.crewInstance != null)
+                    {
+                        UnequipCrew(currentSlot.crewInstance);
+                    }
+                    else
+                    {
+                        Debug.LogError("[UIAssignUnitTofortressPanel]: Crew Instance is null!");
+                    }
+                });
+
+                // 장착 슬롯 버튼 이벤트 추가하는 곳
                 slot.mountSlotButton.onClick.AddListener(() =>
                 {
-                    if (m_PrevClickedCrew != null && slot.crewInstance != m_PrevClickedCrew)
+                    ClearAllNodeDetails();
+                    m_UiAllEquipArrows.SetActive(false);
+                    if (m_PrevClickedCrew == null && slot.crewInstance != null)
                     {
+                        bool active = currentSlot.detailsAndUnequipGo.activeSelf;
+                        ClearAllNodeDetailsAndUnequipPanels();
+                        currentSlot.detailsAndUnequipGo.SetActive(!active);
+                    }
+                    else if (m_PrevClickedCrew != null && slot.crewInstance != m_PrevClickedCrew)
+                    {
+                        ClearAllNodeDetailsAndUnequipPanels();
                         EquipCrew(slot, m_PrevClickedCrew);
                         m_PrevClickedCrew = null;
                     }
+                    else
+                    {
+                        m_PrevClickedCrew = null;
+                    }
                 });
+            }
+        }
+
+        private void ClearAllNodeDetailsAndUnequipPanels()
+        {
+            foreach (var slot in m_MountSlots)
+            {
+                slot.detailsAndUnequipGo.SetActive(false);
             }
         }
 
@@ -278,7 +341,6 @@ namespace SkyDragonHunter.UI {
                 }
             }
         }
-
 
         private UIEquipmentMountSlot FindSlotCrew(GameObject crewInstance)
         {
