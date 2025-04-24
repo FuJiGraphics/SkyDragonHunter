@@ -519,7 +519,7 @@ namespace SkyDragonHunter
             {
                 backGroundIndex = 9;
             }
-
+            clearPanel.SetActive(false);
             foreach (Transform child in backGround.transform)
             {
                 SpriteRenderer ctrl = child.GetComponent<SpriteRenderer>();
