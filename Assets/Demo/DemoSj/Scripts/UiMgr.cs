@@ -13,6 +13,11 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject codexBonusStats;
+        public GameObject codexTreasureInfo;
+        public GameObject rankTab;
+        public GameObject addToCodexInfo;
+        public GameObject treasureCodexPanel;
         public GameObject treasureEquipmentSlot;
         public GameObject treasureFusion;
         public GameObject treasureInfo;
@@ -116,7 +121,31 @@ namespace SkyDragonHunter.Test
             panelBackGroundImage.SetActive(false);
         }
 
-        
+        public void OnTreasureCodexPanel()
+        {
+            AllPanelsOff();
+            treasureCodexPanel.SetActive(true);
+            SetTreasureCodexPanel();
+            panelBackGroundImage.SetActive(false);
+        }
+
+        public void OnOffAddToCodexInfo()
+        {
+            if (addToCodexInfo.activeSelf)
+            {
+                addToCodexInfo.SetActive(false);
+                codexTreasureInfo.SetActive(false);
+                rankTab.SetActive(true);
+                codexBonusStats.SetActive(true);
+            }
+            else
+            {
+                addToCodexInfo.SetActive(true);
+                codexTreasureInfo.SetActive(true);
+                rankTab.SetActive(false);
+                codexBonusStats.SetActive(false);
+            }
+        }
 
         public void OnOffTreasureEquipmentSlot()
         {
@@ -457,7 +486,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
             SetTreasureEquipmentPanel();
-            panelBackGroundImage.SetActive(true);
+            panelBackGroundImage.SetActive(false);
         }
 
         public void OnPickPanel0()
@@ -544,7 +573,7 @@ namespace SkyDragonHunter.Test
 
             if (!isHideQuestPanel)
             {
-                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -270f, 0.5f));
+                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -350f, 0.5f));
                 isHideQuestPanel = true;
             }
             else
@@ -631,6 +660,7 @@ namespace SkyDragonHunter.Test
             masteryPanelPicks.SetActive(false);
             facilityPanelPanel.SetActive(false);
             inventoryPanel.SetActive(false);
+            treasureCodexPanel.SetActive(false);
             foreach (var panel in pickPanels)
             {
                 panel.SetActive(false);
@@ -644,6 +674,14 @@ namespace SkyDragonHunter.Test
             {
                 panel?.SetActive(false);
             }
+        }
+
+        private void SetTreasureCodexPanel()
+        {
+            addToCodexInfo.SetActive(false);
+            codexTreasureInfo.SetActive(false);
+            rankTab.SetActive(true);
+            codexBonusStats.SetActive(true);
         }
 
         private void SetTreasureEquipmentPanel()
