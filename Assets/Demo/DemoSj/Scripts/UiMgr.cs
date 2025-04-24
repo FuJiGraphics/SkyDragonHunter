@@ -13,6 +13,16 @@ namespace SkyDragonHunter.Test
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
+        public GameObject treasureEquipmentSlot;
+        public GameObject treasureFusion;
+        public GameObject treasureInfo;
+        public GameObject treasureCodexButton;
+        public GameObject fusionDeselectAllButton;
+        public GameObject treasureSelectErro;
+        public GameObject treasureFusionWarning;
+        public GameObject treasureFusionSuccessInfo;
+        public GameObject[] FusionButtons;
+        //
         public GameObject inventoryPanel;
         public GameObject panelBackGroundImage;
         public GameObject facilityPanelPanel;
@@ -41,6 +51,7 @@ namespace SkyDragonHunter.Test
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;
+        private bool isHideFusionButtons = true;
         private bool isHideInventoryPanel = true;
         private bool isHideFacilityLevelUpPanel = true;
         private bool isHideDungeonEntryPanel = true;
@@ -103,6 +114,121 @@ namespace SkyDragonHunter.Test
             inGameWaveInfoPanel.SetActive(true);
             questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
+        }
+
+        public void OnOffTreasureEquipmentSlot()
+        {
+            if (treasureEquipmentSlot.activeSelf)
+            {
+                treasureEquipmentSlot.SetActive(false);
+            }
+            else
+            {
+                treasureEquipmentSlot.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureFusion()
+        {
+            if (treasureFusion.activeSelf)
+            {
+                treasureFusion.SetActive(false);
+            }
+            else
+            {
+                treasureFusion.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureInfo()
+        {
+            if (treasureInfo.activeSelf)
+            {
+                treasureInfo.SetActive(false);
+            }
+            else
+            {
+                treasureInfo.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureCodexButton()
+        {
+            if (treasureCodexButton.activeSelf)
+            {
+                treasureCodexButton.SetActive(false);
+            }
+            else
+            {
+                treasureCodexButton.SetActive(true);
+            }
+        }
+
+        public void OnOffFusionDeselectAllButton()
+        {
+            if (fusionDeselectAllButton.activeSelf)
+            {
+                fusionDeselectAllButton.SetActive(false);
+            }
+            else
+            {
+                fusionDeselectAllButton.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureSelectErro()
+        {
+            if (treasureSelectErro.activeSelf)
+            {
+                treasureSelectErro.SetActive(false);
+            }
+            else
+            {
+                treasureSelectErro.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureFusionWarning()
+        {
+            if (treasureFusionWarning.activeSelf)
+            {
+                treasureFusionWarning.SetActive(false);
+            }
+            else
+            {
+                treasureFusionWarning.SetActive(true);
+            }
+        }
+
+        public void OnOffTreasureFusionSuccessInfo()
+        {
+            if (treasureFusionSuccessInfo.activeSelf)
+            {
+                treasureFusionSuccessInfo.SetActive(false);
+            }
+            else
+            {
+                treasureFusionSuccessInfo.SetActive(true);
+            }
+        }
+
+        public void OnOffFusionButtons()
+        {
+            if (isHideFusionButtons)
+            {
+                FusionButtons[0].SetActive(true);
+                FusionButtons[1].SetActive(true);
+                FusionButtons[2].SetActive(true);
+                isHideFusionButtons = false;
+            }
+            else
+            {
+                FusionButtons[0].SetActive(false);
+                FusionButtons[1].SetActive(false);
+                FusionButtons[2].SetActive(false);
+                isHideFusionButtons = true;
+
+            }
         }
 
         public void OnOffInventoryPanel()
