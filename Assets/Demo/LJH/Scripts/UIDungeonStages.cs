@@ -64,8 +64,8 @@ namespace SkyDragonHunter {
                 sb.Append("Cleared!");
                 m_ClearedText.text = sb.ToString();
             }
-            m_RecommendedAtkText.text = m_RecommendedAtk.ToString();
-            m_RecommendedHpText.text = m_RecommendedHp.ToString();
+            m_RecommendedAtkText.text = m_RecommendedAtk.ToUnit();
+            m_RecommendedHpText.text = m_RecommendedHp.ToUnit();
             sb.Clear();
             sb.Append(m_Level);
             sb.Append("´Ü°è");

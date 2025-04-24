@@ -40,9 +40,9 @@ namespace SkyDragonHunter.Gameplay {
 
         public string Title => m_CrewTitle;
         public string Name => m_CrewName;
-        public string Damage => m_Status.Damage.ToString();
-        public string Health => m_Status.Health.ToString();
-        public string Defense => m_Status.Armor.ToString();
+        public string Damage => m_Status.Damage.ToUnit();
+        public string Health => m_Status.Health.ToUnit();
+        public string Defense => m_Status.Armor.ToUnit();
         public Sprite Preview => m_CrewPreview;
         public Sprite Icon => m_CrewIcon;
         public bool IsMounted => m_Controller.IsMounted;

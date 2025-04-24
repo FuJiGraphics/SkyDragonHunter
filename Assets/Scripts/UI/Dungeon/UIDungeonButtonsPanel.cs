@@ -1,7 +1,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     public class UIDungeonButtonsPanel : MonoBehaviour
     {

@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace SkyDragonHunter
-{
+namespace SkyDragonHunter.UI {
+
     public class DungeonSceneController : MonoBehaviour
     {
         // Fields
@@ -297,7 +297,7 @@ namespace SkyDragonHunter
                 m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);
             if (m_DungeonType == DungeonType.Type3)
                 m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedSandbag.MaxHP);
-            ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount -= 1;
+            AccountMgr.Ticket -= 1;
             m_UIMgr.EnableClearedPanel(true);
             DungeonMgr.OnStageClear();
             

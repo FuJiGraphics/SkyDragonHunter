@@ -55,12 +55,12 @@ namespace SkyDragonHunter.UI {
         private void Init()
         {
             m_GenNodes = new List<GameObject>();
-            var items = ItemMgr.GetItemList();
+            var items = ItemTable.ToList();
             foreach (var item in items)
             {
                 AddItemNode(item);
             }
-            m_CoinText.text = AccountMgr.Coin.ToString();
+            m_CoinText.text = AccountMgr.Coin.ToUnit();
 
             if (m_GenNodes[0].TryGetComponent<UIItemNode>(out var itemNode))
             {
@@ -68,7 +68,7 @@ namespace SkyDragonHunter.UI {
             }
         }
         
-        private void AddItemNode(Item item)
+        private void AddItemNode(ItemData item)
         {
             var itemNode = Instantiate<UIItemNode>(m_ItemNodePrefab);
             itemNode.Init(item);
@@ -88,10 +88,10 @@ namespace SkyDragonHunter.UI {
             m_SelectIcon.sprite = clickedNode.ItemIcon;
             m_SelectTitleText.text = clickedNode.ItemName;
             m_SelectDescText.text = clickedNode.ItemDesc;
-            if (clickedNode.Item.UnitType == ItemUnit.Number)
-                m_SelectCountText.text = clickedNode.Item.ItemCount.Value.ToString();
+            if (clickedNode.UnitType == ItemUnit.Number)
+                m_SelectCountText.text = AccountMgr.ItemCount(clickedNode.ItemType).ToString();
             else
-                m_SelectCountText.text = clickedNode.Item.ItemCount.ToString();
+                m_SelectCountText.text = AccountMgr.ItemCount(clickedNode.ItemType).ToUnit();
         }
         
         private void UpdateCoinState()
@@ -99,8 +99,8 @@ namespace SkyDragonHunter.UI {
             if (m_CurrentCoin != AccountMgr.Coin)
             {
                 m_CurrentCoin = AccountMgr.Coin;
-                m_CoinText.text = AccountMgr.Coin.ToString();
-            }
+                m_CoinText.text = AccountMgr.Coin.ToUnit();
+            }   
         }
 
         private void ClearSelectOutline()

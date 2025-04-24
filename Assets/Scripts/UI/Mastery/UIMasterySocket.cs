@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter.UI {
 
-    public enum MasterySockeyType
+    public enum MasterySocketType
     {
         Damage = 0, 
         Health = 1, 
@@ -33,7 +33,7 @@ namespace SkyDragonHunter.UI {
         public int ID { get; private set; }
         public string SocketName { get; private set; }
         public string Description { get; private set; }
-        public MasterySockeyType Type { get; private set; } = MasterySockeyType.Damage;
+        public MasterySocketType Type { get; private set; } = MasterySocketType.Damage;
         public BigInteger Stat { get; private set; }
         public double Multiplier { get; private set; }
         public int NextID { get; private set; }
@@ -83,7 +83,7 @@ namespace SkyDragonHunter.UI {
                 ID = newData.ID;
                 SocketName = newData.SocketName;
                 Description = newData.Description;
-                Type = (MasterySockeyType)newData.StatType;
+                Type = (MasterySocketType)newData.StatType;
                 Stat = BigInteger.Parse(newData.Stat);
                 Multiplier = newData.Multiplier;
                 NextID = newData.NextSocketID;
@@ -104,7 +104,7 @@ namespace SkyDragonHunter.UI {
             ID = newData.ID;
             SocketName = newData.SocketName;
             Description = newData.Description;
-            Type = (MasterySockeyType)newData.StatType;
+            Type = (MasterySocketType)newData.StatType;
             Stat = BigInteger.Parse(newData.Stat);
             NextID = newData.NextSocketID;
             m_MaxLevelCount = CalculateNextLevelCount();

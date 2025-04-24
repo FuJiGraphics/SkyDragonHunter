@@ -98,7 +98,7 @@ namespace SkyDragonHunter
                 if (AccountMgr.Coin < currentPrice)
                 {
                     var diff = currentPrice - AccountMgr.Coin.Value;
-                    DrawableMgr.Dialog("알림", $"골드가 부족합니다. = {new AlphaUnit(diff).ToString()}");
+                    DrawableMgr.Dialog("알림", $"골드가 부족합니다. = {new AlphaUnit(diff).ToUnit()}");
                     Debug.Log("골드 부족으로 구매 불가");
                     return;
                 }
@@ -114,8 +114,7 @@ namespace SkyDragonHunter
                     return;
                 }
                 AccountMgr.Diamond -= currentPrice;
-            }
-
+            } 
 
             if (slotState.currentCount <= 0)
             {

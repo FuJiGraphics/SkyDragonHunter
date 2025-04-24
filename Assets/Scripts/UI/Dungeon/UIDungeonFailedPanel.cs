@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using SkyDragonHunter.Managers;
 using System.Text;
 
-namespace SkyDragonHunter
+namespace SkyDragonHunter.UI
 {
     public class UIDungeonFailedPanel : MonoBehaviour
     {
@@ -53,9 +53,9 @@ namespace SkyDragonHunter
         // Private Methods
         private void SetDisplayedContents()
         {
-            m_GoldText.text = ItemMgr.GetItem(Gameplay.ItemType.Coin).ItemCount.ToString();
-            m_DiamondText.text = ItemMgr.GetItem(Gameplay.ItemType.Diamond).ItemCount.ToString();
-            m_TicketText.text = ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount.ToString();
+            m_GoldText.text = AccountMgr.Coin.ToUnit();
+            m_DiamondText.text = AccountMgr.Diamond.ToString();
+            m_TicketText.text = AccountMgr.Ticket.ToString();
             m_ClearedTimer = 3f;
 
             m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.CeilToInt(m_ClearedTimer));

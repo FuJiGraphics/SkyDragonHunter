@@ -108,7 +108,7 @@ namespace SkyDragonHunter.UI{
             set
             {
                 m_NextStat = value;
-                nextStatText.text = m_NextStat.ToString();
+                nextStatText.text = m_NextStat.ToUnit();
                 UpdatetStatText(nextStatText, ref m_NextStat);
             }
         }
@@ -118,7 +118,7 @@ namespace SkyDragonHunter.UI{
             set
             {
                 m_NeedCoin = value;
-                needCoinText.text = m_NeedCoin.ToString();
+                needCoinText.text = m_NeedCoin.ToUnit();
             }
         }
         public AlphaUnit StatIncrease
@@ -165,7 +165,7 @@ namespace SkyDragonHunter.UI{
             levelText.text = levelTextFormat + m_CurrentLevel.ToString();
             UpdatetStatText(currStatText, ref m_CurrentStat);
             UpdatetStatText(nextStatText, ref m_NextStat);
-            needCoinText.text = m_NeedCoin.ToString();
+            needCoinText.text = m_NeedCoin.ToUnit();
             UpdateLevelUpArrowState();
         }
 
@@ -233,15 +233,15 @@ namespace SkyDragonHunter.UI{
         {
             if (StatType == GrowthStatType.Attack)
             {
-                textUGUI.text = (AccountMgr.Crystal.IncreaseDamage + stats).ToString();
+                textUGUI.text = (AccountMgr.Crystal.IncreaseDamage + stats).ToUnit();
             }
             else if (StatType == GrowthStatType.Health)
             {
-                textUGUI.text = (AccountMgr.Crystal.IncreaseHealth + stats).ToString();
+                textUGUI.text = (AccountMgr.Crystal.IncreaseHealth + stats).ToUnit();
             }
             else
             {
-                textUGUI.text = stats.ToString();
+                textUGUI.text = stats.ToUnit();
             }
         }
 

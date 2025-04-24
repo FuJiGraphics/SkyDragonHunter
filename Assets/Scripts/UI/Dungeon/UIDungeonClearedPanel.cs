@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter 
+namespace SkyDragonHunter.UI
 {
     public class UIDungeonClearedPanel : MonoBehaviour
     {
@@ -54,9 +54,9 @@ namespace SkyDragonHunter
         // Private Methods
         private void SetDisplayedContents()
         {
-            m_GoldText.text = ItemMgr.GetItem(Gameplay.ItemType.Coin).ItemCount.ToString();
-            m_DiamondText.text = ItemMgr.GetItem(Gameplay.ItemType.Diamond).ItemCount.ToString();
-            m_TicketText.text = ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount.ToString();
+            m_GoldText.text = AccountMgr.Coin.ToUnit();
+            m_DiamondText.text = AccountMgr.Diamond.ToString();
+            m_TicketText.text = AccountMgr.Ticket.ToString();
             m_ClearedTimer = 3f;
 
             m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.CeilToInt(m_ClearedTimer));
@@ -94,7 +94,7 @@ namespace SkyDragonHunter
 
         private void OnClickRetryButton()
         {
-            if (ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount > 0)
+            if (AccountMgr.Ticket > 0)
             {
                 Time.timeScale = 1f;
                 DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);
@@ -111,7 +111,7 @@ namespace SkyDragonHunter
 
         private void OnClickNextLevelButton()
         {
-            if (ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount > 0)
+            if (AccountMgr.Ticket > 0)
             {
                 Time.timeScale = 1f;
                 DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);

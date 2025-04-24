@@ -7,16 +7,19 @@ using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
 
-namespace SkyDragonHunter.Managers
-{
+namespace SkyDragonHunter.Managers {
+
     public static class AccountMgr
     {
         // 필드 (Fields)
+        private static Dictionary<ItemType, AlphaUnit> s_HeldItems;
+
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<string, GameObject> s_CollectedCanons; // 인스턴스
-        private static Dictionary<MasterySockeyType, List<UIMasterySocket>> s_CollectedSockets;
+        private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
 
         // 속성 (Properties)
         public static string Nickname { get; set; } = "Default";
@@ -26,27 +29,55 @@ namespace SkyDragonHunter.Managers
         public static CommonStats AccountStats { get; private set; }
         public static CommonStats DefaultGrowthStats { get; set; }
         public static Crystal Crystal { get; private set; }
-        public static GameObject[] Canons => s_CollectedCanons?.Values.ToArray();
-        public static Dictionary<MasterySockeyType, List<UIMasterySocket>> SocketMap => s_CollectedSockets;
+
         public static AlphaUnit Coin
         {
-            get => ItemMgr.GetItem(ItemType.Coin).ItemCount;
+            get
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Coin))
+                    s_HeldItems.Add(ItemType.Coin, 0);
+                return s_HeldItems[ItemType.Coin];
+            }
             set
             {
-                ItemMgr.GetItem(ItemType.Coin).ItemCount = value;
-                s_InGameMainFramePanel.CoinText = ItemMgr.GetItem(ItemType.Coin).ItemCount.ToString();
+                if (!s_HeldItems.ContainsKey(ItemType.Coin))
+                    s_HeldItems.Add(ItemType.Coin, 0);
+                s_HeldItems[ItemType.Coin] = value;
             }
         }
+
         public static AlphaUnit Diamond
         {
-            get => ItemMgr.GetItem(ItemType.Diamond).ItemCount;
-            set
+            get 
             {
-                ItemMgr.GetItem(ItemType.Diamond).ItemCount = value;
-                s_InGameMainFramePanel.DiamondText = ItemMgr.GetItem(ItemType.Diamond).ItemCount.ToString();
+                if (!s_HeldItems.ContainsKey(ItemType.Diamond))
+                    s_HeldItems.Add(ItemType.Diamond, 0);
+                return s_HeldItems[ItemType.Diamond];
+            }
+            set 
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Diamond))
+                    s_HeldItems.Add(ItemType.Diamond, 0);
+                s_HeldItems[ItemType.Diamond] = value;
             }
         }
-        
+
+        public static AlphaUnit Ticket
+        {
+            get
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Ticket))
+                    s_HeldItems.Add(ItemType.Ticket, 0);
+                return s_HeldItems[ItemType.Ticket];
+            }
+            set
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Ticket))
+                    s_HeldItems.Add(ItemType.Ticket, 0);
+                s_HeldItems[ItemType.Ticket] = value;
+            }
+        }
+
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
         private static ISaveLoadHandler[] m_SaveLoadHandlers;
@@ -68,7 +99,9 @@ namespace SkyDragonHunter.Managers
             DefaultGrowthStats.ResetAllZero();
 
             s_CollectedCanons = new Dictionary<string, GameObject>();
-            s_CollectedSockets = new Dictionary<MasterySockeyType, List<UIMasterySocket>>();
+            s_CollectedSockets = new Dictionary<MasterySocketType, List<UIMasterySocket>>();
+
+            s_HeldItems = new Dictionary<ItemType, AlphaUnit>();
         }
 
         public static void LateInit()
@@ -97,6 +130,9 @@ namespace SkyDragonHunter.Managers
             onLevelUpEvents = null;
             m_CrystalLevelUpHandlers = null;
         }
+
+        public static AlphaUnit ItemCount(ItemType type)
+            => s_HeldItems[type];
 
         public static void LoadLevel(int id)
         {
@@ -157,8 +193,8 @@ namespace SkyDragonHunter.Managers
             {
                 inGameMainFramePanel.Level = prevLevelData.Level.ToString();
             }
-            inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
-            inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+            inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
+            inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
             #endregion
 
             #region 레벨 업 핸들러 이벤트 호출
@@ -169,6 +205,69 @@ namespace SkyDragonHunter.Managers
             #endregion
 
             SaveUserData();
+        }
+
+        public static CommonStats GetSocketStat()
+        {
+            CommonStats result = new CommonStats();
+            result.ResetAllZero();
+
+            var socketMap = s_CollectedSockets;
+            foreach (var socketList in socketMap)
+            {
+                foreach (var socket in socketList.Value)
+                {
+                    switch (socket.Type)
+                    {
+                        case MasterySocketType.Damage:
+                            result.SetMaxDamage(socket.Stat);
+                            break;
+                        case MasterySocketType.Health:
+                            result.SetMaxHealth(socket.Stat);
+                            break;
+                        case MasterySocketType.Armor:
+                            result.SetMaxArmor(socket.Stat);
+                            break;
+                        case MasterySocketType.Resilient:
+                            result.SetMaxResilient(socket.Stat);
+                            break;
+                        case MasterySocketType.CriticalMultiplier:
+                            result.SetCriticalMultiplier((float)socket.Multiplier);
+                            break;
+                        case MasterySocketType.BossDamageMultiplier:
+                            result.SetBossDamageMultiplier((float)socket.Multiplier);
+                            break;
+                        case MasterySocketType.SkillEffectMultiplier:
+                            result.SetSkillEffectMultiplier((float)socket.Multiplier);
+                            break;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static CommonStats GetCanonHoldStats()
+        {
+            var canons = s_CollectedCanons.Values.ToArray();
+            CommonStats stats = new CommonStats();
+            for (int i = 0; i < canons.Length; ++i)
+            {
+                if (canons[i].TryGetComponent<CanonBase>(out var canonBase))
+                {
+                    var data = canonBase.CanonData;
+                    if (i == 0)
+                    {
+                        stats.SetMaxDamage(data.canHoldATK);
+                        stats.SetMaxArmor(data.canHoldDEF);
+                    }
+                    else
+                    {
+                        stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(data.canHoldATK));
+                        stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(data.canHoldDEF));
+                    }
+                }
+            }
+            return stats;
         }
 
         public static void OnSocketLevelUp()
@@ -182,8 +281,8 @@ namespace SkyDragonHunter.Managers
             // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
             onLevelUpEvents?.Invoke();
             var inGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel");
-            inGameMainFramePanel.AtkText = (Crystal.IncreaseDamage + DefaultGrowthStats.MaxDamage).ToString();
-            inGameMainFramePanel.HpText = (Crystal.IncreaseHealth + DefaultGrowthStats.MaxHealth).ToString();
+            inGameMainFramePanel.AtkText = (Crystal.IncreaseDamage + DefaultGrowthStats.MaxDamage).ToUnit();
+            inGameMainFramePanel.HpText = (Crystal.IncreaseHealth + DefaultGrowthStats.MaxHealth).ToUnit();
         }
 
         // Private 메서드
@@ -379,8 +478,8 @@ namespace SkyDragonHunter.Managers
                 {
                     inGameMainFramePanel.Nickname = comp.nickname;
                     inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
-                    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToString();
-                    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToString();
+                    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
+                    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
                 }
                 #endregion
 

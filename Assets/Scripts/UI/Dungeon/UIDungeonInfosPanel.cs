@@ -5,8 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter
-{
+namespace SkyDragonHunter.UI {
+
     public class UIDungeonInfosPanel : MonoBehaviour
     {
         private const string c_TimerTextFormat = "<color=#FFFF00>남은 시간</color> {0}초";
@@ -41,9 +41,9 @@ namespace SkyDragonHunter
         public void SetDungeonProgress(AlphaUnit bossHP, AlphaUnit bossMaxHP)
         {
             var sb = new StringBuilder();
-            sb.Append(bossHP.ToString());
+            sb.Append(bossHP.ToUnit());
             sb.Append(" / ");
-            sb.Append(bossMaxHP.ToString());
+            sb.Append(bossMaxHP.ToUnit());
             m_ProgressText.text = sb.ToString();
 
             float hpPercentage = (float)bossHP.Value / (float)bossMaxHP.Value;

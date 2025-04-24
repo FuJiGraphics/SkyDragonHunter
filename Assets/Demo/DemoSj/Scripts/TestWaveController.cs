@@ -421,7 +421,7 @@ namespace SkyDragonHunter
                     //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
                     if(isGenerateDungenTicket)
                     {
-                        ItemMgr.GetItem(ItemType.Ticket).ItemCount += 1;
+                        AccountMgr.Ticket += 1;
                         Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {DungeonMgr.TicketCount}");
                     }
                 });

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     public class UIDungeonPausedPanel : MonoBehaviour
     {

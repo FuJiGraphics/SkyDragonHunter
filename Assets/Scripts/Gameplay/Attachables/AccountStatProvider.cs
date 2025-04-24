@@ -21,7 +21,6 @@ namespace SkyDragonHunter.Gameplay {
         private CharacterStatus m_Stats;
         private CanonExecutor m_CanonExecutor;
         private CanonBase m_CurrentEpCanonInstance;
-        private CommonStats m_SocketStats;
         private bool m_IsInitialized = false;
 
         // 이벤트 (Events)
@@ -30,18 +29,18 @@ namespace SkyDragonHunter.Gameplay {
         public void MergedAccountStatsForCharacter()
         {
             CommonStats accStats = AccountMgr.AccountStats;
-            CommonStats canonHoldStats = GetCanonHoldStats();
-            m_SocketStats = GetCalculateSocketStats();
+            CommonStats canonHoldStats = AccountMgr.GetCanonHoldStats();
+            CommonStats socketStats = AccountMgr.GetSocketStat();
 
             AlphaUnit prevLostHealth = m_Stats.MaxHealth - m_Stats.Health;
 
-            var mergeDamage = (accStats.MaxDamage.Value + m_SocketStats.MaxDamage.Value + AccountMgr.DefaultGrowthStats.MaxDamage);
-            var mergeHealth = (accStats.MaxHealth.Value + m_SocketStats.MaxHealth.Value + AccountMgr.DefaultGrowthStats.MaxHealth);
-            var mergeArmor = (accStats.MaxArmor.Value + m_SocketStats.MaxArmor.Value + AccountMgr.DefaultGrowthStats.MaxArmor);
-            var mergeRes = accStats.MaxResilient.Value + m_SocketStats.MaxResilient.Value + AccountMgr.DefaultGrowthStats.MaxResilient;
-            var mergeCriMul = (accStats.CriticalMultiplier + m_SocketStats.CriticalMultiplier + AccountMgr.DefaultGrowthStats.CriticalMultiplier);
-            var mergeBossDamMul = (accStats.BossDamageMultiplier + m_SocketStats.BossDamageMultiplier);
-            var mergeSkillMul = (accStats.SkillEffectMultiplier + m_SocketStats.SkillEffectMultiplier);
+            var mergeDamage = (accStats.MaxDamage.Value + socketStats.MaxDamage.Value + AccountMgr.DefaultGrowthStats.MaxDamage);
+            var mergeHealth = (accStats.MaxHealth.Value + socketStats.MaxHealth.Value + AccountMgr.DefaultGrowthStats.MaxHealth);
+            var mergeArmor = (accStats.MaxArmor.Value + socketStats.MaxArmor.Value + AccountMgr.DefaultGrowthStats.MaxArmor);
+            var mergeRes = accStats.MaxResilient.Value + socketStats.MaxResilient.Value + AccountMgr.DefaultGrowthStats.MaxResilient;
+            var mergeCriMul = (accStats.CriticalMultiplier + socketStats.CriticalMultiplier + AccountMgr.DefaultGrowthStats.CriticalMultiplier);
+            var mergeBossDamMul = (accStats.BossDamageMultiplier + socketStats.BossDamageMultiplier);
+            var mergeSkillMul = (accStats.SkillEffectMultiplier + socketStats.SkillEffectMultiplier);
 
             // 곱연산
             m_Stats.MaxDamage = m_FirstStats.MaxDamage.Value * mergeDamage;
@@ -123,70 +122,6 @@ namespace SkyDragonHunter.Gameplay {
             AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
 
             MergedAccountStatsForCharacter();
-        }
-
-        private CommonStats GetCanonHoldStats()
-        {
-            var canons = AccountMgr.Canons;
-            CommonStats stats = new CommonStats();
-            for (int i = 0; i < canons.Length; ++i)
-            {
-                if (canons[i].TryGetComponent<CanonBase>(out var canonBase))
-                {
-                    var data = canonBase.CanonData;
-                    if (i == 0)
-                    {
-                        stats.SetMaxDamage(data.canHoldATK);
-                        stats.SetMaxArmor(data.canHoldDEF);
-                    }
-                    else
-                    {
-                        stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(data.canHoldATK));
-                        stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(data.canHoldDEF));
-                    }
-                }
-            }
-            return stats;
-        }
-
-        private CommonStats GetCalculateSocketStats()
-        {
-            CommonStats result = new CommonStats();
-            result.ResetAllZero();
-
-            var socketMap = AccountMgr.SocketMap;
-            foreach (var socketList in socketMap)
-            {
-                foreach (var socket in socketList.Value)
-                {
-                    switch (socket.Type)
-                    {
-                        case MasterySockeyType.Damage:
-                            result.SetMaxDamage(socket.Stat);
-                            break;
-                        case MasterySockeyType.Health:
-                            result.SetMaxHealth(socket.Stat);
-                            break;
-                        case MasterySockeyType.Armor:
-                            result.SetMaxArmor(socket.Stat);
-                            break;
-                        case MasterySockeyType.Resilient:
-                            result.SetMaxResilient(socket.Stat);
-                            break;
-                        case MasterySockeyType.CriticalMultiplier:
-                            result.SetCriticalMultiplier((float)socket.Multiplier);
-                            break;
-                        case MasterySockeyType.BossDamageMultiplier:
-                            result.SetBossDamageMultiplier((float)socket.Multiplier);
-                            break;
-                        case MasterySockeyType.SkillEffectMultiplier:
-                            result.SetSkillEffectMultiplier((float)socket.Multiplier);
-                            break;
-                    }
-                }
-            }
-
-            return result;
         }
 
         // Others

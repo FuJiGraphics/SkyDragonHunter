@@ -28,11 +28,11 @@ namespace SkyDragonHunter {
 
             if (attack.isCritical)
             {
-                DrawableMgr.Text(transform.position, "Cri:" + attack.damage.ToString(), Color.red);
+                DrawableMgr.Text(transform.position, "Cri:" + attack.damage.ToUnit(), Color.red);
             }
             else
             {
-                DrawableMgr.Text(transform.position,  attack.damage.ToString());
+                DrawableMgr.Text(transform.position,  attack.damage.ToUnit());
             }
 
             m_DamageReceiver.TakeDamage(attacker, attack.damage);

@@ -173,8 +173,8 @@ namespace SkyDragonHunter.UI {
 
         private void UpdateAirshipAndAccountInfo()
         {
-            m_AttackInfoText.text = m_AirshipStats.MaxDamage.ToString();
-            m_HealthInfoText.text = m_AirshipStats.MaxHealth.ToString();
+            m_AttackInfoText.text = m_AirshipStats.MaxDamage.ToUnit();
+            m_HealthInfoText.text = m_AirshipStats.MaxHealth.ToUnit();
             m_AccountNicknameText.text = AccountMgr.Nickname;
             m_AccountLevelText.text = AccountMgr.CurrentLevel.ToString();
         }

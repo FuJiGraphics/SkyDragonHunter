@@ -31,20 +31,20 @@ namespace SkyDragonHunter {
             if (isCrystal)
             {
                 if (isHp)
-                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseHealth.ToString();
+                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseHealth.ToUnit();
                 else
-                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseDamage.ToString();
+                    m_Text.text = m_StringBase + AccountMgr.Crystal.IncreaseDamage.ToUnit();
             }
             else
             {
                 if (isHp)
-                    m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxHealth.ToString() + " + "
-                        + AccountMgr.Crystal.IncreaseDamage.ToString() + " = "
-                        + m_Stat.MaxHealth.ToString();
+                    m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxHealth.ToUnit() + " + "
+                        + AccountMgr.Crystal.IncreaseDamage.ToUnit() + " = "
+                        + m_Stat.MaxHealth.ToUnit();
                 else
-                    m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxDamage.ToString() + " + "
-                        + AccountMgr.Crystal.IncreaseHealth.ToString() + " = "
-                        + m_Stat.MaxDamage.ToString();
+                    m_Text.text = m_StringBase + m_AccProvider.FirstStat.MaxDamage.ToUnit() + " + "
+                        + AccountMgr.Crystal.IncreaseHealth.ToUnit() + " = "
+                        + m_Stat.MaxDamage.ToUnit();
             }
         }
 

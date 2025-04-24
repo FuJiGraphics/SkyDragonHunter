@@ -61,8 +61,8 @@ namespace SkyDragonHunter.UI {
 
                 if (crewGo.TryGetComponent<CharacterStatus>(out var stat))
                 {
-                    damageText.text = stat.Damage.ToString();
-                    armorText.text = stat.Armor.ToString();
+                    damageText.text = stat.Damage.ToUnit();
+                    armorText.text = stat.Armor.ToUnit();
                 }
                 else
                 {

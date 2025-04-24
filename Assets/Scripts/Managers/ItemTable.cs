@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Managers {
 
-    public static class ItemMgr
+    public static class ItemTable
     {
         // 필드 (Fields)
         private static readonly int s_StartTableID = 101;
         private static readonly int s_EndTableID = 103;
-        private static Dictionary<ItemType, Item> s_CollectedItems;
-        private static List<Item> s_SortedItems;
+        private static Dictionary<ItemType, ItemData> s_ItemMap;
+        private static List<ItemData> s_SortedItems;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -20,38 +20,27 @@ namespace SkyDragonHunter.Managers {
         // Public 메서드
         public static void Init()
         {
-            s_CollectedItems = new Dictionary<ItemType, Item>();
-            s_SortedItems = new List<Item>();
+            s_ItemMap = new Dictionary<ItemType, ItemData>();
+            s_SortedItems = new List<ItemData>();
             for (int tableId = s_StartTableID; tableId <= s_EndTableID; ++tableId)
             {
-                var item = new Item(tableId);
-                s_CollectedItems.Add(item.Type, item);
+                var item = new ItemData(tableId);
+                s_ItemMap.Add(item.Type, item);
                 s_SortedItems.Add(item);
             }
         }
 
         public static void Release()
         {
-            if (s_CollectedItems == null)
+            if (s_ItemMap == null)
                 return;
-            s_CollectedItems.Clear();
+            s_ItemMap.Clear();
         }
 
-        public static Item GetItem(ItemType type)
-        {
-            Item result = null;
-            if (s_CollectedItems.TryGetValue(type, out var item))
-            {
-                result = item;
-            }
-            else
-            {
-                Debug.LogWarning($"[ItemMgr]: 아이템을 찾을 수 없습니다. {type}");
-            }
-            return result;
-        }
+        public static ItemData Get(ItemType type)
+            => s_ItemMap[type];
 
-        public static Item[] GetItemList() 
+        public static ItemData[] ToList() 
             => s_SortedItems.ToArray();
 
         // Private 메서드

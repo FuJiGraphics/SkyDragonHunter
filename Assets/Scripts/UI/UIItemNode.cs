@@ -15,25 +15,33 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Button m_ItemClickButton;
         [SerializeField] private GameObject m_SelectOutline;
 
-        private Item m_Item;
+        private ItemData m_Item;
 
         // 속성 (Properties)
-        public Item Item => m_Item;
         public Sprite ItemIcon => m_ItemIcon.sprite;
         public string ItemName => m_Item.Name;
         public string ItemDesc => m_Item.Desc;
         public ItemType ItemType => m_Item.Type;
+        public ItemUnit UnitType => m_Item.UnitType;
         public Button ClickButton => m_ItemClickButton;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
-        public void Init(Item item)
+        public void Init(ItemData item)
         {
             m_Item = item;
             m_ItemIcon.sprite = item.Icon;
-            m_ItemCountText.text = item.ItemCount.ToString();
+            switch (item.UnitType)
+            {
+                case ItemUnit.Number:
+                    m_ItemCountText.text = AccountMgr.ItemCount(ItemType).ToString();
+                    break;
+                case ItemUnit.AlphaUnit:
+                    m_ItemCountText.text = AccountMgr.ItemCount(ItemType).ToUnit();
+                    break;
+            }
         }
 
         public void SetSelectState(bool enabled)
@@ -41,6 +49,6 @@ namespace SkyDragonHunter.UI {
 
         // Private 메서드
         // Others
-    
+
     } // Scope by class UIItemNode
 } // namespace SkyDragonHunter

@@ -161,11 +161,14 @@ namespace SkyDragonHunter.Structs {
             return new AlphaUnit((BigInteger)v);
         }
 
-        public override string ToString()
+        public string ToUnit()
         {
             Normalize();
             return m_StringNumber + m_StringBase;
         }
+
+        public override string ToString()
+            => m_OriginNumber.ToString();
 
         public override bool Equals(object obj)
         {

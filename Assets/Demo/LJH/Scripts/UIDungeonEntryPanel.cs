@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using System;
 using System.Collections.Generic;
@@ -5,8 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter
-{
+namespace SkyDragonHunter.UI {
 
     public class UIDungeonEntryPanel : MonoBehaviour
     {
@@ -113,7 +113,7 @@ namespace SkyDragonHunter
                 stage.OnSelectStage(m_SelectedDungeonIndex);
             }
 
-            if(ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount > 0)
+            if(AccountMgr.Ticket > 0)
             {
                 m_EnterButton.interactable = true;
             }

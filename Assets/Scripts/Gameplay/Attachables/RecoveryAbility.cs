@@ -49,14 +49,14 @@ namespace SkyDragonHunter {
                 m_Stats.Health = (m_Stats.Health + inc).Value;
 
                 // TODO: 테스트 용
-                DrawableMgr.Text(transform.position, "Recover: " + inc.ToString() + "++", Color.green);
+                DrawableMgr.Text(transform.position, "Recover: " + inc.ToUnit() + "++", Color.green);
             }
             else if (!m_Stats.IsFullShield)
             {
                 m_Stats.Shield = (m_Stats.Shield + inc).Value;
 
                 // TODO: 테스트 용
-                DrawableMgr.Text(transform.position, "Recover: " + inc.ToString() + "++", Color.green);
+                DrawableMgr.Text(transform.position, "Recover: " + inc.ToUnit() + "++", Color.green);
             }
         }
 

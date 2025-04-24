@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Tables
         public bool Usable { get; set; }
     }
 
-    public class ItemTable : DataTable<ItemData>
+    public class ItemTableTemplate : DataTable<ItemData>
     {
 
     } // Scope by class ItemTable

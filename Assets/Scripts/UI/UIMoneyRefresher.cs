@@ -28,7 +28,7 @@ namespace SkyDragonHunter.UI {
                 m_PrevCoin = AccountMgr.Coin;
                 if (m_CoinText != null)
                 {
-                    m_CoinText.text = m_PrevCoin.ToString();
+                    m_CoinText.text = m_PrevCoin.ToUnit();
                 }
             }
             if (m_PrevDiamond != AccountMgr.Diamond)
