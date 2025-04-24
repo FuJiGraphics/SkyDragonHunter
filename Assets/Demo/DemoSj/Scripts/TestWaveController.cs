@@ -417,8 +417,8 @@ namespace SkyDragonHunter
                 destructableEvent.destructEvent.AddListener(() =>
                 {
                     var randVal = Random.Range(0, 1f);
-                    bool isGenerateDungenTicket = randVal < 0.2f;
-                    Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
+                    bool isGenerateDungenTicket = randVal < 0.7f;
+                    //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
                     if(isGenerateDungenTicket)
                     {
                         ItemMgr.GetItem(ItemType.Ticket).ItemCount += 1;

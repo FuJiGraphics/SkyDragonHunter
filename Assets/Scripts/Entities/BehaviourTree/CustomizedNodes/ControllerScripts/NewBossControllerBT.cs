@@ -11,6 +11,7 @@ namespace SkyDragonHunter.Entities
     {
         Melee,
         Ranged,
+        Stationary,
     }
 
     public class NewBossControllerBT : MonoBehaviour, ISlowable
@@ -106,14 +107,13 @@ namespace SkyDragonHunter.Entities
             ResetTarget();
         }
 
-
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(transform.position, new Vector3(bossStatus.aggroRange, 300, 1));
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(transform.position, new Vector3(bossStatus.attackRange, 300, 1));
+            //Gizmos.color = Color.yellow;
+            //Gizmos.DrawWireCube(transform.position, new Vector3(bossStatus.aggroRange, 300, 1));
+            //
+            //Gizmos.color = Color.red;
+            //Gizmos.DrawWireCube(transform.position, new Vector3(bossStatus.attackRange, 300, 1));
         }
 
         // Public Methods
@@ -180,7 +180,8 @@ namespace SkyDragonHunter.Entities
             animController = GetComponent<TestAniController>();
             floater = GetComponent<FloatingEffect>();
             floater.enabled = false;
-            this.ID = animController.ID;
+            if (animController != null)            
+                this.ID = animController.ID;             
             SetDataFromTable(ID);
             InitBehaviourTree();
         }
@@ -191,7 +192,7 @@ namespace SkyDragonHunter.Entities
             var data = DataTableMgr.BossTable.Get(id);
             if (data == null)
             {
-                Debug.LogError($"Set Boss Data Failed : ID '{id}' not found in Boss table.");
+                Debug.Log($"Set Boss Data Failed : ID '{id}' not found in Boss table.");
                 return;
             }
 
@@ -217,6 +218,9 @@ namespace SkyDragonHunter.Entities
                 case BossAttackType.Melee:
                 case BossAttackType.Ranged:
                     InitRangedBT();
+                    break;
+                case BossAttackType.Stationary:
+                    InitStationaryBT();
                     break;
             }
         }
@@ -251,6 +255,19 @@ namespace SkyDragonHunter.Entities
             moveSequence.AddChild(new BossMoveCondition(this));
             moveSequence.AddChild(new BossMoveAction(this));
             rootSelector.AddChild(moveSequence);
+
+            m_BehaviourTree = new BehaviourTree<NewBossControllerBT>(this);
+            m_BehaviourTree.SetRoot(rootSelector);
+        }
+
+        private void InitStationaryBT()
+        {
+            var rootSelector = new SelectorNode<NewBossControllerBT>(this);
+
+            var skillSequence = new SequenceNode<NewBossControllerBT>(this);
+            skillSequence.AddChild(new NewBossSkillCondition(this));
+            skillSequence.AddChild(new NewBossSkillAction(this));
+            rootSelector.AddChild(skillSequence);
 
             m_BehaviourTree = new BehaviourTree<NewBossControllerBT>(this);
             m_BehaviourTree.SetRoot(rootSelector);
