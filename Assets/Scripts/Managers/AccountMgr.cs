@@ -37,6 +37,15 @@ namespace SkyDragonHunter.Managers
                 s_InGameMainFramePanel.CoinText = ItemMgr.GetItem(ItemType.Coin).ItemCount.ToString();
             }
         }
+        public static AlphaUnit Diamond
+        {
+            get => ItemMgr.GetItem(ItemType.Diamond).ItemCount;
+            set
+            {
+                ItemMgr.GetItem(ItemType.Diamond).ItemCount = value;
+                s_InGameMainFramePanel.DiamondText = ItemMgr.GetItem(ItemType.Diamond).ItemCount.ToString();
+            }
+        }
         
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
