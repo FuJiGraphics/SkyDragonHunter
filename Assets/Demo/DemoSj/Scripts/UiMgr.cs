@@ -116,27 +116,19 @@ namespace SkyDragonHunter.Test
             panelBackGroundImage.SetActive(false);
         }
 
+        
+
         public void OnOffTreasureEquipmentSlot()
         {
             if (treasureEquipmentSlot.activeSelf)
             {
                 treasureEquipmentSlot.SetActive(false);
+                treasureFusion.SetActive(true);
             }
             else
             {
                 treasureEquipmentSlot.SetActive(true);
-            }
-        }
-
-        public void OnOffTreasureFusion()
-        {
-            if (treasureFusion.activeSelf)
-            {
                 treasureFusion.SetActive(false);
-            }
-            else
-            {
-                treasureFusion.SetActive(true);
             }
         }
 
@@ -157,22 +149,13 @@ namespace SkyDragonHunter.Test
             if (treasureCodexButton.activeSelf)
             {
                 treasureCodexButton.SetActive(false);
+                fusionDeselectAllButton.SetActive(true);
             }
             else
             {
                 treasureCodexButton.SetActive(true);
-            }
-        }
-
-        public void OnOffFusionDeselectAllButton()
-        {
-            if (fusionDeselectAllButton.activeSelf)
-            {
                 fusionDeselectAllButton.SetActive(false);
-            }
-            else
-            {
-                fusionDeselectAllButton.SetActive(true);
+
             }
         }
 
@@ -217,15 +200,19 @@ namespace SkyDragonHunter.Test
             if (isHideFusionButtons)
             {
                 FusionButtons[0].SetActive(true);
-                FusionButtons[1].SetActive(true);
-                FusionButtons[2].SetActive(true);
+                FusionButtons[1].SetActive(false);
+                FusionButtons[2].SetActive(false);
+                FusionButtons[3].SetActive(false);
+                FusionButtons[4].SetActive(false);
                 isHideFusionButtons = false;
             }
             else
             {
                 FusionButtons[0].SetActive(false);
-                FusionButtons[1].SetActive(false);
-                FusionButtons[2].SetActive(false);
+                FusionButtons[1].SetActive(true);
+                FusionButtons[2].SetActive(true);
+                FusionButtons[3].SetActive(true);
+                FusionButtons[4].SetActive(true);
                 isHideFusionButtons = true;
 
             }
@@ -469,6 +456,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[3].SetActive(false);
+            SetTreasureEquipmentPanel();
             panelBackGroundImage.SetActive(true);
         }
 
@@ -658,6 +646,17 @@ namespace SkyDragonHunter.Test
             }
         }
 
+        private void SetTreasureEquipmentPanel()
+        {
+            treasureEquipmentSlot.SetActive(true);
+            treasureFusion.SetActive(false);
+            treasureInfo.SetActive(true);
+            treasureCodexButton.SetActive(true);
+            fusionDeselectAllButton.SetActive(false);
+            treasureSelectErro.SetActive(false);
+            treasureFusionWarning.SetActive(false);
+            treasureFusionSuccessInfo.SetActive(false);
+        }
     } // Scope by class PanelHide
 
 } // namespace Root

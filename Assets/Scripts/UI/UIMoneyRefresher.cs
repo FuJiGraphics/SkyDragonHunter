@@ -15,6 +15,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_DiamondText;
 
         private AlphaUnit m_PrevCoin;
+        private AlphaUnit m_PrevDiamond;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -25,7 +26,18 @@ namespace SkyDragonHunter.UI {
             if (m_PrevCoin != AccountMgr.Coin)
             {
                 m_PrevCoin = AccountMgr.Coin;
-                m_CoinText.text = m_PrevCoin.ToString();
+                if (m_CoinText != null)
+                {
+                    m_CoinText.text = m_PrevCoin.ToString();
+                }
+            }
+            if (m_PrevDiamond != AccountMgr.Diamond)
+            {
+                m_PrevDiamond = AccountMgr.Diamond;
+                if (m_DiamondText != null)
+                {
+                    m_DiamondText.text = m_PrevDiamond.ToString();
+                }
             }
         }
     

@@ -45,7 +45,6 @@ namespace SkyDragonHunter.UI
                         DrawableMgr.Dialog("Alert", $"다이아가 {coinValue}만큼 충전되었습니다.");
                         break;
                 }
-                AccountMgr.Coin += coinValue;
             }
             else
             {
