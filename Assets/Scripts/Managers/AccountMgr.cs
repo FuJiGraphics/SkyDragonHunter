@@ -29,6 +29,7 @@ namespace SkyDragonHunter.Managers {
         public static CommonStats AccountStats { get; private set; }
         public static CommonStats DefaultGrowthStats { get; set; }
         public static Crystal Crystal { get; private set; }
+        public static bool IsMaxLevel => Crystal?.NextLevelId <= 0;
 
         public static AlphaUnit Coin
         {
@@ -43,6 +44,7 @@ namespace SkyDragonHunter.Managers {
                 if (!s_HeldItems.ContainsKey(ItemType.Coin))
                     s_HeldItems.Add(ItemType.Coin, 0);
                 s_HeldItems[ItemType.Coin] = value;
+                s_InGameMainFramePanel.CoinText = s_HeldItems[ItemType.Coin].ToUnit();
             }
         }
 
@@ -59,6 +61,7 @@ namespace SkyDragonHunter.Managers {
                 if (!s_HeldItems.ContainsKey(ItemType.Diamond))
                     s_HeldItems.Add(ItemType.Diamond, 0);
                 s_HeldItems[ItemType.Diamond] = value;
+                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();
             }
         }
 
@@ -132,7 +135,13 @@ namespace SkyDragonHunter.Managers {
         }
 
         public static AlphaUnit ItemCount(ItemType type)
-            => s_HeldItems[type];
+        {
+            if (!s_HeldItems.ContainsKey(type))
+            {
+                s_HeldItems.Add(type, 0);
+            }
+            return s_HeldItems[type];
+        }
 
         public static void LoadLevel(int id)
         {
