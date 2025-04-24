@@ -22,6 +22,8 @@ namespace SkyDragonHunter.Tables {
         public static readonly string Ailment = "AilmentTable";
         public static readonly string DefaultGrowth = "DefaultGrowthTable";
         public static readonly string Item = "ItemTable";
+        public static readonly string Stage = "StageTable";
+        public static readonly string AFKReward = "AFKRewardTable";
 
     } // Scope by class DataTableIds
 

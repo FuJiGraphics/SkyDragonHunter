@@ -36,7 +36,7 @@ namespace SkyDragonHunter.Tables.Generic {
     public abstract class DataTable<T> : DataTable where T : DataTableData
     {
         // 필드 (Fields)
-        private Dictionary<int, T> m_dict = new Dictionary<int, T>();
+        protected Dictionary<int, T> m_dict = new Dictionary<int, T>();
         
         public T First => m_dict.First().Value;
 
@@ -65,7 +65,7 @@ namespace SkyDragonHunter.Tables.Generic {
                 return null;
             }
 
-            return m_dict[ID];                        
+            return m_dict[ID];
         }
 
         public override void LoadFromText(string text)
@@ -86,5 +86,4 @@ namespace SkyDragonHunter.Tables.Generic {
             }
         }
     } // Scope by class DataTable_T
-
 } // namespace Root

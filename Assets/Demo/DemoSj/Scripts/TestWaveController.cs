@@ -41,6 +41,7 @@ namespace SkyDragonHunter
         [SerializeField] private float maxWaveTime;
         [SerializeField] private float bossTimer;
         private const float c_InitialBossTimer = 40f;
+        private bool isBossCleared;
         [SerializeField] private List<GameObject> currentEnemy;
         [SerializeField] private Sprite[] TestBackGround;
         [SerializeField] private Sprite[] TestBackGroundMid;
@@ -73,6 +74,8 @@ namespace SkyDragonHunter
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
         public bool isRewardSet { get; private set; } = false;
+        public int LastTriedZoneLevel => lastTriedZonelLevel;
+        public int LastTriedMissionLevel => lastTriedMissionLevel;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -440,7 +443,7 @@ namespace SkyDragonHunter
             //currentEnemy.Add(spawned);
             //currentSpawnMonsters++;
             //isCanSpawn = false;
-
+            isBossCleared = false;
             bossTimer = c_InitialBossTimer;
             waveSlider.gameObject.SetActive(false);
             bossSlider.gameObject.SetActive(true);
@@ -455,9 +458,16 @@ namespace SkyDragonHunter
             int stage = 0;
             stage += (currentMissionLevel - 1) * 20;
             stage += currentZonelLevel;
-            float multiplier = Mathf.Pow(5, stage);
+            float multiplier = Mathf.Pow(1.6f, stage);
             var bossBT = spawned.GetComponent<NewBossControllerBT>();
             bossBT.MaxHP = newHP * multiplier;
+
+            var destructableEvent = spawned.AddComponent<DestructableEvent>();
+            destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+            destructableEvent.destructEvent.AddListener(() =>
+            {
+                isBossCleared = true;
+            });
 
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;
@@ -727,7 +737,7 @@ namespace SkyDragonHunter
         // TODO: LJH
         private void UpdateBossSliders()
         {
-            if (!bossSlider.gameObject.activeSelf)
+            if (!bossSlider.gameObject.activeSelf || isBossCleared)
                 return;
             bossTimer -= Time.deltaTime;
             if(bossTimer < 0)
