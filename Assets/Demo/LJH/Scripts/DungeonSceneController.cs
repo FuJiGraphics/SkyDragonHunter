@@ -20,7 +20,10 @@ namespace SkyDragonHunter
         [SerializeField] private Transform m_SandbagSpawnPosition;
         [SerializeField] private Transform[] m_MonsterSpawnPositions;
 
+        [SerializeField] private NewBossControllerBT m_SandbagPrefab;
+
         private NewBossControllerBT m_CachedBoss;
+        private NewBossControllerBT m_CachedSandbag;
         [SerializeField] private List<NewMonsterControllerBT> m_MonsterList;
         private bool m_Cleared;
         private bool m_Failed;
@@ -162,7 +165,13 @@ namespace SkyDragonHunter
         }
         private void UpdateDungeonType3()
         {
+            if (m_CachedSandbag == null)
+            {
+                Debug.LogError($"Sandbag Cannot be null in dungeon type 3");
+                return;
+            }
 
+            m_UIMgr.InfoPanel.SetDungeonProgress(m_CachedSandbag.HP, m_CachedSandbag.MaxHP);
         }
 
         private void Init()
@@ -219,9 +228,10 @@ namespace SkyDragonHunter
             var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(300004), m_BossSpawnPosition.position, Quaternion.identity);
             m_CachedBoss = boss.GetComponent<NewBossControllerBT>();
             var health = m_CachedBoss.MaxHP;
+            health = 300000;
             for(int i = 1; i < m_StageIndex; ++i)
             {
-                health *= 25;
+                health *= 12;
             }
             m_CachedBoss.MaxHP = health;
 
@@ -260,20 +270,20 @@ namespace SkyDragonHunter
 
         private void SetStageType3()
         {
-            var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(300004), m_SandbagSpawnPosition.position, Quaternion.identity);
+            m_CachedSandbag = Instantiate(m_SandbagPrefab, m_SandbagSpawnPosition.position, Quaternion.identity);
             
-            m_CachedBoss = boss.GetComponent<NewBossControllerBT>();
-            var health = m_CachedBoss.MaxHP;
+            var health = m_CachedSandbag.MaxHP;
+            health = 1000000;
             for (int i = 1; i < m_StageIndex; ++i)
             {
-                health *= 25;
+                health *= 15;
             }
-            m_CachedBoss.MaxHP = health;            
+            m_CachedSandbag.MaxHP = health;            
 
             m_InitialTimeLimit = 40f;
             m_RemainingTime = m_InitialTimeLimit;
 
-            var destructableEvent = m_CachedBoss.AddComponent<DestructableEvent>();
+            var destructableEvent = m_CachedSandbag.AddComponent<DestructableEvent>();
             if (destructableEvent.destructEvent == null)
             {
                 destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
@@ -284,7 +294,9 @@ namespace SkyDragonHunter
         private void OnStageClear()
         {
             if (m_DungeonType == DungeonType.Type1)
-                m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);            
+                m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);
+            if (m_DungeonType == DungeonType.Type3)
+                m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedSandbag.MaxHP);
             ItemMgr.GetItem(Gameplay.ItemType.Ticket).ItemCount -= 1;
             m_UIMgr.EnableClearedPanel(true);
             DungeonMgr.OnStageClear();
