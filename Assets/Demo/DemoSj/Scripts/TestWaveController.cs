@@ -425,7 +425,7 @@ namespace SkyDragonHunter
                     if(isGenerateDungenTicket)
                     {
                         AccountMgr.Ticket += 1;
-                        Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {DungeonMgr.TicketCount}");
+                        Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
                     }
                 });
 

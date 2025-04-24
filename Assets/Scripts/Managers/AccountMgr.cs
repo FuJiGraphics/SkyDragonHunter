@@ -132,7 +132,13 @@ namespace SkyDragonHunter.Managers {
         }
 
         public static AlphaUnit ItemCount(ItemType type)
-            => s_HeldItems[type];
+        {
+            if (!s_HeldItems.ContainsKey(type))
+            {
+                s_HeldItems.Add(type, 0);
+            }
+            return s_HeldItems[type];
+        }
 
         public static void LoadLevel(int id)
         {

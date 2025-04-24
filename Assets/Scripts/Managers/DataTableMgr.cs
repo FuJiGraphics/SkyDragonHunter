@@ -1,7 +1,5 @@
 using SkyDragonHunter.Tables;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
 using UnityEngine;
 
 namespace SkyDragonHunter.Managers 
@@ -20,6 +18,8 @@ namespace SkyDragonHunter.Managers
         public static AilmentTable AilmentTable => Get<AilmentTable>(DataTableIds.Ailment);
         public static DefaultGrowthTable DefaultGrowthTable => Get<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
         public static ItemTableTemplate ItemTable => Get<ItemTableTemplate>(DataTableIds.Item);
+        public static StageTable StageTable => Get<StageTable>(DataTableIds.Stage);
+        public static AFKRewardTable AFKRewardTable => Get<AFKRewardTable>(DataTableIds.AFKReward);
 
         // Static Constructor
         static DataTableMgr()
@@ -34,6 +34,8 @@ namespace SkyDragonHunter.Managers
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
             LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<StageTable>(DataTableIds.Stage);
+            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
         }
 
         public static void InitForGameScene()
@@ -48,6 +50,8 @@ namespace SkyDragonHunter.Managers
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
             LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<StageTable>(DataTableIds.Stage);
+            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
         }
 
         // Public 메서드

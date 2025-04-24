@@ -181,8 +181,9 @@ public class AFKRewardTest : MonoBehaviour
         var afkRewardTable = DataTableMgr.AFKRewardTable.Get(stageTable.AFKRewardTableID);
         AlphaUnit afkGoldPerMin = new AlphaUnit(afkRewardTable.AFKGold);
         AlphaUnit afkGold =  afkGoldPerMin * TotalMinutes;
-
-        ItemMgr.GetItem(SkyDragonHunter.Gameplay.ItemType.Coin).ItemCount += afkGold;
-        Debug.LogWarning($"AFK coin acquired {afkGold}({afkGoldPerMin.Value} * {TotalMinutes})");
+       
+        AccountMgr.Coin += afkGold;
+        DrawableMgr.Dialog("ÈÞ½Äº¸»ó", $"{afkGold}({afkGoldPerMin.Value} * {TotalMinutes})");
+        Debug.Log($"AFK coin acquired {afkGold}({afkGoldPerMin.Value} * {TotalMinutes})");
     }
 }
