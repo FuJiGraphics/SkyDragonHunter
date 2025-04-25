@@ -1,3 +1,4 @@
+using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
@@ -24,6 +25,7 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private BossAttackType m_AttackType;
         [SerializeField] private Transform m_Target;
         [SerializeField] private NewCrewControllerBT m_CrewTarget;
+        [SerializeField] private Transform m_AirshipTarget;
         private BehaviourTree<NewBossControllerBT> m_BehaviourTree;
         private float slowMultiplier;
 
@@ -88,8 +90,8 @@ namespace SkyDragonHunter.Entities
 
                 var distance = Mathf.Abs(m_Target.position.x - transform.position.x);
                 //var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
-                //var halfwidth = sr.bounds.size.x * 0.5f;
-                return distance;
+                //var halfwidth = sr.bounds.size.x * 0.5f;               
+                return distance - halfWidth;
             }
         }
 
@@ -133,7 +135,7 @@ namespace SkyDragonHunter.Entities
         }
 
         // Private Methods
-        private void ResetTarget()
+        public void ResetTarget()
         {
             if (m_CrewTarget != null && m_CrewTarget.isActiveAndEnabled && !m_CrewTarget.IsMounted)
             {
@@ -164,6 +166,9 @@ namespace SkyDragonHunter.Entities
                         }
                         if (crewBT.IsMounted)
                             continue;
+                        if (DistanceToTargetTransform(collider.transform) > DistanceToTargetTransform(m_AirshipTarget))
+                            continue;
+
                         m_CrewTarget = crewBT;
                         m_Target = m_CrewTarget.transform;
                         return;
@@ -181,7 +186,16 @@ namespace SkyDragonHunter.Entities
             floater = GetComponent<FloatingEffect>();
             floater.enabled = false;
             if (animController != null)            
-                this.ID = animController.ID;             
+                this.ID = animController.ID;
+            var airshipGo = GameMgr.FindObject($"Airship");
+            if (airshipGo != null)
+            {
+                m_AirshipTarget = airshipGo.transform;
+            }
+            else
+            {
+                Debug.LogError($"Airship Null");
+            }
             SetDataFromTable(ID);
             InitBehaviourTree();
         }
@@ -276,6 +290,30 @@ namespace SkyDragonHunter.Entities
         private void InitBossBT()
         {
 
+        }
+
+        private float DistanceToTargetTransform(Transform target)
+        {
+            if (target == null)
+            {
+                return float.MaxValue;
+            }
+
+            var colliderInfo = target.GetComponent<ColliderInfoProvider>();
+            float halfWidth = 0f;
+            if (colliderInfo != null)
+            {
+                halfWidth = colliderInfo.ColliderHalfWidth;
+            }
+            else
+            {
+                Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {target.name}");
+            }
+
+            var distance = Mathf.Abs(target.position.x - transform.position.x);
+            //var sr = m_Target.gameObject.GetComponentInChildren<SpriteRenderer>();
+            //var halfwidth = sr.bounds.size.x * 0.5f;
+            return distance - halfWidth;
         }
     } // Scope by class NewMonsterControllerBT
 

@@ -214,7 +214,8 @@ namespace SkyDragonHunter.Entities
             {
                 Debug.LogError($"Airship Null");
             }
-            this.ID = animController.ID;
+            if (animController != null)
+                this.ID = animController.ID;
             SetDataFromTable(ID);
             InitBehaviourTree();
         }

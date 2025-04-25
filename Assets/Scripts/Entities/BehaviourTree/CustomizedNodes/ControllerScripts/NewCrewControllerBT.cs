@@ -154,10 +154,11 @@ namespace SkyDragonHunter.Entities
             //}
         }
 
-        public void AllocateMountSlot(MountableSlot slot)
+        public void AllocateMountSlot(MountableSlot slot, int slotIndex)
         {
             animController.PlayIdleAnimation();
             m_MountSlot = slot;
+            onFieldOriginPosition = new Vector2(0f, 6f - slotIndex * 4f);
             transform.position = m_MountSlot.transform.position;
             isMounted = false;
             MountAction(true);
