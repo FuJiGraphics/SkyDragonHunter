@@ -27,7 +27,7 @@ namespace SkyDragonHunter
     {
         public static int instanceNo = 0;
 
-        // 필드 (Fields)
+        // 필드 (Fields)        
         [SerializeField] private Slider waveSlider;
         [SerializeField] private TextMeshProUGUI waveLevelText;
         [SerializeField] private GameObject clearPanel;
@@ -42,6 +42,7 @@ namespace SkyDragonHunter
         [SerializeField] private float bossTimer;
         private const float c_InitialBossTimer = 40f;
         private bool isBossCleared;
+        [SerializeField] private MonsterPrefabLoader prefabLoader;
         [SerializeField] private List<GameObject> currentEnemy;
         [SerializeField] private Sprite[] TestBackGround;
         [SerializeField] private Sprite[] TestBackGroundMid;
@@ -110,6 +111,7 @@ namespace SkyDragonHunter
             backGroundController = backGround.GetComponent<BackGroundController>();
             oldAllSpeed = backGround.GetComponent<BackGroundController>().scrollSpeed;
             bossSlider.gameObject.SetActive(false);
+            prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
             isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
@@ -403,35 +405,70 @@ namespace SkyDragonHunter
             //}
 
             // TODO: LJH
-            int tempId = 100_000;
-            tempId += ((currentZonelLevel - 1) % 4) * 10;
-            tempId += (currentMissionLevel - 1) % 6 + 1;
-            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+            var currentStageData = DataTableMgr.StageTable.Get(currentMissionLevel, currentZonelLevel);
+            var currentWaveData = DataTableMgr.WaveTable.Get(currentStageData.WaveTableID);
 
-            for (int i = 0; i < spawnableMonsters; ++i)
+            var waveSpawnCount = currentWaveData.MonsterIDs.Length;
+            if (waveSpawnCount != currentWaveData.MonsterCounts.Length)
+                Debug.LogError($"Length of Monster ID, Count do not match");
+            
+            for(int i = 0; i < waveSpawnCount; ++i)
             {
-                var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
-                spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
-                var bt = spawned.GetComponent<NewMonsterControllerBT>();
-                bt.SetDataFromTable(tempId);
-
-                var destructableEvent = spawned.AddComponent<DestructableEvent>();
-                destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
-                destructableEvent.destructEvent.AddListener(() =>
+                for(int j = 0; j < currentWaveData.MonsterCounts[i]; ++j)
                 {
-                    var randVal = Random.Range(0, 1f);
-                    bool isGenerateDungenTicket = randVal < 0.7f;
-                    //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
-                    if(isGenerateDungenTicket)
-                    {
-                        AccountMgr.Ticket += 1;
-                        Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
-                    }
-                });
+                    var spawned = Instantiate(prefabLoader.GetMonsterAnimController(currentWaveData.MonsterIDs[i]), GetRandomSpawnAreaInPosition(), Quaternion.identity);
+                    spawned.name = $"{DataTableMgr.MonsterTable.Get(currentWaveData.MonsterIDs[i]).Name}{instanceNo++}";
+                    var bt = spawned.GetComponent<NewMonsterControllerBT>();
+                    bt.SetDataFromTable(currentWaveData.MonsterIDs[i], currentStageData.MonsterMultiplierHP, currentStageData.MonsterMultiplierATK);
 
-                currentEnemy.Add(spawned.gameObject);
-                currentSpawnMonsters++;
+                    var destructableEvent = spawned.AddComponent<DestructableEvent>();
+                    destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+                    destructableEvent.destructEvent.AddListener(() =>
+                    {
+                        var randVal = Random.Range(0, 1f);
+                        bool isGenerateDungenTicket = randVal < 0.7f;
+                        //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
+                        if (isGenerateDungenTicket)
+                        {
+                            AccountMgr.Ticket += 1;
+                            Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
+                        }
+                    });
+
+                    currentEnemy.Add(spawned.gameObject);
+                    currentSpawnMonsters++;
+                }
             }
+
+
+            //int tempId = 100_000;
+            //tempId += ((currentZonelLevel - 1) % 4) * 10;
+            //tempId += (currentMissionLevel - 1) % 6 + 1;
+            //
+            //for (int i = 0; i < spawnableMonsters; ++i)
+            //{
+            //    var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
+            //    spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
+            //    var bt = spawned.GetComponent<NewMonsterControllerBT>();
+            //    bt.SetDataFromTable(tempId);
+            //
+            //    var destructableEvent = spawned.AddComponent<DestructableEvent>();
+            //    destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+            //    destructableEvent.destructEvent.AddListener(() =>
+            //    {
+            //        var randVal = Random.Range(0, 1f);
+            //        bool isGenerateDungenTicket = randVal < 0.7f;
+            //        //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
+            //        if(isGenerateDungenTicket)
+            //        {
+            //            AccountMgr.Ticket += 1;
+            //            Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
+            //        }
+            //    });
+            //
+            //    currentEnemy.Add(spawned.gameObject);
+            //    currentSpawnMonsters++;
+            //}
             // ~TODO
 
             isCanSpawn = false;

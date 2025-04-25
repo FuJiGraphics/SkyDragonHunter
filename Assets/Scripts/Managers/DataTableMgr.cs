@@ -20,6 +20,7 @@ namespace SkyDragonHunter.Managers
         public static ItemTableTemplate ItemTable => Get<ItemTableTemplate>(DataTableIds.Item);
         public static StageTable StageTable => Get<StageTable>(DataTableIds.Stage);
         public static AFKRewardTable AFKRewardTable => Get<AFKRewardTable>(DataTableIds.AFKReward);
+        public static WaveTable WaveTable => Get<WaveTable>(DataTableIds.Wave);
 
         // Static Constructor
         static DataTableMgr()
@@ -36,6 +37,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<ItemTableTemplate>(DataTableIds.Item);
             LoadTable<StageTable>(DataTableIds.Stage);
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
+            LoadTable<WaveTable>(DataTableIds.Wave);
         }
 
         public static void InitForGameScene()
@@ -52,6 +54,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<ItemTableTemplate>(DataTableIds.Item);
             LoadTable<StageTable>(DataTableIds.Stage);
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
+            LoadTable<WaveTable>(DataTableIds.Wave);
         }
 
         // Public 메서드

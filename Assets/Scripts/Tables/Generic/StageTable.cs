@@ -21,15 +21,15 @@ namespace SkyDragonHunter.Tables {
         public int Zone { get; set; }
         public int WaveTableID { get; set; }
         public float WaveDistance { get; set; }
-        public string MonsterMultiplierHP { get; set; }
-        public string MonsterMultiplierATK { get; set; }
+        public float MonsterMultiplierHP { get; set; }
+        public float MonsterMultiplierATK { get; set; }
         public string MonsterGOLD { get; set; }
         public string MonsterEXP { get; set; }
         public TreasureDropGrade_Temp TreasureDropGrade { get; set; }
         public float TargetDistance { get; set; }
         public int ChallengeBossID { get; set; }
-        public string BossMultiplierHP { get; set; }
-        public string BossMultiplierATK { get; set; }
+        public float BossMultiplierHP { get; set; }
+        public float BossMultiplierATK { get; set; }
         public string ClearRewardGold { get; set; }
         public string ClearRewardEXP { get; set; }
         public int ClearRewardDiamond { get; set; }
