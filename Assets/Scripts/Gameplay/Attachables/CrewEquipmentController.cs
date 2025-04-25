@@ -52,7 +52,7 @@ namespace SkyDragonHunter {
                 }
                 if (crewInstance.TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
-                    btComp.AllocateMountSlot(m_MountableSlots[slot]);
+                    btComp.AllocateMountSlot(m_MountableSlots[slot], slot);
                 }
                 else
                 {
