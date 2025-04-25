@@ -24,8 +24,10 @@ namespace SkyDragonHunter.Test {
     [System.Serializable]
     public struct SaveCanonStorage
     {
+        public int level;
         public int count;
         public CanonType canonType;
+        public CanonGrade canonGrade;
     }
 
     public class TempUserData : MonoBehaviour

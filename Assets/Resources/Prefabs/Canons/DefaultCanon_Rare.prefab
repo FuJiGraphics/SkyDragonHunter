@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 67f3e30e95c4a0644bc68450a9db8d10, type: 3}
-  m_Color: {r: 0.4514393, g: 0.4481132, b: 1, a: 1}
+  m_Color: {r: 0.5235849, g: 1, b: 0.5560708, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -168,10 +168,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3199661915564791394}
-  - component: {fileID: -3431562805131232119}
+  - component: {fileID: -955020354712909889}
   - component: {fileID: 5575973245347678478}
   m_Layer: 0
-  m_Name: Canon(Unique)
+  m_Name: DefaultCanon_Rare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,7 +193,7 @@ Transform:
   - {fileID: 173074841990792012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-3431562805131232119
+--- !u!114 &-955020354712909889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5ff65d28e93aa489026fbf202a234a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CanonDefinition: {fileID: 11400000, guid: 75053dc8a6a780346acba5e585fa61ae, type: 2}
+  m_CanonDefinition: {fileID: 11400000, guid: 7781bce70ec00a34fa43a9423893fb56, type: 2}
   m_CanonDummy: {fileID: 360423774308512945}
   m_BallPrefab: {fileID: 9046784402273253083, guid: 98ecd5c5b8ed20f4da8d56450c37b6a2, type: 3}
 --- !u!1 &2868364658313559990

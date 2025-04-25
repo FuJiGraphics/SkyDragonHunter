@@ -33,7 +33,6 @@ namespace SkyDragonHunter.Managers
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
 
             ItemTable.Init();
-            CanonTable.Init();
 
             if (s_IsFirstLoadedScene)
             {
@@ -45,9 +44,8 @@ namespace SkyDragonHunter.Managers
             if (s_IsFirstLoadedScene)
             {
                 AccountMgr.LateInit();
+                AccountMgr.LoadUserData(scene.name);
             }
-
-            AccountMgr.LoadUserData(scene.name);
 
             s_IsFirstLoadedScene = false;
         }

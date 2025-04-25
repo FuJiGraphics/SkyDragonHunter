@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 67f3e30e95c4a0644bc68450a9db8d10, type: 3}
-  m_Color: {r: 1, g: 0.78039217, b: 0, a: 1}
+  m_Color: {r: 0.9339623, g: 0.8621547, b: 0.76214844, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -168,10 +168,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3199661915564791394}
-  - component: {fileID: -4498175058635395447}
+  - component: {fileID: -153154618499092857}
   - component: {fileID: 5575973245347678478}
   m_Layer: 0
-  m_Name: Canon(Legend)
+  m_Name: DefaultCanon_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,7 +193,7 @@ Transform:
   - {fileID: 173074841990792012}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4498175058635395447
+--- !u!114 &-153154618499092857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de1cf199013bb64c9fc6f7a516bc23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canonIcon: {fileID: 21300000, guid: 028d3a2a9f5484e41bbea162fedf6e10, type: 3}
+  canonIcon: {fileID: 21300000, guid: b2b69011cdfdd844da3df4c6352c939d, type: 3}
   m_CanonBase: {fileID: 0}
 --- !u!114 &5575973245347678478
 MonoBehaviour:
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5ff65d28e93aa489026fbf202a234a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CanonDefinition: {fileID: 11400000, guid: 9dda7aa7774fb0c4083acff95ed79ce3, type: 2}
+  m_CanonDefinition: {fileID: 11400000, guid: d986de00091aee6479993af1491bbf51, type: 2}
   m_CanonDummy: {fileID: 360423774308512945}
   m_BallPrefab: {fileID: 9046784402273253083, guid: 98ecd5c5b8ed20f4da8d56450c37b6a2, type: 3}
 --- !u!1 &2868364658313559990

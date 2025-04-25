@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
@@ -31,6 +32,7 @@ namespace SkyDragonHunter.UI {
         {
             m_UiCanonEquipButton.onClick.AddListener(Equip);
             m_UiCanonUnequipButton.onClick.AddListener(Unequip);
+            LoadCanonInfoFromAccount();
         }
 
         // Public 메서드
@@ -122,6 +124,18 @@ namespace SkyDragonHunter.UI {
         }
 
         // Private 메서드
+        private void LoadCanonInfoFromAccount()
+        {
+            var canonDummys = AccountMgr.HeldCanons;
+            if (canonDummys != null)
+            {
+                foreach (var canonDummy in canonDummys)
+                {
+                    GameObject canonInstance = canonDummy.GetCanonInstance();
+                    AddCanonNode(canonInstance);
+                }
+            }
+        }
         // Others
 
     } // Scope by class UICannonEquipmentPanel

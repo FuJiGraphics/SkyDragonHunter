@@ -19,7 +19,7 @@ namespace SkyDragonHunter.Database {
         AlphaUnit,
     };
 
-    public struct ItemData
+    public class ItemData
     {
         // 필드 (Fields)
         // 속성 (Properties)

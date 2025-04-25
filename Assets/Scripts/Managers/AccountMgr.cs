@@ -18,12 +18,12 @@ namespace SkyDragonHunter.Managers {
     {
         // 필드 (Fields)
         private static Dictionary<ItemType, AlphaUnit> s_HeldItems = new();
-        private static Dictionary<CanonType, int> s_HeldCanons = new();
-        private static Dictionary<CanonType, bool> s_UnlockCanons = new();
+        private static Dictionary<CanonType, List<CanonDummy>> s_HeldCanons = new();
+        private static List<CanonDummy> s_SortedCanons = new();
 
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
-
+        
         // 속성 (Properties)
         public static string Nickname { get; set; } = "Default";
         public static int CurrentStageLevel { get; set; } = 1;
@@ -84,6 +84,8 @@ namespace SkyDragonHunter.Managers {
                 s_HeldItems[ItemType.Ticket] = value;
             }
         }
+
+        public static CanonDummy[] HeldCanons => s_SortedCanons.ToArray();
 
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
@@ -262,10 +264,28 @@ namespace SkyDragonHunter.Managers {
             CommonStats stats = new CommonStats();
             stats.ResetAllZero();
 
+            Dictionary<CanonType, Dictionary<CanonGrade, bool>> canonStateMap = new();
             List<GameObject> unlockCanonPrefabs = new();
-            foreach(var unlockCanon in s_UnlockCanons)
+            foreach(var canonList in s_HeldCanons)
             {
-                unlockCanonPrefabs.Add(CanonTable.Get(unlockCanon.Key));
+                foreach (CanonDummy canon in canonList.Value)
+                {
+                    if (!canonStateMap.ContainsKey(canon.Type))
+                    {
+                        canonStateMap.Add(canon.Type, new());
+                    }
+                    if (!canonStateMap[canon.Type].ContainsKey(canon.Grade))
+                    {
+                        canonStateMap[canon.Type].Add(canon.Grade, true);
+                    }
+                }
+            }
+            foreach (var canonType in canonStateMap)
+            {
+                foreach (var canonGrade in canonType.Value)
+                {
+                    unlockCanonPrefabs.Add(CanonTable.Get(canonType.Key, canonGrade.Key));
+                }
             }
 
             foreach (var canon in unlockCanonPrefabs)
@@ -330,29 +350,14 @@ namespace SkyDragonHunter.Managers {
 
         }
 
-        public static void RegisterCanon(CanonType canonType)
+        public static void RegisterCanon(CanonDummy canonDummy)
         {
-            if (!s_UnlockCanons.ContainsKey(canonType))
+            if (!s_HeldCanons.ContainsKey(canonDummy.Type))
             {
-                s_UnlockCanons.Add(canonType, true);
+                s_HeldCanons.Add(canonDummy.Type, new());
             }
-            if (!s_HeldCanons.ContainsKey(canonType))
-            {
-                s_HeldCanons.Add(canonType, 1);
-            }
-            s_HeldCanons[canonType]++;
-
-            GameObject findPanelGo = GameMgr.FindObject("UICanonEquipmentPanel");
-            GameObject canonInstance = GameObject.Instantiate(CanonTable.Get(canonType));
-            if (findPanelGo != null &&
-                findPanelGo.TryGetComponent<UICanonEquipmentPanel>(out var canonEquipPanel))
-            {
-                canonEquipPanel.AddCanonNode(canonInstance);
-            }
-            else
-            {
-                Debug.LogWarning("[CanonInfoProvider]: Canon Info Panel Node 등록 실패");
-            }
+            s_HeldCanons[canonDummy.Type].Add(canonDummy);
+            s_SortedCanons.Add(canonDummy);
         }
 
         public static void RegisterMasterySocket(UIMasterySocket masterySocketInstance)
@@ -442,8 +447,14 @@ namespace SkyDragonHunter.Managers {
                 #region 대포 인스턴스화 및 저장
                 foreach (var canon in comp.canonDataPrefabs)
                 {
-                    var canonType = canon.canonType;
-                    RegisterCanon(canonType);
+                    for (int i = 0; i < canon.count; ++i)
+                    {
+                        CanonDummy newDummy = new();
+                        newDummy.Level = canon.level;
+                        newDummy.Type = canon.canonType;
+                        newDummy.Grade = canon.canonGrade;
+                        RegisterCanon(newDummy);
+                    }
                 }
                 #endregion
 
