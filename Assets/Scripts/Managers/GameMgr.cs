@@ -10,7 +10,6 @@ namespace SkyDragonHunter.Managers
     {
         // 필드 (Fields)
         private static Dictionary<string, List<GameObject>> m_LoadObjects;
-        private static bool s_IsFirstLoadedScene = true;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -33,21 +32,10 @@ namespace SkyDragonHunter.Managers
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
 
             ItemTable.Init();
-
-            if (s_IsFirstLoadedScene)
-            {
-                AccountMgr.Init();
-            }
-
+            AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
-
-            if (s_IsFirstLoadedScene)
-            {
-                AccountMgr.LateInit();
-                AccountMgr.LoadUserData(scene.name);
-            }
-
-            s_IsFirstLoadedScene = false;
+            AccountMgr.LateInit();
+            AccountMgr.LoadUserData(scene.name);
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -56,9 +44,9 @@ namespace SkyDragonHunter.Managers
                 return;
 
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
+            AccountMgr.Release();
+            ItemTable.Release();
             m_LoadObjects.Clear();
-            // AccountMgr.Release();
-            // ItemTable.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 

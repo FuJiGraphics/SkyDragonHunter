@@ -4,13 +4,22 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 
+    [System.Serializable]
     public class CanonDummy
     {
         // 필드 (Fields)
-        private int m_Level;
+        [SerializeField] private int m_Id;
+        [SerializeField] private int m_Level;
+        [SerializeField] private CanonType m_Type;
+        [SerializeField] private CanonGrade m_Grade;
 
         // 속성 (Properties)
-        public int ID { get; set; }
+        public int ID 
+        { 
+            get => m_Id; 
+            set => m_Id = value; 
+        }
+
         public int Level 
         {
             get => m_Level;
@@ -20,8 +29,19 @@ namespace SkyDragonHunter.Gameplay {
                 m_OnLevelChangedEvents?.Invoke(m_Level);
             }
         }
-        public CanonType Type { get; set; }
-        public CanonGrade Grade { get; set; }
+
+        public CanonType Type 
+        { 
+            get => m_Type; 
+            set => m_Type = value; 
+        }
+
+        public CanonGrade Grade { 
+            get => m_Grade; 
+            set => m_Grade = value; 
+        }
+
+        public bool IsEquip { get; set; } = false;
 
         // 외부 종속성 필드 (External dependencies field)
         private event Action<int> m_OnLevelChangedEvents;

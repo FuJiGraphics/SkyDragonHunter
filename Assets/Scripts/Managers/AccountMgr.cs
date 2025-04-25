@@ -133,8 +133,8 @@ namespace SkyDragonHunter.Managers {
             s_CollectedCrews = null;
             AccountStats = null;
             Crystal = null;
-            s_HeldCanons = null;
             onLevelUpEvents = null;
+            onItemCountChangedEvents = null;
             m_CrystalLevelUpHandlers = null;
         }
 
@@ -444,17 +444,12 @@ namespace SkyDragonHunter.Managers {
                 }
                 #endregion
 
-                #region 대포 인스턴스화 및 저장
+                #region 대포 정보 불러오기
+                s_SortedCanons.Clear();
+                s_HeldCanons.Clear();
                 foreach (var canon in comp.canonDataPrefabs)
                 {
-                    for (int i = 0; i < canon.count; ++i)
-                    {
-                        CanonDummy newDummy = new();
-                        newDummy.Level = canon.level;
-                        newDummy.Type = canon.canonType;
-                        newDummy.Grade = canon.canonGrade;
-                        RegisterCanon(newDummy);
-                    }
+                    RegisterCanon(canon);
                 }
                 #endregion
 
@@ -504,10 +499,7 @@ namespace SkyDragonHunter.Managers {
 
         public static void SaveUserData()
         {
-            Debug.Log("[AccountMgr]: 계정 데이터 세이브");
-            Debug.Log("[AccountMgr]: 단원 데이터 세이브");
-            Debug.Log("[AccountMgr]: 유저 데이터 세이브 완료");
-
+            Debug.Log("[AccountMgr]: 유저 데이터 세이브");
             var tempUserData = GameMgr.FindObject("TempUserData");
 
             if (tempUserData.TryGetComponent<TempUserData>(out var comp))
@@ -565,12 +557,19 @@ namespace SkyDragonHunter.Managers {
                 #region 아이템 정보 저장
                 #endregion
 
+                #region 대포 정보 저장
+                List<CanonDummy> newCanonSaveDummys = new List<CanonDummy>(HeldCanons);
+                comp.canonDataPrefabs = newCanonSaveDummys.ToArray();
+                #endregion
+
+
                 foreach (var handler in m_SaveLoadHandlers)
                 {
                     handler.OnSave(comp);
                 }
                 // 스테이지 정보 최신화
                 comp.DirtyStaticData();
+                Debug.Log("[AccountMgr]: 유저 데이터 세이브 완료");
             }
         }
 

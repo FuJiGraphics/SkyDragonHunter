@@ -1,4 +1,5 @@
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using System;
 using System.Collections;
 using Unity.VisualScripting;
@@ -14,7 +15,9 @@ namespace SkyDragonHunter.Gameplay {
         public event Action<CanonBase> onEquipEvents;
 
         private CanonBase m_CurrentEquipCanonInstance = null;
+        private CanonDummy m_CurrentEquipCanonDummy = null;
         private GameObject m_EquipAnchorInstance = null;
+
         private Coroutine m_FireCoroutine = null;
         private Vector3 m_PrevFirePos;
 
@@ -45,14 +48,28 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+        private void Start()
+        {
+            LoadUserData();
+        }
+
         private void OnDisable()
         {
             StopAllCoroutines();
             m_FireCoroutine = null;
         }
 
-        public void Equip(GameObject canonInstance)
+        public void Equip(CanonDummy canonDummy)
         {
+            if (canonDummy == null)
+            {
+                DrawableMgr.Dialog("Error", "[CanonExecutor]: Equip Error => canonDummy is null!");
+                return;
+            }
+            m_CurrentEquipCanonDummy = canonDummy;
+            m_CurrentEquipCanonDummy.IsEquip = true;
+
+            var canonInstance = canonDummy.GetCanonInstance();
             if (canonInstance.TryGetComponent<CanonBase>(out var canonBase))
             {
                 Unequip();
@@ -77,10 +94,17 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_EquipAnchorInstance != null)
             {
-                m_CurrentEquipCanonInstance?.gameObject.SetActive(false);
+                if (m_CurrentEquipCanonDummy != null)
+                {
+                    m_CurrentEquipCanonDummy.IsEquip = true;
+                }
+
+                // 캐논 게임 오브젝트 인스턴스 제거
+                Destroy(m_CurrentEquipCanonInstance?.gameObject);
                 Destroy(m_EquipAnchorInstance);
                 m_EquipAnchorInstance = null;
                 m_CurrentEquipCanonInstance = null;
+                m_CurrentEquipCanonDummy = null;
             }
         }
 
@@ -150,6 +174,18 @@ namespace SkyDragonHunter.Gameplay {
             }
 
             m_FireCoroutine = null;
+        }
+
+        private void LoadUserData()
+        {
+            foreach (var canonDummy in AccountMgr.HeldCanons)
+            {
+                if (canonDummy.IsEquip)
+                {
+                    Equip(canonDummy);
+                    break;
+                }
+            }
         }
 
         // Others
