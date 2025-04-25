@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.Gameplay {
+namespace SkyDragonHunter.Database {
 
     public enum ItemType
     {

@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Structs;
@@ -9,16 +10,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SkyDragonHunter.Managers {
 
     public static class AccountMgr
     {
         // 필드 (Fields)
-        private static Dictionary<ItemType, AlphaUnit> s_HeldItems;
+        private static Dictionary<ItemType, AlphaUnit> s_HeldItems = new();
+        private static Dictionary<CanonType, int> s_HeldCanons = new();
+        private static Dictionary<CanonType, bool> s_UnlockCanons = new();
 
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
-        private static Dictionary<string, GameObject> s_CollectedCanons; // 인스턴스
         private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
 
         // 속성 (Properties)
@@ -45,6 +48,7 @@ namespace SkyDragonHunter.Managers {
                     s_HeldItems.Add(ItemType.Coin, 0);
                 s_HeldItems[ItemType.Coin] = value;
                 s_InGameMainFramePanel.CoinText = s_HeldItems[ItemType.Coin].ToUnit();
+                onItemCountChangedEvents?.Invoke(ItemType.Coin);
             }
         }
 
@@ -88,6 +92,7 @@ namespace SkyDragonHunter.Managers {
 
         // 이벤트 (Events)
         public static event Action onLevelUpEvents;
+        private static event Action<ItemType> onItemCountChangedEvents;
 
         // Public 메서드
         public static void Init()
@@ -101,10 +106,7 @@ namespace SkyDragonHunter.Managers {
             DefaultGrowthStats = new CommonStats();
             DefaultGrowthStats.ResetAllZero();
 
-            s_CollectedCanons = new Dictionary<string, GameObject>();
             s_CollectedSockets = new Dictionary<MasterySocketType, List<UIMasterySocket>>();
-
-            s_HeldItems = new Dictionary<ItemType, AlphaUnit>();
         }
 
         public static void LateInit()
@@ -129,7 +131,7 @@ namespace SkyDragonHunter.Managers {
             s_CollectedCrews = null;
             AccountStats = null;
             Crystal = null;
-            s_CollectedCanons = null;
+            s_HeldCanons = null;
             onLevelUpEvents = null;
             m_CrystalLevelUpHandlers = null;
         }
@@ -257,23 +259,22 @@ namespace SkyDragonHunter.Managers {
 
         public static CommonStats GetCanonHoldStats()
         {
-            var canons = s_CollectedCanons.Values.ToArray();
             CommonStats stats = new CommonStats();
-            for (int i = 0; i < canons.Length; ++i)
+            stats.ResetAllZero();
+
+            List<GameObject> unlockCanonPrefabs = new();
+            foreach(var unlockCanon in s_UnlockCanons)
             {
-                if (canons[i].TryGetComponent<CanonBase>(out var canonBase))
+                unlockCanonPrefabs.Add(CanonTable.Get(unlockCanon.Key));
+            }
+
+            foreach (var canon in unlockCanonPrefabs)
+            {
+                if (canon.TryGetComponent<CanonBase>(out var canonBase))
                 {
-                    var data = canonBase.CanonData;
-                    if (i == 0)
-                    {
-                        stats.SetMaxDamage(data.canHoldATK);
-                        stats.SetMaxArmor(data.canHoldDEF);
-                    }
-                    else
-                    {
-                        stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(data.canHoldATK));
-                        stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(data.canHoldDEF));
-                    }
+                    var canonData = canonBase.CanonData;
+                    stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(canonData.canHoldATK));
+                    stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(canonData.canHoldDEF));
                 }
             }
             return stats;
@@ -329,39 +330,28 @@ namespace SkyDragonHunter.Managers {
 
         }
 
-        public static void RegisterCanon(GameObject canonInstance)
+        public static void RegisterCanon(CanonType canonType)
         {
-            if (canonInstance.TryGetComponent<CanonBase>(out var canonBase))
+            if (!s_UnlockCanons.ContainsKey(canonType))
             {
-                if (!s_CollectedCanons.ContainsKey(canonBase.name))
-                {
-                    s_CollectedCanons.Add(canonBase.name, canonInstance);
+                s_UnlockCanons.Add(canonType, true);
+            }
+            if (!s_HeldCanons.ContainsKey(canonType))
+            {
+                s_HeldCanons.Add(canonType, 1);
+            }
+            s_HeldCanons[canonType]++;
 
-                    // TODO: 캐논 UI 세팅
-                    if (canonInstance.TryGetComponent<CanonInfoProvider>(out var canonInfoProvider))
-                    {
-                        GameObject findPanelGo = GameMgr.FindObject("UICanonEquipmentPanel");
-                        if (findPanelGo != null && 
-                            findPanelGo.TryGetComponent<UICanonEquipmentPanel>(out var canonEquipPanel))
-                        {
-                            canonEquipPanel.AddCanonNode(canonInstance);
-                        }
-                        else
-                        {
-                            Debug.LogWarning("[CanonInfoProvider]: Canon Info Panel Node 등록 실패");
-                        }
-                    }
-
-                    Debug.Log($"[AccountMgr]: Canon 정보 등록 완료 {canonInstance.name}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[AccountMgr]: 이미 등록된 Canon입니다. {canonInstance.name}");
-                }
+            GameObject findPanelGo = GameMgr.FindObject("UICanonEquipmentPanel");
+            GameObject canonInstance = GameObject.Instantiate(CanonTable.Get(canonType));
+            if (findPanelGo != null &&
+                findPanelGo.TryGetComponent<UICanonEquipmentPanel>(out var canonEquipPanel))
+            {
+                canonEquipPanel.AddCanonNode(canonInstance);
             }
             else
             {
-                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 Canon가 아닙니다. {canonInstance.name}");
+                Debug.LogWarning("[CanonInfoProvider]: Canon Info Panel Node 등록 실패");
             }
         }
 
@@ -452,10 +442,8 @@ namespace SkyDragonHunter.Managers {
                 #region 대포 인스턴스화 및 저장
                 foreach (var canon in comp.canonDataPrefabs)
                 {
-                    GameObject instance = GameObject.Instantiate<GameObject>(canon);
-                    SyncCanonData(instance);
-                    RegisterCanon(instance);
-                    instance.SetActive(false);
+                    var canonType = canon.canonType;
+                    RegisterCanon(canonType);
                 }
                 #endregion
 
@@ -575,6 +563,11 @@ namespace SkyDragonHunter.Managers {
             }
         }
 
+        public static void AddItemCountChangedEvent(Action<ItemType> callback)
+        {
+            onItemCountChangedEvents += callback;
+        }
+
         private static void SyncCrewData(GameObject crewInstance)
         {
             if (crewInstance == null)
@@ -584,17 +577,6 @@ namespace SkyDragonHunter.Managers {
 
             // TODO: 크루 스탯 정보 등 서버와 동기화
             Debug.Log("[AccountMgr]: 단원 스탯 동기화중");
-        }
-
-        private static void SyncCanonData(GameObject canonInstance)
-        {
-            if (canonInstance == null)
-            {
-                Debug.LogError("[AccountMgr]: canonInstance가 null입니다.");
-            }
-
-            // TODO: 크루 스탯 정보 등 서버와 동기화
-            Debug.Log("[AccountMgr]: 캐논 정보 동기화중");
         }
 
         // Others

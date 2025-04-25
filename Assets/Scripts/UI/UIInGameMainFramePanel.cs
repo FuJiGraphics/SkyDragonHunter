@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -43,6 +44,11 @@ namespace SkyDragonHunter.UI {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
+        public void OnChanedItemCount(ItemType type)
+        {
+
+        }
+
         // Private 메서드
         // Others
 

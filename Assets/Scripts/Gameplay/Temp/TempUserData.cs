@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Utility;
@@ -20,6 +21,13 @@ namespace SkyDragonHunter.Test {
         public ItemType itemType;
     }
 
+    [System.Serializable]
+    public struct SaveCanonStorage
+    {
+        public int count;
+        public CanonType canonType;
+    }
+
     public class TempUserData : MonoBehaviour
     {
         // 필드 (Fields)
@@ -33,7 +41,7 @@ namespace SkyDragonHunter.Test {
 
         [Header("Airship Data")]
         public GameObject[] crewDataPrefabs;
-        public GameObject[] canonDataPrefabs;
+        public SaveCanonStorage[] canonDataPrefabs;
         [SerializeField] public List<SaveEquipStorage> airshipEquipSlots = new List<SaveEquipStorage>();
 
         [Header("Item Data")]
@@ -43,7 +51,7 @@ namespace SkyDragonHunter.Test {
         public static int s_StageLevel = 1;
         public static int s_StageZoneLevel = 1;
         public static List<GameObject> s_CrewDataPrefabs;
-        public static List<GameObject> s_CanonDataPrefabs;
+        public static List<SaveCanonStorage> s_CanonDataPrefabs;
         public static List<SaveEquipStorage> s_AirshipEquipSlots;
         public static List<SaveItemStorage> s_ItemData;
         public static int s_CrystalLevelID;
@@ -57,7 +65,7 @@ namespace SkyDragonHunter.Test {
         public void DirtyStaticData()
         {
             s_CrewDataPrefabs = new List<GameObject>(crewDataPrefabs);
-            s_CanonDataPrefabs = new List<GameObject>(canonDataPrefabs);
+            s_CanonDataPrefabs = new List<SaveCanonStorage>(canonDataPrefabs);
             s_AirshipEquipSlots = new List<SaveEquipStorage>(airshipEquipSlots);
             s_CrystalLevelID = crystalLevelID;
             s_StageLevel = stageLevel;

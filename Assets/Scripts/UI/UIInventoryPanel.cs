@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
@@ -25,20 +26,20 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_SelectCountText;
 
         private List<GameObject> m_GenNodes;
-        private AlphaUnit m_CurrentCoin;
 
         // 속성 (Properties)
+        public string CoinText 
+        { 
+            get => m_CoinText.text; 
+            set => m_CoinText.text = value; 
+        }
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Start()
         {
             Init();
-        }
-
-        private void Update()
-        {
-            UpdateCoinState();
         }
 
         private void OnDestroy()
@@ -94,15 +95,6 @@ namespace SkyDragonHunter.UI {
                 m_SelectCountText.text = AccountMgr.ItemCount(clickedNode.ItemType).ToUnit();
         }
         
-        private void UpdateCoinState()
-        {
-            if (m_CurrentCoin != AccountMgr.Coin)
-            {
-                m_CurrentCoin = AccountMgr.Coin;
-                m_CoinText.text = AccountMgr.Coin.ToUnit();
-            }   
-        }
-
         private void ClearSelectOutline()
         {
             foreach (var itemGo in m_GenNodes)

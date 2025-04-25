@@ -9,7 +9,7 @@ namespace SkyDragonHunter.Managers
         // 속성 (Properties)
         public static Dictionary<string, DataTable> Tables { get; private set; }
         public static CrystalLevelTable CrystalLevelTable => Get<CrystalLevelTable>(DataTableIds.CrystalLevel);
-        public static CrewTable CrewTable => Get<CrewTable>(DataTableIds.Crew);
+        public static CrewTableTemplate CrewTable => Get<CrewTableTemplate>(DataTableIds.Crew);
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
         public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
         public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
@@ -26,7 +26,7 @@ namespace SkyDragonHunter.Managers
         {
             Tables = new Dictionary<string, DataTable>();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTable>(DataTableIds.Crew);
+            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
             LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
@@ -42,7 +42,7 @@ namespace SkyDragonHunter.Managers
         {
             Tables = new Dictionary<string, DataTable>();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTable>(DataTableIds.Crew);
+            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
             LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);

@@ -2,7 +2,7 @@ using SkyDragonHunter.Tables.Generic;
 
 namespace SkyDragonHunter.Tables
 {
-    public class ItemData : DataTableData
+    public class ItemTableData : DataTableData
     {
         public string Name { get; set; }
         public string Desc { get; set; }
@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Tables
         public bool Usable { get; set; }
     }
 
-    public class ItemTableTemplate : DataTable<ItemData>
+    public class ItemTableTemplate : DataTable<ItemTableData>
     {
 
     } // Scope by class ItemTable

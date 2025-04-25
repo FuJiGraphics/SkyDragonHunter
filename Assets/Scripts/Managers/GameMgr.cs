@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ namespace SkyDragonHunter.Managers
     {
         // 필드 (Fields)
         private static Dictionary<string, List<GameObject>> m_LoadObjects;
+        private static bool s_IsFirstLoadedScene = true;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -29,11 +31,25 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
             Application.targetFrameRate = 60;
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
+
             ItemTable.Init();
-            AccountMgr.Init();
+            CanonTable.Init();
+
+            if (s_IsFirstLoadedScene)
+            {
+                AccountMgr.Init();
+            }
+
             GameMgr.LoadedRegisterObjects();
-            AccountMgr.LateInit();
+
+            if (s_IsFirstLoadedScene)
+            {
+                AccountMgr.LateInit();
+            }
+
             AccountMgr.LoadUserData(scene.name);
+
+            s_IsFirstLoadedScene = false;
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -43,8 +59,8 @@ namespace SkyDragonHunter.Managers
 
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             m_LoadObjects.Clear();
-            AccountMgr.Release();
-            ItemTable.Release();
+            // AccountMgr.Release();
+            // ItemTable.Release();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }
 

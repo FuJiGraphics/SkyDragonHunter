@@ -1,5 +1,7 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -78,6 +80,7 @@ namespace SkyDragonHunter.Test
             waveControler = GameMgr.FindObject("WaveController");
             waveControlerScript = waveControler.GetComponent<TestWaveController>();
             OnInGamePanels();
+            AccountMgr.AddItemCountChangedEvent(OnChangedItemCount);
         }
 
         private void Update()
@@ -695,6 +698,18 @@ namespace SkyDragonHunter.Test
             treasureFusionWarning.SetActive(false);
             treasureFusionSuccessInfo.SetActive(false);
         }
+
+        private void OnChangedItemCount(ItemType type)
+        {
+            if (type == ItemType.Coin)
+            {
+                if (inventoryPanel.TryGetComponent<UIInventoryPanel>(out var invenComp))
+                {
+                    invenComp.CoinText = AccountMgr.Coin.ToUnit();
+                }
+            }
+        }
+
     } // Scope by class PanelHide
 
 } // namespace Root

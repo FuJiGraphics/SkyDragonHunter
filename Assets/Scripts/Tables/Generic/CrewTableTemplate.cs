@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {
-    public class CrewData : DataTableData
+    public class CrewTableData : DataTableData
     {
         public string                       Name { get; set; }
         public CrewType                     Type { get; set; }
@@ -45,7 +45,7 @@ namespace SkyDragonHunter.Tables
         }        
     }
 
-    public class CrewTable : DataTable<CrewData>
+    public class CrewTableTemplate : DataTable<CrewTableData>
     {
 
     } // Scope by class CrystalLevelTable
