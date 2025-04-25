@@ -467,6 +467,7 @@ namespace SkyDragonHunter
             destructableEvent.destructEvent.AddListener(() =>
             {
                 isBossCleared = true;
+                bossSlider.value = 0;
             });
 
             currentEnemy.Add(spawned.gameObject);
