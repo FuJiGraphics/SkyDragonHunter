@@ -143,15 +143,6 @@ namespace SkyDragonHunter.Entities
                 return;            
 
             CrewResetTargetInBox();
-
-            //if (m_CrewType == CrewType.OnBoard)
-            //{
-            //    OnBoardCrewResetTarget();
-            //}        
-            //if (m_CrewType == CrewType.OnField)
-            //{
-            //    OnFieldCrewResetTarget();
-            //}
         }
 
         public void AllocateMountSlot(MountableSlot slot, int slotIndex)

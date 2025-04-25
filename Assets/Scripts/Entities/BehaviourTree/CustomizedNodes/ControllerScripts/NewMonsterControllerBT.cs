@@ -216,11 +216,11 @@ namespace SkyDragonHunter.Entities
             }
             if (animController != null)
                 this.ID = animController.ID;
-            SetDataFromTable(ID);
+            //SetDataFromTable(ID);
             InitBehaviourTree();
         }
 
-        public void SetDataFromTable(int id)
+        public void SetDataFromTable(int id, float hpMultiply = 1, float atkMultiply = 1)
         {
             ID = id;
             var data = DataTableMgr.MonsterTable.Get(id);
@@ -229,17 +229,20 @@ namespace SkyDragonHunter.Entities
                 Debug.LogError($"Set Monster Data Failed : ID '{id}' not found in monster table.");
                 return;
             }
+            
+            AlphaUnit hpMultiplier = new AlphaUnit(Mathf.FloorToInt(hpMultiply));
+            AlphaUnit atkMultiplier = new AlphaUnit(Mathf.FloorToInt(atkMultiply));
+
+            float rangeCalibrator = 8f;
 
             name = data.Name;
             m_MonsterType = data.Type;
-            monsterStatus.status.MaxHealth = data.HP;
-            monsterStatus.status.MaxDamage = data.ATK;
-            monsterStatus.status.MaxArmor = data.DEF;
-            monsterStatus.status.MaxResilient = data.REG;
+            monsterStatus.status.MaxHealth = data.HP * hpMultiplier;
+            monsterStatus.status.MaxDamage = data.ATK * atkMultiplier;
             projectileId = data.ProjectileID;
             monsterStatus.attackInterval = data.AttackInterval;
-            monsterStatus.attackRange = data.AttackRange;
-            monsterStatus.aggroRange = data.AggroRange;
+            monsterStatus.attackRange = data.AttackRange * rangeCalibrator;
+            monsterStatus.aggroRange = data.AggroRange * rangeCalibrator;
             monsterStatus.speed = data.Speed;
             monsterStatus.chaseSpeed = data.ChaseSpeed;
             monsterStatus.status.ResetAll();            
