@@ -36,6 +36,7 @@ namespace SkyDragonHunter.UI {
         private void Init()
         {
             AddListeners();
+            OnClickDungoenType(0);
         }
 
         private void AddListeners()
