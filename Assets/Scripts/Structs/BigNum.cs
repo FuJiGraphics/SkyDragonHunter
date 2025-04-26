@@ -149,8 +149,7 @@ namespace SkyDragonHunter.Structs
                 newSig /= 10f;
                 newDigit++;
             }
-            Debug.Log($"numerator: {numerator} denom: {denominator}, {newSig}");
-
+            
             return newSig;
         }
 
