@@ -26,7 +26,7 @@ namespace SkyDragonHunter.Database {
     {
         // 필드 (Fields)
         private static readonly string s_CanonPrefabPath = "Prefabs/Canons/";
-        private static Dictionary<CanonType, Prefab> s_Cache;
+        private static Dictionary<CanonType, Dictionary<CanonGrade, Prefab>> s_Cache;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -41,10 +41,15 @@ namespace SkyDragonHunter.Database {
             }
             if (!s_Cache.ContainsKey(type))
             {
-                string canonFileName = type.ToString() + "_" + grade.ToString();
-                s_Cache.Add(type, Resources.Load<GameObject>(s_CanonPrefabPath + canonFileName));
+                s_Cache.Add(type, new());
             }
-            return s_Cache[type];
+            if (!s_Cache[type].ContainsKey(grade))
+            {
+                string canonFileName = type.ToString() + "_" + grade.ToString();
+                Prefab prefab = Resources.Load<GameObject>(s_CanonPrefabPath + canonFileName);
+                s_Cache[type].Add(grade, prefab);
+            }
+            return s_Cache[type][grade];
         }
 
         public static List<Prefab> ToList()

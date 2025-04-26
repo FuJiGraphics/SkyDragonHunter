@@ -3,6 +3,7 @@ using SkyDragonHunter.Scriptables;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
+
     public class CanonInfoProvider : MonoBehaviour
         , ICanonInfoProvider
     {

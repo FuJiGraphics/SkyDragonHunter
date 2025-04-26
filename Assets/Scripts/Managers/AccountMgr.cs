@@ -18,7 +18,7 @@ namespace SkyDragonHunter.Managers {
     {
         // 필드 (Fields)
         private static Dictionary<ItemType, AlphaUnit> s_HeldItems = new();
-        private static Dictionary<CanonType, List<CanonDummy>> s_HeldCanons = new();
+        private static Dictionary<CanonType, Dictionary<CanonGrade, CanonDummy>> s_HeldCanons = new();
         private static List<CanonDummy> s_SortedCanons = new();
 
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
@@ -86,6 +86,20 @@ namespace SkyDragonHunter.Managers {
         }
 
         public static CanonDummy[] HeldCanons => s_SortedCanons.ToArray();
+
+        public static bool CanonGradeUp(CanonDummy target)
+        {
+            if (target.Grade == CanonGrade.Legend)
+            {
+                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
+                return false;
+            }
+
+            target.Count -= 5;
+            s_HeldCanons[target.Type][target.Grade + 1].Count++;
+
+            return true;
+        }
 
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
@@ -264,37 +278,25 @@ namespace SkyDragonHunter.Managers {
             CommonStats stats = new CommonStats();
             stats.ResetAllZero();
 
-            Dictionary<CanonType, Dictionary<CanonGrade, bool>> canonStateMap = new();
-            List<GameObject> unlockCanonPrefabs = new();
-            foreach(var canonList in s_HeldCanons)
+            foreach (var canonTypes in s_HeldCanons)
             {
-                foreach (CanonDummy canon in canonList.Value)
+                foreach (var canonGrade in canonTypes.Value)
                 {
-                    if (!canonStateMap.ContainsKey(canon.Type))
+                    var canon = canonGrade.Value;
+                    if (!canon.IsUnlock)
                     {
-                        canonStateMap.Add(canon.Type, new());
+                        continue;
                     }
-                    if (!canonStateMap[canon.Type].ContainsKey(canon.Grade))
-                    {
-                        canonStateMap[canon.Type].Add(canon.Grade, true);
-                    }
-                }
-            }
-            foreach (var canonType in canonStateMap)
-            {
-                foreach (var canonGrade in canonType.Value)
-                {
-                    unlockCanonPrefabs.Add(CanonTable.Get(canonType.Key, canonGrade.Key));
-                }
-            }
 
-            foreach (var canon in unlockCanonPrefabs)
-            {
-                if (canon.TryGetComponent<CanonBase>(out var canonBase))
-                {
-                    var canonData = canonBase.CanonData;
-                    stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(canonData.canHoldATK));
-                    stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(canonData.canHoldDEF));
+                    var canonInstance = canon.GetCanonInstance();
+                    if (canonInstance.TryGetComponent<CanonBase>(out var canonBase))
+                    {
+                        var canonData = canonBase.CanonData;
+                        BigInteger newHoldATK = BigInteger.Parse(canonData.canHoldATK) * canon.Level;
+                        BigInteger newHoldDEF = BigInteger.Parse(canonData.canHoldDEF) * canon.Level;
+                        stats.SetMaxDamage(stats.MaxDamage.Value + newHoldATK);
+                        stats.SetMaxArmor(stats.MaxArmor.Value + newHoldDEF);
+                    }
                 }
             }
             return stats;
@@ -356,8 +358,14 @@ namespace SkyDragonHunter.Managers {
             {
                 s_HeldCanons.Add(canonDummy.Type, new());
             }
-            s_HeldCanons[canonDummy.Type].Add(canonDummy);
+            if (!s_HeldCanons[canonDummy.Type].ContainsKey(canonDummy.Grade))
+            {
+                s_HeldCanons[canonDummy.Type].Add(canonDummy.Grade, canonDummy);
+            }
+            int count = canonDummy.Count > 0 ? canonDummy.Count : 1;
+            s_HeldCanons[canonDummy.Type][canonDummy.Grade].Count = count;
             s_SortedCanons.Add(canonDummy);
+            canonDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
         }
 
         public static void RegisterMasterySocket(UIMasterySocket masterySocketInstance)
@@ -587,6 +595,12 @@ namespace SkyDragonHunter.Managers {
 
             // TODO: 크루 스탯 정보 등 서버와 동기화
             Debug.Log("[AccountMgr]: 단원 스탯 동기화중");
+        }
+
+        private static void OnCanonLevelUpEvent(int level)
+        {
+            var airshipProvider = GameMgr.FindObject<AccountStatProvider>("Airship");
+            airshipProvider.MergedAccountStatsForCharacter();
         }
 
         // Others

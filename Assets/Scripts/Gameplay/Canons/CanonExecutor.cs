@@ -99,8 +99,6 @@ namespace SkyDragonHunter.Gameplay {
                     m_CurrentEquipCanonDummy.IsEquip = true;
                 }
 
-                // 캐논 게임 오브젝트 인스턴스 제거
-                Destroy(m_CurrentEquipCanonInstance?.gameObject);
                 Destroy(m_EquipAnchorInstance);
                 m_EquipAnchorInstance = null;
                 m_CurrentEquipCanonInstance = null;
