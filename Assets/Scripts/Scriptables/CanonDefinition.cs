@@ -42,7 +42,7 @@ namespace SkyDragonHunter.Scriptables {
 
             Attack attack = new Attack();
             attack.defender = dStats.gameObject;
-            BigInteger damage = aStats.MaxDamage.Value;
+            BigNum damage = aStats.MaxDamage;
             float criticalChance = Mathf.Clamp01(aStats.CriticalChance);
 
             /* ccj)
@@ -51,28 +51,34 @@ namespace SkyDragonHunter.Scriptables {
              */
             if (criticalChance > UnityEngine.Random.value)
             {
-                double criDamage = (double)damage * aStats.CriticalMultiplier;
-                if (criDamage < double.MaxValue)
-                {
-                    damage = (BigInteger)criDamage;
-                }
-                else
-                {
-                    damage *= (BigInteger)aStats.CriticalMultiplier;
-                }
+                // TODO: AlphaUnit Convert
+                //double criDamage = (double)damage * aStats.CriticalMultiplier;
+                //if (criDamage < double.MaxValue)
+                //{
+                //    damage = (BigInteger)criDamage;
+                //}
+                //else
+                //{
+                //    damage *= (BigInteger)aStats.CriticalMultiplier;
+                //}
+                damage *= aStats.CriticalMultiplier;
+                // ~TODO
                 attack.isCritical = true;
             }
             if (dStats.gameObject.tag == "Boss")
             {
-                double bossDamage = (double)damage * aStats.BossDamageMultiplier;
-                if (bossDamage < double.MaxValue)
-                {
-                    damage = (BigInteger)bossDamage;
-                }
-                else
-                {
-                    damage *= (BigInteger)aStats.BossDamageMultiplier;
-                }
+                // TODO: AlphaUnit Convert
+                //double bossDamage = (double)damage * aStats.BossDamageMultiplier;
+                //if (bossDamage < double.MaxValue)
+                //{
+                //    damage = (BigInteger)bossDamage;
+                //}
+                //else
+                //{
+                //    damage *= (BigInteger)aStats.BossDamageMultiplier;
+                //}
+                damage *= aStats.BossDamageMultiplier;
+                // ~TODO
             }
             attack.damage = damage;
             if (dStats != null)

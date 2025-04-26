@@ -9,19 +9,19 @@ namespace SkyDragonHunter.Managers
         public static bool Equals(double a, double b)
             => System.Math.Abs(a - b) < 1e-6;
 
-        public static BigInteger Max(BigInteger a, BigInteger b)
+        public static BigNum Max(BigNum a, BigNum b)
             => a > b ? a : b;
 
-        public static BigInteger Min(BigInteger a, BigInteger b)
+        public static BigNum Min(BigNum a, BigNum b)
             => a < b ? a : b;
 
-        public static BigInteger Clamp(BigInteger value, BigInteger min, BigInteger max)
+        public static BigNum Clamp(BigNum value, BigNum min, BigNum max)
             => Min(Max(value, min), max);
 
-        public static BigInteger Abs(BigInteger value)
+        public static BigInteger AbsTemp(BigInteger value)
             => value < 0 ? -value : value;
 
-        public static double SmartRound(double d)
+        public static double SmartRoundTemp(double d)
             => (double)((BigInteger)((d >= 0.0) ? d + 0.5 : d - 0.5));
         
 

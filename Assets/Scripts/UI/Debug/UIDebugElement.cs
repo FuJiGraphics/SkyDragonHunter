@@ -1,4 +1,5 @@
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -32,48 +33,41 @@ namespace SkyDragonHunter.UI
 
         private void OnCoinButtonClicked()
         {
-            if (BigInteger.TryParse(m_Input.text, out BigInteger coinValue))
-            {
-                switch (m_Type)
-                {
-                    case IncreaseType.Coin:
-                        AccountMgr.Coin += coinValue;
-                        DrawableMgr.Dialog("Alert", $"코인이 {coinValue}만큼 증가되었습니다.");
-                        break;
-                    case IncreaseType.Diamond:
-                        AccountMgr.Diamond += coinValue;
-                        DrawableMgr.Dialog("Alert", $"다이아가 {coinValue}만큼 증가되었습니다.");
-                        break;
-                    case IncreaseType.CrystalLevel:
-                        if (AccountMgr.IsMaxLevel)
-                        {
-                            DrawableMgr.Dialog("Alert", $"계정 레벨이 최대입니다.");
-                        }
+            BigNum coinValue = new BigNum(m_Input.text);
 
-                        int diffLevel = 1000 - AccountMgr.CurrentLevel;
-                        if (int.TryParse(coinValue.ToString(), out var levelValue))
-                        {
-                            if (levelValue <= diffLevel)
-                            {
-                                DrawableMgr.Dialog("Alert", $"계정 레벨이 {levelValue}만큼 증가되었습니다.");
-                            }
-                            else
-                            {
-                                DrawableMgr.Dialog("Alert", $"계정 레벨이 {diffLevel}만큼 증가되었습니다.");
-                            }
-                            AccountMgr.LevelUp(levelValue);
-                        }
-                        break;
-                }
-            }
-            else
+            switch (m_Type)
             {
-                DrawableMgr.Dialog("Alert", "유효하지 않은 숫자 입력입니다.");
-            }
+                case IncreaseType.Coin:
+                    AccountMgr.Coin += coinValue;
+                    DrawableMgr.Dialog("Alert", $"코인이 {coinValue}만큼 증가되었습니다.");
+                    break;
+                case IncreaseType.Diamond:
+                    AccountMgr.Diamond += coinValue;
+                    DrawableMgr.Dialog("Alert", $"다이아가 {coinValue}만큼 증가되었습니다.");
+                    break;
+                case IncreaseType.CrystalLevel:
+                    if (AccountMgr.IsMaxLevel)
+                    {
+                        DrawableMgr.Dialog("Alert", $"계정 레벨이 최대입니다.");
+                    }
+
+                    int diffLevel = 1000 - AccountMgr.CurrentLevel;
+                    if (int.TryParse(coinValue.ToString(), out var levelValue))
+                    {
+                        if (levelValue <= diffLevel)
+                        {
+                            DrawableMgr.Dialog("Alert", $"계정 레벨이 {levelValue}만큼 증가되었습니다.");
+                        }
+                        else
+                        {
+                            DrawableMgr.Dialog("Alert", $"계정 레벨이 {diffLevel}만큼 증가되었습니다.");
+                        }
+                        AccountMgr.LevelUp(levelValue);
+                    }
+                    break;
+            }            
         }
-
         // Private 메서드
         // Others
-
     } // Scope by class UICoinUp
 } // namespace Root

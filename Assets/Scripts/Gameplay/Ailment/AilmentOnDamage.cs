@@ -14,7 +14,7 @@ namespace SkyDragonHunter.Gameplay {
         // 필드 (Fields)
         private GameObject m_Caster;
         private DamageReceiver m_Receiver;
-        private BigInteger m_DamageNum;
+        private BigNum m_DamageNum;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -27,13 +27,13 @@ namespace SkyDragonHunter.Gameplay {
             m_Receiver = receiver.GetComponent<DamageReceiver>();
             if (m_Caster.TryGetComponent<CharacterStatus>(out var status))
             {
-                m_DamageNum = status.MaxHealth.Value / 100;
+                m_DamageNum = status.MaxHealth / 100;
             }
         }
 
         public void OnStay()
         {
-            AlphaUnit damage = m_DamageNum;
+            BigNum damage = m_DamageNum;
             DrawableMgr.Text(m_Receiver.transform.position, damage.ToUnit(), Color.red);
             m_Receiver.TakeDamage(m_Caster, m_DamageNum);
         }

@@ -42,11 +42,11 @@ namespace SkyDragonHunter.Entities
         public TestAniController animController;
 
         // Properties
-        public AlphaUnit HP
+        public BigNum HP
         {
             get => bossStatus.status.Health;
         }
-        public AlphaUnit MaxHP
+        public BigNum MaxHP
         {
             get => bossStatus.status.MaxHealth;
             set

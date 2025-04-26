@@ -42,11 +42,11 @@ namespace SkyDragonHunter.Entities
 
         // Properties
         public UIHealthBar[] HealthBars => m_UIHealthBars;
-        public AlphaUnit HP
+        public BigNum HP
         {
             get => monsterStatus.status.Health;
         }
-        public AlphaUnit MaxHP
+        public BigNum MaxHP
         {
             get => monsterStatus.status.MaxHealth;
             set
@@ -56,7 +56,7 @@ namespace SkyDragonHunter.Entities
                 monsterStatus.status.ResetAll();
             }
         }
-        public AlphaUnit Damage
+        public BigNum Damage
         {
             get => monsterStatus.status.MaxDamage;
             set
@@ -229,9 +229,9 @@ namespace SkyDragonHunter.Entities
                 Debug.LogError($"Set Monster Data Failed : ID '{id}' not found in monster table.");
                 return;
             }
-            
-            AlphaUnit hpMultiplier = new AlphaUnit(Mathf.FloorToInt(hpMultiply));
-            AlphaUnit atkMultiplier = new AlphaUnit(Mathf.FloorToInt(atkMultiply));
+
+            BigNum hpMultiplier = new BigNum(Mathf.FloorToInt(hpMultiply));
+            BigNum atkMultiplier = new BigNum(Mathf.FloorToInt(atkMultiply));
 
             float rangeCalibrator = 8f;
 

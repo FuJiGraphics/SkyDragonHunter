@@ -38,7 +38,7 @@ namespace SkyDragonHunter.UI {
 
         }
 
-        public void SetDungeonProgress(AlphaUnit bossHP, AlphaUnit bossMaxHP)
+        public void SetDungeonProgress(BigNum bossHP, BigNum bossMaxHP)
         {
             var sb = new StringBuilder();
             sb.Append(bossHP.ToUnit());
@@ -46,7 +46,7 @@ namespace SkyDragonHunter.UI {
             sb.Append(bossMaxHP.ToUnit());
             m_ProgressText.text = sb.ToString();
 
-            float hpPercentage = (float)bossHP.Value / (float)bossMaxHP.Value;
+            float hpPercentage = BigNum.GetPercentage(bossHP, bossMaxHP);
             m_ProgressSlider.value = hpPercentage;
         }
 

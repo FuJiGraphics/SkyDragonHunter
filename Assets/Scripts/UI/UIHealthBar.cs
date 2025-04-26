@@ -10,8 +10,8 @@ namespace SkyDragonHunter.UI {
     public class UIHealthBar : MonoBehaviour
     {
         // 필드 (Fields)
-        public BigInteger maxHealth;
-        public BigInteger currentHealth;
+        public BigNum maxHealth;
+        public BigNum currentHealth;
         private Slider m_Slider;
 
         // 속성 (Properties)
@@ -39,14 +39,14 @@ namespace SkyDragonHunter.UI {
             SetHP(currentHealth);
         }
 
-        public void TakeDamage(AlphaUnit damage)
+        public void TakeDamage(BigNum damage)
         {
             //Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
-            SetHP(currentHealth - damage.Value);
+            SetHP(currentHealth - damage);
             UpdateSlider();
         }
 
-        public void SetHP(AlphaUnit health)
+        public void SetHP(BigNum health)
         {
             if (m_Slider == null)
             {
@@ -54,7 +54,8 @@ namespace SkyDragonHunter.UI {
                 return;
             }
 
-            currentHealth = Math2DHelper.Max(0, Math2DHelper.Min(health.Value, maxHealth));
+            //currentHealth = Math2DHelper.Max(0, Math2DHelper.Min(health, maxHealth));
+            currentHealth = Math2DHelper.Clamp(currentHealth, 0, maxHealth);
             UpdateSlider();
 
             if (currentHealth <= 0)
@@ -72,7 +73,7 @@ namespace SkyDragonHunter.UI {
             m_Slider.minValue = 0f;
             m_Slider.maxValue = 1f;
 
-            m_Slider.value = (float)((double)currentHealth / (double)maxHealth);
+            m_Slider.value = BigNum.GetPercentage(currentHealth, maxHealth);
         }
 
         // Private 메서드

@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Scriptables {
             attack.defender = dStats.gameObject;
             if (damage.Length <= 0)
                 damage = "0";
-            AlphaUnit newDamage = BigInteger.Parse(damage) + aStats.MaxDamage.Value;
+            BigNum newDamage = new BigNum(damage) + aStats.MaxDamage;
             float newCriticalChance = Mathf.Clamp01(criticalChance + aStats.CriticalChance);
             float newCriticalMultiplier = criticalMultiplier + aStats.CriticalMultiplier;
             if (newCriticalChance > UnityEngine.Random.value)

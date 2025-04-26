@@ -23,17 +23,17 @@ namespace SkyDragonHunter.Gameplay
         [SerializeField] private float skillEffectMultiplier = CommonStats.c_DefaultSkillEffectMultiplier;
 
         // 속성 (Properties)
-        public AlphaUnit MaxDamage { get => m_CommonStats.MaxDamage; set => m_CommonStats.SetMaxDamage(value.Value); }
-        public AlphaUnit MaxHealth { get => m_CommonStats.MaxHealth; set => m_CommonStats.SetMaxHealth(value.Value); }
-        public AlphaUnit MaxShield { get => m_CommonStats.MaxShield; set => m_CommonStats.SetMaxShield(value.Value); }
-        public AlphaUnit MaxArmor { get => m_CommonStats.MaxArmor; set => m_CommonStats.SetMaxArmor(value.Value); }
-        public AlphaUnit MaxResilient { get => m_CommonStats.MaxResilient; set => m_CommonStats.SetMaxResilient(value.Value); }
+        public BigNum MaxDamage { get => m_CommonStats.MaxDamage; set => m_CommonStats.SetMaxDamage(value); }
+        public BigNum MaxHealth { get => m_CommonStats.MaxHealth; set => m_CommonStats.SetMaxHealth(value); }
+        public BigNum MaxShield { get => m_CommonStats.MaxShield; set => m_CommonStats.SetMaxShield(value); }
+        public BigNum MaxArmor { get => m_CommonStats.MaxArmor; set => m_CommonStats.SetMaxArmor(value); }
+        public BigNum MaxResilient { get => m_CommonStats.MaxResilient; set => m_CommonStats.SetMaxResilient(value); }
 
-        public AlphaUnit Damage { get => m_CommonStats.Damage; set => m_CommonStats.SetDamage(value.Value); }
-        public AlphaUnit Health { get => m_CommonStats.Health; set => m_CommonStats.SetHealth(value.Value); }
-        public AlphaUnit Shield { get => m_CommonStats.Shield; set => m_CommonStats.SetShield(value.Value); }
-        public AlphaUnit Armor { get => m_CommonStats.Armor; set => m_CommonStats.SetArmor(value.Value); }
-        public AlphaUnit Resilient { get => m_CommonStats.Resilient; set => m_CommonStats.SetResilient(value.Value); }
+        public BigNum Damage { get => m_CommonStats.Damage; set => m_CommonStats.SetDamage(value); }
+        public BigNum Health { get => m_CommonStats.Health; set => m_CommonStats.SetHealth(value); }
+        public BigNum Shield { get => m_CommonStats.Shield; set => m_CommonStats.SetShield(value); }
+        public BigNum Armor { get => m_CommonStats.Armor; set => m_CommonStats.SetArmor(value); }
+        public BigNum Resilient { get => m_CommonStats.Resilient; set => m_CommonStats.SetResilient(value); }
         public float CriticalChance { get => m_CommonStats.CriticalChance; set => m_CommonStats.SetCriticalChance(value); }
         public float CriticalMultiplier { get => m_CommonStats.CriticalMultiplier; set => m_CommonStats.SetCriticalMultiplier(value); }
         public float BossDamageMultiplier { get => m_CommonStats.BossDamageMultiplier; set => m_CommonStats.SetBossDamageMultiplier(value); }
@@ -84,24 +84,24 @@ namespace SkyDragonHunter.Gameplay
         {
             if (m_ShieldBarUI != null)
             {
-                if (m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield.Value)
+                if (m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield)
                 {
-                    m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
+                    m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield;
                 }
-                if (m_ShieldBarUI.currentHealth != m_CommonStats.Shield.Value)
+                if (m_ShieldBarUI.currentHealth != m_CommonStats.Shield)
                 {
-                    m_ShieldBarUI.SetHP(m_CommonStats.Shield.Value);
+                    m_ShieldBarUI.SetHP(m_CommonStats.Shield);
                 }
             }
             if (m_HealthBarUI != null)
             {
-                if (m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth.Value)
+                if (m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth)
                 {
-                    m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
+                    m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth;
                 }
-                if (m_HealthBarUI.currentHealth != m_CommonStats.Health.Value)
+                if (m_HealthBarUI.currentHealth != m_CommonStats.Health)
                 {
-                    m_HealthBarUI.SetHP(m_CommonStats.Health.Value);
+                    m_HealthBarUI.SetHP(m_CommonStats.Health);
                 }
             }
         }
@@ -109,11 +109,11 @@ namespace SkyDragonHunter.Gameplay
 #if UNITY_EDITOR
         public void UpdateParams()
         {
-            damage = m_CommonStats.Damage.Value.ToString();
-            health = m_CommonStats.Health.Value.ToString();
-            shield = m_CommonStats.Shield.Value.ToString();
-            armor = m_CommonStats.Armor.Value.ToString();
-            resilient = m_CommonStats.Resilient.Value.ToString();
+            damage = m_CommonStats.Damage.ToString();
+            health = m_CommonStats.Health.ToString();
+            shield = m_CommonStats.Shield.ToString();
+            armor = m_CommonStats.Armor.ToString();
+            resilient = m_CommonStats.Resilient.ToString();
             criticalChance = m_CommonStats.CriticalChance;
             criticalMultiplier = m_CommonStats.CriticalMultiplier;
             bossDamageMultiplier = m_CommonStats.BossDamageMultiplier;
@@ -148,18 +148,18 @@ namespace SkyDragonHunter.Gameplay
                 if (bar.name == "UIShieldBar")
                 {
                     m_ShieldBarUI = bar;
-                    if (m_ShieldBarUI != null && m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield.Value)
+                    if (m_ShieldBarUI != null && m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield)
                     {
-                        m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield.Value;
+                        m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield;
                         m_ShieldBarUI.ResetHP();
                     }
                 }
                 else if (bar.name == "UIHealthBar")
                 {
                     m_HealthBarUI = bar;
-                    if (m_HealthBarUI != null && m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth.Value)
+                    if (m_HealthBarUI != null && m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth)
                     {
-                        m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth.Value;
+                        m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth;
                         m_HealthBarUI.ResetHP();
                     }
                 }

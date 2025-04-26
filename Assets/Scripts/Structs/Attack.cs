@@ -9,7 +9,7 @@ namespace SkyDragonHunter.Structs {
     {
         public GameObject attacker;
         public GameObject defender;    // 공격 받는 대상
-        public AlphaUnit damage;       // 데미지
+        public BigNum damage;       // 데미지
         public bool isCritical;
 
     }; // struct Attack

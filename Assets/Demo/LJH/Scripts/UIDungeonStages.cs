@@ -23,8 +23,8 @@ namespace SkyDragonHunter {
 
         private int m_Level;
         private bool isCleared;
-        private AlphaUnit m_RecommendedAtk;
-        private AlphaUnit m_RecommendedHp;
+        private BigNum m_RecommendedAtk;
+        private BigNum m_RecommendedHp;
 
         // Properties
         public int Level => m_Level;

@@ -41,18 +41,25 @@ namespace SkyDragonHunter.Scriptables {
             attack.defender = dStats.gameObject;
 
             double newMultiplier = skillMultiplier * aStats.SkillEffectMultiplier;
-            AlphaUnit newDamage = aStats.MaxDamage.Value;
-            if ((double)newDamage.Value > (double)float.MaxValue)
-                newDamage *= Math2DHelper.SmartRound(newMultiplier);
-            else
-                newDamage *= newMultiplier;
+            BigNum newDamage = aStats.MaxDamage;
+            // TODO: AlphaUnit Convert
+            //if ((double)newDamage > (double)float.MaxValue)
+            //    newDamage *= Math2DHelper.SmartRound(newMultiplier);
+            //else
+            //    newDamage *= newMultiplier;
+            newDamage *= newMultiplier;
+            // ~TODO
+
 
             if (dStats.gameObject.tag == "Boss")
             {
-                if ((double)newDamage.Value > (double)float.MaxValue)
-                    newDamage *= Math2DHelper.SmartRound(aStats.BossDamageMultiplier);
-                else
-                    newDamage *= aStats.BossDamageMultiplier;
+                // TODO: AlphaUnit Convert
+                //if ((double)newDamage > (double)float.MaxValue)
+                //    newDamage *= Math2DHelper.SmartRound(aStats.BossDamageMultiplier);
+                //else
+                //    newDamage *= aStats.BossDamageMultiplier;
+                newDamage *= aStats.BossDamageMultiplier;
+                // ~TODO
             }
 
             attack.damage = newDamage;

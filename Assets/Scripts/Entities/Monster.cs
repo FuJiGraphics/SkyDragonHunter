@@ -6,8 +6,8 @@ namespace SkyDragonHunter.Entities
     public class Monster : MonoBehaviour
     {
         // 필드 (Fields)
-        private AlphaUnit m_Damage;
-        private AlphaUnit m_HealthPoint;
+        private BigNum m_Damage;
+        private BigNum m_HealthPoint;
 
         private float m_AttackDuration;
         private float m_AttackTimer;
@@ -31,8 +31,8 @@ namespace SkyDragonHunter.Entities
         // 테스트용 나중에 삭제
 
         // 속성 (Properties)
-        public AlphaUnit Damage => m_Damage;
-        public AlphaUnit HealthPoint => m_HealthPoint;
+        public BigNum Damage => m_Damage;
+        public BigNum HealthPoint => m_HealthPoint;
         public bool m_IsAttackable
         {
             get
@@ -102,7 +102,7 @@ namespace SkyDragonHunter.Entities
         }
 
         // Public 메서드
-        public void SetMonsterStats(AlphaUnit damage, AlphaUnit hp, float attackDuration, float moveSpeed, float attackRange)
+        public void SetMonsterStats(BigNum damage, BigNum hp, float attackDuration, float moveSpeed, float attackRange)
         {
             m_Damage = damage;
             m_HealthPoint = hp;
@@ -112,7 +112,7 @@ namespace SkyDragonHunter.Entities
             m_AttackRange = attackRange;
         }
 
-        public void TakeDamage(AlphaUnit damage)
+        public void TakeDamage(BigNum damage)
         {
             m_DamagedTimer = 1f;
             m_HealthPoint -= damage;

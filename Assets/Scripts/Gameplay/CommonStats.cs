@@ -18,20 +18,20 @@ namespace SkyDragonHunter.Gameplay
         public const float c_DefaultBossDamageMultiplier = 1f;  // 기본 보스 피해 배율 100%
         public const float c_DefaultSkillEffectMultiplier = 1f; // 기본 스킬 피해 배율 100%
 
-        public AlphaUnit MaxDamage { get; private set; }    // 최대 공격력
-        public AlphaUnit Damage { get; private set; }       // 현재 공격력
+        public BigNum MaxDamage { get; private set; }    // 최대 공격력
+        public BigNum Damage { get; private set; }       // 현재 공격력
 
-        public AlphaUnit MaxHealth { get; private set; }    // 최대 HP
-        public AlphaUnit Health { get; private set; }       // 현재 HP
+        public BigNum MaxHealth { get; private set; }    // 최대 HP
+        public BigNum Health { get; private set; }       // 현재 HP
 
-        public AlphaUnit MaxShield { get; private set; }    // 최대 방어막
-        public AlphaUnit Shield { get; private set; }       // 현재 방어막
+        public BigNum MaxShield { get; private set; }    // 최대 방어막
+        public BigNum Shield { get; private set; }       // 현재 방어막
 
-        public AlphaUnit MaxArmor { get; private set; }     // 최대 방어력
-        public AlphaUnit Armor { get; private set; }        // 현재 방어력
+        public BigNum MaxArmor { get; private set; }     // 최대 방어력
+        public BigNum Armor { get; private set; }        // 현재 방어력
 
-        public AlphaUnit MaxResilient  { get; private set; }  // 최대 회복력
-        public AlphaUnit Resilient  { get; private set; }     // 현재 회복력
+        public BigNum MaxResilient  { get; private set; }  // 최대 회복력
+        public BigNum Resilient  { get; private set; }     // 현재 회복력
 
         public float CriticalChance { get; private set; }        // 치명타 확률
         public float CriticalMultiplier { get; private set; }    // 치명타 배율
@@ -46,11 +46,11 @@ namespace SkyDragonHunter.Gameplay
 
         public CommonStats()
         {
-            MaxDamage = Damage = BigInteger.Parse(c_DefaultDamage);
-            MaxHealth = Health = BigInteger.Parse(c_DefaultHealth);
-            MaxShield = Shield = BigInteger.Parse(c_DefaultShield);
-            MaxArmor = Armor = BigInteger.Parse(c_DefaultArmor);
-            MaxResilient = Resilient = BigInteger.Parse(c_DefaultResilient);
+            MaxDamage = Damage = new BigNum(c_DefaultDamage);
+            MaxHealth = Health = new BigNum(c_DefaultHealth);
+            MaxShield = Shield = new BigNum(c_DefaultShield);
+            MaxArmor = Armor = new BigNum(c_DefaultArmor);
+            MaxResilient = Resilient = new BigNum(c_DefaultResilient);
             CriticalChance = c_DefaultCriticalChance;
             CriticalMultiplier = c_DefaultCriticalMultiplier;
             BossDamageMultiplier = c_DefaultBossDamageMultiplier;
@@ -84,63 +84,63 @@ namespace SkyDragonHunter.Gameplay
             SkillEffectMultiplier = 0f;
         }
 
-        public void SetMaxDamage(BigInteger value)
+        public void SetMaxDamage(BigNum value)
         {
             MaxDamage = Math2DHelper.Max(0, value);
         }
 
-        public void SetMaxHealth(BigInteger value)
+        public void SetMaxHealth(BigNum value)
         {
             MaxHealth = Math2DHelper.Max(0, value);
         }
 
-        public void SetMaxShield(BigInteger value)
+        public void SetMaxShield(BigNum value)
         {
             MaxShield = Math2DHelper.Max(0, value);
         }
 
-        public void SetMaxArmor(BigInteger value)
+        public void SetMaxArmor(BigNum value)
         {
             MaxArmor = Math2DHelper.Max(0, value);
         }
 
-        public void SetMaxResilient(BigInteger value)
+        public void SetMaxResilient(BigNum value)
         {
             MaxResilient = Math2DHelper.Max(0, value);
         }
 
         public void SetMaxDamage(string value)
-            => SetMaxDamage(BigInteger.Parse(value));
+            => SetMaxDamage(new BigNum(value));
         public void SetMaxHealth(string value)
-            => SetMaxHealth(BigInteger.Parse(value));
+            => SetMaxHealth(new BigNum(value));
         public void SetMaxShield(string value)
-            => SetMaxShield(BigInteger.Parse(value));
+            => SetMaxShield(new BigNum(value));
         public void SetMaxArmor(string value)
-            => SetMaxArmor(BigInteger.Parse(value));
+            => SetMaxArmor(new BigNum(value));
         public void SetMaxResilient(string value)
-            => SetMaxResilient(BigInteger.Parse(value));
+            => SetMaxResilient(new BigNum(value));
 
-        public void SetDamage(BigInteger value)
-            => Damage = Math2DHelper.Clamp(value, 0, MaxDamage.Value);
-        public void SetHealth(BigInteger value)
-            => Health = Math2DHelper.Clamp(value, 0, MaxHealth.Value);
-        public void SetShield(BigInteger value)
-            => Shield = Math2DHelper.Clamp(value, 0, MaxShield.Value);
-        public void SetArmor(BigInteger value)
-            => Armor = Math2DHelper.Clamp(value, 0, MaxArmor.Value);
-        public void SetResilient(BigInteger value)
-            => Resilient = Math2DHelper.Clamp(value, 0, MaxResilient.Value);
+        public void SetDamage(BigNum value)
+            => Damage = Math2DHelper.Clamp(value, 0, MaxDamage);
+        public void SetHealth(BigNum value)
+            => Health = Math2DHelper.Clamp(value, 0, MaxHealth);
+        public void SetShield(BigNum value)
+            => Shield = Math2DHelper.Clamp(value, 0, MaxShield);
+        public void SetArmor(BigNum value)
+            => Armor = Math2DHelper.Clamp(value, 0, MaxArmor);
+        public void SetResilient(BigNum value)
+            => Resilient = Math2DHelper.Clamp(value, 0, MaxResilient);
 
         public void SetDamage(string value)
-            => Damage = Math2DHelper.Clamp(BigInteger.Parse(value), 0, MaxDamage.Value);
+            => Damage = Math2DHelper.Clamp(new BigNum(value), 0, MaxDamage);
         public void SetHealth(string value)
-            => Health = Math2DHelper.Clamp(BigInteger.Parse(value), 0, MaxHealth.Value);
+            => Health = Math2DHelper.Clamp(new BigNum(value), 0, MaxHealth);
         public void SetShield(string value)
-            => Shield = Math2DHelper.Clamp(BigInteger.Parse(value), 0, MaxShield.Value);
+            => Shield = Math2DHelper.Clamp(new BigNum(value), 0, MaxShield);
         public void SetArmor(string value)
-            => Armor = Math2DHelper.Clamp(BigInteger.Parse(value), 0, MaxArmor.Value);
+            => Armor = Math2DHelper.Clamp(new BigNum(value), 0, MaxArmor);
         public void SetResilient(string value)
-            => Resilient = Math2DHelper.Clamp(BigInteger.Parse(value), 0, MaxResilient.Value);
+            => Resilient = Math2DHelper.Clamp(new BigNum(value), 0, MaxResilient);
 
         // 0.0 ~ 1.0 사이의 값
         public void SetCriticalChance(float percent)

@@ -1,4 +1,5 @@
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System;
 using System.Collections;
@@ -34,7 +35,7 @@ namespace SkyDragonHunter.UI {
         public string SocketName { get; private set; }
         public string Description { get; private set; }
         public MasterySocketType Type { get; private set; } = MasterySocketType.Damage;
-        public BigInteger Stat { get; private set; }
+        public BigNum Stat { get; private set; }
         public double Multiplier { get; private set; }
         public int NextID { get; private set; }
         public string SlotCountString { get; private set; }
@@ -84,7 +85,7 @@ namespace SkyDragonHunter.UI {
                 SocketName = newData.SocketName;
                 Description = newData.Description;
                 Type = (MasterySocketType)newData.StatType;
-                Stat = BigInteger.Parse(newData.Stat);
+                Stat = new BigNum(newData.Stat);
                 Multiplier = newData.Multiplier;
                 NextID = newData.NextSocketID;
                 result = true;
@@ -105,7 +106,7 @@ namespace SkyDragonHunter.UI {
             SocketName = newData.SocketName;
             Description = newData.Description;
             Type = (MasterySocketType)newData.StatType;
-            Stat = BigInteger.Parse(newData.Stat);
+            Stat = new BigNum(newData.Stat);
             NextID = newData.NextSocketID;
             m_MaxLevelCount = CalculateNextLevelCount();
             m_CurrentCount = 0;

@@ -17,7 +17,7 @@ namespace SkyDragonHunter.Managers {
     public static class AccountMgr
     {
         // 필드 (Fields)
-        private static Dictionary<ItemType, AlphaUnit> s_HeldItems = new();
+        private static Dictionary<ItemType, BigNum> s_HeldItems = new();
         private static Dictionary<CanonType, List<CanonDummy>> s_HeldCanons = new();
         private static List<CanonDummy> s_SortedCanons = new();
 
@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Managers {
         public static Crystal Crystal { get; private set; }
         public static bool IsMaxLevel => Crystal?.NextLevelId <= 0;
 
-        public static AlphaUnit Coin
+        public static BigNum Coin
         {
             get
             {
@@ -52,7 +52,7 @@ namespace SkyDragonHunter.Managers {
             }
         }
 
-        public static AlphaUnit Diamond
+        public static BigNum Diamond
         {
             get 
             {
@@ -69,7 +69,7 @@ namespace SkyDragonHunter.Managers {
             }
         }
 
-        public static AlphaUnit Ticket
+        public static BigNum Ticket
         {
             get
             {
@@ -138,7 +138,7 @@ namespace SkyDragonHunter.Managers {
             m_CrystalLevelUpHandlers = null;
         }
 
-        public static AlphaUnit ItemCount(ItemType type)
+        public static BigNum ItemCount(ItemType type)
         {
             if (!s_HeldItems.ContainsKey(type))
             {
@@ -293,8 +293,8 @@ namespace SkyDragonHunter.Managers {
                 if (canon.TryGetComponent<CanonBase>(out var canonBase))
                 {
                     var canonData = canonBase.CanonData;
-                    stats.SetMaxDamage(stats.MaxDamage.Value + BigInteger.Parse(canonData.canHoldATK));
-                    stats.SetMaxArmor(stats.MaxArmor.Value + BigInteger.Parse(canonData.canHoldDEF));
+                    stats.SetMaxDamage(stats.MaxDamage + new BigNum(canonData.canHoldATK));
+                    stats.SetMaxArmor(stats.MaxArmor + new BigNum(canonData.canHoldDEF));
                 }
             }
             return stats;
@@ -321,9 +321,9 @@ namespace SkyDragonHunter.Managers {
             Crystal = new Crystal(data);
 
             // 계정 스탯과 통합
-            AccountStats.SetMaxDamage((AccountStats.MaxDamage + Crystal.IncreaseDamage).Value);
+            AccountStats.SetMaxDamage((AccountStats.MaxDamage + Crystal.IncreaseDamage));
             AccountStats.ResetDamage();
-            AccountStats.SetMaxHealth((AccountStats.MaxHealth + Crystal.IncreaseHealth).Value);
+            AccountStats.SetMaxHealth((AccountStats.MaxHealth + Crystal.IncreaseHealth));
             AccountStats.ResetHealth();
         }
 

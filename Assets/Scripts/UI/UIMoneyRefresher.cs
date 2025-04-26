@@ -14,8 +14,8 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_CoinText;
         [SerializeField] private TextMeshProUGUI m_DiamondText;
 
-        private AlphaUnit m_PrevCoin;
-        private AlphaUnit m_PrevDiamond;
+        private BigNum m_PrevCoin;
+        private BigNum m_PrevDiamond;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

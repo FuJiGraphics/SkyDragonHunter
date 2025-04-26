@@ -38,13 +38,13 @@ namespace SkyDragonHunter.UI{
         [SerializeField] private UIGrowthLevelUp growthLevelUp;
 
         private int m_CurrentLevel = 0;
-        private AlphaUnit m_BasicStat;
-        private AlphaUnit m_BasicCost;
-        private AlphaUnit m_StatIncrease;
-        private AlphaUnit m_CostIncrease;
-        private AlphaUnit m_CurrentStat;
-        private AlphaUnit m_NextStat;
-        private AlphaUnit m_NeedCoin;
+        private BigNum m_BasicStat;
+        private BigNum m_BasicCost;
+        private BigNum m_StatIncrease;
+        private BigNum m_CostIncrease;
+        private BigNum m_CurrentStat;
+        private BigNum m_NextStat;
+        private BigNum m_NeedCoin;
         private bool m_FirstLevelUp = true;
 
         public GrowthStatType StatType { get; set; }
@@ -83,17 +83,17 @@ namespace SkyDragonHunter.UI{
                 levelText.text = levelTextFormat + m_CurrentLevel.ToString();
             }
         }
-        public AlphaUnit BasicStat
+        public BigNum BasicStat
         {
             get => m_BasicStat;
             set => m_BasicStat = value;
         }
-        public AlphaUnit BasicCost
+        public BigNum BasicCost
         {
             get => m_BasicCost;
             set => m_BasicCost = value;
         }
-        public AlphaUnit CurrentStat
+        public BigNum CurrentStat
         {
             get => m_CurrentStat;
             set
@@ -102,7 +102,7 @@ namespace SkyDragonHunter.UI{
                 UpdatetStatText(currStatText, ref m_CurrentStat);
             }
         }
-        public AlphaUnit NextStat
+        public BigNum NextStat
         {
             get => m_NextStat;
             set
@@ -112,7 +112,7 @@ namespace SkyDragonHunter.UI{
                 UpdatetStatText(nextStatText, ref m_NextStat);
             }
         }
-        public AlphaUnit NeedCoin
+        public BigNum NeedCoin
         {
             get => m_NeedCoin;
             set
@@ -121,12 +121,12 @@ namespace SkyDragonHunter.UI{
                 needCoinText.text = m_NeedCoin.ToUnit();
             }
         }
-        public AlphaUnit StatIncrease
+        public BigNum StatIncrease
         {
             get => m_StatIncrease;
             set => m_StatIncrease = value;
         }
-        public AlphaUnit CostIncrease
+        public BigNum CostIncrease
         {
             get => m_CostIncrease;
             set => m_CostIncrease = value;
@@ -142,13 +142,13 @@ namespace SkyDragonHunter.UI{
             MaxLevel = tableData.MaxLevel;
             StatType = (GrowthStatType)tableData.StatType;
             StatName = tableData.StatName;
-            CurrentStat = new AlphaUnit(0);
-            BasicStat = new AlphaUnit(tableData.BasicStat);
-            BasicCost = new AlphaUnit(tableData.BasicCost);
-            NextStat = new AlphaUnit(tableData.BasicStat);
-            NeedCoin = new AlphaUnit(tableData.BasicCost) + new AlphaUnit(tableData.CostIncrease);
-            StatIncrease = new AlphaUnit(tableData.StatIncrease);
-            CostIncrease = new AlphaUnit(tableData.CostIncrease);
+            CurrentStat = new BigNum(0);
+            BasicStat = new BigNum(tableData.BasicStat);
+            BasicCost = new BigNum(tableData.BasicCost);
+            NextStat = new BigNum(tableData.BasicStat);
+            NeedCoin = new BigNum(tableData.BasicCost) + new BigNum(tableData.CostIncrease);
+            StatIncrease = new BigNum(tableData.StatIncrease);
+            CostIncrease = new BigNum(tableData.CostIncrease);
             UpdateLevelUpArrowState();
         }
 
@@ -175,7 +175,7 @@ namespace SkyDragonHunter.UI{
             {
                 int nextLevel = Mathf.Min(Level + nextIncreaseLevel - 1, MaxLevel);
                 int weight = 1 + (nextLevel / 100);
-                AlphaUnit currCostInc = weight * nextLevel * CostIncrease;
+                BigNum currCostInc = weight * nextLevel * CostIncrease;
                 NeedCoin = BasicCost + currCostInc;
                 UpdateLevelUpArrowState();
             }
@@ -191,15 +191,15 @@ namespace SkyDragonHunter.UI{
                 return;
 
             Level = Mathf.Min(Level + increase, MaxLevel);
-            AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin).Value, 0);
+            AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin), 0);
 
             if (levelUpType == GrowthLevelUpType.Table)
             {
                 int weight = 1 + (Level / 100);
                 int nextWeight = 1 + ((Level + 1) / 100);
-                AlphaUnit currStatInc = weight * Level * StatIncrease;
-                AlphaUnit nextStatInc = nextWeight * (Level + 1) * StatIncrease;
-                AlphaUnit currCostInc = weight * Level * CostIncrease;
+                BigNum currStatInc = weight * Level * StatIncrease;
+                BigNum nextStatInc = nextWeight * (Level + 1) * StatIncrease;
+                BigNum currCostInc = weight * Level * CostIncrease;
                 CurrentStat = BasicStat + currStatInc;
                 NextStat = BasicStat + nextStatInc;
                 NeedCoin = BasicCost + currCostInc;
@@ -229,7 +229,7 @@ namespace SkyDragonHunter.UI{
                 growthLevelUp.gameObject.SetActive(false);
         }
 
-        private void UpdatetStatText(TextMeshProUGUI textUGUI, ref AlphaUnit stats)
+        private void UpdatetStatText(TextMeshProUGUI textUGUI, ref BigNum stats)
         {
             if (StatType == GrowthStatType.Attack)
             {

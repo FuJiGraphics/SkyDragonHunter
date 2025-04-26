@@ -491,7 +491,7 @@ namespace SkyDragonHunter
             Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
             var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), bossSpawnPos, Quaternion.identity);
 
-            AlphaUnit newHP = 20000;
+            BigNum newHP = 20000;
             int stage = 0;
             stage += (currentMissionLevel - 1) * 20;
             stage += currentZonelLevel;
@@ -797,7 +797,7 @@ namespace SkyDragonHunter
                 return;
 
             var sb = new StringBuilder();
-            float hpPercentage = (float)bossBT.HP.Value / (float)bossBT.MaxHP.Value;
+            float hpPercentage = BigNum.GetPercentage(bossBT.HP, bossBT.MaxHP);
             bossSlider.value = hpPercentage;
         }
         // ~TODO

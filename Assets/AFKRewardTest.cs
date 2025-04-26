@@ -179,11 +179,11 @@ public class AFKRewardTest : MonoBehaviour
 
         var stageTable = DataTableMgr.StageTable.Get(m_WaveController.LastTriedMissionLevel, m_WaveController.LastTriedZoneLevel);
         var afkRewardTable = DataTableMgr.AFKRewardTable.Get(stageTable.AFKRewardTableID);
-        AlphaUnit afkGoldPerMin = new AlphaUnit(afkRewardTable.AFKGold);
-        AlphaUnit afkGold =  afkGoldPerMin * TotalMinutes;
+        BigNum afkGoldPerMin = new BigNum(afkRewardTable.AFKGold);
+        BigNum afkGold =  afkGoldPerMin * TotalMinutes;
        
         AccountMgr.Coin += afkGold;
-        DrawableMgr.Dialog("ÈÞ½Äº¸»ó", $"{afkGold}({afkGoldPerMin.Value} * {TotalMinutes})");
-        Debug.Log($"AFK coin acquired {afkGold}({afkGoldPerMin.Value} * {TotalMinutes})");
+        DrawableMgr.Dialog("ÈÞ½Äº¸»ó", $"{afkGold}({afkGoldPerMin} * {TotalMinutes})");
+        Debug.Log($"AFK coin acquired {afkGold}({afkGoldPerMin} * {TotalMinutes})");
     }
 }

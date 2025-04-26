@@ -42,18 +42,18 @@ namespace SkyDragonHunter {
         }
 
         // Public 메서드
-        public void Recover(AlphaUnit inc)
+        public void Recover(BigNum inc)
         {
             if (!m_Stats.IsFullHealth)
             {
-                m_Stats.Health = (m_Stats.Health + inc).Value;
+                m_Stats.Health = (m_Stats.Health + inc);
 
                 // TODO: 테스트 용
                 DrawableMgr.Text(transform.position, "Recover: " + inc.ToUnit() + "++", Color.green);
             }
             else if (!m_Stats.IsFullShield)
             {
-                m_Stats.Shield = (m_Stats.Shield + inc).Value;
+                m_Stats.Shield = (m_Stats.Shield + inc);
 
                 // TODO: 테스트 용
                 DrawableMgr.Text(transform.position, "Recover: " + inc.ToUnit() + "++", Color.green);

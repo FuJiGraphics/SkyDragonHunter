@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace SkyDragonHunter.Structs {
     [System.Serializable]
-    public struct AlphaUnit : IComparable<AlphaUnit>, IEquatable<AlphaUnit>
+    public struct TempBigint : IComparable<TempBigint>, IEquatable<TempBigint>
     {
         private BigInteger m_OriginNumber;
         private string m_StringNumber;
@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Structs {
 
         public BigInteger Value => m_OriginNumber;
 
-        public AlphaUnit(int number)
+        public TempBigint(int number)
         {
             m_OriginNumber = number < 0 ? 0 : number;
 
@@ -21,7 +21,7 @@ namespace SkyDragonHunter.Structs {
             m_Base = new char[1] { (char)('a' - 1) };
         }
 
-        public AlphaUnit(string strNumber)
+        public TempBigint(string strNumber)
         {
             BigInteger number = BigInteger.Parse(strNumber);
             m_OriginNumber = number < 0 ? 0 : number;
@@ -31,7 +31,7 @@ namespace SkyDragonHunter.Structs {
             m_Base = new char[1] { (char)('a' - 1) };
         }
 
-        public AlphaUnit(BigInteger number)
+        public TempBigint(BigInteger number)
         {
             m_OriginNumber = number < 0 ? 0 : number;
 
@@ -40,7 +40,7 @@ namespace SkyDragonHunter.Structs {
             m_Base = new char[1] { (char)('a' - 1) };
         }
 
-        private AlphaUnit(BigInteger number, bool rawInit)
+        private TempBigint(BigInteger number, bool rawInit)
         {
             m_OriginNumber = number < 0 ? 0 : number;
 
@@ -49,10 +49,10 @@ namespace SkyDragonHunter.Structs {
             m_Base = new char[1] { (char)('a' - 1) };
         }
 
-        public int CompareTo(AlphaUnit other)
+        public int CompareTo(TempBigint other)
             => m_OriginNumber.CompareTo(other.m_OriginNumber);
 
-        public bool Equals(AlphaUnit other)
+        public bool Equals(TempBigint other)
             => m_OriginNumber == other.m_OriginNumber;
 
         private void Normalize()
@@ -132,33 +132,33 @@ namespace SkyDragonHunter.Structs {
             return new string(m_Base, 0, validCount);
         }
 
-         public static implicit operator AlphaUnit(BigInteger number) => new AlphaUnit(number);
-        public static explicit operator BigInteger(AlphaUnit a) => a.m_OriginNumber;
+         public static implicit operator TempBigint(BigInteger number) => new TempBigint(number);
+        public static explicit operator BigInteger(TempBigint a) => a.m_OriginNumber;
 
-        public static AlphaUnit operator +(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber + b.m_OriginNumber, true);
-        public static AlphaUnit operator -(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber - b.m_OriginNumber, true);
-        public static AlphaUnit operator *(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber * b.m_OriginNumber, true);
-        public static AlphaUnit operator /(AlphaUnit a, AlphaUnit b)
-            => new AlphaUnit(a.m_OriginNumber / b.m_OriginNumber, true);
+        public static TempBigint operator +(TempBigint a, TempBigint b)
+            => new TempBigint(a.m_OriginNumber + b.m_OriginNumber, true);
+        public static TempBigint operator -(TempBigint a, TempBigint b)
+            => new TempBigint(a.m_OriginNumber - b.m_OriginNumber, true);
+        public static TempBigint operator *(TempBigint a, TempBigint b)
+            => new TempBigint(a.m_OriginNumber * b.m_OriginNumber, true);
+        public static TempBigint operator /(TempBigint a, TempBigint b)
+            => new TempBigint(a.m_OriginNumber / b.m_OriginNumber, true);
 
-        public static bool operator <(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) < 0;
-        public static bool operator >(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) > 0;
-        public static bool operator <=(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) <= 0;
-        public static bool operator >=(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) >= 0;
-        public static bool operator ==(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) == 0;
-        public static bool operator !=(AlphaUnit a, AlphaUnit b) => a.CompareTo(b) != 0;
+        public static bool operator <(TempBigint a, TempBigint b) => a.CompareTo(b) < 0;
+        public static bool operator >(TempBigint a, TempBigint b) => a.CompareTo(b) > 0;
+        public static bool operator <=(TempBigint a, TempBigint b) => a.CompareTo(b) <= 0;
+        public static bool operator >=(TempBigint a, TempBigint b) => a.CompareTo(b) >= 0;
+        public static bool operator ==(TempBigint a, TempBigint b) => a.CompareTo(b) == 0;
+        public static bool operator !=(TempBigint a, TempBigint b) => a.CompareTo(b) != 0;
 
-        public static implicit operator AlphaUnit(int v)
+        public static implicit operator TempBigint(int v)
         {
-            return new AlphaUnit((BigInteger)v);
+            return new TempBigint((BigInteger)v);
         }
 
-        public static implicit operator AlphaUnit(double v)
+        public static implicit operator TempBigint(double v)
         {
-            return new AlphaUnit((BigInteger)v);
+            return new TempBigint((BigInteger)v);
         }
 
         public string ToUnit()
@@ -172,12 +172,12 @@ namespace SkyDragonHunter.Structs {
 
         public override bool Equals(object obj)
         {
-            if (obj is AlphaUnit other)
+            if (obj is TempBigint other)
                 return this == other;
             return false;
         }
 
         public override int GetHashCode() => m_OriginNumber.GetHashCode();
 
-    } // class AlphaUnit
+    } // class TempBigint
 } // namespace SkyDragonHunter.Utility

@@ -63,23 +63,26 @@ namespace SkyDragonHunter.UI {
             switch (node.StatType)
             {
                 case GrowthStatType.Attack:
-                    AccountMgr.DefaultGrowthStats.SetMaxDamage(node.CurrentStat.Value);
-                    AccountMgr.DefaultGrowthStats.SetDamage(node.CurrentStat.Value);
+                    AccountMgr.DefaultGrowthStats.SetMaxDamage(node.CurrentStat);
+                    AccountMgr.DefaultGrowthStats.SetDamage(node.CurrentStat);
                     break;
                 case GrowthStatType.Defense:
-                    AccountMgr.DefaultGrowthStats.SetMaxArmor(node.CurrentStat.Value);
-                    AccountMgr.DefaultGrowthStats.SetArmor(node.CurrentStat.Value);
+                    AccountMgr.DefaultGrowthStats.SetMaxArmor(node.CurrentStat);
+                    AccountMgr.DefaultGrowthStats.SetArmor(node.CurrentStat);
                     break;
                 case GrowthStatType.Health:
-                    AccountMgr.DefaultGrowthStats.SetMaxHealth(node.CurrentStat.Value);
-                    AccountMgr.DefaultGrowthStats.SetHealth(node.CurrentStat.Value);
+                    AccountMgr.DefaultGrowthStats.SetMaxHealth(node.CurrentStat);
+                    AccountMgr.DefaultGrowthStats.SetHealth(node.CurrentStat);
                     break;
                 case GrowthStatType.Resilient:
-                    AccountMgr.DefaultGrowthStats.SetMaxResilient(node.CurrentStat.Value);
-                    AccountMgr.DefaultGrowthStats.SetResilient(node.CurrentStat.Value);
+                    AccountMgr.DefaultGrowthStats.SetMaxResilient(node.CurrentStat);
+                    AccountMgr.DefaultGrowthStats.SetResilient(node.CurrentStat);
                     break;
                 case GrowthStatType.CriticalMultiplier:
-                    AccountMgr.DefaultGrowthStats.SetCriticalMultiplier((float)node.CurrentStat.Value);
+                    // TODO: AlphaUnit Convert
+                    //AccountMgr.DefaultGrowthStats.SetCriticalMultiplier((float)node.CurrentStat.Value);
+                    AccountMgr.DefaultGrowthStats.SetCriticalMultiplier(2.5f);
+                    // ~TODO
                     break;
             }
             AccountMgr.DirtyAccountAndAirshipStat();
@@ -189,8 +192,6 @@ namespace SkyDragonHunter.UI {
                 }
             }
         }
-
         // Others
-
     } // Scope by class UIGrowthPanel
 } // namespace SkyDragonHunter
