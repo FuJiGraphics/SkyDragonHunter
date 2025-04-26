@@ -33,6 +33,18 @@ namespace SkyDragonHunter {
             //// ~TODO
 
             // TODO: AlphaUnit Convert
+            if (m_Stats.Shield >= damage)
+            {
+                m_Stats.Shield -= damage;
+                return;
+            }
+            else
+            {
+                m_Stats.Shield = 0;
+                damage -= m_Stats.Shield;
+            }
+
+            m_Stats.Health -= damage;
             //BigInteger takeDamage = m_Stats.Shield.Value - damage.Value;
             //if (takeDamage >= 0)
             //{
@@ -60,19 +72,7 @@ namespace SkyDragonHunter {
             //}
             //receivedDmg = damage - m_Stats.Shield;
             //receivedDmg = Math2DHelper.Clamp(m_Stats.Health - receivedDmg, 0, m_Stats.MaxHealth);
-            //m_Stats.Health = receivedDmg;
-
-            if(m_Stats.Shield >= damage)
-            {
-                m_Stats.Shield -= damage;
-                return;
-            }
-            else
-            {
-                damage -= m_Stats.Shield;
-            }
-
-            m_Stats.Health -= damage;
+            //m_Stats.Health = receivedDmg;            
             // ~TODO
 
             // 죽음 
