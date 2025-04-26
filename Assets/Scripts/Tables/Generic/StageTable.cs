@@ -1,7 +1,4 @@
 using SkyDragonHunter.Tables.Generic;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace SkyDragonHunter.Tables {
 

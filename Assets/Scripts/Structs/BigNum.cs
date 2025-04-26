@@ -149,6 +149,7 @@ namespace SkyDragonHunter.Structs
                 newSig /= 10f;
                 newDigit++;
             }
+            Debug.Log($"{newSig}");
 
             return newSig;
         }
@@ -309,39 +310,79 @@ namespace SkyDragonHunter.Structs
 
         private static int[] GetAddedArray(BigNum a, BigNum b, out int digit)
         {
-            int unitSizeA = a.m_Values.Length;
-            for (int i = 0; i < b.m_Values.Length; ++i)
+            //int unitSizeA = a.m_Values.Length;
+            //for (int i = 0; i < b.m_Values.Length; ++i)
+            //{
+            //    // Add from smaller to bigger value
+            //    a.m_Values[i] += b.m_Values[i];
+            //
+            //    // Handle units going over BaseValue '1,000'
+            //    if (a.m_Values[i] >= BaseVal)
+            //    {
+            //        // Making sure not to access invalid index, return new bigger array.
+            //        if (i == unitSizeA - 1)
+            //        {
+            //            var newArr = new int[a.m_Values.Length + 1];
+            //            for (int j = 0; j < newArr.Length - 1; ++j)
+            //            {
+            //                newArr[j] = a.m_Values[j];
+            //            }
+            //
+            //            // using reverse index '[^1]' could be risky if built in IL2CPP
+            //            newArr[newArr.Length - 1] = newArr[newArr.Length - 2] / BaseVal;
+            //            newArr[newArr.Length - 2] %= BaseVal;
+            //            digit = newArr.Length * 3 - GetDigitCalibrator(newArr[newArr.Length - 1]);
+            //            return newArr;
+            //        }
+            //        else
+            //        {
+            //            a.m_Values[i + 1] += a.m_Values[i] / BaseVal;
+            //            a.m_Values[i] %= BaseVal;
+            //        }
+            //    }
+            //}
+            //digit = unitSizeA * 3 - GetDigitCalibrator(a.m_Values[unitSizeA - 1]);
+            //return a.m_Values;
+
+
+            int aLen = a.m_Values.Length;
+            int bLen = b.m_Values.Length;
+            // 최대 단위 수 +1 (캐리 가능성)
+            int maxLen = Math.Max(aLen, bLen);
+            int[] temp = new int[maxLen + 1];
+
+            // 1) a의 값 복사
+            for (int i = 0; i < aLen; i++)
+                temp[i] = a.m_Values[i];
+
+            // 2) b를 더함
+            for (int i = 0; i < bLen; i++)
+                temp[i] += b.m_Values[i];
+
+            // 3) 캐리 처리
+            for (int i = 0; i < temp.Length - 1; i++)
             {
-                // Add from smaller to bigger value
-                a.m_Values[i] += b.m_Values[i];
-
-                // Handle units going over BaseValue '1,000'
-                if (a.m_Values[i] >= BaseVal)
+                if (temp[i] >= BaseVal)
                 {
-                    // Making sure not to access invalid index, return new bigger array.
-                    if (i == unitSizeA - 1)
-                    {
-                        var newArr = new int[a.m_Values.Length + 1];
-                        for (int j = 0; j < newArr.Length - 1; ++j)
-                        {
-                            newArr[j] = a.m_Values[j];
-                        }
-
-                        // using reverse index '[^1]' could be risky if built in IL2CPP
-                        newArr[newArr.Length - 1] = newArr[newArr.Length - 2] / BaseVal;
-                        newArr[newArr.Length - 2] %= BaseVal;
-                        digit = newArr.Length * 3 - GetDigitCalibrator(newArr[newArr.Length - 1]);
-                        return newArr;
-                    }
-                    else
-                    {
-                        a.m_Values[i + 1] += a.m_Values[i] / BaseVal;
-                        a.m_Values[i] %= BaseVal;
-                    }
+                    temp[i + 1] += temp[i] / BaseVal;
+                    temp[i] %= BaseVal;
                 }
             }
-            digit = unitSizeA * 3 - GetDigitCalibrator(a.m_Values[unitSizeA - 1]);
-            return a.m_Values;
+
+            // 4) 실제 사용되는 마지막 인덱스 결정
+            int lastIndex = temp[temp.Length - 1] > 0
+                ? temp.Length - 1
+                : temp.Length - 2;
+
+            // 5) 결과 배열로 복사
+            int[] result = new int[lastIndex + 1];
+            Array.Copy(temp, result, lastIndex + 1);
+
+            // 6) digit 계산: (유닛 개수 * 3) – 자리 보정
+            digit = result.Length * 3
+                  - GetDigitCalibrator(result[result.Length - 1]);
+
+            return result;
         }
 
         private static int[] GetMultipliedArray(BigNum a, BigNum b, out int digit)
