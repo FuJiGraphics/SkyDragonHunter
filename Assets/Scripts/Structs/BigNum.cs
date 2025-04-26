@@ -149,13 +149,17 @@ namespace SkyDragonHunter.Structs
                 newSig /= 10f;
                 newDigit++;
             }
-            Debug.Log($"{newSig}");
+            Debug.Log($"numerator: {numerator} denom: {denominator}, {newSig}");
 
             return newSig;
         }
 
         public void OnBeforeSerialize()
         {
+            if (m_Values == null || m_Values.Length == 0)
+            {
+                m_StringNumber = string.Empty;   // 또는 "0" 등 원하는 기본값
+            }
             m_StringNumber = GetStringNumber(m_Values);
         }
 
@@ -245,10 +249,8 @@ namespace SkyDragonHunter.Structs
 
         private static string GetStringNumber(int[] values)
         {
-            if (values != null && values.Length == 0)
-            {
+            if (values == null || values.Length == 0)
                 return "";
-            }
             StringBuilder sb = new StringBuilder();
             sb.Append(values[values.Length - 1]);
             for (int i = values.Length - 2; i >= 0; --i)

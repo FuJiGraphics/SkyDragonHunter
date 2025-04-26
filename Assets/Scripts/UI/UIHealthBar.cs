@@ -54,8 +54,7 @@ namespace SkyDragonHunter.UI {
                 return;
             }
 
-            //currentHealth = Math2DHelper.Max(0, Math2DHelper.Min(health, maxHealth));
-            currentHealth = Math2DHelper.Clamp(currentHealth, 0, maxHealth);
+            currentHealth = Math2DHelper.Clamp(health, 0, maxHealth);
             UpdateSlider();
 
             if (currentHealth <= 0)
