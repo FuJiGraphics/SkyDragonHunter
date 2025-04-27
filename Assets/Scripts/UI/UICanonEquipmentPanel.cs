@@ -122,6 +122,12 @@ namespace SkyDragonHunter.UI {
             if (m_ClickedCanonInfo.IsNull)
                 return;
 
+            if (m_ClickedCanonInfo.prevClickedCanonDummy.Count <= 0)
+            {
+                DrawableMgr.Dialog("Alert", "장착 실패! 캐논이 부족합니다.");
+                return;
+            }
+
             GameObject airshipInstance = GameMgr.FindObject("Airship");
             if (airshipInstance == null)
                 return;
@@ -173,6 +179,21 @@ namespace SkyDragonHunter.UI {
 
             // 세이브
             AccountMgr.SaveUserData();
+        }
+
+        public void OnClickedOtherPanel()
+        {
+            if (m_ClickedCanonInfo.IsNull)
+                return;
+
+            m_UiCanonInfoPanel.gameObject.SetActive(false);
+
+            if (m_ClickedCanonInfo.prevPickedNodeInstance != null &&
+                    m_ClickedCanonInfo.prevPickedNodeInstance.TryGetComponent<Image>(out var prevImage))
+            {
+                prevImage.color = Color.white;
+            }
+            m_ClickedCanonInfo.Clear();
         }
 
         // Private 메서드

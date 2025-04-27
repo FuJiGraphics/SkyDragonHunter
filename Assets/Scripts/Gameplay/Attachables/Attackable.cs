@@ -3,7 +3,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
 
     public class Attackable : MonoBehaviour
         , IAttackable

@@ -3,8 +3,10 @@ using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
+using SkyDragonHunter.Structs;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -98,6 +100,8 @@ namespace SkyDragonHunter.UI {
         {
             canonDummy.Level++;
             DirtyLevelState(canonDummy);
+            DirtyCanonEffectState(canonDummy, true);
+            DirtyCanonEffectState(canonDummy, false);
         }
 
         private void DirtyCanonTitleAndIconState(CanonDummy canonDummy)
@@ -125,18 +129,22 @@ namespace SkyDragonHunter.UI {
 
             if (IsLeftPanel)
             {
+                AlphaUnit newEqATK = BigInteger.Parse(canonData.canEqATK) * canonDummy.Level;
+                AlphaUnit newEqDEF = BigInteger.Parse(canonData.canEqDEF) * canonDummy.Level;
                 m_StatNameTopLeft.text = "공격력";
-                m_StatDescTopLeft.text = canonData.canEqATK;
+                m_StatDescTopLeft.text = newEqATK.ToUnit();
                 m_StatNameBotLeft.text = "방어력";
-                m_StatDescBotLeft.text = canonData.canEqDEF;
+                m_StatDescBotLeft.text = newEqDEF.ToUnit();
 
             }
             else
             {
+                AlphaUnit newHoldATK = BigInteger.Parse(canonData.canHoldATK) * canonDummy.Level;
+                AlphaUnit newHoldDEF = BigInteger.Parse(canonData.canHoldDEF) * canonDummy.Level;
                 m_StatNameTopRight.text = "공격력";
-                m_StatDescTopRight.text = canonData.canHoldATK;
+                m_StatDescTopRight.text = newHoldATK.ToUnit();
                 m_StatNameBotRight.text = "방어력";
-                m_StatDescBotRight.text = canonData.canHoldDEF;
+                m_StatDescBotRight.text = newHoldDEF.ToUnit();
             }
         }
 

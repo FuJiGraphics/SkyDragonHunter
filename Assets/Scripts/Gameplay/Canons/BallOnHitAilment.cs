@@ -1,5 +1,6 @@
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
@@ -8,7 +9,7 @@ namespace SkyDragonHunter.Gameplay {
         , IBallLifecycleHandler
     {
         // 필드 (Fields)
-        public AilmentType[] ailments;
+        [SerializeField] private List<AilmentType> m_Ailments;
 
         private BallBase m_BallBase;
 
@@ -17,6 +18,15 @@ namespace SkyDragonHunter.Gameplay {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
+        public void AddAilment(AilmentType type)
+        {
+            if (m_Ailments == null)
+            {
+                m_Ailments = new();
+            }
+            m_Ailments.Add(type);
+        }
+
         public void OnStart(GameObject caster) 
         {
             Init();
@@ -42,11 +52,14 @@ namespace SkyDragonHunter.Gameplay {
 
         private void ApplyStatusAilment(GameObject target)
         {
-            foreach (var ailment in ailments)
+            if (m_Ailments == null)
+                return;
+
+            foreach (var ailment in m_Ailments)
             {
                 if (target.TryGetComponent<AilmentAffectable>(out var ailmentComp))
                 {
-                    ailmentComp.Execute(ailment, 5f, m_BallBase.Caster);
+                    ailmentComp.Execute(ailment, m_BallBase.CanonData.canAilmentDuration, m_BallBase.Caster);
                 }
             }
         }

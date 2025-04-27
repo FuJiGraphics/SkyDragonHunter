@@ -68,8 +68,11 @@ namespace SkyDragonHunter.Gameplay {
                 // 캐논 장착 스탯 적용
                 if (m_CurrentEpCanonInstance != null)
                 {
-                    m_Stats.MaxDamage = m_Stats.MaxDamage + BigInteger.Parse(m_CurrentEpCanonInstance.CanonData.canEqATK);
-                    m_Stats.MaxArmor = m_Stats.MaxArmor + BigInteger.Parse(m_CurrentEpCanonInstance.CanonData.canEqDEF);
+                    var canonData = m_CurrentEpCanonInstance.CanonData;
+                    BigInteger newEpATK = BigInteger.Parse(canonData.canEqATK) + (BigInteger.Parse(canonData.canEqATKup) * AccountMgr.EquipCannonDummy.Level);
+                    BigInteger newEpDEF = BigInteger.Parse(canonData.canEqDEF) + (BigInteger.Parse(canonData.canEqDEFup) * AccountMgr.EquipCannonDummy.Level);
+                    m_Stats.MaxDamage = m_Stats.MaxDamage + newEpATK;
+                    m_Stats.MaxArmor = m_Stats.MaxArmor + newEpDEF;
                 }
             }
 
@@ -80,9 +83,17 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.Health -= prevLostHealth;
         }
 
-        public void RegisterEquipCanon(CanonBase canonInstance)
+        public void OnEquipCannonEvents(CanonDummy canonDummy)
         {
-            m_CurrentEpCanonInstance = canonInstance;
+            AccountMgr.EquipCannonDummy = canonDummy;
+            m_CurrentEpCanonInstance = canonDummy.GetCanonInstance()?.GetComponent<CanonBase>();
+            MergedAccountStatsForCharacter();
+        }
+
+        public void OnUnequipCannonEvents()
+        {
+            AccountMgr.EquipCannonDummy = null;
+            m_CurrentEpCanonInstance = null;
             MergedAccountStatsForCharacter();
         }
 
@@ -114,7 +125,8 @@ namespace SkyDragonHunter.Gameplay {
             if (TryGetComponent<CanonExecutor>(out var canonExecutor))
             {
                 m_CanonExecutor = canonExecutor;
-                canonExecutor.onEquipEvents += RegisterEquipCanon;
+                canonExecutor.onEquipEvents += OnEquipCannonEvents;
+                canonExecutor.onUnequipEvents += OnUnequipCannonEvents;
             }
 
             m_Stats.ResetAll();

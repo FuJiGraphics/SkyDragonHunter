@@ -5,7 +5,13 @@ namespace SkyDragonHunter.Interfaces {
 
     public enum AilmentType
     {
-        Burn, Slow, Freeze, Max
+        Stun,
+        Exposed,
+        Taunt,
+        Burn, 
+        Slow, 
+        Freeze, 
+        Max
     }
 
     public interface IAilmentEffect

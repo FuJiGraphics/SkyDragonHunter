@@ -5,7 +5,8 @@ using SkyDragonHunter.Structs;
 using System.Numerics;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
+
     public class DamageReceiver : MonoBehaviour
     {
         // 필드 (Fields)
@@ -27,6 +28,13 @@ namespace SkyDragonHunter {
             if (m_Stats.Health <= 0)
                 return;
             //// ~TODO
+            
+            // ----- 약화 상태 이상 계산
+            if (TryGetComponent<Exposable>(out var exposableComp))
+            {
+                damage *= exposableComp.ExposeDamageMultiplier;
+            }
+            // -----
 
             BigInteger takeDamage = m_Stats.Shield.Value - damage.Value;
             if (takeDamage >= 0)
