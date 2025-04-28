@@ -21,11 +21,11 @@ namespace SkyDragonHunter.Scriptables {
         public string canEqDEFup;           // 장착 방어력 상승량
         public string canHoldATKup;         // 보유 공격력 상승량
         public string canHoldDEFup;         // 보유 방어력 상승량
-        public int canEffectID;             // 대포 특수 효과 ID
-        public int canUpgradeID;            // 대포 합성 결과 ID
+        public float canATKMultiplier;      // 대포의 한발
         public float canCooldown;           // 대포 쿨다운
         public int canAilmentID;            // 상태 이상 ID
         public float canAilmentDuration;    // 상태 이상 지속 시간
+        public int canUpgradeID;            // 대포 합성 결과 ID
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

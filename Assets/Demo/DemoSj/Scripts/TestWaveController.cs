@@ -252,7 +252,7 @@ namespace SkyDragonHunter
                 {
                     OnUnActiveClearPanel(); // 클리어 패널 종료
                     currentZonelLevel++;
-                    if (currentZonelLevel > 10)
+                    if (currentZonelLevel > 20)
                     {
                         currentZonelLevel = 1;
                         currentMissionLevel++;
@@ -266,7 +266,7 @@ namespace SkyDragonHunter
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
                    
-                    OnChangeBackGround(currentZonelLevel - 1);
+                    OnChangeBackGround(currentMissionLevel - 1);
                     // TODO: 데이터 세이브
                     AccountMgr.SaveUserData();
                 }
@@ -301,7 +301,7 @@ namespace SkyDragonHunter
             currentMissionLevel = lastTriedMissionLevel;
             currentZonelLevel = lastTriedZonelLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
-            OnChangeBackGround(currentZonelLevel - 1);
+            OnChangeBackGround(currentMissionLevel - 1);
         }
 
         private void OnSetCurrentWave()
@@ -312,7 +312,7 @@ namespace SkyDragonHunter
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
-            OnChangeBackGround(currentZonelLevel - 1);
+            OnChangeBackGround(currentMissionLevel - 1);
         }
 
         private void OnGoSelectCurrentWave()
@@ -322,7 +322,7 @@ namespace SkyDragonHunter
             currentWaveTime = 0f;
             isInfiniteMode = true;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
-            OnChangeBackGround(currentZonelLevel - 1);
+            OnChangeBackGround(currentMissionLevel - 1);
         }
 
         private void OnGoToLoadCurrentWave()
@@ -340,7 +340,7 @@ namespace SkyDragonHunter
                 isInfiniteMode = false;
             }
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
-            OnChangeBackGround(currentZonelLevel - 1);
+            OnChangeBackGround(currentMissionLevel - 1);
         }
 
         private void OnSaveLastClearWave()

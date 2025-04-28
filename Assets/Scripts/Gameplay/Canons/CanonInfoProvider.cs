@@ -3,6 +3,7 @@ using SkyDragonHunter.Scriptables;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
+
     public class CanonInfoProvider : MonoBehaviour
         , ICanonInfoProvider
     {
@@ -14,7 +15,7 @@ namespace SkyDragonHunter.Gameplay {
         private CanonDefinition m_CanonData;
 
         // 속성 (Properties)
-        public string Name => m_CanonData.canName;
+        public string Name => m_CanonBase.CanonData.canName;
         public Sprite Icon => canonIcon;
 
         // 외부 종속성 필드 (External dependencies field)
@@ -25,7 +26,6 @@ namespace SkyDragonHunter.Gameplay {
             if (m_CanonBase == null)
             {
                 m_CanonBase = GetComponent<CanonBase>();
-                m_CanonData = m_CanonBase.CanonData;
             }
         }
 

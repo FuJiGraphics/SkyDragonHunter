@@ -3,6 +3,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using Prefab = UnityEngine.GameObject;
@@ -11,7 +12,11 @@ namespace SkyDragonHunter.Database {
 
     public enum CanonType
     {
-        DefaultCanon,
+        Normal,
+        Repeater,
+        Slow,
+        Burn,
+        Freeze,
     }
 
     public enum CanonGrade
@@ -26,42 +31,33 @@ namespace SkyDragonHunter.Database {
     {
         // 필드 (Fields)
         private static readonly string s_CanonPrefabPath = "Prefabs/Canons/";
-        private static Dictionary<CanonType, Prefab> s_Cache;
+        private static readonly string s_CanonPrefabFileName = "Canon";
+        private static Dictionary<CanonType, Dictionary<CanonGrade, GameObject>> s_Cache;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
-        // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
-        public static Prefab Get(CanonType type, CanonGrade grade)
+        public static GameObject Get(CanonType type, CanonGrade grade)
         {
             if (s_Cache == null)
             {
                 s_Cache = new();
             }
+
             if (!s_Cache.ContainsKey(type))
             {
-                string canonFileName = type.ToString() + "_" + grade.ToString();
-                s_Cache.Add(type, Resources.Load<GameObject>(s_CanonPrefabPath + canonFileName));
+                s_Cache.Add(type, new());
             }
-            return s_Cache[type];
-        }
-
-        public static List<Prefab> ToList()
-        {
-            List<Prefab> result = new List<Prefab>();
-            foreach (CanonType canonType in Enum.GetValues(typeof(CanonType)))
+            if (!s_Cache[type].ContainsKey(grade))
             {
-                foreach (CanonGrade canonGrade in Enum.GetValues(typeof(CanonGrade)))
-                {
-                    result.Add(Get(canonType, canonGrade));
-                }
+                string filename = s_CanonPrefabFileName + $"{type}" + "_" + $"{grade}";
+                string path = Path.Combine(s_CanonPrefabPath, filename);
+                GameObject prefab = ResourcesMgr.Load<GameObject>(path);
+                s_Cache[type].Add(grade, prefab);
             }
-            return result;
+            return s_Cache[type][grade];
         }
-
-        public static Prefab[] ToArray()
-            => ToList().ToArray();
 
         // Private 메서드
         // Others

@@ -1,4 +1,5 @@
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private CanonDefinition m_CanonDefinition;
         [SerializeField] private GameObject m_CanonDummy;
         [SerializeField] private BallBase m_BallPrefab;
+
+        private bool m_HasAilment = false;
+        private AilmentType m_CurrentAilmentType;
 
         // 속성 (Properties)
         public CanonDefinition CanonData => m_CanonDefinition;
@@ -28,9 +32,25 @@ namespace SkyDragonHunter.Gameplay {
                     m_CanonDummy = canonDummyProvider.CanonDummy;
                 }
             }
+            SetCanonData(m_CanonDefinition);
         }
 
         // Public 메서드
+        public void SetCanonData(CanonDefinition canonDefinition)
+        {
+            m_CanonDefinition = canonDefinition;
+            var type = AilmentMgr.FindAilmentType(canonDefinition.canAilmentID);
+            if (type != null)
+            {
+                m_HasAilment = true;
+                m_CurrentAilmentType = (AilmentType)type;
+            }
+            else
+            {
+                m_HasAilment = false;
+            }
+        }
+
         public void Fire(Vector3 firePos, GameObject attacker, GameObject target, string[] targetTags)
         {
             if (target == null)
@@ -62,6 +82,11 @@ namespace SkyDragonHunter.Gameplay {
                 ballInstance.Caster = attacker;
                 ballInstance.Receiver = target;
                 ballInstance.CanonData = CanonData;
+
+                if (m_HasAilment && ballInstance.TryGetComponent<BallOnHitAilment>(out var hitAilment))
+                {
+                    hitAilment.AddAilment(m_CurrentAilmentType);
+                }
 
                 // 공격할 타겟 등록
                 if (ballInstance.TryGetComponent<AttackTargetSelector>(out var selector))

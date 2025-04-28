@@ -44,6 +44,9 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Button m_UiCanonEquipButton;
         [SerializeField] private Button m_UiCanonUnequipButton;
 
+        [Header("Canon Other Panels")]
+        [SerializeField] private UICanonInfoPanel m_UiCanonInfoPanel;
+
         private List<GameObject> m_CanonPickNodeObjects;
         private ClickedCanonInfo m_ClickedCanonInfo;
 
@@ -53,8 +56,8 @@ namespace SkyDragonHunter.UI {
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            m_UiCanonEquipButton.onClick.AddListener(Equip);
-            m_UiCanonUnequipButton.onClick.AddListener(Unequip);
+            m_UiCanonEquipButton.onClick.AddListener(OnEquip);
+            m_UiCanonUnequipButton.onClick.AddListener(OnUnequip);
             m_ClickedCanonInfo = new();
         }
 
@@ -66,6 +69,14 @@ namespace SkyDragonHunter.UI {
             }
             ReleaseAllNodes();
             LoadCanonInfoFromAccount();
+        }
+
+        private void Update()
+        {
+            if (m_ClickedCanonInfo.IsNull)
+            {
+                m_UiCanonInfoPanel.gameObject.SetActive(false);
+            }
         }
 
         // Public 메서드
@@ -80,9 +91,8 @@ namespace SkyDragonHunter.UI {
                 if (canonInstance.TryGetComponent<ICanonInfoProvider>(out var provider))
                 {
                     canonNodeSlot.CanonIcon.sprite = provider.Icon;
+                    canonNodeSlot.CanonDummy = canonDummy;
                 }
-                // Icon만 등록함
-                GameObject.Destroy(canonInstance);
             }
 
             if (nodeGo.TryGetComponent<Button>(out var nodeButton))
@@ -95,6 +105,8 @@ namespace SkyDragonHunter.UI {
                         prevImage.color = Color.white;
                     }
                     m_ClickedCanonInfo.Set(nodeButton.gameObject, canonDummy);
+                    m_UiCanonInfoPanel.gameObject.SetActive(true);
+                    m_UiCanonInfoPanel.ShowInfo(canonDummy);
                     if (m_ClickedCanonInfo.prevPickedNodeInstance.TryGetComponent<Image>(out var nextImage))
                     {
                         nextImage.color = Color.red;
@@ -105,10 +117,16 @@ namespace SkyDragonHunter.UI {
             }
         }
 
-        public void Equip()
+        public void OnEquip()
         {
             if (m_ClickedCanonInfo.IsNull)
                 return;
+
+            if (m_ClickedCanonInfo.prevClickedCanonDummy.Count <= 0)
+            {
+                DrawableMgr.Dialog("Alert", "장착 실패! 캐논이 부족합니다.");
+                return;
+            }
 
             GameObject airshipInstance = GameMgr.FindObject("Airship");
             if (airshipInstance == null)
@@ -134,7 +152,7 @@ namespace SkyDragonHunter.UI {
             AccountMgr.SaveUserData();
         }
 
-        public void Unequip()
+        public void OnUnequip()
         {
             if (m_ClickedCanonInfo.IsNull)
                 return;
@@ -161,6 +179,21 @@ namespace SkyDragonHunter.UI {
 
             // 세이브
             AccountMgr.SaveUserData();
+        }
+
+        public void OnClickedOtherPanel()
+        {
+            if (m_ClickedCanonInfo.IsNull)
+                return;
+
+            m_UiCanonInfoPanel.gameObject.SetActive(false);
+
+            if (m_ClickedCanonInfo.prevPickedNodeInstance != null &&
+                    m_ClickedCanonInfo.prevPickedNodeInstance.TryGetComponent<Image>(out var prevImage))
+            {
+                prevImage.color = Color.white;
+            }
+            m_ClickedCanonInfo.Clear();
         }
 
         // Private 메서드

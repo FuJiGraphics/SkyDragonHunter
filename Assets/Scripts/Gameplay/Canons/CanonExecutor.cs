@@ -1,4 +1,4 @@
-using SkyDragonHunter.Interfaces;
+ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using System;
 using System.Collections;
@@ -12,7 +12,6 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         public float attackRange = 10f;
-        public event Action<CanonBase> onEquipEvents;
 
         private CanonBase m_CurrentEquipCanonInstance = null;
         private CanonDummy m_CurrentEquipCanonDummy = null;
@@ -31,6 +30,9 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private EnemySearchProvider m_EnemySearchProvider;
 
         // 이벤트 (Events)
+        public event Action<CanonDummy> onEquipEvents;
+        public event Action onUnequipEvents;
+
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
@@ -82,7 +84,7 @@ namespace SkyDragonHunter.Gameplay {
                 }
                 m_CurrentEquipCanonInstance = canonBase;
                 m_CurrentEquipCanonInstance.gameObject.SetActive(true);
-                onEquipEvents?.Invoke(m_CurrentEquipCanonInstance);
+                onEquipEvents?.Invoke(canonDummy);
             }
             else
             {
@@ -96,21 +98,24 @@ namespace SkyDragonHunter.Gameplay {
             {
                 if (m_CurrentEquipCanonDummy != null)
                 {
-                    m_CurrentEquipCanonDummy.IsEquip = true;
+                    m_CurrentEquipCanonDummy.IsEquip = false;
                 }
-
-                // 캐논 게임 오브젝트 인스턴스 제거
-                Destroy(m_CurrentEquipCanonInstance?.gameObject);
                 Destroy(m_EquipAnchorInstance);
                 m_EquipAnchorInstance = null;
                 m_CurrentEquipCanonInstance = null;
                 m_CurrentEquipCanonDummy = null;
+                onUnequipEvents?.Invoke();
             }
         }
 
         // Public 메서드
         public void Execute()
         {
+            if (m_CurrentEquipCanonDummy != null && m_CurrentEquipCanonDummy.Count <= 0)
+            {
+                Unequip();
+                return;
+            }
             if (m_EnemySearchProvider == null)
             {
                 Debug.Log("[CanonExecutor]: 발사 실패. EnemySearchProvider을 찾을 수 없습니다.");

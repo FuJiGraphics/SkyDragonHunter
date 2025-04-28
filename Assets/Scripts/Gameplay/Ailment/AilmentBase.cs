@@ -26,6 +26,7 @@ namespace SkyDragonHunter.Gameplay {
         private IAilmentLifecycleHandler[] m_Handlers;
 
         // ¼Ó¼º (Properties)
+        public int ID => m_TableId;
         public AilmentType Type { get => m_Type; set => m_Type = value; }
         public float Duration { get => m_Duration; set => m_Duration = value; }
         public float Tick { get => m_Tick; set => m_Tick = value; }
