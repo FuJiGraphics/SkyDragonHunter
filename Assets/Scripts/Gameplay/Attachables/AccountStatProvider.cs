@@ -71,7 +71,7 @@ namespace SkyDragonHunter.Gameplay {
                     var canonData = m_CurrentEpCanonInstance.CanonData;
                     BigNum newEpATK = new BigNum(canonData.canEqATK) + (new BigNum(canonData.canEqATKup) * AccountMgr.EquipCannonDummy.Level);
                     BigNum newEpDEF = new BigNum(canonData.canEqDEF) + (new BigNum(canonData.canEqDEFup) * AccountMgr.EquipCannonDummy.Level);
-                    m_Stats.MaxDamage = m_Stats.MaxDamage + newEpATK;
+                    m_Stats.MaxDamage = (m_Stats.MaxDamage + newEpATK) * canonData.canATKMultiplier;
                     m_Stats.MaxArmor = m_Stats.MaxArmor + newEpDEF;
                 }
             }

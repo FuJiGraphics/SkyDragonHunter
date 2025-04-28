@@ -378,8 +378,7 @@ namespace SkyDragonHunter.Managers {
             {
                 s_HeldCanons[canonDummy.Type].Add(canonDummy.Grade, canonDummy);
             }
-            int count = canonDummy.Count > 0 ? canonDummy.Count : 1;
-            s_HeldCanons[canonDummy.Type][canonDummy.Grade].Count = count;
+            s_HeldCanons[canonDummy.Type][canonDummy.Grade].Count = canonDummy.Count;
             s_SortedCanons.Add(canonDummy);
             canonDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
         }

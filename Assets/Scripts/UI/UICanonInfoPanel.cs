@@ -46,13 +46,35 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Button m_LevelUpButton;
         [SerializeField] private Button m_EquipButton;
 
+        private CanonDummy m_CurrentDummy = null;
+
         // 속성 (Properties)
+        public Button EquipButton => m_EquipButton;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void Update()
+        {
+            if (m_CurrentDummy != null)
+            {
+                if (!m_CurrentDummy.IsUnlock)
+                {
+                    m_LevelUpButton.interactable = false;
+                    m_CanonCombineButton.interactable = false;
+                }
+                else
+                {
+                    m_LevelUpButton.interactable = true;
+                    m_CanonCombineButton.interactable = true;
+                }
+            }
+        }
+
         // Public 메서드
         public void ShowInfo(CanonDummy canonDummy)
         {
+            m_CurrentDummy = canonDummy;
             UpdateUICanonInfoPanels(canonDummy);
             UpdateUICanonEquipEffectPanels(canonDummy);
             UpdateUICanonHoldEffectPanels(canonDummy);
@@ -82,6 +104,7 @@ namespace SkyDragonHunter.UI {
         {
             DirtyCanonLevelUpButton(canonDummy);
             DirtyCanonEquipButton(canonDummy);
+            DirtyCanonSpecialEffectStats(canonDummy);
         }
 
         private void OnCombineButton(CanonDummy canonDummy, int currentCount, int maxCount)
@@ -175,6 +198,17 @@ namespace SkyDragonHunter.UI {
             var equipPanel = GameMgr.FindObject<UICanonEquipmentPanel>("UICanonEquipmentPanel");
             m_EquipButton.onClick.RemoveAllListeners();
             m_EquipButton.onClick.AddListener(() => { equipPanel.OnEquip(); });
+        }
+
+        private void DirtyCanonSpecialEffectStats(CanonDummy canonDummy)
+        {
+            GameObject canonInstance = canonDummy.GetCanonInstance();
+            CanonBase canonBase = canonInstance.GetComponent<CanonBase>();
+            CanonDefinition canonData = canonBase.CanonData;
+            m_EffectNameLeft.text = "공격력 배율";
+            m_EffectDescLeft.text = canonData.canATKMultiplier.ToString() + "%";
+            m_EffectNameRight.text = "공격 속도";
+            m_EffectDescRight.text = (1.0 / canonData.canCooldown).ToString("F1") + "/s";
         }
 
         // Others

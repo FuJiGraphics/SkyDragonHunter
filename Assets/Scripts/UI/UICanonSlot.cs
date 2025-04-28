@@ -10,6 +10,8 @@ namespace SkyDragonHunter.UI {
     {
         // 필드 (Fields)
         [SerializeField] private Image canonIcon;
+        [SerializeField] private Sprite canonSlotIcon;
+        [SerializeField] private Sprite canonDownIcon;
         [SerializeField] private Image canonLockIcon;
 
         // 속성 (Properties)
@@ -23,29 +25,29 @@ namespace SkyDragonHunter.UI {
         {
             if (CanonDummy.IsUnlock)
             {
-                if (canonLockIcon != null)
-                {
-                    canonLockIcon.enabled = false;
-                }
-                else
-                {
-                    canonIcon.color = Color.white;
-                }
+                canonLockIcon.enabled = false;
+                canonIcon.color = Color.white;
+                GetComponent<Image>().color = Color.white;
             }
             else
             {
-                if (canonLockIcon != null)
-                {
-                    canonLockIcon.enabled = true;
-                }
-                else
-                {
-                    canonIcon.color = Color.gray;
-                }
+                canonLockIcon.enabled = true;
+                canonIcon.color = Color.gray;
+                GetComponent<Image>().color = Color.gray;
             }
         }
 
         // Public 메서드
+        public void ShowDownIconImage()
+        {
+            GetComponent<Image>().sprite = canonDownIcon;
+        }
+
+        public void ShowIdleIconImage()
+        {
+            GetComponent<Image>().sprite = canonSlotIcon;
+        }
+
         // Private 메서드
         // Others
 

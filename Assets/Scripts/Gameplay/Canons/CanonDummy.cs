@@ -16,6 +16,7 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private int m_Count = 0;
 
         private GameObject m_Instance;
+        private bool m_IsUnlock = false;
 
         // ¼Ó¼º (Properties)
         public int ID 
@@ -46,7 +47,17 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
-        public bool IsUnlock => Count > 0;
+        public bool IsUnlock
+        {
+            get
+            {
+                if (!m_IsUnlock)
+                {
+                    m_IsUnlock = Count > 0;
+                }
+                return m_IsUnlock;
+            }
+        }
 
         public int MaxLevel { get; set; } = 50;
 
