@@ -186,6 +186,11 @@ namespace SkyDragonHunter.UI {
             if (m_ClickedCanonInfo.IsNull)
                 return;
 
+            ClearClickedPanel();
+        }
+
+        public void ClearClickedPanel()
+        {
             m_UiCanonInfoPanel.gameObject.SetActive(false);
 
             if (m_ClickedCanonInfo.prevPickedNodeInstance != null &&

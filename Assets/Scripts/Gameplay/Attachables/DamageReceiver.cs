@@ -5,11 +5,8 @@ using SkyDragonHunter.Structs;
 using System.Numerics;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
 
-
-    
-    
     public class DamageReceiver : MonoBehaviour
     {
         // 필드 (Fields)
@@ -31,49 +28,28 @@ namespace SkyDragonHunter {
             if (m_Stats.Health <= 0)
                 return;
             //// ~TODO
+            
+            // ----- 약화 상태 이상 계산
+            if (TryGetComponent<Exposable>(out var exposableComp))
+            {
+                damage *= exposableComp.ExposeDamageMultiplier;
+            }
+            // -----
 
-            // TODO: AlphaUnit Convert
-            if (m_Stats.Shield >= damage)
+            BigNum takeDamage;
+            if (damage <= m_Stats.Shield)
             {
                 m_Stats.Shield -= damage;
                 return;
             }
             else
             {
+                takeDamage = damage - m_Stats.Shield;
                 m_Stats.Shield = 0;
-                damage -= m_Stats.Shield;
             }
 
-            m_Stats.Health -= damage;
-            //BigInteger takeDamage = m_Stats.Shield.Value - damage.Value;
-            //if (takeDamage >= 0)
-            //{
-            //    m_Stats.Shield = takeDamage;
-            //    return;
-            //}
-            //else
-            //{
-            //    m_Stats.Shield = 0;
-            //}
-            //
-            //takeDamage = Math2DHelper.Abs(takeDamage);
-            //takeDamage = Math2DHelper.Clamp(m_Stats.Health.Value - takeDamage, 0, m_Stats.Health.Value);
-            //m_Stats.Health = takeDamage;
-
-            //BigNum receivedDmg = m_Stats.Shield - damage;
-            //if(receivedDmg >= 0)
-            //{
-            //    m_Stats.Shield = receivedDmg;
-            //    return;
-            //}
-            //else
-            //{
-            //    m_Stats.Shield = 0;
-            //}
-            //receivedDmg = damage - m_Stats.Shield;
-            //receivedDmg = Math2DHelper.Clamp(m_Stats.Health - receivedDmg, 0, m_Stats.MaxHealth);
-            //m_Stats.Health = receivedDmg;            
-            // ~TODO
+            takeDamage = Math2DHelper.Clamp(m_Stats.Health - takeDamage, 0, m_Stats.Health);
+            m_Stats.Health = takeDamage;
 
             // 죽음 
             UpdateDestructions(attacker);

@@ -9,10 +9,10 @@ namespace SkyDragonHunter.Gameplay {
     public class Exposable : MonoBehaviour
     {
         // 필드 (Fields)
-        private AlphaUnit m_ExposeDamageMultiplier = 1;
+        private BigNum m_ExposeDamageMultiplier = 1;
 
         // 속성 (Properties)
-        public AlphaUnit ExposeDamageMultiplier 
+        public BigNum ExposeDamageMultiplier
         {
             get => m_ExposeDamageMultiplier;
             set

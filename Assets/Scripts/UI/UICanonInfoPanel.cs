@@ -129,8 +129,8 @@ namespace SkyDragonHunter.UI {
 
             if (IsLeftPanel)
             {
-                AlphaUnit newEqATK = BigInteger.Parse(canonData.canEqATK) * canonDummy.Level;
-                AlphaUnit newEqDEF = BigInteger.Parse(canonData.canEqDEF) * canonDummy.Level;
+                BigNum newEqATK = new BigNum(canonData.canEqATK) * canonDummy.Level;
+                BigNum newEqDEF = new BigNum(canonData.canEqDEF) * canonDummy.Level;
                 m_StatNameTopLeft.text = "공격력";
                 m_StatDescTopLeft.text = newEqATK.ToUnit();
                 m_StatNameBotLeft.text = "방어력";
@@ -139,8 +139,8 @@ namespace SkyDragonHunter.UI {
             }
             else
             {
-                AlphaUnit newHoldATK = BigInteger.Parse(canonData.canHoldATK) * canonDummy.Level;
-                AlphaUnit newHoldDEF = BigInteger.Parse(canonData.canHoldDEF) * canonDummy.Level;
+                BigNum newHoldATK = new BigNum(canonData.canHoldATK) * canonDummy.Level;
+                BigNum newHoldDEF = new BigNum(canonData.canHoldDEF) * canonDummy.Level;
                 m_StatNameTopRight.text = "공격력";
                 m_StatDescTopRight.text = newHoldATK.ToUnit();
                 m_StatNameBotRight.text = "방어력";
