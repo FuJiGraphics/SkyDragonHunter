@@ -1,3 +1,5 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.test;
 using System.Collections;
 using TMPro;
@@ -55,8 +57,8 @@ namespace SkyDragonHunter
         }
 
         // 슬롯 초기화
-        public void Initialize(ItemStatus item, RerollShopController controller, FavorailityMgr favorMgr, 
-            FavorabilityUIController favorUIController, RerollShopLockConfirmPanel confirmPanel, 
+        public void Initialize(ItemStatus item, RerollShopController controller, FavorailityMgr favorMgr,
+            FavorabilityUIController favorUIController, RerollShopLockConfirmPanel confirmPanel,
             bool isLocked = false, bool isPurchased = false) // (수정됨)
         {
             shopController = controller;
@@ -64,7 +66,7 @@ namespace SkyDragonHunter
             favorabilityUIController = favorUIController;
             itemData = item;
             lockConfirmPanel = confirmPanel;
-            
+
             this.isLocked = isLocked;
             this.isPurchased = isPurchased;
 
@@ -97,13 +99,23 @@ namespace SkyDragonHunter
         {
             if (itemData.currencyType == CurrencyType.Gold)
             {
-                if (favorabilityMgr.testGold < itemData.price) return;
-                favorabilityMgr.testGold -= itemData.price;
+                if (AccountMgr.Coin < itemData.price)
+                {
+                    var diff = currentPrice - AccountMgr.Coin.Value;
+                    DrawableMgr.Dialog("알림", $"골드가 부족합니다. = {new AlphaUnit(diff).ToUnit()}");
+                    return;
+                }
+                AccountMgr.Coin -= itemData.price;
             }
             else if (itemData.currencyType == CurrencyType.Diamond)
             {
-                if (favorabilityMgr.testDiamond < itemData.price) return;
-                favorabilityMgr.testDiamond -= itemData.price;
+                if (AccountMgr.Diamond < itemData.price)
+                {
+                    var diff = currentPrice - AccountMgr.Diamond.Value;
+                    DrawableMgr.Dialog("알림", $"다이아 부족합니다. = {new AlphaUnit(diff).ToString()}");
+                    return;
+                }
+                AccountMgr.Diamond -= itemData.price;
             }
 
             if (isPurchased) return;
