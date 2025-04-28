@@ -1,11 +1,14 @@
+using Newtonsoft.Json;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Tables.Generic;
 using System.Text;
 using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {
+    [JsonConverter(typeof(CrewTableDataConverter))]
     public class CrewTableData : DataTableData
     {
         public string                       Name { get; set; }

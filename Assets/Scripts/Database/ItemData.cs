@@ -42,7 +42,7 @@ namespace SkyDragonHunter.Database {
             Name = itemData.Name;
             Desc = itemData.Desc;
 
-            string iconPath = Path.Combine("Prefabs/Icons", itemData.Icon);
+            string iconPath = Path.Combine("Prefabs/Icons", itemData.IconFileName);
             Icon = ResourcesMgr.Load<Image>(iconPath)?.sprite;
             Usable = itemData.Usable;
             Type = (ItemType)itemData.Type;

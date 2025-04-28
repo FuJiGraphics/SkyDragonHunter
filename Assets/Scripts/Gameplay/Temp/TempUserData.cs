@@ -16,7 +16,7 @@ namespace SkyDragonHunter.Test {
 
     [System.Serializable]
     public struct SaveItemStorage
-    {
+    {        
         public int count;
         public ItemType itemType;
     }
