@@ -79,7 +79,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3834167275027283608}
-  - {fileID: 3336402848642627765}
   - {fileID: 3247827983406259250}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -231,6 +230,7 @@ MonoBehaviour:
   criticalMultiplier: 2
   bossDamageMultiplier: 1
   skillEffectMultiplier: 1
+  m_UIShieldAndHealthPrefab: {fileID: 1610943178153985568, guid: 6e2c953fa9302464e8c7eef2737e3839, type: 3}
 --- !u!114 &2234313131059143914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,82 +497,4 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7369445710043048750, guid: 1f03898bfa61d9041bd024b7a15bb23b, type: 3}
   m_PrefabInstance: {fileID: 5428840327788410652}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &7316691415125066704
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6264208576672410837}
-    m_Modifications:
-    - target: {fileID: 2332205676009980156, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6718433456397886466, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7847952859836935646, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-      propertyPath: m_Name
-      value: UIShieldAndHealth
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
---- !u!4 &3336402848642627765 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5460426141483400037, guid: 21a69638a12767e478dc1ae6a1e50620, type: 3}
-  m_PrefabInstance: {fileID: 7316691415125066704}
   m_PrefabAsset: {fileID: 0}

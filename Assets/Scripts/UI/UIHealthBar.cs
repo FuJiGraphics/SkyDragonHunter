@@ -10,8 +10,8 @@ namespace SkyDragonHunter.UI {
     public class UIHealthBar : MonoBehaviour
     {
         // 필드 (Fields)
-        public BigNum maxHealth;
-        public BigNum currentHealth;
+        public BigNum maxValue;
+        public BigNum currentValue;
         private Slider m_Slider;
 
         // 속성 (Properties)
@@ -24,29 +24,29 @@ namespace SkyDragonHunter.UI {
         private void Awake()
         {
             m_Slider = GetComponentInChildren<Slider>();
-            ResetHP();
+            ResetValue();
         }
 
         private void Reset()
         {
-            ResetHP();
+            ResetValue();
         }
 
         // Public 메서드
-        public void ResetHP()
+        public void ResetValue()
         {
-            currentHealth = maxHealth;
-            SetHP(currentHealth);
+            currentValue = maxValue;
+            SetValue(currentValue);
         }
 
         public void TakeDamage(BigNum damage)
         {
             //Debug.Log($"Damage: {damage}, CurrentHP: {currentHealth}, Value: {m_Slider.value}");
-            SetHP(currentHealth - damage);
+            SetValue(currentValue - damage);
             UpdateSlider();
         }
 
-        public void SetHP(BigNum health)
+        public void SetValue(BigNum health)
         {
             if (m_Slider == null)
             {
@@ -54,25 +54,25 @@ namespace SkyDragonHunter.UI {
                 return;
             }
 
-            currentHealth = Math2DHelper.Clamp(health, 0, maxHealth);
+            currentValue = Math2DHelper.Clamp(health, 0, maxValue);
             UpdateSlider();
 
-            if (currentHealth <= 0)
+            if (currentValue <= 0)
             {
-                currentHealth = 0;
+                currentValue = 0;
                 OnHealthDepleted.Invoke();
             }
         }
 
         private void UpdateSlider()
         {
-            if (m_Slider == null || maxHealth <= 0) 
+            if (m_Slider == null || maxValue <= 0) 
                 return;
 
             m_Slider.minValue = 0f;
             m_Slider.maxValue = 1f;
 
-            m_Slider.value = BigNum.GetPercentage(currentHealth, maxHealth);
+            m_Slider.value = BigNum.GetPercentage(currentValue, maxValue);
         }
 
         // Private 메서드

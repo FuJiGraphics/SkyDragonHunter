@@ -18,8 +18,12 @@ namespace SkyDragonHunter.Managers {
     {
         // 필드 (Fields)
         private static Dictionary<ItemType, BigNum> s_HeldItems = new();
+
         private static Dictionary<CanonType, Dictionary<CanonGrade, CanonDummy>> s_HeldCanons = new();
         private static List<CanonDummy> s_SortedCanons = new();
+
+        private static Dictionary<RepairType, Dictionary<RepairGrade, RepairDummy>> s_HeldRepairs = new();
+        private static List<RepairDummy> s_SortedRepairs = new();
 
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
@@ -88,6 +92,9 @@ namespace SkyDragonHunter.Managers {
         public static CanonDummy[] HeldCanons => s_SortedCanons.ToArray();
         public static CanonDummy EquipCannonDummy { get; set; } = null;
 
+        public static RepairDummy[] HeldRepairs => s_SortedRepairs.ToArray();
+        public static RepairDummy EquipRepairDummy { get; set; } = null;
+
         public static bool CanonGradeUp(CanonDummy target)
         {
             if (target.Type == CanonType.Freeze && target.Grade == CanonGrade.Legend)
@@ -113,6 +120,35 @@ namespace SkyDragonHunter.Managers {
 
             target.Count -= 5;
             s_HeldCanons[targetType][targetGrade].Count++;
+
+            return true;
+        }
+
+        public static bool RepairGradeUp(RepairDummy target)
+        {
+            if (target.Type == RepairType.Divine && target.Grade == RepairGrade.Legend)
+            {
+                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
+                return false;
+            }
+
+            RepairType targetType = target.Type;
+            RepairGrade targetGrade = target.Grade;
+            if (targetType != RepairType.Divine)
+            {
+                targetType++;
+            }
+            else
+            {
+                targetType = RepairType.Normal;
+                if (targetGrade != RepairGrade.Legend)
+                {
+                    targetGrade++;
+                }
+            }
+
+            target.Count -= 5;
+            s_HeldRepairs[targetType][targetGrade].Count++;
 
             return true;
         }
@@ -318,6 +354,31 @@ namespace SkyDragonHunter.Managers {
             return stats;
         }
 
+        public static CommonStats GetRepairHoldStats()
+        {
+            CommonStats stats = new CommonStats();
+            stats.ResetAllZero();
+
+            foreach (var repairTypes in s_HeldRepairs)
+            {
+                foreach (var repairGrade in repairTypes.Value)
+                {
+                    var repair = repairGrade.Value;
+                    if (!repair.IsUnlock)
+                    {
+                        continue;
+                    }
+
+                    var repairData = repair.GetData();
+                    BigNum newRepHoldHP = new BigNum(repairData.RepHoldHP) + new BigNum(repairData.RepHoldHPup) * repair.Level;
+                    BigNum newRepHoldREC = new BigNum(repairData.RepHoldREC) + new BigNum(repairData.RepHoldRECup) * repair.Level;
+                    stats.SetMaxHealth(stats.MaxHealth + newRepHoldHP);
+                    stats.SetMaxResilient(stats.MaxResilient + newRepHoldREC);
+                }
+            }
+            return stats;
+        }
+
         public static void OnSocketLevelUp()
         {
             // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
@@ -381,6 +442,21 @@ namespace SkyDragonHunter.Managers {
             s_HeldCanons[canonDummy.Type][canonDummy.Grade].Count = canonDummy.Count;
             s_SortedCanons.Add(canonDummy);
             canonDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
+        }
+
+        public static void RegisterRepair(RepairDummy repairDummy)
+        {
+            if (!s_HeldRepairs.ContainsKey(repairDummy.Type))
+            {
+                s_HeldRepairs.Add(repairDummy.Type, new());
+            }
+            if (!s_HeldRepairs[repairDummy.Type].ContainsKey(repairDummy.Grade))
+            {
+                s_HeldRepairs[repairDummy.Type].Add(repairDummy.Grade, repairDummy);
+            }
+            s_HeldRepairs[repairDummy.Type][repairDummy.Grade].Count = repairDummy.Count;
+            s_SortedRepairs.Add(repairDummy);
+            repairDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
         }
 
         public static void RegisterMasterySocket(UIMasterySocket masterySocketInstance)
@@ -473,6 +549,15 @@ namespace SkyDragonHunter.Managers {
                 foreach (var canon in comp.canonDataPrefabs)
                 {
                     RegisterCanon(canon);
+                }
+                #endregion
+
+                #region 수리공 정보 불러오기
+                s_SortedRepairs.Clear();
+                s_HeldRepairs.Clear();
+                foreach (var repair in comp.repairDatas)
+                {
+                    RegisterRepair(repair);
                 }
                 #endregion
 
@@ -585,6 +670,10 @@ namespace SkyDragonHunter.Managers {
                 comp.canonDataPrefabs = newCanonSaveDummys.ToArray();
                 #endregion
 
+                #region 수리공 정보 저장
+                List<RepairDummy> newRepairSaveDummys = new List<RepairDummy>(HeldRepairs);
+                comp.repairDatas = newRepairSaveDummys.ToArray();
+                #endregion
 
                 foreach (var handler in m_SaveLoadHandlers)
                 {

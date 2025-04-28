@@ -35,6 +35,7 @@ namespace SkyDragonHunter.Test {
         [Header("Airship Data")]
         public GameObject[] crewDataPrefabs;
         [SerializeField] public CanonDummy[] canonDataPrefabs;
+        [SerializeField] public RepairDummy[] repairDatas;
         [SerializeField] public List<SaveEquipStorage> airshipEquipSlots = new List<SaveEquipStorage>();
 
         [Header("Item Data")]
@@ -45,6 +46,7 @@ namespace SkyDragonHunter.Test {
         public static int s_StageZoneLevel = 1;
         public static List<GameObject> s_CrewDataPrefabs;
         public static List<CanonDummy> s_CanonDataPrefabs;
+        public static List<RepairDummy> s_RepairDatas;
         public static List<SaveEquipStorage> s_AirshipEquipSlots;
         public static List<SaveItemStorage> s_ItemData;
         public static int s_CrystalLevelID;
@@ -59,6 +61,7 @@ namespace SkyDragonHunter.Test {
         {
             s_CrewDataPrefabs = new List<GameObject>(crewDataPrefabs);
             s_CanonDataPrefabs = new List<CanonDummy>(canonDataPrefabs);
+            s_RepairDatas = new List<RepairDummy>(repairDatas);
             s_AirshipEquipSlots = new List<SaveEquipStorage>(airshipEquipSlots);
             s_CrystalLevelID = crystalLevelID;
             s_StageLevel = stageLevel;
@@ -72,6 +75,8 @@ namespace SkyDragonHunter.Test {
                 crewDataPrefabs = s_CrewDataPrefabs.ToArray();
             if (s_CanonDataPrefabs != null)
                 canonDataPrefabs = s_CanonDataPrefabs.ToArray();
+            if (s_RepairDatas != null)
+                repairDatas = s_RepairDatas.ToArray();
             if (s_AirshipEquipSlots != null)
                 airshipEquipSlots = new List<SaveEquipStorage>(s_AirshipEquipSlots);
             crystalLevelID = s_CrystalLevelID;

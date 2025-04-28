@@ -47,8 +47,6 @@ namespace SkyDragonHunter.Gameplay
 
         // 외부 종속성 필드 (External dependencies field)
         private CommonStats m_CommonStats = new CommonStats();
-        private UIHealthBar m_ShieldBarUI;
-        private UIHealthBar m_HealthBarUI;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
@@ -59,7 +57,6 @@ namespace SkyDragonHunter.Gameplay
 
         private void Start()
         {
-            InitUIBars();
         }
 
         private void Update()
@@ -67,8 +64,6 @@ namespace SkyDragonHunter.Gameplay
 #if UNITY_EDITOR
             UpdateParams();
 #endif
-
-            UpdateUIBars();
         }
 
         // Public 메서드
@@ -80,31 +75,6 @@ namespace SkyDragonHunter.Gameplay
         public void ResetResilient() => m_CommonStats.ResetResilient();
 
         // Private 메서드
-        public void UpdateUIBars()
-        {
-            if (m_ShieldBarUI != null)
-            {
-                if (m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield)
-                {
-                    m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield;
-                }
-                if (m_ShieldBarUI.currentHealth != m_CommonStats.Shield)
-                {
-                    m_ShieldBarUI.SetHP(m_CommonStats.Shield);
-                }
-            }
-            if (m_HealthBarUI != null)
-            {
-                if (m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth)
-                {
-                    m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth;
-                }
-                if (m_HealthBarUI.currentHealth != m_CommonStats.Health)
-                {
-                    m_HealthBarUI.SetHP(m_CommonStats.Health);
-                }
-            }
-        }
 
 #if UNITY_EDITOR
         public void UpdateParams()
@@ -138,32 +108,6 @@ namespace SkyDragonHunter.Gameplay
             m_CommonStats.SetBossDamageMultiplier(bossDamageMultiplier);
             m_CommonStats.SetSkillEffectMultiplier(skillEffectMultiplier);
             m_CommonStats.ResetAll();
-        }
-
-        private void InitUIBars()
-        {
-            var bars = GetComponentsInChildren<UIHealthBar>();
-            foreach (var bar in bars)
-            {
-                if (bar.name == "UIShieldBar")
-                {
-                    m_ShieldBarUI = bar;
-                    if (m_ShieldBarUI != null && m_ShieldBarUI.maxHealth != m_CommonStats.MaxShield)
-                    {
-                        m_ShieldBarUI.maxHealth = m_CommonStats.MaxShield;
-                        m_ShieldBarUI.ResetHP();
-                    }
-                }
-                else if (bar.name == "UIHealthBar")
-                {
-                    m_HealthBarUI = bar;
-                    if (m_HealthBarUI != null && m_HealthBarUI.maxHealth != m_CommonStats.MaxHealth)
-                    {
-                        m_HealthBarUI.maxHealth = m_CommonStats.MaxHealth;
-                        m_HealthBarUI.ResetHP();
-                    }
-                }
-            }
         }
 
         // Others

@@ -21,15 +21,34 @@ namespace SkyDragonHunter.Gameplay {
         private CharacterStatus m_Stats;
         private CanonExecutor m_CanonExecutor;
         private CanonBase m_CurrentEpCanonInstance;
+        private RepairDummy m_CurrentEqRepair;
         private bool m_IsInitialized = false;
 
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnDestroy()
+        {
+            if (m_CanonExecutor != null)
+            {
+                m_CanonExecutor.onEquipEvents -= OnEquipCannonEvents;
+                m_CanonExecutor.onUnequipEvents -= OnUnequipCannonEvents;
+            }
+
+            if (TryGetComponent<RepairExecutor>(out var repairExecutor))
+            {
+                repairExecutor.onEquipEvents -= OnEquipRepairEvents;
+                repairExecutor.onUnequipEvents -= OnUnequipRepairEvents;
+            }
+
+            AccountMgr.onLevelUpEvents -= MergedAccountStatsForCharacter;
+        }
+
         // Public 메서드
         public void MergedAccountStatsForCharacter()
         {
             CommonStats accStats = AccountMgr.AccountStats;
             CommonStats canonHoldStats = AccountMgr.GetCanonHoldStats();
+            CommonStats repairHoldStats = AccountMgr.GetRepairHoldStats();
             CommonStats socketStats = AccountMgr.GetSocketStat();
 
             BigNum prevLostHealth = m_Stats.MaxHealth - m_Stats.Health;
@@ -65,6 +84,10 @@ namespace SkyDragonHunter.Gameplay {
                 m_Stats.MaxDamage = m_Stats.MaxDamage + canonHoldStats.MaxDamage;
                 m_Stats.MaxArmor = m_Stats.MaxArmor + canonHoldStats.MaxArmor;
 
+                // 수리공 보유 스탯 적용
+                m_Stats.MaxHealth = m_Stats.MaxHealth + repairHoldStats.MaxHealth;
+                m_Stats.MaxResilient = m_Stats.MaxResilient + repairHoldStats.MaxResilient;
+
                 // 캐논 장착 스탯 적용
                 if (m_CurrentEpCanonInstance != null)
                 {
@@ -73,6 +96,14 @@ namespace SkyDragonHunter.Gameplay {
                     BigNum newEpDEF = new BigNum(canonData.canEqDEF) + (new BigNum(canonData.canEqDEFup) * AccountMgr.EquipCannonDummy.Level);
                     m_Stats.MaxDamage = (m_Stats.MaxDamage + newEpATK) * canonData.canATKMultiplier;
                     m_Stats.MaxArmor = m_Stats.MaxArmor + newEpDEF;
+                }
+                if (m_CurrentEqRepair != null)
+                {
+                    var repairData = m_CurrentEqRepair.GetData();
+                    BigNum newEpHP = new BigNum(repairData.RepEqHP) + (new BigNum(repairData.RepEqHPup) * AccountMgr.EquipRepairDummy.Level);
+                    BigNum newEpREC = new BigNum(repairData.RepEqREC) + (new BigNum(repairData.RepEqRECup) * AccountMgr.EquipRepairDummy.Level);
+                    m_Stats.MaxHealth = (m_Stats.MaxHealth + newEpHP) * repairData.RepHpMultiplier;
+                    m_Stats.MaxResilient = (m_Stats.MaxResilient + newEpREC) * repairData.RepRecMultiplier;
                 }
             }
 
@@ -94,6 +125,20 @@ namespace SkyDragonHunter.Gameplay {
         {
             AccountMgr.EquipCannonDummy = null;
             m_CurrentEpCanonInstance = null;
+            MergedAccountStatsForCharacter();
+        }
+
+        public void OnEquipRepairEvents(RepairDummy repairDummy)
+        {
+            AccountMgr.EquipRepairDummy = repairDummy;
+            m_CurrentEqRepair = repairDummy;
+            MergedAccountStatsForCharacter();
+        }
+
+        public void OnUnequipRepairEvents()
+        {
+            AccountMgr.EquipRepairDummy = null;
+            m_CurrentEqRepair = null;
             MergedAccountStatsForCharacter();
         }
 
@@ -127,6 +172,11 @@ namespace SkyDragonHunter.Gameplay {
                 m_CanonExecutor = canonExecutor;
                 canonExecutor.onEquipEvents += OnEquipCannonEvents;
                 canonExecutor.onUnequipEvents += OnUnequipCannonEvents;
+            }
+            if (TryGetComponent<RepairExecutor>(out var repairExecutor))
+            {
+                repairExecutor.onEquipEvents += OnEquipRepairEvents;
+                repairExecutor.onUnequipEvents += OnUnequipRepairEvents;
             }
 
             m_Stats.ResetAll();

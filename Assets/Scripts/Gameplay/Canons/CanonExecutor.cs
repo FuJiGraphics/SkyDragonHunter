@@ -111,7 +111,7 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public void Execute()
         {
-            if (m_CurrentEquipCanonDummy != null && m_CurrentEquipCanonDummy.Count <= 0)
+            if (m_CurrentEquipCanonDummy != null)
             {
                 Unequip();
                 return;

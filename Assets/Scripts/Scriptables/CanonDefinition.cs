@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using System.Numerics;
 using UnityEngine;
@@ -80,7 +81,17 @@ namespace SkyDragonHunter.Scriptables {
                 damage *= aStats.BossDamageMultiplier;
                 // ~TODO
             }
-            attack.damage = damage;
+
+            float cannonAtkMultiplier = 1f;
+            if (AccountMgr.EquipCannonDummy != null)
+            {
+                var equipCanonGo = AccountMgr.EquipCannonDummy.GetCanonInstance();
+                if (equipCanonGo.TryGetComponent<CanonBase>(out var cannonBase))
+                {
+                    cannonAtkMultiplier = cannonBase.CanonData.canATKMultiplier;
+                }
+            }
+            attack.damage = damage * cannonAtkMultiplier;
             if (dStats != null)
             {
                 attack.damage -= dStats.Armor;

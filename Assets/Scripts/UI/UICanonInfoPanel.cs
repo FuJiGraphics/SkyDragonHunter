@@ -4,6 +4,7 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Structs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -45,11 +46,16 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_EffectDetails;
         [SerializeField] private Button m_LevelUpButton;
         [SerializeField] private Button m_EquipButton;
+        [SerializeField] private Button m_UnequipButton;
 
         private CanonDummy m_CurrentDummy = null;
+        private BigNum m_CurrentNeedLevelUpCost = 0;
+        private readonly string m_MaxLeveFormat = "MaxLevel";
+        private readonly string m_LevelUpFormat = "LevelUp : ";
 
         // 속성 (Properties)
         public Button EquipButton => m_EquipButton;
+        public Button UnequipButton => m_UnequipButton;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -58,6 +64,8 @@ namespace SkyDragonHunter.UI {
         {
             if (m_CurrentDummy != null)
             {
+                var targetLevelUpText = m_LevelUpButton.gameObject.GetComponentInChildren<TextMeshProUGUI>(true);
+                targetLevelUpText.text = m_LevelUpFormat + m_CurrentNeedLevelUpCost.ToUnit();
                 if (!m_CurrentDummy.IsUnlock)
                 {
                     m_LevelUpButton.interactable = false;
@@ -65,7 +73,19 @@ namespace SkyDragonHunter.UI {
                 }
                 else
                 {
-                    m_LevelUpButton.interactable = true;
+                    if (m_CurrentDummy.Level >= m_CurrentDummy.MaxLevel)
+                    {
+                        targetLevelUpText.text = m_MaxLeveFormat;
+                        m_LevelUpButton.interactable = false;
+                    }
+                    else if (AccountMgr.Coin >= m_CurrentNeedLevelUpCost)
+                    {
+                        m_LevelUpButton.interactable = true;
+                    }
+                    else
+                    {
+                        m_LevelUpButton.interactable = false;
+                    }
                     m_CanonCombineButton.interactable = true;
                 }
             }
@@ -79,6 +99,7 @@ namespace SkyDragonHunter.UI {
             UpdateUICanonEquipEffectPanels(canonDummy);
             UpdateUICanonHoldEffectPanels(canonDummy);
             UpdateUICanonSpecialEffectPanels(canonDummy);
+            DirtyCannonLevelUpNeedCost(canonDummy);
         }
 
         // Private 메서드
@@ -104,6 +125,7 @@ namespace SkyDragonHunter.UI {
         {
             DirtyCanonLevelUpButton(canonDummy);
             DirtyCanonEquipButton(canonDummy);
+            DirtyCannonUnequipButton(canonDummy);
             DirtyCanonSpecialEffectStats(canonDummy);
         }
 
@@ -121,10 +143,15 @@ namespace SkyDragonHunter.UI {
 
         private void OnLevelUp(CanonDummy canonDummy)
         {
+            if (AccountMgr.Coin >= m_CurrentNeedLevelUpCost)
+            {
+                AccountMgr.Coin -= m_CurrentNeedLevelUpCost;
+            }
             canonDummy.Level++;
             DirtyLevelState(canonDummy);
             DirtyCanonEffectState(canonDummy, true);
             DirtyCanonEffectState(canonDummy, false);
+            DirtyCannonLevelUpNeedCost(canonDummy);
         }
 
         private void DirtyCanonTitleAndIconState(CanonDummy canonDummy)
@@ -200,6 +227,13 @@ namespace SkyDragonHunter.UI {
             m_EquipButton.onClick.AddListener(() => { equipPanel.OnEquip(); });
         }
 
+        private void DirtyCannonUnequipButton(CanonDummy canonDummy)
+        {
+            var equipPanel = GameMgr.FindObject<UICanonEquipmentPanel>("UICanonEquipmentPanel");
+            m_UnequipButton.onClick.RemoveAllListeners();
+            m_UnequipButton.onClick.AddListener(() => { equipPanel.OnUnequip(); });
+        }
+
         private void DirtyCanonSpecialEffectStats(CanonDummy canonDummy)
         {
             GameObject canonInstance = canonDummy.GetCanonInstance();
@@ -209,6 +243,16 @@ namespace SkyDragonHunter.UI {
             m_EffectDescLeft.text = canonData.canATKMultiplier.ToString() + "%";
             m_EffectNameRight.text = "공격 속도";
             m_EffectDescRight.text = (1.0 / canonData.canCooldown).ToString("F1") + "/s";
+        }
+
+        private void DirtyCannonLevelUpNeedCost(CanonDummy canonDummy)
+        {
+            if (canonDummy.Level >= canonDummy.MaxLevel)
+            {
+                return;
+            }
+            BigNum needCost = new BigNum(100) * new BigNum(Math.Pow(1.1, canonDummy.Level));
+            m_CurrentNeedLevelUpCost = needCost;
         }
 
         // Others

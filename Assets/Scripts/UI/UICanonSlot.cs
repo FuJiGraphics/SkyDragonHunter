@@ -21,20 +21,14 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnEnable()
+        {
+            UIUpdateUnlockState();
+        }
+
         private void Update()
         {
-            if (CanonDummy.IsUnlock)
-            {
-                canonLockIcon.enabled = false;
-                canonIcon.color = Color.white;
-                GetComponent<Image>().color = Color.white;
-            }
-            else
-            {
-                canonLockIcon.enabled = true;
-                canonIcon.color = Color.gray;
-                GetComponent<Image>().color = Color.gray;
-            }
+            UIUpdateUnlockState();
         }
 
         // Public 메서드
@@ -48,6 +42,21 @@ namespace SkyDragonHunter.UI {
             GetComponent<Image>().sprite = canonSlotIcon;
         }
 
+        public void UIUpdateUnlockState()
+        {
+            if (CanonDummy != null && CanonDummy.IsUnlock)
+            {
+                canonLockIcon.gameObject.SetActive(false);
+                canonIcon.color = Color.white;
+                GetComponent<Image>().color = Color.white;
+            }
+            else
+            {
+                canonLockIcon.gameObject.SetActive(true);
+                canonIcon.color = Color.gray;
+                GetComponent<Image>().color = Color.gray;
+            }
+        }
         // Private 메서드
         // Others
 
