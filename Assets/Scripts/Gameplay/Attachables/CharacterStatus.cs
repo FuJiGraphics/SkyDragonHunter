@@ -5,9 +5,25 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Utility;
 using System.Text;
 using SkyDragonHunter.Interfaces;
+using System;
+using Unity.VisualScripting;
 
 namespace SkyDragonHunter.Gameplay
 {
+    public enum StatusChangedEventType
+    {
+        MaxDamage,
+        Damage,
+        MaxHealth,
+        Health,
+        MaxShield,
+        Shield,
+        MaxArmor,
+        Armor,
+        MaxResilient,
+        Resilient,
+    }
+
     public class CharacterStatus : MonoBehaviour
         , IStateResetHandler
     {
@@ -23,21 +39,159 @@ namespace SkyDragonHunter.Gameplay
         [SerializeField] private float skillEffectMultiplier = CommonStats.c_DefaultSkillEffectMultiplier;
 
         // 속성 (Properties)
-        public BigNum MaxDamage { get => m_CommonStats.MaxDamage; set => m_CommonStats.SetMaxDamage(value); }
-        public BigNum MaxHealth { get => m_CommonStats.MaxHealth; set => m_CommonStats.SetMaxHealth(value); }
-        public BigNum MaxShield { get => m_CommonStats.MaxShield; set => m_CommonStats.SetMaxShield(value); }
-        public BigNum MaxArmor { get => m_CommonStats.MaxArmor; set => m_CommonStats.SetMaxArmor(value); }
-        public BigNum MaxResilient { get => m_CommonStats.MaxResilient; set => m_CommonStats.SetMaxResilient(value); }
+        public BigNum MaxDamage
+        {
+            get => m_CommonStats.MaxDamage;
+            set
+            {
+                if (!m_CommonStats.MaxDamage.Equals(value))
+                {
+                    m_CommonStats.SetMaxDamage(value);
+                    m_MaxDamageChangedEvent?.Invoke(value);
+                }
+            }
+        }
 
-        public BigNum Damage { get => m_CommonStats.Damage; set => m_CommonStats.SetDamage(value); }
-        public BigNum Health { get => m_CommonStats.Health; set => m_CommonStats.SetHealth(value); }
-        public BigNum Shield { get => m_CommonStats.Shield; set => m_CommonStats.SetShield(value); }
-        public BigNum Armor { get => m_CommonStats.Armor; set => m_CommonStats.SetArmor(value); }
-        public BigNum Resilient { get => m_CommonStats.Resilient; set => m_CommonStats.SetResilient(value); }
-        public float CriticalChance { get => m_CommonStats.CriticalChance; set => m_CommonStats.SetCriticalChance(value); }
-        public float CriticalMultiplier { get => m_CommonStats.CriticalMultiplier; set => m_CommonStats.SetCriticalMultiplier(value); }
-        public float BossDamageMultiplier { get => m_CommonStats.BossDamageMultiplier; set => m_CommonStats.SetBossDamageMultiplier(value); }
-        public float SkillEffectMultiplier { get => m_CommonStats.SkillEffectMultiplier; set => m_CommonStats.SetSkillEffectMultiplier(value); }
+        public BigNum Damage
+        {
+            get => m_CommonStats.Damage;
+            set
+            {
+                if (!m_CommonStats.Damage.Equals(value))
+                {
+                    m_CommonStats.SetDamage(value);
+                    m_DamageChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum MaxHealth
+        {
+            get => m_CommonStats.MaxHealth;
+            set
+            {
+                if (!m_CommonStats.MaxHealth.Equals(value))
+                {
+                    m_CommonStats.SetMaxHealth(value);
+                    m_MaxHealthChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum Health
+        {
+            get => m_CommonStats.Health;
+            set
+            {
+                if (!m_CommonStats.Health.Equals(value))
+                {
+                    m_CommonStats.SetHealth(value);
+                    m_HealthChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum MaxShield
+        {
+            get => m_CommonStats.MaxShield;
+            set
+            {
+                if (!m_CommonStats.MaxShield.Equals(value))
+                {
+                    m_CommonStats.SetMaxShield(value);
+                    m_MaxShieldChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum Shield
+        {
+            get => m_CommonStats.Shield;
+            set
+            {
+                if (!m_CommonStats.Shield.Equals(value))
+                {
+                    m_CommonStats.SetShield(value);
+                    m_ShieldChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum MaxArmor
+        {
+            get => m_CommonStats.MaxArmor;
+            set
+            {
+                if (!m_CommonStats.MaxArmor.Equals(value))
+                {
+                    m_CommonStats.SetMaxArmor(value);
+                    m_MaxArmorChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum Armor
+        {
+            get => m_CommonStats.Armor;
+            set
+            {
+                if (!m_CommonStats.Armor.Equals(value))
+                {
+                    m_CommonStats.SetArmor(value);
+                    m_ArmorChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum MaxResilient
+        {
+            get => m_CommonStats.MaxResilient;
+            set
+            {
+                if (!m_CommonStats.MaxResilient.Equals(value))
+                {
+                    m_CommonStats.SetMaxResilient(value);
+                    m_MaxResilientChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public BigNum Resilient
+        {
+            get => m_CommonStats.Resilient;
+            set
+            {
+                if (!m_CommonStats.Resilient.Equals(value))
+                {
+                    m_CommonStats.SetResilient(value);
+                    m_ResilientChangedEvent?.Invoke(value);
+                }
+            }
+        }
+
+        public float CriticalChance
+        {
+            get => m_CommonStats.CriticalChance;
+            set => m_CommonStats.SetCriticalChance(value);
+        }
+
+        public float CriticalMultiplier
+        {
+            get => m_CommonStats.CriticalMultiplier;
+            set => m_CommonStats.SetCriticalMultiplier(value);
+        }
+
+        public float BossDamageMultiplier
+        {
+            get => m_CommonStats.BossDamageMultiplier;
+            set => m_CommonStats.SetBossDamageMultiplier(value);
+        }
+
+        public float SkillEffectMultiplier
+        {
+            get => m_CommonStats.SkillEffectMultiplier;
+            set => m_CommonStats.SetSkillEffectMultiplier(value);
+        }
 
         public bool IsFullHealth => m_CommonStats.IsFullHealth;
         public bool IsFullShield => m_CommonStats.IsFullShield;
@@ -49,14 +203,21 @@ namespace SkyDragonHunter.Gameplay
         private CommonStats m_CommonStats = new CommonStats();
 
         // 이벤트 (Events)
+        private event Action<BigNum> m_MaxDamageChangedEvent;
+        private event Action<BigNum> m_DamageChangedEvent;
+        private event Action<BigNum> m_MaxHealthChangedEvent;
+        private event Action<BigNum> m_HealthChangedEvent;
+        private event Action<BigNum> m_MaxShieldChangedEvent;
+        private event Action<BigNum> m_ShieldChangedEvent;
+        private event Action<BigNum> m_MaxArmorChangedEvent;
+        private event Action<BigNum> m_ArmorChangedEvent;
+        private event Action<BigNum> m_MaxResilientChangedEvent;
+        private event Action<BigNum> m_ResilientChangedEvent;
+
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
             Init();
-        }
-
-        private void Start()
-        {
         }
 
         private void Update()
@@ -74,8 +235,42 @@ namespace SkyDragonHunter.Gameplay
         public void ResetArmor() => m_CommonStats.ResetArmor();
         public void ResetResilient() => m_CommonStats.ResetResilient();
 
-        // Private 메서드
+        public void AddChangedEvent(StatusChangedEventType type, Action<BigNum> action)
+        {
+            switch (type)
+            {
+                case StatusChangedEventType.MaxDamage: m_MaxDamageChangedEvent += action; break;
+                case StatusChangedEventType.Damage: m_DamageChangedEvent += action; break;
+                case StatusChangedEventType.MaxHealth: m_MaxHealthChangedEvent += action; break;
+                case StatusChangedEventType.Health: m_HealthChangedEvent += action; break;
+                case StatusChangedEventType.MaxShield: m_MaxShieldChangedEvent += action; break;
+                case StatusChangedEventType.Shield: m_ShieldChangedEvent += action; break;
+                case StatusChangedEventType.MaxArmor: m_MaxArmorChangedEvent += action; break;
+                case StatusChangedEventType.Armor: m_ArmorChangedEvent += action; break;
+                case StatusChangedEventType.MaxResilient: m_MaxResilientChangedEvent += action; break;
+                case StatusChangedEventType.Resilient: m_ResilientChangedEvent += action; break;
+            }
+        }
 
+        public void RemoveChangedEvent(StatusChangedEventType type, Action<BigNum> action)
+        {
+            switch (type)
+            {
+                case StatusChangedEventType.MaxDamage: m_MaxDamageChangedEvent -= action; break;
+                case StatusChangedEventType.Damage: m_DamageChangedEvent -= action; break;
+                case StatusChangedEventType.MaxHealth: m_MaxHealthChangedEvent -= action; break;
+                case StatusChangedEventType.Health: m_HealthChangedEvent -= action; break;
+                case StatusChangedEventType.MaxShield: m_MaxShieldChangedEvent -= action; break;
+                case StatusChangedEventType.Shield: m_ShieldChangedEvent -= action; break;
+                case StatusChangedEventType.MaxArmor: m_MaxArmorChangedEvent -= action; break;
+                case StatusChangedEventType.Armor: m_ArmorChangedEvent -= action; break;
+                case StatusChangedEventType.MaxResilient: m_MaxResilientChangedEvent -= action; break;
+                case StatusChangedEventType.Resilient: m_ResilientChangedEvent -= action; break;
+            }
+        }
+
+
+        // Private 메서드
 #if UNITY_EDITOR
         public void UpdateParams()
         {

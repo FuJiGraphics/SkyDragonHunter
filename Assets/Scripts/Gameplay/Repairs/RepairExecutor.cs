@@ -12,7 +12,7 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         [Tooltip("수리공이 실드를 다시 채워주는 시간 간격")]
-        [SerializeField] private readonly float m_ShieldDuration = 4f;
+        [SerializeField] private float m_ShieldDuration = 8f;
 
         private RepairDummy m_CurrentEquipRepairInstance = null;
 
@@ -39,6 +39,11 @@ namespace SkyDragonHunter.Gameplay {
             {
                 m_Status = GetComponent<CharacterStatus>();
             }
+        }
+
+        private void Update()
+        {
+            Execute();
         }
 
         private void Start()
@@ -146,13 +151,13 @@ namespace SkyDragonHunter.Gameplay {
         }
         private IEnumerator CoShield()
         {
+            yield return new WaitForSeconds(m_ShieldDuration);
             if (m_CurrentEquipRepairInstance == null)
             {
                 m_Status.MaxShield = 0;
                 m_Status.ResetShield();
                 yield break;
             }
-            yield return new WaitForSeconds(m_ShieldDuration);
             m_Status.MaxShield = m_Status.MaxHealth * new BigNum(m_CurrentEquipRepairInstance.GetData().RepShield);
             m_Status.ResetShield();
             m_ShieldCoroutine = null;

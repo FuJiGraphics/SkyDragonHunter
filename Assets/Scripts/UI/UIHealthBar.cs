@@ -12,7 +12,7 @@ namespace SkyDragonHunter.UI {
         // 필드 (Fields)
         public BigNum maxValue;
         public BigNum currentValue;
-        private Slider m_Slider;
+        [SerializeField] Slider m_Slider;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -23,7 +23,10 @@ namespace SkyDragonHunter.UI {
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            m_Slider = GetComponentInChildren<Slider>();
+            if (m_Slider == null)
+            {
+                m_Slider = GetComponentInChildren<Slider>();
+            }
             ResetValue();
         }
 
@@ -64,7 +67,7 @@ namespace SkyDragonHunter.UI {
             }
         }
 
-        private void UpdateSlider()
+        public void UpdateSlider()
         {
             if (m_Slider == null || maxValue <= 0) 
                 return;

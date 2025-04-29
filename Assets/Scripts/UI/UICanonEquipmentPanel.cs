@@ -45,17 +45,12 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private UICanonInfoPanel m_UiCanonInfoPanel;
 
         private List<GameObject> m_CanonPickNodeObjects;
-        private ClickedCanonInfo m_ClickedCanonInfo;
+        private ClickedCanonInfo m_ClickedCanonInfo = new();
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
-        {
-            m_ClickedCanonInfo = new();
-        }
-
         private void OnEnable()
         {
             Init();
