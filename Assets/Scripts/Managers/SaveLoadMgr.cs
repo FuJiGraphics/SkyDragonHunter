@@ -53,7 +53,7 @@ namespace SkyDragonHunter.Managers
         {
             if(saveDataTypes == null ||  saveDataTypes.Length == 0)
             {
-                Debug.LogError($"Update SaveFile Failed : SaveDataType inavailable");
+                Debug.LogError($"Update SaveFile Failed : SaveDataType unavailable");
                 return;
             }
 
@@ -65,6 +65,25 @@ namespace SkyDragonHunter.Managers
 
                 GameData.UpdateData(saveDataType);
                 Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
+            }
+        }
+
+        public static void ApplySavedData(params SaveDataTypes[] saveDataTypes)
+        {
+            if (saveDataTypes == null || saveDataTypes.Length == 0)
+            {
+                Debug.LogError($"Apply Saved File Failed : SaveDataType unavailable");
+                return;
+            }
+
+            var processed = new HashSet<SaveDataTypes>();
+            foreach (var saveDataType in saveDataTypes)
+            {
+                if (!processed.Add(saveDataType)) // returns false on duplication
+                    continue;
+
+                GameData.ApplySavedData(saveDataType);
+                Debug.Log($"Saved Data type [{saveDataType}] applied to game successfully");
             }
         }
 
@@ -188,7 +207,7 @@ namespace SkyDragonHunter.Managers
             LocalSettingData.fpsSetting = 60;
             LocalSettingData.isVibrationEnabled = true;
             SaveLocalSettings();
-        }
+        }        
     } // Scope by class SaveLoadMgr
 
 } // namespace Root

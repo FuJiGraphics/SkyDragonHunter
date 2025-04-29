@@ -23,6 +23,10 @@ namespace SkyDragonHunter {
         {
 
         }
+        public void ApplySavedData()
+        {
+
+        }
     } // Scope by class SavedAirshipData
 
 } // namespace Root

@@ -13,6 +13,7 @@ namespace SkyDragonHunter.SaveLoad
         public abstract GameSaveData VersionUp();
         public abstract void Initialize();
         public abstract void UpdateData(SaveDataTypes saveDataType);
+        public abstract void ApplySavedData(SaveDataTypes saveDataType);
     } // Scope by class SaveData
 
     public class GameSaveDataV0 : GameSaveData
@@ -50,7 +51,6 @@ namespace SkyDragonHunter.SaveLoad
             savedDungeonData.InitData();
             savedArtifactData.InitData();
             savedUpgradeCounts.InitData();
-
             savedQuestProgresses.InitData();
         }
 
@@ -90,6 +90,46 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.QuestProgress:
                     savedQuestProgresses.UpdateData();
+                    break;
+            }
+        }
+
+        public override void ApplySavedData(SaveDataTypes saveDataType)
+        {
+            switch (saveDataType)
+            {
+                case SaveDataTypes.Account:
+                    savedAccountData.ApplySavedData();
+                    break;
+                case SaveDataTypes.Stage:
+                    savedStageData.ApplySavedData();
+                    break;
+                case SaveDataTypes.Airship:
+                    savedAirshipData.ApplySavedData();
+                    break;
+                case SaveDataTypes.Cannon:
+
+                    break;
+                case SaveDataTypes.Repairer:
+
+                    break;
+                case SaveDataTypes.Item:
+
+                    break;
+                case SaveDataTypes.Crew:
+
+                    break;
+                case SaveDataTypes.Dungeon:
+
+                    break;
+                case SaveDataTypes.Artifact:
+
+                    break;
+                case SaveDataTypes.UpgradeCount:
+                    savedUpgradeCounts.ApplySavedData();
+                    break;
+                case SaveDataTypes.QuestProgress:
+                    savedQuestProgresses.ApplySavedData();
                     break;
             }
         }

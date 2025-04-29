@@ -44,15 +44,16 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateData()
         {
-            var tempUserData = GameMgr.TempUserData;
             userNickName = TempUserData.s_Nickname;
-            // TODO:
-            Debug.Log($"nickname = {tempUserData.nickname}, s_nickname = {TempUserData.s_Nickname}");
-            // ~TODO
-
             crystalLevel = TempUserData.s_CrystalLevelID;
+            lastOnlineTime = DateTime.UtcNow;
+        }
 
-
+        public void ApplySavedData()
+        {
+            TempUserData.s_Nickname = userNickName;
+            TempUserData.s_CrystalLevelID = crystalLevel;
+            
         }
 
     } // Scope by class SavedAccountData

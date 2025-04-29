@@ -34,6 +34,10 @@ namespace SkyDragonHunter.SaveLoad
         {
 
         }
+        public void ApplySavedData()
+        {
+
+        }
     } // Scope by class SavedDungeonData
 
 } // namespace Root

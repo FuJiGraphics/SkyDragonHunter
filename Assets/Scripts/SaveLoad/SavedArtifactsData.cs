@@ -25,5 +25,9 @@ namespace SkyDragonHunter.SaveLoad
         {
 
         }
+        public void ApplySavedData()
+        {
+
+        }
     } // Scope by class SavedArtifactsData
 } // namespace Root

@@ -5,7 +5,7 @@ using SkyDragonHunter.Tables;
 using System;
 using System.Collections.Generic;
 
-namespace SkyDragonHunter.SaveLoad 
+namespace SkyDragonHunter.SaveLoad
 {
     public class SavedItem
     {
@@ -33,6 +33,10 @@ namespace SkyDragonHunter.SaveLoad
             }
         }
         public void UpdateData()
+        {
+
+        }
+        public void ApplySavedData()
         {
 
         }

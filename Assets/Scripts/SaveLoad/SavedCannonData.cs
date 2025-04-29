@@ -44,6 +44,10 @@ namespace SkyDragonHunter.SaveLoad
         {
 
         }
+        public void ApplySavedData()
+        {
+
+        }
     } // Scope by class SavedCanonData
 
 } // namespace Root

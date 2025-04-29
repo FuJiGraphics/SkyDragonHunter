@@ -1,13 +1,8 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace SkyDragonHunter.SaveLoad
 {
