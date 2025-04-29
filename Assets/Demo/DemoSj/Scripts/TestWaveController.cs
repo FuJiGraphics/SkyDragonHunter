@@ -3,6 +3,7 @@ using SkyDragonHunter.Game;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace SkyDragonHunter
         public int CurrentTriedMissionLevel => currentMissionLevel;
         private float oldAllSpeed;
         private float currentWaveTime;
+        private float currentSpawnTime;
         private float inpiniteModSpawnDelay = 3;
         private float distance;
         private bool isStopped;
@@ -71,10 +73,13 @@ namespace SkyDragonHunter
         private Coroutine coroutine;
         private Dictionary<Image, Color> waveSliderOriginalColors = new Dictionary<Image, Color>();
         private Dictionary<Image, Color> bossSliderOriginalColors = new Dictionary<Image, Color>();
+        private StageData stageData;
+        private float waveSpawnDistance;
+        private float waveDuration;
 
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
-        public bool isRewardSet { get; private set; } = false;
+        public bool isBossSpawn = false;
         public int LastTriedZoneLevel => lastTriedZonelLevel;
         public int LastTriedMissionLevel => lastTriedMissionLevel;
 
@@ -124,6 +129,9 @@ namespace SkyDragonHunter
             SpwanAreaPositionSet();
             CacheWaveSliderColors();
             CacheBossSliderColors();
+            stageData = DataTableMgr.StageTable.Get(currentMissionLevel, currentZonelLevel);
+            waveSpawnDistance = stageData.WaveDistance;
+            waveDuration = stageData.WaveLength;
             if (currentMissionLevel >= 1 && currentZonelLevel > 1)
             {
                 OnGoToLoadCurrentWave();
@@ -167,6 +175,7 @@ namespace SkyDragonHunter
                 if (isInfiniteMode)
                 {
                     isInfiniteMode = false;
+                    waveSlider.gameObject.SetActive(false);
                     OnSetLastTriedtWave();
                 }
                 else
@@ -217,33 +226,37 @@ namespace SkyDragonHunter
 
         private void NormalWaveUpdate()
         {
-            if (!isStopped && changeSuccess)
+            if (!isStopped && changeSuccess && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 currentWaveTime += Time.deltaTime * oldAllSpeed;
+                currentSpawnTime += Time.deltaTime * oldAllSpeed;
                 waveSlider.value = currentWaveTime;
             }
 
-            if (currentWaveTime > 2f && currentWaveTime < 4f && !isCanSpawn)
+            if (!isCanSpawn && currentWaveTime < waveDuration && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 isCanSpawn = true;
-            }
-            else if (currentWaveTime > 7f && currentWaveTime < 8f && !isCanSpawn)
-            {
-                isCanSpawn = true;
+                currentSpawnTime = 0;
             }
 
-            if (currentWaveTime >= 1f && currentWaveTime <= 2f && isCanSpawn
-                || currentWaveTime >= 6f && currentWaveTime <= 7f && isCanSpawn)
+            if (isCanSpawn && currentSpawnTime >= waveSpawnDistance && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 OnSpawnMonster();
             }
 
-            if (currentWaveTime >= 10f && isCanSpawn)
+
+            if (!isBossSpawn && currentWaveTime >= waveDuration && isCanSpawn && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 OnSpawnBoss();
+                isBossSpawn = true;
             }
 
-            if (currentWaveTime >= 10f && (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
+            if (isBossSpawn && currentWaveTime > waveDuration && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 OnActiveClearPanel(); // 클리어 패널 활성화
                 OnSaveLastClearWave();
@@ -265,7 +278,10 @@ namespace SkyDragonHunter
                     currentOpenPanel = 0f;
                     lastTriedMissionLevel = currentMissionLevel;
                     lastTriedZonelLevel = currentZonelLevel;
-                   
+                    stageData = DataTableMgr.StageTable.Get(currentMissionLevel, currentZonelLevel);
+                    waveSpawnDistance = stageData.WaveDistance;
+                    waveDuration = stageData.WaveLength;
+                    waveSlider.maxValue = waveDuration;
                     OnChangeBackGround(currentMissionLevel - 1);
                     // TODO: 데이터 세이브
                     AccountMgr.SaveUserData();
@@ -298,6 +314,7 @@ namespace SkyDragonHunter
             OnClearMonster();
             isCanSpawn = true;
             currentWaveTime = 0f;
+            currentSpawnTime = 0f;
             currentMissionLevel = lastTriedMissionLevel;
             currentZonelLevel = lastTriedZonelLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
@@ -309,6 +326,7 @@ namespace SkyDragonHunter
             OnClearMonster();
             isCanSpawn = true;
             currentWaveTime = 0f;
+            currentSpawnTime = 0f;
             currentMissionLevel = stageInfo.missionLevel;
             currentZonelLevel = stageInfo.zoneLevel;
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
@@ -405,8 +423,7 @@ namespace SkyDragonHunter
             //}
 
             // TODO: LJH
-            var currentStageData = DataTableMgr.StageTable.Get(currentMissionLevel, currentZonelLevel);
-            var currentWaveData = DataTableMgr.WaveTable.Get(currentStageData.WaveTableID);
+            var currentWaveData = DataTableMgr.WaveTable.Get(stageData.WaveTableID);
 
             var waveSpawnCount = currentWaveData.MonsterIDs.Length;
             if (waveSpawnCount != currentWaveData.MonsterCounts.Length)
@@ -419,7 +436,7 @@ namespace SkyDragonHunter
                     var spawned = Instantiate(prefabLoader.GetMonsterAnimController(currentWaveData.MonsterIDs[i]), GetRandomSpawnAreaInPosition(), Quaternion.identity);
                     spawned.name = $"{DataTableMgr.MonsterTable.Get(currentWaveData.MonsterIDs[i]).Name}{instanceNo++}";
                     var bt = spawned.GetComponent<NewMonsterControllerBT>();
-                    bt.SetDataFromTable(currentWaveData.MonsterIDs[i], currentStageData.MonsterMultiplierHP, currentStageData.MonsterMultiplierATK);
+                    bt.SetDataFromTable(currentWaveData.MonsterIDs[i], stageData.MonsterMultiplierHP, stageData.MonsterMultiplierATK);
 
                     var destructableEvent = spawned.AddComponent<DestructableEvent>();
                     destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
@@ -515,13 +532,13 @@ namespace SkyDragonHunter
         private void OnActiveClearPanel()
         {
             clearPanel.SetActive(true);
-            isRewardSet = true;
         }
 
         private void OnUnActiveClearPanel()
         {
             clearPanel.SetActive(false);
-            isRewardSet = false;
+            isBossSpawn = false;
+            currentSpawnTime = 0;
             // ItemMgr.Reset();
         }
 
@@ -690,7 +707,6 @@ namespace SkyDragonHunter
         {
             if (ctrl == null) yield break;
             changeSuccess = false;
-
             Color from = new Color(1, 1, 1, 1); // 밝은 상태 (흰색)
             Color to = new Color(0, 0, 0, 1);   // 검정색
             float duration = 1.5f;
