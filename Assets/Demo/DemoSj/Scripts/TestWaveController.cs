@@ -238,13 +238,13 @@ namespace SkyDragonHunter
                 (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 isCanSpawn = true;
-                currentSpawnTime = 0;
             }
 
             if (isCanSpawn && currentSpawnTime >= waveSpawnDistance && 
                 (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 OnSpawnMonster();
+                currentSpawnTime = 0;
             }
 
 
