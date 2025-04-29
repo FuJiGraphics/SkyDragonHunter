@@ -6,8 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Test {
-
+namespace SkyDragonHunter.Test 
+{
     public struct SaveEquipStorage
     {
         public int slotIndex;
@@ -16,7 +16,7 @@ namespace SkyDragonHunter.Test {
 
     [System.Serializable]
     public struct SaveItemStorage
-    {        
+    { 
         public int count;
         public ItemType itemType;
     }

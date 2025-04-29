@@ -12,18 +12,25 @@ namespace SkyDragonHunter.SaveLoad
         Achievements,
     }
 
-    public class SavedQuestProgresses
+    public class SavedQuest
     {
         QuestType questType;
         public int questID;
         public int accumulatedProcess;
         public bool isCompleted;
         public bool isRewarded;
+    }
+
+    public class SavedQuestProgresses
+    {
+        public Dictionary<QuestType, Dictionary<int, SavedQuest>> questsDict;
 
         public void InitData()
         {
+            questsDict = new Dictionary<QuestType, Dictionary<int, SavedQuest>>();
 
         }
+
         public void UpdateData()
         {
 

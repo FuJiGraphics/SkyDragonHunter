@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,8 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<string, List<GameObject>> m_LoadObjects;
 
         // 속성 (Properties)
+        public static SkyDragonHunter.Test.TempUserData TempUserData => FindObject<TempUserData>("TempUserData");
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // Public 메서드

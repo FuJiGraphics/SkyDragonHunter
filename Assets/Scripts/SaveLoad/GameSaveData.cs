@@ -25,9 +25,9 @@ namespace SkyDragonHunter.SaveLoad
         public SavedCannonData savedCannonData;
         public SavedRepairerData savedRepairerData;
         public SavedItemData savedItemData;
-        public List<SavedCrewData> savedCrewList;
-        public List<SavedDungeonData> savedDungeonDataList;
-        public Dictionary<int, SavedArtifactsData> savedArtifactDict;
+        public SavedCrewData savedCrewData;
+        public SavedDungeonData savedDungeonData;
+        public SavedArtifactsData savedArtifactData;
         public SavedUpgradeCounts savedUpgradeCounts;
 
         // Temp SaveDatas
@@ -46,17 +46,11 @@ namespace SkyDragonHunter.SaveLoad
             savedCannonData.InitData();
             savedRepairerData.InitData();
             savedItemData.InitData();
-
-            savedCrewList = new List<SavedCrewData>();
-            //savedCrewList[0].InitData();
-
-            savedDungeonDataList = new List<SavedDungeonData>();
-            //savedDungeonDataList[0].InitData();
-
-            savedArtifactDict = new Dictionary<int, SavedArtifactsData>();
-            //savedArtifactDict[0].InitData();
-
+            savedCrewData.InitData();
+            savedDungeonData.InitData();
+            savedArtifactData.InitData();
             savedUpgradeCounts.InitData();
+
             savedQuestProgresses.InitData();
         }
 

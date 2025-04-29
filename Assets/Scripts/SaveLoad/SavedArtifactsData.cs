@@ -4,15 +4,23 @@ using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 
 {
-    public class SavedArtifactsData : MonoBehaviour
+    public class SavedArtifact
     {
         int eigenID;
         int artifactID;
+    }
+
+    public class SavedArtifactsData : MonoBehaviour
+    {
+        public Dictionary<int, SavedArtifact> artifactDict;
 
         public void InitData()
         {
+            artifactDict = new Dictionary<int, SavedArtifact>();
+
 
         }
+
         public void UpdateData()
         {
 

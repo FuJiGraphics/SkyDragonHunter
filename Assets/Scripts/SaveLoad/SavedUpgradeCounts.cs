@@ -13,7 +13,10 @@ namespace SkyDragonHunter.SaveLoad {
 
         public void InitData()
         {
-
+            atkUpgradedCounts = 0;
+            hpUpgradedCounts = 0;
+            critRateUpgradedCounts = 0;
+            critDmgUpgradedCounts = 0;
         }
         public void UpdateData()
         {

@@ -64,6 +64,7 @@ namespace SkyDragonHunter.Managers
                     continue;
 
                 GameData.UpdateData(saveDataType);
+                Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
             }
         }
 

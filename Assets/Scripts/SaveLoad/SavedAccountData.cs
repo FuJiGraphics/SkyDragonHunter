@@ -1,7 +1,6 @@
-using JetBrains.Annotations;
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Test;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 
@@ -42,10 +41,20 @@ namespace SkyDragonHunter.SaveLoad
             critRateLevel = 0;
             critDmgLevel = 0;
         }
+
         public void UpdateData()
         {
+            var tempUserData = GameMgr.TempUserData;
+            userNickName = TempUserData.s_Nickname;
+            // TODO:
+            Debug.Log($"nickname = {tempUserData.nickname}, s_nickname = {TempUserData.s_Nickname}");
+            // ~TODO
+
+            crystalLevel = TempUserData.s_CrystalLevelID;
+
 
         }
+
     } // Scope by class SavedAccountData
 
 } // namespace Root
