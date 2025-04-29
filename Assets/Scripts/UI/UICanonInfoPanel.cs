@@ -1,15 +1,10 @@
-using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Structs;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -129,11 +124,11 @@ namespace SkyDragonHunter.UI {
             DirtyCanonSpecialEffectStats(canonDummy);
         }
 
-        private void OnCombineButton(CanonDummy canonDummy, int currentCount, int maxCount)
+        private void OnCombineButton(CanonDummy canonDummy, int maxCount)
         {
-            if (currentCount < maxCount)
+            if (canonDummy.Count < maxCount)
             {
-                DrawableMgr.Dialog("Alert", $"합성 재료가 부족합니다. {maxCount - currentCount}");
+                DrawableMgr.Dialog("Alert", $"합성 재료가 부족합니다. {maxCount - canonDummy.Count}");
                 return;
             }
 
@@ -161,6 +156,7 @@ namespace SkyDragonHunter.UI {
             {
                 m_CanonTitle.text = canonProvider.Name;
                 m_CanonIcon.sprite = canonProvider.Icon;
+                m_CanonIcon.color = canonProvider.Color;
             }
         }
 
@@ -208,10 +204,9 @@ namespace SkyDragonHunter.UI {
 
         private void DirtyCanonCombineButton(CanonDummy canonDummy)
         {
-            int currCount = canonDummy.Count;
             int maxCount = 5;
             m_CanonCombineButton.onClick.RemoveAllListeners();
-            m_CanonCombineButton.onClick.AddListener(() => { OnCombineButton(canonDummy, currCount, maxCount); });
+            m_CanonCombineButton.onClick.AddListener(() => { OnCombineButton(canonDummy, maxCount); });
         }
 
         private void DirtyCanonLevelUpButton(CanonDummy canonDummy)

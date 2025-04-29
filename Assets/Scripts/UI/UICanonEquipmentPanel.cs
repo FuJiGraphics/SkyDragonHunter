@@ -109,6 +109,7 @@ namespace SkyDragonHunter.UI {
                 if (canonInstance.TryGetComponent<ICanonInfoProvider>(out var provider))
                 {
                     canonNodeSlot.CanonIcon.sprite = provider.Icon;
+                    canonNodeSlot.CanonIcon.color = provider.Color;
                     canonNodeSlot.CanonDummy = canonDummy;
                     canonNodeSlot.ShowIdleIconImage();
                     canonNodeSlot.UIUpdateUnlockState();

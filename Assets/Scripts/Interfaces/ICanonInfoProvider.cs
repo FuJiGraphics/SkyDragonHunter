@@ -7,6 +7,7 @@ namespace SkyDragonHunter.Interfaces
     {
         string Name { get; }
         Sprite Icon { get; }
+        UnityEngine.Color Color { get; }
 
     } // Scope by interface ICanonInfoProvider
 } // namespace SkyDragonHunter.Interfaces

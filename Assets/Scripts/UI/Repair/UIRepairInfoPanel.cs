@@ -123,11 +123,11 @@ namespace SkyDragonHunter.UI {
             DirtyRepairSpecialEffectStats(RepairDummy);
         }
 
-        private void OnCombineButton(RepairDummy RepairDummy, int currentCount, int maxCount)
+        private void OnCombineButton(RepairDummy RepairDummy, int maxCount)
         {
-            if (currentCount < maxCount)
+            if (RepairDummy.Count < maxCount)
             {
-                DrawableMgr.Dialog("Alert", $"합성 재료가 부족합니다. {maxCount - currentCount}");
+                DrawableMgr.Dialog("Alert", $"합성 재료가 부족합니다. {maxCount - RepairDummy.Count}");
                 return;
             }
 
@@ -199,7 +199,7 @@ namespace SkyDragonHunter.UI {
             int currCount = RepairDummy.Count;
             int maxCount = 5;
             m_RepairCombineButton.onClick.RemoveAllListeners();
-            m_RepairCombineButton.onClick.AddListener(() => { OnCombineButton(RepairDummy, currCount, maxCount); });
+            m_RepairCombineButton.onClick.AddListener(() => { OnCombineButton(RepairDummy, maxCount); });
         }
 
         private void DirtyRepairLevelUpButton(RepairDummy RepairDummy)

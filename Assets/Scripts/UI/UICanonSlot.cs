@@ -47,13 +47,11 @@ namespace SkyDragonHunter.UI {
             if (CanonDummy != null && CanonDummy.IsUnlock)
             {
                 canonLockIcon.gameObject.SetActive(false);
-                canonIcon.color = Color.white;
                 GetComponent<Image>().color = Color.white;
             }
             else
             {
                 canonLockIcon.gameObject.SetActive(true);
-                canonIcon.color = Color.gray;
                 GetComponent<Image>().color = Color.gray;
             }
         }
