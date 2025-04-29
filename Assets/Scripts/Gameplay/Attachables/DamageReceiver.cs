@@ -24,15 +24,6 @@ namespace SkyDragonHunter {
         // Public 메서드
         public void TakeDamage(GameObject attacker, BigNum damage)
         {
-            if (TryGetComponent<RepairExecutor>(out var repairExecutor))
-            {
-                if (repairExecutor.IsActiveDivineShield)
-                {
-                    repairExecutor.IsActiveDivineShield = false;
-                    return;
-                }
-            }
-
             //// TODO: LJH
             if (m_Stats.Health <= 0)
                 return;

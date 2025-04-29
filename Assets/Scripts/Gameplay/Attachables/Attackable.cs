@@ -25,6 +25,16 @@ namespace SkyDragonHunter.Gameplay {
         public void OnAttack(GameObject attacker, Attack attack)
         {
             //Debug.Log($"attacker: {attacker} -> defender: {gameObject}");
+            if (TryGetComponent<RepairExecutor>(out var repairExecutor))
+            {
+                if (repairExecutor.IsActiveDivineShield)
+                {
+                    repairExecutor.IsActiveDivineShield = false;
+                    DrawableMgr.Text(transform.position, "Immue!" + attack.damage.ToUnit(), Color.black);
+
+                    return;
+                }
+            }
 
             if (attack.isCritical)
             {
@@ -32,7 +42,7 @@ namespace SkyDragonHunter.Gameplay {
             }
             else
             {
-                DrawableMgr.Text(transform.position,  attack.damage.ToUnit());
+                DrawableMgr.Text(transform.position, attack.damage.ToUnit());
             }
 
             m_DamageReceiver.TakeDamage(attacker, attack.damage);
