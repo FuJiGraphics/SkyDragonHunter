@@ -6,11 +6,11 @@ namespace SkyDragonHunter.SaveLoad
 {
     public class SavedArtifact
     {
-        int eigenID;
+        int instanceID;
         int artifactID;
     }
 
-    public class SavedArtifactsData : MonoBehaviour
+    public class SavedArtifactsData
     {
         public Dictionary<int, SavedArtifact> artifactDict;
 

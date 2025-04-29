@@ -37,6 +37,7 @@ namespace SkyDragonHunter.Managers
             GameMgr.LoadedRegisterObjects();
             AccountMgr.LateInit();
             AccountMgr.LoadUserData(scene.name);
+            SaveLoadMgr.Init();
         }
 
         private static void OnSceneUnloaded(Scene scene)

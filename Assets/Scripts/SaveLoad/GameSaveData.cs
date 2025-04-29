@@ -1,9 +1,7 @@
 using SkyDragonHunter.Database;
 using SkyDragonHunter.Managers;
-using SkyDragonHunter.Tables;
+using SkyDragonHunter.UI;
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 
 {    
@@ -37,11 +35,19 @@ namespace SkyDragonHunter.SaveLoad
         public GameSaveDataV0()
         {
             MajorVersion = 0;
-        }
+            savedAccountData = new SavedAccountData();
+            savedStageData = new SavedStageData();
+            savedAirshipData = new SavedAirshipData();
+            savedCannonData = new SavedCannonData();
+            savedRepairerData = new SavedRepairerData();
+            savedItemData = new SavedItemData();
+            savedCrewData = new SavedCrewData();
+            savedDungeonData = new SavedDungeonData();
+            savedArtifactData = new SavedArtifactsData();
+            savedUpgradeCounts = new SavedUpgradeCounts();
+            savedQuestProgresses = new SavedQuestProgresses();
 
-        public override void Initialize()
-        {
-            savedAirshipData.InitData();
+            savedAccountData.InitData();
             savedStageData.InitData();
             savedAirshipData.InitData();
             savedCannonData.InitData();
@@ -53,6 +59,11 @@ namespace SkyDragonHunter.SaveLoad
             savedUpgradeCounts.InitData();
             savedQuestProgresses.InitData();
         }
+
+        public override void Initialize()
+        {
+            
+        }        
 
         public override void UpdateData(SaveDataTypes saveDataType)
         {
@@ -74,7 +85,7 @@ namespace SkyDragonHunter.SaveLoad
 
                     break;
                 case SaveDataTypes.Item:
-
+                    savedItemData.UpdateData();
                     break;
                 case SaveDataTypes.Crew:
 
@@ -114,7 +125,7 @@ namespace SkyDragonHunter.SaveLoad
 
                     break;
                 case SaveDataTypes.Item:
-
+                    savedItemData.ApplySavedData();
                     break;
                 case SaveDataTypes.Crew:
 

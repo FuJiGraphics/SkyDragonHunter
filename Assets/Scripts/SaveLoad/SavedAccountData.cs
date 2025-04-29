@@ -52,8 +52,7 @@ namespace SkyDragonHunter.SaveLoad
         public void ApplySavedData()
         {
             TempUserData.s_Nickname = userNickName;
-            TempUserData.s_CrystalLevelID = crystalLevel;
-            
+            TempUserData.s_CrystalLevelID = crystalLevel;            
         }
 
     } // Scope by class SavedAccountData

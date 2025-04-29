@@ -7,12 +7,12 @@ namespace SkyDragonHunter.SaveLoad
 {
     public class SavedDungeon
     {
-        public DungeonType DungeonType;
+        public DungeonType dungeonType;
         public int clearedStage;
         public int clearedCount;
     }
 
-    public class SavedDungeonData : MonoBehaviour
+    public class SavedDungeonData
     {
         public List<SavedDungeon> dungeons;
 
@@ -23,7 +23,7 @@ namespace SkyDragonHunter.SaveLoad
             for (int i = 0;  i < dungeons.Count; ++i)
             {
                 var savedDungeon = new SavedDungeon();
-                savedDungeon.DungeonType = (DungeonType)i;
+                savedDungeon.dungeonType = (DungeonType)i;
                 savedDungeon.clearedStage = 0;
                 savedDungeon.clearedCount = 0;
             }

@@ -46,12 +46,23 @@ namespace SkyDragonHunter.Managers
 
         static SaveLoadMgr()
         {
-            Init();
+            jsonSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                TypeNameHandling = TypeNameHandling.All,
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+            };
+
+            GameData = new GameSaveDataVC();
+            LocalSettingData = new LocalSettingSaveDataVC();
         }
         // Public Methods
+        public static void UpdateSaveData()
+            => UpdateSaveData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
+
         public static void UpdateSaveData(params SaveDataTypes[] saveDataTypes)
         {
-            if(saveDataTypes == null ||  saveDataTypes.Length == 0)
+            if (saveDataTypes == null ||  saveDataTypes.Length == 0)
             {
                 Debug.LogError($"Update SaveFile Failed : SaveDataType unavailable");
                 return;
@@ -67,6 +78,8 @@ namespace SkyDragonHunter.Managers
                 Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
             }
         }
+        public static void ApplySavedData()
+            => ApplySavedData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
 
         public static void ApplySavedData(params SaveDataTypes[] saveDataTypes)
         {
@@ -114,16 +127,16 @@ namespace SkyDragonHunter.Managers
             var path = Path.Combine(SaveDirectory , SaveFileName[0]);
             if(!File.Exists(path))
             {
-                Debug.LogError($"Load Failed : No Game Data");
+                Debug.LogWarning($"Load Failed : No Game Data");
                 return false;
             }
 
             var json = File.ReadAllText(path);
-            var gameData = JsonConvert.DeserializeObject<GameSaveData>(json);
+            var gameData = JsonConvert.DeserializeObject<GameSaveDataVC>(json, jsonSettings);
 
             while (gameData.MajorVersion < SaveDataMajorVersion)
             {
-                gameData = gameData.VersionUp();
+                gameData = gameData.VersionUp() as GameSaveDataVC;
             }
             GameData = gameData as GameSaveDataVC;
 
@@ -156,31 +169,24 @@ namespace SkyDragonHunter.Managers
             var path = Path.Combine(SaveDirectory, SaveFileName[1]);
             if (!File.Exists(path))
             {
-                Debug.LogError($"Load Failed : No Local Settings Data");
+                Debug.LogWarning($"Load Failed : No Local Settings Data");
                 return false;
             }
 
             var json = File.ReadAllText(path);
-            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveData>(json);
+            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveDataVC>(json);
 
             while (localSettingsData.MajorVersion < SaveDataMajorVersion)
             {
-                localSettingsData = localSettingsData.VersionUp();
+                localSettingsData = localSettingsData.VersionUp() as LocalSettingSaveDataVC;
             }
             LocalSettingData = localSettingsData as LocalSettingSaveDataVC;
 
             return true;
         }
-
-        // Private Methods
-        private static void Init()
+        
+        public static void Init()
         {
-            jsonSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                TypeNameHandling = TypeNameHandling.All,
-            };
-
             if(!LoadGameData())
             {
                 InitializeGameData();
@@ -192,16 +198,15 @@ namespace SkyDragonHunter.Managers
             }
         }
 
+        // Private Methods
         private static void InitializeGameData()
         {
-            GameData = new GameSaveDataVC();
             GameData.Initialize();
             SaveGameData();
         }
 
         private static void InitializeLocalSettings()
         {
-            LocalSettingData = new LocalSettingSaveDataVC();
             LocalSettingData.sfxVolume = 0.2f;
             LocalSettingData.bgmVolume = 0.2f;
             LocalSettingData.fpsSetting = 60;

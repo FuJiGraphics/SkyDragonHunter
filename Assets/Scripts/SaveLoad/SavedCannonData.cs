@@ -36,8 +36,6 @@ namespace SkyDragonHunter.SaveLoad
                     cannons.Add(cannon);
                 }
             }
-
-
         }
 
         public void UpdateData()

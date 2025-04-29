@@ -10,14 +10,14 @@ namespace SkyDragonHunter {
         public int[] mountedCrewIDs;
         public int equippedCannonID;
         public int equippedRepairerID;
-        public int equippedArtifactHashID; // Hash ID
+        public int equippedArtifactInstanceID; // Hash ID
 
         public void InitData()
         {
             mountedCrewIDs = new int[4];
             equippedCannonID = 0;
             equippedRepairerID = 0;
-            equippedArtifactHashID = 0;
+            equippedArtifactInstanceID = 0;
         }
         public void UpdateData()
         {

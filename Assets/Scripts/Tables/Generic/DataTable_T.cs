@@ -1,5 +1,7 @@
 using CsvHelper;
+using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using SkyDragonHunter.Structs;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,6 +27,30 @@ namespace SkyDragonHunter.Tables.Generic {
             {
                 throw new TypeConverterException(this, memberMapData, text, row.Context, $"Failed to convert '{text}' to int[].", ex);
             }
+        }
+    }
+
+    public class BigNumConverter : ITypeConverter
+    {
+        public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                Debug.LogError($"text unavailable, returning 0");
+                return new BigNum[0];
+            }
+            return new BigNum(text);
+        }
+
+        public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            var target = value as BigNum?;
+            if(target == null)
+            {
+                Debug.LogError($"target cannot be converted to BigNum, returning 0");
+                return "0";
+            }
+            return target.ToString();
         }
     }
 
@@ -57,6 +83,7 @@ namespace SkyDragonHunter.Tables.Generic {
             using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csvReader.Context.TypeConverterCache.AddConverter<int[]>(new IntArrayConverter());
+                csvReader.Context.TypeConverterCache.AddConverter<BigNum>(new BigNumConverter());
                 return csvReader.GetRecords<T>().ToList();
             }
         }

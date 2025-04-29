@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.SaveLoad {
-
+namespace SkyDragonHunter.SaveLoad
+{
     public class SavedUpgradeCounts
     {
         public int atkUpgradedCounts;
