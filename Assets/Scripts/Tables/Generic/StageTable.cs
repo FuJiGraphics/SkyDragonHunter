@@ -23,7 +23,7 @@ namespace SkyDragonHunter.Tables {
         public string MonsterGOLD { get; set; }
         public string MonsterEXP { get; set; }
         public TreasureDropGrade_Temp TreasureDropGrade { get; set; }
-        public float TargetDistance { get; set; }
+        public float WaveLength { get; set; }
         public int ChallengeBossID { get; set; }
         public float BossMultiplierHP { get; set; }
         public float BossMultiplierATK { get; set; }

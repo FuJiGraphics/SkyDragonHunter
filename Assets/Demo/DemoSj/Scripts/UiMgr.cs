@@ -93,20 +93,16 @@ namespace SkyDragonHunter.Test
             else
             {
                 waveRetryButton.SetActive(false);
-                if (!waveControlerScript.bossSlider.gameObject.activeSelf)
-                {
-                    waveSlider.SetActive(true);
-                }
-                else
+                if (waveControlerScript.bossSlider.gameObject.activeSelf)
                 {
                     waveSlider.SetActive(false);
                 }
             }
 
-            if (waveControlerScript.isRewardSet)
-            {
-                SetRewardItmes();
-            }
+            //if (waveControlerScript.isRewardSet)
+            //{
+            //    SetRewardItmes();
+            //}
 
             if (!facilityPanelLevelUpPanel.activeInHierarchy)
             {
@@ -576,7 +572,7 @@ namespace SkyDragonHunter.Test
 
             if (!isHideQuestPanel)
             {
-                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -350f, 0.5f));
+                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -150f, 0.5f));
                 isHideQuestPanel = true;
             }
             else
@@ -588,49 +584,49 @@ namespace SkyDragonHunter.Test
 
 
         // Private 메서드
-        private void SetRewardItmes()
-        {
-            // DropTracker에 기록된 드롭 아이템 종류별 수량을 가져옴
-            var dropDict = RewardMgr.GetRewards();
+        //private void SetRewardItmes()
+        //{
+        //    // DropTracker에 기록된 드롭 아이템 종류별 수량을 가져옴
+        //    var dropDict = RewardMgr.GetRewards();
 
-            int index = 0; // rewardSlots 배열 인덱스용
+        //    int index = 0; // rewardSlots 배열 인덱스용
 
-            // Dictionary의 모든 드롭 데이터를 순회
-            foreach (var kvp in dropDict)
-            {
-                // 슬롯 수를 초과하면 더 이상 표시하지 않음 (예: 슬롯 4개인데 드롭 6개인 경우)
-                if (index >= rewardSlots.Length) break;
+        //    // Dictionary의 모든 드롭 데이터를 순회
+        //    foreach (var kvp in dropDict)
+        //    {
+        //        // 슬롯 수를 초과하면 더 이상 표시하지 않음 (예: 슬롯 4개인데 드롭 6개인 경우)
+        //        if (index >= rewardSlots.Length) break;
 
-                // 현재 표시할 슬롯 오브젝트
-                GameObject slot = rewardSlots[index];
+        //        // 현재 표시할 슬롯 오브젝트
+        //        GameObject slot = rewardSlots[index];
 
-                // 슬롯의 자식 구조에서 "RewardSlotText" 오브젝트를 찾아 텍스트 컴포넌트 참조
-                var typeText = slot.transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
+        //        // 슬롯의 자식 구조에서 "RewardSlotText" 오브젝트를 찾아 텍스트 컴포넌트 참조
+        //        var typeText = slot.transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
 
-                // 슬롯 내부에 있는 또 다른 Image 자식 아래의 "RewardSlotCountText" 텍스트 컴포넌트 참조
-                var countText = slot.transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
+        //        // 슬롯 내부에 있는 또 다른 Image 자식 아래의 "RewardSlotCountText" 텍스트 컴포넌트 참조
+        //        var countText = slot.transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
 
-                // 드롭된 아이템의 타입을 텍스트로 표시 (예: Gold, Potion 등)
-                if (typeText != null) typeText.text = kvp.Key.ToString();
+        //        // 드롭된 아이템의 타입을 텍스트로 표시 (예: Gold, Potion 등)
+        //        if (typeText != null) typeText.text = kvp.Key.ToString();
 
-                // 드롭된 아이템의 수량을 숫자로 표시
-                if (countText != null) countText.text = kvp.Value.ToString();
+        //        // 드롭된 아이템의 수량을 숫자로 표시
+        //        if (countText != null) countText.text = kvp.Value.ToString();
 
-                index++; // 다음 슬롯으로 인덱스 증가
-            }
+        //        index++; // 다음 슬롯으로 인덱스 증가
+        //    }
 
-            // 남은 슬롯이 있을 경우, 빈 문자열로 초기화해서 이전 내용이 안 보이도록 처리
-            for (; index < rewardSlots.Length; index++)
-            {
-                // 남은 슬롯 오브젝트
-                var typeText = rewardSlots[index].transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
-                var countText = rewardSlots[index].transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
+        //    // 남은 슬롯이 있을 경우, 빈 문자열로 초기화해서 이전 내용이 안 보이도록 처리
+        //    for (; index < rewardSlots.Length; index++)
+        //    {
+        //        // 남은 슬롯 오브젝트
+        //        var typeText = rewardSlots[index].transform.Find("Image/RewardSlotText")?.GetComponent<TextMeshProUGUI>();
+        //        var countText = rewardSlots[index].transform.Find("Image/Image/RewardSlotCountText")?.GetComponent<TextMeshProUGUI>();
 
-                // 텍스트를 빈 문자열로 설정하여 보이지 않게 함
-                if (typeText != null) typeText.text = "";
-                if (countText != null) countText.text = "";
-            }
-        }
+        //        // 텍스트를 빈 문자열로 설정하여 보이지 않게 함
+        //        if (typeText != null) typeText.text = "";
+        //        if (countText != null) countText.text = "";
+        //    }
+        //}
         // Others
         private IEnumerator MovePanelX(RectTransform target, float toX, float duration)
         {
