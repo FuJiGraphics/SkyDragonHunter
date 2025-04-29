@@ -442,13 +442,14 @@ namespace SkyDragonHunter
                     destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
                     destructableEvent.destructEvent.AddListener(() =>
                     {
+                        AccountMgr.Coin += stageData.MonsterGOLD;
+
                         var randVal = Random.Range(0, 1f);
                         bool isGenerateDungenTicket = randVal < 0.7f;
                         //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
                         if (isGenerateDungenTicket)
                         {
                             AccountMgr.Ticket += 1;
-                            Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
                         }
                     });
 

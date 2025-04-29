@@ -1,3 +1,4 @@
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 
 namespace SkyDragonHunter.Tables {
@@ -20,8 +21,8 @@ namespace SkyDragonHunter.Tables {
         public float WaveDistance { get; set; }
         public float MonsterMultiplierHP { get; set; }
         public float MonsterMultiplierATK { get; set; }
-        public string MonsterGOLD { get; set; }
-        public string MonsterEXP { get; set; }
+        public BigNum MonsterGOLD { get; set; }
+        public BigNum MonsterEXP { get; set; }
         public TreasureDropGrade_Temp TreasureDropGrade { get; set; }
         public float WaveLength { get; set; }
         public int ChallengeBossID { get; set; }
