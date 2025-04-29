@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 
-{
+{    
     public abstract class GameSaveData
     {
         public int MajorVersion { get; protected set; }

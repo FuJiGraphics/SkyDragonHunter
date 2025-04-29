@@ -32,10 +32,12 @@ namespace SkyDragonHunter.SaveLoad
                 items.Add(savedItem);
             }
         }
+
         public void UpdateData()
         {
 
         }
+
         public void ApplySavedData()
         {
 
