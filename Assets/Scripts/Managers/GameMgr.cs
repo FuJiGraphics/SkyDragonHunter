@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,7 @@ namespace SkyDragonHunter.Managers
             GameMgr.LoadedRegisterObjects();
             AccountMgr.LateInit();
             AccountMgr.LoadUserData(scene.name);
+            SaveLoadMgr.Init();
         }
 
         private static void OnSceneUnloaded(Scene scene)

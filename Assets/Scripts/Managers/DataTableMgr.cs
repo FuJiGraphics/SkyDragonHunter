@@ -65,6 +65,7 @@ namespace SkyDragonHunter.Managers
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
+
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
         {
