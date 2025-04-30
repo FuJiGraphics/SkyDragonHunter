@@ -117,7 +117,7 @@ namespace SkyDragonHunter.UI {
         {
             int resultCount = 1;
 
-            int safeMaxLoopCount = 100;
+            int safeMaxLoopCount = 100000;
             int next = NextID;
             for (int i = 0; i < safeMaxLoopCount; ++i)
             {

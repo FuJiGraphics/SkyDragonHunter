@@ -17,6 +17,7 @@ namespace SkyDragonHunter.Tables {
         public static readonly string Monster = "MonsterTable";
         public static readonly string Boss = "BossTable";
         public static readonly string Artifact = "ArtifactTable";
+        public static readonly string AdditionalStat = "AdditionalStatTable";
         public static readonly string MasterySocket = "MasterySocketTable";
         public static readonly string MasteryNode = "MasteryNodeTable";
         public static readonly string Ailment = "AilmentTable";

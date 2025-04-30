@@ -9,8 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.Test
-{
+namespace SkyDragonHunter.Test {
 
     public class UiMgr : MonoBehaviour
     {

@@ -57,12 +57,27 @@ namespace SkyDragonHunter.Tables.Generic {
         public int ID { get; set; }
     }
 
-    public abstract class DataTable<T> : DataTable where T : DataTableData
+    public abstract class DataTable<T> : DataTable where T : DataTableData, new()
     {
         // 필드 (Fields)
         protected Dictionary<int, T> m_dict = new Dictionary<int, T>();
         
         public T First => m_dict.First().Value;
+        public List<T> Values => m_dict.Values.ToList();
+        public T[] ToArray() => m_dict.Values.ToArray();
+        public T[] ToSortedArray() => new SortedDictionary<int, T>(m_dict).Values.ToArray();
+        public T[] GetRandomElements(Func<T, bool> predicate)
+        {
+            List<T> result = new List<T>();
+            foreach (var element in m_dict)
+            {
+                if (predicate.Invoke(element.Value))
+                {
+                    result.Add(element.Value);
+                }
+            }
+            return result?.ToArray();
+        }
 
         // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]

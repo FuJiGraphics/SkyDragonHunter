@@ -1,6 +1,7 @@
 
 using SkyDragonHunter.Tables;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDraonHunter.Utility {
@@ -9,39 +10,46 @@ namespace SkyDraonHunter.Utility {
     {
         private static readonly string s_ArgError = "[RandomMgr]: Error! Start가 End보다 작아야 합니다.";
         private static readonly string s_ArgNegativeError = "[RandomMgr]: 가중치는 음수가 될 수 없습니다.";
+        private static readonly string s_ArgElementExceptionError = "[RandomMgr]: NullReference!!";
         private static System.Random s_DoubleRandom = new System.Random();
 
-        public static T Range<T>(T[] candidates, float[] weights) 
-            where T : Enum
+        public static T Random<T>(List<T> targetList)
         {
-            if (candidates.Length != weights.Length)
+            if (targetList == null || targetList.Count == 0)
             {
-                Debug.LogError(s_ArgError);
-                throw new ArgumentException(s_ArgError);
+                Debug.LogError(s_ArgElementExceptionError);
+                throw new ArgumentException(s_ArgElementExceptionError);
             }
 
+            int size = targetList.Count;
+            int randIndex = UnityEngine.Random.Range(0, size);
+            return targetList[randIndex];
+        }
+
+        public static T RandomWithWeights<T>(params (T candidate, float weight)[] param)
+        {
             float total = 0f;
-            for (int i = 0; i < weights.Length; i++)
+            for (int i = 0; i < param.Length; i++)
             {
-                if (weights[i] < 0f)
+                if (param[i].weight < 0f)
                 {
                     Debug.LogError(s_ArgNegativeError);
                     throw new ArgumentException(s_ArgNegativeError);
                 }
-                total += weights[i];
+                total += param[i].weight;
             }
 
             float rand = UnityEngine.Random.Range(0f, total);
             float sum = 0f;
 
-            for (int i = 0; i < candidates.Length; i++)
+            for (int i = 0; i < param.Length; i++)
             {
-                sum += weights[i];
+                sum += param[i].weight;
                 if (rand <= sum)
-                    return candidates[i];
+                    return param[i].candidate;
             }
 
-            return candidates[^1];
+            return param[^1].candidate;
         }
 
         public static T Range<T>(T start, T end) where T : Enum
