@@ -1,10 +1,12 @@
+using Newtonsoft.Json;
+using SkyDragonHunter.SaveLoad;
 using System;
 using System.Text;
 using UnityEngine;
 
 namespace SkyDragonHunter.Structs
 {
-
+    [JsonConverter(typeof(BigNumConverter))]
     [Serializable]
     public struct BigNum : IComparable<BigNum>, IEquatable<BigNum>, ISerializationCallbackReceiver
     {
@@ -157,7 +159,9 @@ namespace SkyDragonHunter.Structs
         {
             if (m_Values == null || m_Values.Length == 0)
             {
-                m_StringNumber = string.Empty;   // 또는 "0" 등 원하는 기본값
+                //m_StringNumber = string.Empty;   // 또는 "0" 등 원하는 기본값
+                m_StringNumber = "0";
+                return;
             }
             m_StringNumber = GetStringNumber(m_Values);
         }

@@ -60,6 +60,8 @@ namespace SkyDragonHunter.UI {
         public void OnLevelUp(UIGrowthNode node)
         {
             node.LevelUp(m_LevelUpInc);
+            // TODO: 세이브용 각 스탯 현재 레벨 상태 저장 필요함
+
             switch (node.StatType)
             {
                 case GrowthStatType.Attack:

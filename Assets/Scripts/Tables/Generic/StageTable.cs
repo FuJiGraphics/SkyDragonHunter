@@ -39,7 +39,6 @@ namespace SkyDragonHunter.Tables {
         public string BackgroundImg1 {  get; set; }
         public string BackgroundImg2 { get; set; }
     }
-
     public class StageTable : DataTable<StageData>
     {
         public StageData Get(int mission, int zone)

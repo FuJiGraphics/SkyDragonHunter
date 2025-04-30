@@ -60,6 +60,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
         }
 
+
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
         {

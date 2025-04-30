@@ -8,12 +8,10 @@ using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace SkyDragonHunter.Managers {
-
+namespace SkyDragonHunter.Managers
+{
     public static class AccountMgr
     {
         // ÇÊµå (Fields)
@@ -69,7 +67,7 @@ namespace SkyDragonHunter.Managers {
                 if (!s_HeldItems.ContainsKey(ItemType.Diamond))
                     s_HeldItems.Add(ItemType.Diamond, 0);
                 s_HeldItems[ItemType.Diamond] = value;
-                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();
+                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();                
             }
         }
 

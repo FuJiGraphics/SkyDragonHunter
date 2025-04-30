@@ -34,20 +34,22 @@ namespace SkyDragonHunter.Tables.Generic {
     {
         public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            if (string.IsNullOrEmpty (text)) 
+            if (string.IsNullOrEmpty(text))
+            {
+                Debug.LogError($"text unavailable, returning 0");
                 return new BigNum[0];
+            }
             return new BigNum(text);
         }
 
         public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
             var target = value as BigNum?;
-            if (target == null)
+            if(target == null)
             {
-                Debug.LogError($"target cannot be converted to BigNum returning 0");
+                Debug.LogError($"target cannot be converted to BigNum, returning 0");
                 return "0";
             }
-
             return target.ToString();
         }
     }
@@ -62,7 +64,11 @@ namespace SkyDragonHunter.Tables.Generic {
         // 필드 (Fields)
         protected Dictionary<int, T> m_dict = new Dictionary<int, T>();
         
+        // Properties
         public T First => m_dict.First().Value;
+        public int Count => m_dict.Count();
+        public List<int> Keys => m_dict.Keys.ToList();
+        public List<T> Values => m_dict.Values.ToList();
 
         // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
