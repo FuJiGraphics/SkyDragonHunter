@@ -493,6 +493,7 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(true);
             pickPanels[1].SetActive(false);
             pickPanels[2].SetActive(false);
+            pickPanels[3].SetActive(false);
             panelBackGroundImage.SetActive(true);
         }
 
@@ -501,6 +502,7 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(false);
             pickPanels[1].SetActive(true);
             pickPanels[2].SetActive(false);
+            pickPanels[3].SetActive(false);
             panelBackGroundImage.SetActive(true);
         }
 
@@ -509,6 +511,16 @@ namespace SkyDragonHunter.Test
             pickPanels[0].SetActive(false);
             pickPanels[1].SetActive(false);
             pickPanels[2].SetActive(true);
+            pickPanels[3].SetActive(false);
+            panelBackGroundImage.SetActive(true);
+        }
+
+        public void OnPickPanel3()
+        {
+            pickPanels[0].SetActive(false);
+            pickPanels[1].SetActive(false);
+            pickPanels[2].SetActive(false);
+            pickPanels[3].SetActive(true);
             panelBackGroundImage.SetActive(true);
         }
 

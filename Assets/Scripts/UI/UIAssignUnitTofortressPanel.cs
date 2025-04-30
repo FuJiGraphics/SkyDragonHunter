@@ -19,7 +19,6 @@ namespace SkyDragonHunter.UI {
     public class UIEquipmentMountSlot
     {
         public int slotNumber;
-        public Image slotNumberIcon;
         public GameObject crewInstance;
         public Button mountSlotButton;
         public Image crewIcon;
@@ -37,7 +36,6 @@ namespace SkyDragonHunter.UI {
 
         public void ResetSlot()
         {
-            slotNumberIcon.sprite = null;
             crewIcon.sprite = null;
             title.text = "빈 슬롯";
             crewName.text = "빈 슬롯";
