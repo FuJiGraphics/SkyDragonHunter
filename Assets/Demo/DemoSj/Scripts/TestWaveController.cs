@@ -449,7 +449,7 @@ namespace SkyDragonHunter
                         //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
                         if (isGenerateDungenTicket)
                         {
-                            AccountMgr.Ticket += 1;
+                            AccountMgr.WaveDungeonTicket += 1;
                         }
                     });
 

@@ -29,6 +29,8 @@ namespace SkyDragonHunter.Gameplay {
     public class RepairDummy
     {
         // ÇÊµå (Fields)
+        private readonly string c_IconPath = "Prefabs/Icons/";
+
         [SerializeField] private int m_Id;
         [SerializeField] private int m_Level;
         [SerializeField] private RepairType m_Type;
@@ -83,8 +85,8 @@ namespace SkyDragonHunter.Gameplay {
             get
             {
                 string filename = GetData().RepIconResourceName;
-                string path = Path.Combine("Prefabs/Icons", filename);
-                Image image = ResourcesMgr.Load<Image>(path);
+                string path = c_IconPath + filename;
+                Image image = ResourcesMgr.Load<GameObject>(path)?.GetComponent<Image>();
                 return image?.sprite;
             }
         }

@@ -114,7 +114,7 @@ namespace SkyDragonHunter.UI {
                 stage.OnSelectStage(m_SelectedDungeonIndex);
             }
 
-            if(AccountMgr.Ticket > 0)
+            if(AccountMgr.WaveDungeonTicket > 0)
             {
                 m_EnterButton.interactable = true;
             }

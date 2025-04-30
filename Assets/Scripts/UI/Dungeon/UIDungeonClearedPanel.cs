@@ -56,7 +56,7 @@ namespace SkyDragonHunter.UI
         {
             m_GoldText.text = AccountMgr.Coin.ToUnit();
             m_DiamondText.text = AccountMgr.Diamond.ToString();
-            m_TicketText.text = AccountMgr.Ticket.ToString();
+            m_TicketText.text = AccountMgr.WaveDungeonTicket.ToString();
             m_ClearedTimer = 3f;
 
             m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.CeilToInt(m_ClearedTimer));
@@ -94,7 +94,7 @@ namespace SkyDragonHunter.UI
 
         private void OnClickRetryButton()
         {
-            if (AccountMgr.Ticket > 0)
+            if (AccountMgr.WaveDungeonTicket > 0)
             {
                 Time.timeScale = 1f;
                 DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);
@@ -111,7 +111,7 @@ namespace SkyDragonHunter.UI
 
         private void OnClickNextLevelButton()
         {
-            if (AccountMgr.Ticket > 0)
+            if (AccountMgr.WaveDungeonTicket > 0)
             {
                 Time.timeScale = 1f;
                 DungeonMgr.TryGetStageData(out var dungeonType, out var stageIndex);

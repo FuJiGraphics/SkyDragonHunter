@@ -1,13 +1,8 @@
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
 using TMPro;
-using Unity.VisualScripting;
-using SkyDragonHunter.Structs;
 
 namespace SkyDragonHunter.UI {
 
@@ -39,9 +34,9 @@ namespace SkyDragonHunter.UI {
         {
             m_GenNodeMap = new Dictionary<int, List<UIMasteryNode>>();
 
+            var allTableData = DataTableMgr.MasteryNodeTable.ToArray();
             int maxLevel = -1;
-            var masteryNodes = DataTableMgr.MasteryNodeTable.ToSortedArray();
-            foreach (var newNodeData in masteryNodes)
+            foreach (var newNodeData in allTableData)
             {
                 // 마스터리 노드 생성
                 var newMasteryNodeInstance = Instantiate(m_UiMasteryNodePrefab);

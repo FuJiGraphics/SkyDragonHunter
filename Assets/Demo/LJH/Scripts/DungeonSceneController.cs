@@ -297,7 +297,7 @@ namespace SkyDragonHunter.UI {
                 m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedBoss.MaxHP);
             if (m_DungeonType == DungeonType.Type3)
                 m_UIMgr.InfoPanel.SetDungeonProgress(0, m_CachedSandbag.MaxHP);
-            AccountMgr.Ticket -= 1;
+            AccountMgr.WaveDungeonTicket -= 1;
             m_UIMgr.EnableClearedPanel(true);
             DungeonMgr.OnStageClear();
             
