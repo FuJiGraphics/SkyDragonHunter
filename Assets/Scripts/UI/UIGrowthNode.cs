@@ -144,12 +144,13 @@ namespace SkyDragonHunter.UI{
             StatName = tableData.StatName;
             CurrentStat = new BigNum(0);
             BasicStat = new BigNum(tableData.BasicStat);
-            BasicCost = new BigNum(tableData.BasicCost);
             NextStat = new BigNum(tableData.BasicStat);
-            NeedCoin = new BigNum(tableData.BasicCost) + new BigNum(tableData.CostIncrease);
             StatIncrease = new BigNum(tableData.StatIncrease);
+            BasicCost = new BigNum(tableData.BasicCost);
+            NeedCoin = new BigNum(tableData.BasicCost);
             CostIncrease = new BigNum(tableData.CostIncrease);
             UpdateLevelUpArrowState();
+            DirtyUI();
         }
 
         public void Clear()
@@ -169,15 +170,21 @@ namespace SkyDragonHunter.UI{
             UpdateLevelUpArrowState();
         }
 
+        public void SetNextStatInfo(int nextIncreaseLevel)
+        {
+            NextStat = 0;
+            for (int i = 0; i < nextIncreaseLevel; ++i)
+            {
+                NextStat += CalculateNextStat(Level + i);
+            }
+        }
+
         public void SetNeedCoin(int nextIncreaseLevel)
         {
-            if (nextIncreaseLevel > 0)
+            NeedCoin = 0;
+            for (int i = 0; i < nextIncreaseLevel; ++i)
             {
-                int nextLevel = Mathf.Min(Level + nextIncreaseLevel - 1, MaxLevel);
-                int weight = 1 + (nextLevel / 100);
-                BigNum currCostInc = weight * nextLevel * CostIncrease;
-                NeedCoin = BasicCost + currCostInc;
-                UpdateLevelUpArrowState();
+                NeedCoin += CalculateNeedCoin(Level + i);
             }
         }
 
@@ -191,18 +198,13 @@ namespace SkyDragonHunter.UI{
                 return;
 
             Level = Mathf.Min(Level + increase, MaxLevel);
+            CurrentStat = NextStat;
             AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin), 0);
 
             if (levelUpType == GrowthLevelUpType.Table)
             {
-                int weight = 1 + (Level / 100);
-                int nextWeight = 1 + ((Level + 1) / 100);
-                BigNum currStatInc = weight * Level * StatIncrease;
-                BigNum nextStatInc = nextWeight * (Level + 1) * StatIncrease;
-                BigNum currCostInc = weight * Level * CostIncrease;
-                CurrentStat = BasicStat + currStatInc;
-                NextStat = BasicStat + nextStatInc;
-                NeedCoin = BasicCost + currCostInc;
+                SetNextStatInfo(increase);
+                SetNeedCoin(increase);
             }
             else
             {
@@ -243,6 +245,22 @@ namespace SkyDragonHunter.UI{
             {
                 textUGUI.text = stats.ToUnit();
             }
+        }
+
+        private BigNum CalculateNextStat(int currLevel)
+        {
+            int level = Mathf.Min(currLevel - 1, MaxLevel);
+            int weight = 1 + (level / 100);
+            BigNum currStatInc = weight * Level * StatIncrease;
+            return BasicStat + currStatInc;
+        }
+
+        private BigNum CalculateNeedCoin(int currLevel)
+        {
+            int level = Mathf.Min(currLevel - 1, MaxLevel);
+            int weight = 1 + (level / 100);
+            BigNum currCostInc = weight * level * CostIncrease;
+            return BasicCost + currCostInc;
         }
 
     } // class UIGrowthNode

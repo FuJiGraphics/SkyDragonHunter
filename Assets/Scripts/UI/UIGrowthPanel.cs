@@ -98,6 +98,7 @@ namespace SkyDragonHunter.UI {
             UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -110,6 +111,7 @@ namespace SkyDragonHunter.UI {
             UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -122,6 +124,7 @@ namespace SkyDragonHunter.UI {
             UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -134,6 +137,7 @@ namespace SkyDragonHunter.UI {
             UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
