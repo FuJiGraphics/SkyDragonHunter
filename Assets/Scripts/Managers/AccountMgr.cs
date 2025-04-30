@@ -63,7 +63,7 @@ namespace SkyDragonHunter.Managers
                 if (!s_HeldItems.ContainsKey(ItemType.Diamond))
                     s_HeldItems.Add(ItemType.Diamond, 0);
                 s_HeldItems[ItemType.Diamond] = value;
-                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();
+                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();                
             }
         }
 

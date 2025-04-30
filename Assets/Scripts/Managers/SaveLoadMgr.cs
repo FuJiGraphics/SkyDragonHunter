@@ -140,6 +140,7 @@ namespace SkyDragonHunter.Managers
             }
             GameData = gameData as GameSaveDataVC;
 
+            ApplySavedData();
             return true;
         }
 

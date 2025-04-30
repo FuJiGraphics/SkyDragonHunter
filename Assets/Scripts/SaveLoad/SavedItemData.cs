@@ -4,6 +4,7 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 
 namespace SkyDragonHunter.SaveLoad
 {
@@ -42,40 +43,48 @@ namespace SkyDragonHunter.SaveLoad
 
         public void OnItemCountChangedEvent(ItemType itemType)
         {
-            switch (itemType)
-            {
-                case ItemType.None:
-                    break;
-                case ItemType.Coin:
-                    UpdateData();
-                    SaveLoadMgr.SaveGameData();
-                    break;
-                case ItemType.Diamond:
-                    break;
-                case ItemType.Ticket:
-                    break;
-            }
+            SaveLoadMgr.UpdateSaveData(SaveDataTypes.Item);
+            SaveLoadMgr.SaveGameData();
         }
 
         public void UpdateData()
         {
             foreach( var item in items)
             {
-                if(item.itemData.Type == ItemType.Coin)
+                switch (item.itemData.Type)
                 {
-                    item.count = AccountMgr.Coin;
+                    case ItemType.None:
+                        break;
+                    case ItemType.Coin:
+                        item.count = AccountMgr.Coin;
+                        break;
+                    case ItemType.Diamond:
+                        item.count = AccountMgr.Diamond;
+                        break;
+                    case ItemType.Ticket:
+                        item.count = AccountMgr.Ticket;
+                        break;
                 }
             }
-
         }
 
         public void ApplySavedData()
         {
             foreach (var item in items)
             {
-                if (item.itemData.Type == ItemType.Coin)
+                switch (item.itemData.Type)
                 {
-                    AccountMgr.Coin = item.count;
+                    case ItemType.None:
+                        break;
+                    case ItemType.Coin:
+                        AccountMgr.Coin = item.count;
+                        break;
+                    case ItemType.Diamond:
+                        AccountMgr.Diamond = item.count;
+                        break;
+                    case ItemType.Ticket:
+                        AccountMgr.Ticket = item.count;
+                        break;
                 }
             }
         }
