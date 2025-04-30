@@ -73,19 +73,19 @@ namespace SkyDragonHunter.Managers {
             }
         }
 
-        public static BigNum Ticket
+        public static BigNum WaveDungeonTicket
         {
             get
             {
-                if (!s_HeldItems.ContainsKey(ItemType.Ticket))
-                    s_HeldItems.Add(ItemType.Ticket, 0);
-                return s_HeldItems[ItemType.Ticket];
+                if (!s_HeldItems.ContainsKey(ItemType.WaveDungeonTicket))
+                    s_HeldItems.Add(ItemType.WaveDungeonTicket, 0);
+                return s_HeldItems[ItemType.WaveDungeonTicket];
             }
             set
             {
-                if (!s_HeldItems.ContainsKey(ItemType.Ticket))
-                    s_HeldItems.Add(ItemType.Ticket, 0);
-                s_HeldItems[ItemType.Ticket] = value;
+                if (!s_HeldItems.ContainsKey(ItemType.WaveDungeonTicket))
+                    s_HeldItems.Add(ItemType.WaveDungeonTicket, 0);
+                s_HeldItems[ItemType.WaveDungeonTicket] = value;
             }
         }
 
@@ -299,16 +299,29 @@ namespace SkyDragonHunter.Managers {
                     switch (socket.Type)
                     {
                         case MasterySocketType.Damage:
-                            result.SetMaxDamage(socket.Stat);
+                            // 공격력 증가가 배율일 경우 
+                            if (socket.Multiplier > 1 + float.Epsilon)
+                                result.SetMaxDamage(result.MaxDamage * socket.Multiplier);
+                            else
+                                result.SetMaxDamage(socket.Stat);
                             break;
                         case MasterySocketType.Health:
-                            result.SetMaxHealth(socket.Stat);
+                            if (socket.Multiplier > 1 + float.Epsilon)
+                                result.SetMaxHealth(result.MaxHealth * socket.Multiplier);
+                            else
+                                result.SetMaxHealth(socket.Stat);
                             break;
                         case MasterySocketType.Armor:
-                            result.SetMaxArmor(socket.Stat);
+                            if (socket.Multiplier > 1 + float.Epsilon)
+                                result.SetMaxArmor(result.MaxArmor * socket.Multiplier);
+                            else
+                                result.SetMaxArmor(socket.Stat);
                             break;
                         case MasterySocketType.Resilient:
-                            result.SetMaxResilient(socket.Stat);
+                            if (socket.Multiplier > 1 + float.Epsilon)
+                                result.SetMaxResilient(result.MaxResilient * socket.Multiplier);
+                            else
+                                result.SetMaxResilient(socket.Stat);
                             break;
                         case MasterySocketType.CriticalMultiplier:
                             result.SetCriticalMultiplier((float)socket.Multiplier);

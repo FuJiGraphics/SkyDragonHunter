@@ -2,6 +2,7 @@ using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -56,7 +57,7 @@ namespace SkyDragonHunter.UI {
         private void Init()
         {
             m_GenNodes = new List<GameObject>();
-            var items = ItemTable.ToList();
+            var items = DataTableMgr.ItemTable.ToArray();
             foreach (var item in items)
             {
                 AddItemNode(item);

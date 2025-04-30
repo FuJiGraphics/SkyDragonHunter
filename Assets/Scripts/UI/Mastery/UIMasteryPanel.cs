@@ -1,13 +1,8 @@
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
 using TMPro;
-using Unity.VisualScripting;
-using SkyDragonHunter.Structs;
 
 namespace SkyDragonHunter.UI {
 
@@ -15,8 +10,6 @@ namespace SkyDragonHunter.UI {
     {
         // 필드 (Fields)
         [Header("Mastery Node UI Settings")]
-        [SerializeField] private int m_UiMasteryTableStartId;
-        [SerializeField] private int m_UiMasteryTableEndId;
         [SerializeField] private UIMasteryNode m_UiMasteryNodePrefab;
         [SerializeField] private UIMasteryContent m_UiContent;
         [SerializeField] private UIMasterySocket[] m_SocketPrefabs;
@@ -41,16 +34,15 @@ namespace SkyDragonHunter.UI {
         {
             m_GenNodeMap = new Dictionary<int, List<UIMasteryNode>>();
 
+            var allTableData = DataTableMgr.MasteryNodeTable.ToArray();
             int maxLevel = -1;
-            for (int id = m_UiMasteryTableStartId; id <= m_UiMasteryTableEndId; ++id)
+            foreach (var newNodeData in allTableData)
             {
-                var newNodeData = DataTableMgr.MasteryNodeTable.Get(id);
-
                 // 마스터리 노드 생성
                 var newMasteryNodeInstance = Instantiate(m_UiMasteryNodePrefab);
                 newMasteryNodeInstance.onLevelup.AddListener(DirtyMastery);
                 newMasteryNodeInstance.onClickedEvent.AddListener(() => { ShowNodeInfo(newMasteryNodeInstance); });
-                newMasteryNodeInstance.SetMasteryNodeData(id);
+                newMasteryNodeInstance.SetMasteryNodeData(newNodeData.ID);
                 if (maxLevel < newNodeData.Level)
                 {
                     maxLevel = newNodeData.Level;

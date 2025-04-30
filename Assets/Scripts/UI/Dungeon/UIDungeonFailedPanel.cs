@@ -55,7 +55,7 @@ namespace SkyDragonHunter.UI
         {
             m_GoldText.text = AccountMgr.Coin.ToUnit();
             m_DiamondText.text = AccountMgr.Diamond.ToString();
-            m_TicketText.text = AccountMgr.Ticket.ToString();
+            m_TicketText.text = AccountMgr.WaveDungeonTicket.ToString();
             m_ClearedTimer = 3f;
 
             m_TimerText.text = string.Format(c_TimerTextFormat, Mathf.CeilToInt(m_ClearedTimer));

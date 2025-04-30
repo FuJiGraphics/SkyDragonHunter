@@ -63,6 +63,9 @@ namespace SkyDragonHunter.Tables.Generic {
         protected Dictionary<int, T> m_dict = new Dictionary<int, T>();
         
         public T First => m_dict.First().Value;
+        public Dictionary<int, T>.ValueCollection Values => m_dict.Values;
+        public List<T> ToList() => m_dict.Values.ToList();
+        public T[] ToArray() => new SortedDictionary<int, T>(m_dict).Values.ToArray();
 
         // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
