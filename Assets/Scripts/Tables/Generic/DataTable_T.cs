@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace SkyDragonHunter.Tables.Generic {
@@ -52,6 +53,49 @@ namespace SkyDragonHunter.Tables.Generic {
         }
     }
 
+    public class BigNumArrayConverTer : ITypeConverter
+    {
+        public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
+        {
+            if (string.IsNullOrEmpty(text))
+                return Array.Empty<BigNum>();
+
+            var splitedTextArray = text.Split('/');
+            BigNum[] bigNumArr = new BigNum[splitedTextArray.Length];
+
+
+            for (int i = 0; i < splitedTextArray.Length; ++i)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var c in splitedTextArray[i])
+                {
+                    if (char.IsDigit(c))
+                    {
+                        sb.Append(c);
+                    }
+                }
+                splitedTextArray[i] = sb.ToString().TrimStart('0');
+                if (string.IsNullOrEmpty(splitedTextArray[i]))
+                {
+                    splitedTextArray[i] = "0";
+                }
+                bigNumArr[i] = new BigNum(splitedTextArray[i]);
+            }
+
+            return bigNumArr;
+        }
+
+        public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
+        {
+            if (!(value is BigNum[] bigNumArr))
+            {
+                return "0";
+            }
+
+            return string.Join("/", bigNumArr.Select(bigNum => bigNum.ToString()));
+        }
+    }
+
     public abstract class DataTableData
     {
         public int ID { get; set; }
@@ -82,6 +126,7 @@ namespace SkyDragonHunter.Tables.Generic {
             {
                 csvReader.Context.TypeConverterCache.AddConverter<int[]>(new IntArrayConverter());
                 csvReader.Context.TypeConverterCache.AddConverter<BigNum>(new BigNumConverter());
+                csvReader.Context.TypeConverterCache.AddConverter<BigNum[]>(new BigNumArrayConverTer());
                 return csvReader.GetRecords<T>().ToList();
             }
         }
