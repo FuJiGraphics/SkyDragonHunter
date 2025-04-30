@@ -402,26 +402,6 @@ namespace SkyDragonHunter
 
         private void OnSpawnMonster()
         {
-            // Original Code
-            //for (int i = 0; i < spawnableMonsters; i++)
-            //{
-            //    GameObject spawned = Instantiate(monster, GetRandomSpawnAreaInPosition(), Quaternion.identity);
-            //    spawned.name = $"Monster({instanceNo++})";
-            //
-            //    // TODO: LJH
-            //    //int tempId = 100_000;
-            //    //tempId += ((currentZonelLevel - 1) % 4) * 10;
-            //    //tempId += (currentMissionLevel - 1) % 6 + 1;
-            //
-            //    //var monsterBT = spawned.GetComponent<MonsterControllerBT>();
-            //    //monsterBT.SetDataFromTable(tempId);
-            //
-            //    // ~TODO
-            //
-            //    currentEnemy.Add(spawned);
-            //    currentSpawnMonsters++;
-            //}
-
             // TODO: LJH
             var currentWaveData = DataTableMgr.WaveTable.Get(stageData.WaveTableID);
 
@@ -446,7 +426,6 @@ namespace SkyDragonHunter
 
                         var randVal = Random.Range(0, 1f);
                         bool isGenerateDungenTicket = randVal < 0.7f;
-                        //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
                         if (isGenerateDungenTicket)
                         {
                             AccountMgr.Ticket += 1;
@@ -457,38 +436,6 @@ namespace SkyDragonHunter
                     currentSpawnMonsters++;
                 }
             }
-
-
-            //int tempId = 100_000;
-            //tempId += ((currentZonelLevel - 1) % 4) * 10;
-            //tempId += (currentMissionLevel - 1) % 6 + 1;
-            //
-            //for (int i = 0; i < spawnableMonsters; ++i)
-            //{
-            //    var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), GetRandomSpawnAreaInPosition(), Quaternion.identity);
-            //    spawned.name = $"{DataTableMgr.MonsterTable.Get(tempId).Name}{instanceNo++}";
-            //    var bt = spawned.GetComponent<NewMonsterControllerBT>();
-            //    bt.SetDataFromTable(tempId);
-            //
-            //    var destructableEvent = spawned.AddComponent<DestructableEvent>();
-            //    destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
-            //    destructableEvent.destructEvent.AddListener(() =>
-            //    {
-            //        var randVal = Random.Range(0, 1f);
-            //        bool isGenerateDungenTicket = randVal < 0.7f;
-            //        //Debug.Log($"CustomDestructEvent Invoked, val : {randVal}");
-            //        if(isGenerateDungenTicket)
-            //        {
-            //            AccountMgr.Ticket += 1;
-            //            Debug.LogWarning($"Dungeon Ticket acquired, Ticket count: {AccountMgr.Ticket}");
-            //        }
-            //    });
-            //
-            //    currentEnemy.Add(spawned.gameObject);
-            //    currentSpawnMonsters++;
-            //}
-            // ~TODO
-
             isCanSpawn = false;
         }
 
@@ -504,18 +451,11 @@ namespace SkyDragonHunter
             bossSlider.gameObject.SetActive(true);
             RestoreBossSliderColors();
 
-            int tempId = 300_001;
-            var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+            int bossId = stageData.ChallengeBossID;
             Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
-            var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), bossSpawnPos, Quaternion.identity);
-
-            BigNum newHP = 20000;
-            int stage = 0;
-            stage += (currentMissionLevel - 1) * 20;
-            stage += currentZonelLevel;
-            float multiplier = Mathf.Pow(1.6f, stage);
+            var spawned = Instantiate(prefabLoader.GetMonsterAnimController(bossId), bossSpawnPos, Quaternion.identity);
             var bossBT = spawned.GetComponent<NewBossControllerBT>();
-            bossBT.MaxHP = newHP * multiplier;
+            bossBT.SetDataFromTable(bossId, stageData.BossMultiplierHP, stageData.BossMultiplierATK);
 
             var destructableEvent = spawned.AddComponent<DestructableEvent>();
             destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
@@ -524,10 +464,35 @@ namespace SkyDragonHunter
                 isBossCleared = true;
                 bossSlider.value = 0;
             });
-
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;
             isCanSpawn = false;
+
+            ///
+            //int tempId = 300_001;
+            //var prefabLoader = GameMgr.FindObject("MonsterPrefabLoader").GetComponent<MonsterPrefabLoader>();
+            //Vector3 bossSpawnPos = spawnArea.transform.position + new Vector3(spawnArea.size.x * 0.5f, spawnArea.size.y * -0.5f, 0);
+            //var spawned = Instantiate(prefabLoader.GetMonsterAnimController(tempId), bossSpawnPos, Quaternion.identity);
+            //
+            //BigNum newHP = 20000;
+            //int stage = 0;
+            //stage += (currentMissionLevel - 1) * 20;
+            //stage += currentZonelLevel;
+            //float multiplier = Mathf.Pow(1.6f, stage);
+            //var bossBT = spawned.GetComponent<NewBossControllerBT>();
+            //bossBT.MaxHP = newHP * multiplier;
+            //
+            //var destructableEvent = spawned.AddComponent<DestructableEvent>();
+            //destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+            //destructableEvent.destructEvent.AddListener(() =>
+            //{
+            //    isBossCleared = true;
+            //    bossSlider.value = 0;
+            //});
+            //
+            //currentEnemy.Add(spawned.gameObject);
+            //currentSpawnMonsters++;
+            //isCanSpawn = false;
         }
 
         private void OnActiveClearPanel()

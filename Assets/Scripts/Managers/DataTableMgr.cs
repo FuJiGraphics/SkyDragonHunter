@@ -1,6 +1,8 @@
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers 
 {
@@ -42,7 +44,25 @@ namespace SkyDragonHunter.Managers
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
         }
 
-        public static void InitForGameScene()
+        public static void ForceAwake()
+        {
+            // does nothing, tool to trigger static constructor
+        }
+
+        public static void InitOnSceneLoaded(Scene scene)
+        {
+            switch ((SceneIds)scene.buildIndex)
+            {
+                case SceneIds.GameScene:
+                    InitForGameScene();
+                    break;
+                case SceneIds.DungeonScene:
+                    InitForDungeonScene();
+                    break;
+            }
+        }
+
+        private static void InitForGameScene()
         {
             Tables = new Dictionary<string, DataTable>();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
@@ -60,6 +80,23 @@ namespace SkyDragonHunter.Managers
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
         }
 
+        private static void InitForDungeonScene()
+        {
+            Tables = new Dictionary<string, DataTable>();
+            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
+            LoadTable<MonsterTable>(DataTableIds.Monster);
+            LoadTable<BossTable>(DataTableIds.Boss);
+            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
+            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
+            LoadTable<AilmentTable>(DataTableIds.Ailment);
+            LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+            LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<StageTable>(DataTableIds.Stage);
+            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
+            LoadTable<WaveTable>(DataTableIds.Wave);
+            LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+        }
 
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
@@ -84,7 +121,7 @@ namespace SkyDragonHunter.Managers
             Tables.Add(id, table);
         }
 
-        public static void UnloadAll()
+        public static void Release()
         {
             Tables.Clear();
         }

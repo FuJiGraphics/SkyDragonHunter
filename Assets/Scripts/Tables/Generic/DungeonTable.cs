@@ -13,12 +13,19 @@ namespace SkyDragonHunter.Tables {
         public int Stage { get; set; }
         public int[] RewardIds { get; set; }
         public int[] RewardCountMins { get; set; }
-        public int[] RewardCountMaxs { get; set; }
-        
+        public int[] RewardCountMaxs { get; set; }        
     }
 
     public class DungeonTable : DataTable<DungeonTableData>
     {
+        public int GetDungeonCount(DungeonType dungeonType)
+        {
+            
+
+
+            return 0;
+        }
+
         public DungeonTableData Get(DungeonType dungeonType, int stageIndex)
         {
             return Get(GetIDfromDungeonData(dungeonType, stageIndex));

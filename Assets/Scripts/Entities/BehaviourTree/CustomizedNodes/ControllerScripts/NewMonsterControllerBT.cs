@@ -30,7 +30,7 @@ namespace SkyDragonHunter.Entities
         private UIHealthBar[] m_UIHealthBars;
         private float slowMultiplier;
 
-        private int projectileId;
+        private string projectileId;
 
         // Public Fields
         public int ID;
@@ -220,7 +220,10 @@ namespace SkyDragonHunter.Entities
             InitBehaviourTree();
         }
 
-        public void SetDataFromTable(int id, float hpMultiply = 1, float atkMultiply = 1)
+        public void SetDataFromTable(int id)
+            => SetDataFromTable(id, 1, 1);
+
+        public void SetDataFromTable(int id, BigNum hpMultiply, BigNum atkMultiply)
         {
             ID = id;
             var data = DataTableMgr.MonsterTable.Get(id);
@@ -230,19 +233,14 @@ namespace SkyDragonHunter.Entities
                 return;
             }
 
-            BigNum hpMultiplier = new BigNum(Mathf.FloorToInt(hpMultiply));
-            BigNum atkMultiplier = new BigNum(Mathf.FloorToInt(atkMultiply));
-
-            float rangeCalibrator = 8f;
-
             name = data.Name;
             m_MonsterType = data.Type;
-            monsterStatus.status.MaxHealth = data.HP * hpMultiplier;
-            monsterStatus.status.MaxDamage = data.ATK * atkMultiplier;
+            monsterStatus.status.MaxHealth = data.HP * hpMultiply;
+            monsterStatus.status.MaxDamage = data.ATK * atkMultiply;
             projectileId = data.ProjectileID;
             monsterStatus.attackInterval = data.AttackInterval;
-            monsterStatus.attackRange = data.AttackRange * rangeCalibrator;
-            monsterStatus.aggroRange = data.AggroRange * rangeCalibrator;
+            monsterStatus.attackRange = data.AttackRange;
+            monsterStatus.aggroRange = data.AggroRange;
             monsterStatus.speed = data.Speed;
             monsterStatus.chaseSpeed = data.ChaseSpeed;
             monsterStatus.status.ResetAll();            

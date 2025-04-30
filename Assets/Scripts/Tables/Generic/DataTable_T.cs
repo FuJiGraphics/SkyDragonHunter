@@ -34,22 +34,20 @@ namespace SkyDragonHunter.Tables.Generic {
     {
         public object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                Debug.LogError($"text unavailable, returning 0");
+            if (string.IsNullOrEmpty (text)) 
                 return new BigNum[0];
-            }
             return new BigNum(text);
         }
 
         public string ConvertToString(object value, IWriterRow row, MemberMapData memberMapData)
         {
             var target = value as BigNum?;
-            if(target == null)
+            if (target == null)
             {
-                Debug.LogError($"target cannot be converted to BigNum, returning 0");
+                Debug.LogError($"target cannot be converted to BigNum returning 0");
                 return "0";
             }
+
             return target.ToString();
         }
     }

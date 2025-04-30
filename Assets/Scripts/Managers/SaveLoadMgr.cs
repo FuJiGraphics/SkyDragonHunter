@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using GameSaveDataVC = SkyDragonHunter.SaveLoad.GameSaveDataV0;
 using LocalSettingSaveDataVC = SkyDragonHunter.SaveLoad.LocalSettingSaveDataV0;
 
@@ -22,6 +23,7 @@ namespace SkyDragonHunter.Managers
         Artifact,
         UpgradeCount,
         QuestProgress,
+        EquipmentUI,
     }
 
     public class SaveLoadMgr
@@ -112,6 +114,8 @@ namespace SkyDragonHunter.Managers
                 Directory.CreateDirectory(SaveDirectory);
             }
 
+            UpdateSaveData();
+
             GameData.lastSavedTime = DateTime.UtcNow;
             var path = Path.Combine(SaveDirectory, SaveFileName[0]);
             var json = JsonConvert.SerializeObject(GameData, jsonSettings);
@@ -142,6 +146,14 @@ namespace SkyDragonHunter.Managers
 
             ApplySavedData();
             return true;
+        }
+
+        public static bool LoadGameData(Scene scene)
+        {
+            Debug.LogError($"using scene argument to Load Game Data Currently not supported");
+            LoadGameData();
+
+            return false;
         }
 
         public static bool SaveLocalSettings()

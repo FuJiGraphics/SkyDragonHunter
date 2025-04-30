@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Structs
 {
+
     [JsonConverter(typeof(BigNumConverter))]
     [Serializable]
     public struct BigNum : IComparable<BigNum>, IEquatable<BigNum>, ISerializationCallbackReceiver
@@ -125,6 +126,13 @@ namespace SkyDragonHunter.Structs
 
         public static float GetPercentage(BigNum numerator, BigNum denominator)
         {
+            if (denominator == 0)
+            {
+                throw new DivideByZeroException($"Denominator cannot be 0");
+            }
+            if (numerator == 0)
+                return 0f;
+
             float numSig = float.Parse(numerator.m_Significance);
             float denomSig = float.Parse(denominator.m_Significance);
             while (numSig >= 10f)
@@ -151,7 +159,7 @@ namespace SkyDragonHunter.Structs
                 newSig /= 10f;
                 newDigit++;
             }
-            
+
             return newSig;
         }
 
@@ -159,9 +167,7 @@ namespace SkyDragonHunter.Structs
         {
             if (m_Values == null || m_Values.Length == 0)
             {
-                //m_StringNumber = string.Empty;   // 또는 "0" 등 원하는 기본값
-                m_StringNumber = "0";
-                return;
+                m_StringNumber = string.Empty;   // 또는 "0" 등 원하는 기본값
             }
             m_StringNumber = GetStringNumber(m_Values);
         }
@@ -649,6 +655,17 @@ namespace SkyDragonHunter.Structs
 
         public static BigNum operator *(BigNum a, float b)
         {
+            if (b < 0)
+            {
+                Debug.LogError($"Negative values are ignored, returning 0");
+                return new BigNum(0);
+            }
+
+            if (a == 0 || b == 0)
+            {
+                return new BigNum(0);
+            }
+
             int newDigit = a.m_Digits;
             float newSig = float.Parse(a.m_Significance);
 
@@ -700,17 +717,34 @@ namespace SkyDragonHunter.Structs
             return new BigNum(sb.ToString());
         }
 
-        public static BigNum operator *(double a,  BigNum b)
+        public static BigNum operator *(double a, BigNum b)
         {
             return b * a;
         }
 
         public static BigNum operator *(BigNum a, double b)
         {
+            if (b < 0)
+            {
+                Debug.LogError($"Negative values are ignored, returning 0");
+                return new BigNum(0);
+            }
+
+            if (a == 0 ||b == 0)
+            {
+                return new BigNum(0);
+            }
+
             int newDigit = a.m_Digits;
             double newSig = float.Parse(a.m_Significance);
 
             // make sigValue into single digit number.
+            if (b < 0 + double.Epsilon)
+            {
+                Debug.LogError($"Negative values are ignored, returning 0");
+                return new BigNum(0);
+            }
+
             while (newSig >= 10)
             {
                 newSig /= 10;
@@ -760,6 +794,13 @@ namespace SkyDragonHunter.Structs
 
         public static BigNum operator /(BigNum a, BigNum b)
         {
+            if (b == 0)
+            {
+                throw new System.DivideByZeroException("Denominator cannot be 0");
+            }
+            if (a == 0)
+                return new BigNum(0);
+
             float numSig = float.Parse(a.m_Significance);
             float denomSig = float.Parse(b.m_Significance);
             while (numSig >= 10f)
