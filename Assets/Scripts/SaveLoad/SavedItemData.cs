@@ -1,4 +1,4 @@
-using SkyDragonHunter.Database;
+using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
