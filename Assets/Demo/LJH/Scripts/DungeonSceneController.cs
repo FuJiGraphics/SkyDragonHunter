@@ -1,6 +1,7 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -115,9 +116,9 @@ namespace SkyDragonHunter.UI {
         {
             for(int i = 0; i < count; ++i)
             {
-                var randIndex = 100000;
-                var randFactor1 = Random.Range(0, 4) * 10;
-                var randFactor2 = Random.Range(1, 7);
+                var randIndex = 2000000;
+                var randFactor1 = Random.Range(1, 5) * 100;
+                var randFactor2 = Random.Range(1, 6);
                 randIndex += randFactor1 + randFactor2;
 
                 var randPosIndex = Random.Range(0, m_MonsterSpawnPositions.Length);
@@ -131,6 +132,17 @@ namespace SkyDragonHunter.UI {
                 monsterBT.MaxHP = health;
                 Debug.Log($"max HP set to {monsterBT.MaxHP}");
                 monsterBT.Damage = attack;
+
+                // TODO: LJH value allocated are temp vals;
+                var monsterData = DataTableMgr.MonsterTable.Get(randIndex);
+
+                monsterBT.monsterStatus.speed = monsterData.Speed;
+                monsterBT.monsterStatus.chaseSpeed = monsterData.ChaseSpeed;
+                monsterBT.monsterStatus.attackInterval = monsterData.AttackInterval;
+                monsterBT.monsterStatus.attackRange = monsterData.AttackRange;
+                monsterBT.monsterStatus.aggroRange = monsterData.AggroRange;
+                // ~TODO
+                
 
                 m_MonsterList.Add(monsterBT);
                 var captured = monsterBT;
@@ -225,15 +237,27 @@ namespace SkyDragonHunter.UI {
 
         private void SetStageType1()
         {
-            var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(300004), m_BossSpawnPosition.position, Quaternion.identity);
+            var boss = Instantiate(m_MonsterPrefabLoader.GetMonsterAnimController(4100001), m_BossSpawnPosition.position, Quaternion.identity);
             m_CachedBoss = boss.GetComponent<NewBossControllerBT>();
-            var health = m_CachedBoss.MaxHP;
-            health = 300000;
+            var bossData = DataTableMgr.BossTable.Get(4100001);
+
+            BigNum health = bossData.HP;
+            BigNum atk = bossData.ATK;
+            BigNum rewardedCoin = 10000;
+
             for(int i = 1; i < m_StageIndex; ++i)
             {
                 health *= 12;
+                atk *= 12;
+                rewardedCoin *= 100;
             }
             m_CachedBoss.MaxHP = health;
+            m_CachedBoss.MaxATK = atk;
+            m_CachedBoss.bossStatus.speed = bossData.Speed;
+            m_CachedBoss.bossStatus.chaseSpeed = bossData.ChaseSpeed;
+            m_CachedBoss.bossStatus.aggroRange = bossData.AggroRange;
+            m_CachedBoss.bossStatus.attackRange = bossData.AttackRange;
+            m_CachedBoss.bossStatus.attackInterval = bossData.AttackInterval;
 
             m_InitialTimeLimit = 40f;
             m_RemainingTime = m_InitialTimeLimit;
@@ -243,6 +267,10 @@ namespace SkyDragonHunter.UI {
             {
                 destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
             }
+            destructableEvent.destructEvent.AddListener(() =>
+            {
+                AccountMgr.Coin += rewardedCoin;
+            });
             destructableEvent.destructEvent.AddListener(OnStageClear);
         }
 
@@ -274,9 +302,13 @@ namespace SkyDragonHunter.UI {
             
             var health = m_CachedSandbag.MaxHP;
             health = 1000000;
+            BigNum rewardGold = 5000;
+            BigNum rewardDiamond = 100;
             for (int i = 1; i < m_StageIndex; ++i)
             {
                 health *= 15;
+                rewardGold *= 100;
+                rewardDiamond += 100;
             }
             m_CachedSandbag.MaxHP = health;            
 
@@ -288,6 +320,11 @@ namespace SkyDragonHunter.UI {
             {
                 destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
             }
+            destructableEvent.destructEvent.AddListener(() =>
+            {
+                AccountMgr.Coin += rewardGold;
+                AccountMgr.Diamond += rewardDiamond;
+            });
             destructableEvent.destructEvent.AddListener(OnStageClear);
         }
 
@@ -314,6 +351,7 @@ namespace SkyDragonHunter.UI {
             m_UIMgr.InfoPanel.SetDungeonProgress(m_Dungeon2KillCount, m_Dungeon2KillGoal);
             if (m_Dungeon2KillCount >= m_Dungeon2KillGoal && !(m_Failed || m_Cleared))
             {
+                AccountMgr.Diamond += 500;
                 OnStageClear();
             }
         }
