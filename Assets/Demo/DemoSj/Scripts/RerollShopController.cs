@@ -1,6 +1,4 @@
-using SkyDragonHunter.Managers;
-using SkyDragonHunter.Structs;
-using SkyDragonHunter.test;
+using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +10,11 @@ namespace SkyDragonHunter {
     [System.Serializable]
     public class RerollShopSlotState
     {
-        public ItemStatus item;
+        public ItemSlotData item;
         public bool isLocked;
         public bool isPurchased;
 
-        public RerollShopSlotState(ItemStatus item, bool isLocked = false, bool isPurchased = false)
+        public RerollShopSlotState(ItemSlotData item, bool isLocked = false, bool isPurchased = false)
         {
             this.item = item;
             this.isLocked = isLocked;
@@ -32,7 +30,7 @@ namespace SkyDragonHunter {
         [SerializeField] private FavorailityMgr favorailityMgr;               
         [SerializeField] private Transform contentParent;               // 6개의 슬롯이 배치된 Content 오브젝트
         [SerializeField] private float rerollInterval = 10800f;         // 자동 리롤 시간 (초 단위, 기본 3시간)
-        [SerializeField] private List<ItemStatus> shopItemPool;        // 전체 리롤 상점 아이템 풀
+        [SerializeField] private List<ItemSlotData> shopItemPool;        // 전체 리롤 상점 아이템 풀
         [SerializeField] private RerollShopLockConfirmPanel lockConfirmPanel;
 
         private List<RerollShopSlotHandler> slotHandlers = new();      // 슬롯 핸들러 리스트
@@ -135,7 +133,7 @@ namespace SkyDragonHunter {
         /// <summary>
         /// 출현 확률(PullRate)에 따라 아이템을 무작위 선택 (중복 허용)
         /// </summary>
-        private ItemStatus GetWeightedRandomItem(List<ItemStatus> pool)
+        private ItemSlotData GetWeightedRandomItem(List<ItemSlotData> pool)
         {
             var valid = pool.Where(p => p != null).ToList();
             if (valid.Count == 0)

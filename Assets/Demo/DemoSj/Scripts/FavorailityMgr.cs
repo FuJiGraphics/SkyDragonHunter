@@ -1,3 +1,5 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,16 +20,16 @@ namespace SkyDragonHunter
         public class FavorabilityData
         {
             public int level = 1;            // 현재 친밀도 레벨
-            public int currentExp = 0;       // 현재 누적된 총 경험치
+            public BigNum currentExp = 0;       // 현재 누적된 총 경험치
         
-            public int ExpToNextLevel => level * 300;
+            public BigNum ExpToNextLevel => level * 300;
         }
         // 필드 (Fields)
         public int testGold = 100000;      // 임시 테스트용 골드
         public int testDiamond = 10000;    // 임시 테스트용 다이아
 
-        private int goldDailyExp = 0;
-        private int diamondDailyExp = 0;
+        private BigNum goldDailyExp = 0;
+        private BigNum diamondDailyExp = 0;
         // 최대치 상수
         private const int GoldMaxDaily = 15;
         private const int DiamondMaxDaily = 15;
@@ -49,8 +51,8 @@ namespace SkyDragonHunter
 
         // ===== 외부에서 접근 가능한 API =====
         public int GetLevel() => data.level;
-        public int GetCurrentExp() => data.currentExp;
-        public int GetExpToNext() => data.ExpToNextLevel;
+        public BigNum GetCurrentExp() => data.currentExp;
+        public BigNum GetExpToNext() => data.ExpToNextLevel;
         /// <summary>
         /// 리롤 상점에서 아이템 구매 시 호출 (5 경험치 고정 추가)
         /// </summary>
@@ -63,25 +65,25 @@ namespace SkyDragonHunter
         /// <summary>
         /// 일반 상점(골드/다이아) 구매 시 가격의 5%만큼 경험치 적립
         /// </summary>
-        public void GainExpFromCurrencyPurchase(int price, ShopType shopType)
+        public void GainExpFromCurrencyPurchase(BigNum price, ShopType shopType)
         {
             ResetCurrencyDailyIfNewDay(); // 매번 진입 시 리셋 체크
 
-            int exp = Mathf.FloorToInt(price * 0.05f);
+            BigNum exp = price * 0.05f;
             if (exp <= 0) return;
 
             switch (shopType)
             {
                 case ShopType.Gold:
                     if (goldDailyExp >= GoldMaxDaily) return;
-                    int goldGain = Mathf.Min(exp, GoldMaxDaily - goldDailyExp);
+                    BigNum goldGain = Math2DHelper.Min(exp, new BigNum(GoldMaxDaily - goldDailyExp));
                     data.currentExp += goldGain;
                     goldDailyExp += goldGain;
                     break;
 
                 case ShopType.Diamond:
                     if (diamondDailyExp >= DiamondMaxDaily) return;
-                    int diaGain = Mathf.Min(exp, DiamondMaxDaily - diamondDailyExp);
+                    BigNum diaGain = Math2DHelper.Min(exp, new BigNum(DiamondMaxDaily - diamondDailyExp));
                     data.currentExp += diaGain;
                     diamondDailyExp += diaGain;
                     break;

@@ -542,6 +542,11 @@ namespace SkyDragonHunter.Structs
         }
 
         // Operators  
+        public static explicit operator float(BigNum num)
+        {
+            return float.Parse(num.StringNumber);
+        }
+
         public static BigNum operator +(BigNum a, BigNum b)
         {
             //BigNum result = new BigNum(0);

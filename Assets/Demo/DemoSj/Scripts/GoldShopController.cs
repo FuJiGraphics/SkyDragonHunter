@@ -1,16 +1,38 @@
-using SkyDragonHunter.test;
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.test
+namespace SkyDragonHunter.UI
 {
-
     // 상점 종류를 나타내는 열거형 정의 (일반 / 일일 / 주간 / 월간)
     public enum GoldShopCategory { Common, Daily, Weekly, Monthly }
+
+    // 골드 상점, 다이아 상점 중 어디 화폐인지 체크
+    public enum CurrencyType
+    {
+        Coin, Diamond
+    }
+
+    [System.Serializable]
+    public class ItemSlotData
+    {
+        [SerializeField] public ItemType itemType;
+        [SerializeField] public float pullRate;
+        [SerializeField] public int maxCount;
+        [SerializeField] public BigNum price;
+        [SerializeField] public CurrencyType currencyType;
+
+        public string GetItemName() => GetData().Name;
+        public Sprite GetItemIcon() => GetData().Icon;
+        public Sprite GetCurrenyIcon() => currencyType == CurrencyType.Coin ?
+            DataTableMgr.ItemTable.Get(ItemType.Coin).Icon : DataTableMgr.ItemTable.Get(ItemType.Diamond).Icon;
+        public ItemData GetData() => DataTableMgr.ItemTable.Get(itemType);
+    }
 
     public class GoldShopController : MonoBehaviour
     {
@@ -19,7 +41,7 @@ namespace SkyDragonHunter.test
         [Header("UI 참조")]
         [SerializeField] private FavorailityMgr favorailityMgr;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
-        [SerializeField] private List<ItemStatus> goldShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
+        [SerializeField] private List<ItemSlotData> goldShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
 
         [SerializeField] private GoldShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
 
@@ -114,7 +136,7 @@ namespace SkyDragonHunter.test
 
             for (int i = 0; i < slotHandlers.Count; i++)
             {
-                ItemStatus selectedItem = GetWeightedRandomItem(goldShopItemPool);
+                ItemSlotData selectedItem = GetWeightedRandomItem(goldShopItemPool);
                 if (selectedItem != null)
                     result.Add(new ShopSlotState(selectedItem));
             }
@@ -134,7 +156,7 @@ namespace SkyDragonHunter.test
         }
 
         // 출현 확률(pullRate)을 기반으로 하나의 아이템을 선택
-        private ItemStatus GetWeightedRandomItem(List<ItemStatus> pool)
+        private ItemSlotData GetWeightedRandomItem(List<ItemSlotData> pool)
         {
             var valid = pool.Where(p => p != null).ToList();
             if (valid.Count == 0)

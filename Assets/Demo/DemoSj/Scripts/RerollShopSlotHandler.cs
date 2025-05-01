@@ -1,6 +1,8 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using SkyDragonHunter.test;
+using SkyDragonHunter.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -33,15 +35,15 @@ namespace SkyDragonHunter
         private RerollShopController shopController; // (추가)
         private bool isLocked = false;
         private bool isPurchased = false;
-        private ItemStatus itemData;
-        private int currentPrice;
+        private ItemSlotData itemData;
+        private BigNum currentPrice;
 
         // Public 메서드
         // 외부에서 할인율 변경 시 가격 반영
         public void UpdateDiscountedPrice(float discountRate)
         {
-            currentPrice = Mathf.FloorToInt(itemData.price * (1f - discountRate));
-            priceText.text = currentPrice.ToString("N0");
+            currentPrice = itemData.price * (1f - discountRate);
+            priceText.text = currentPrice.ToUnit();
         }
 
         public void InitializeWithState(RerollShopSlotState state, RerollShopController controller,
@@ -57,7 +59,7 @@ namespace SkyDragonHunter
         }
 
         // 슬롯 초기화
-        public void Initialize(ItemStatus item, RerollShopController controller, FavorailityMgr favorMgr,
+        public void Initialize(ItemSlotData item, RerollShopController controller, FavorailityMgr favorMgr,
             FavorabilityUIController favorUIController, RerollShopLockConfirmPanel confirmPanel,
             bool isLocked = false, bool isPurchased = false) // (수정됨)
         {
@@ -71,11 +73,12 @@ namespace SkyDragonHunter
             this.isPurchased = isPurchased;
 
             float discountRate = favorabilityMgr.GetDiscountRate();
-            currentPrice = Mathf.FloorToInt(item.price * (1f - discountRate));
+            currentPrice = item.price * (1f - discountRate);
 
-            itemNameText.text = item.itemName;
-            itemImage.sprite = item.itemImage;
-            currencyImage.sprite = item.currencyTypeIcon;
+            var tableData = item.GetData();
+            itemNameText.text = tableData.Name;
+            itemImage.sprite = tableData.Icon;
+            currencyImage.sprite = item.GetCurrenyIcon();
             currencyType = item.currencyType;
             priceText.text = currentPrice.ToString();
 
@@ -97,7 +100,7 @@ namespace SkyDragonHunter
         // 구매 처리
         public void TryBuy()
         {
-            if (itemData.currencyType == CurrencyType.Gold)
+            if (itemData.currencyType == CurrencyType.Coin)
             {
                 if (AccountMgr.Coin < itemData.price)
                 {
@@ -173,7 +176,7 @@ namespace SkyDragonHunter
 
         public bool IsLocked() => isLocked;
         public bool IsPurchased() => isPurchased;
-        public ItemStatus GetItem() => itemData;
+        public ItemSlotData GetItem() => itemData;
 
     } // Scope by class RerollShopSlotHandler
 

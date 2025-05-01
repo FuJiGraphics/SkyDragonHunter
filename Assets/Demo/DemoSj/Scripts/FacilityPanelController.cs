@@ -1,11 +1,7 @@
-using SkyDragonHunter.Managers;
-using SkyDragonHunter.Structs;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     public class FacilityPanelController : MonoBehaviour
     {

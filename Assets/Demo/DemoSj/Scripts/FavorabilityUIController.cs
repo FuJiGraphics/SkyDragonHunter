@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     public class FavorabilityUIController : MonoBehaviour
     {
@@ -21,15 +19,15 @@ namespace SkyDragonHunter {
         private void OnEnable()
         {
             UpdateUI();
-            expSlider.value = favorabilityMgr.GetCurrentExp();
-            expSlider.maxValue = favorabilityMgr.GetExpToNext();
+            expSlider.value = (float)favorabilityMgr.GetCurrentExp();
+            expSlider.maxValue = (float)favorabilityMgr.GetExpToNext();
         }
         // Public 메서드
         public void UpdateUI()
         {
             int level = favorabilityMgr.GetLevel();
-            int currentExp = favorabilityMgr.GetCurrentExp();
-            int requiredExp = favorabilityMgr.GetExpToNext();
+            int currentExp = (int)favorabilityMgr.GetCurrentExp();
+            int requiredExp = (int)favorabilityMgr.GetExpToNext();
 
             expSlider.value = currentExp;
             expSlider.maxValue = requiredExp;

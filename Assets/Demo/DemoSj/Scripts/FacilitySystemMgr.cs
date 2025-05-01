@@ -1,10 +1,11 @@
 using SkyDragonHunter.test;
+using SkyDragonHunter.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     public class FacilitySystemMgr : MonoBehaviour
     {
@@ -22,7 +23,7 @@ namespace SkyDragonHunter {
             public float levelUpInterval => level * 10f; // 레벨업에 필요한 시간
             public bool isInLevelUpCooldown => levelUpCooldown > 0f;
 
-            public ItemStatus itemToGenerate;         // 해당 슬롯에서 생성할 아이템
+            public ItemSlotData itemToGenerate;         // 해당 슬롯에서 생성할 아이템
 
             // 현재 레벨에 따른 최대 보유량 (ex: Lv1 → 20, Lv2 → 40 ...)
             public int maxCount => level * 20;

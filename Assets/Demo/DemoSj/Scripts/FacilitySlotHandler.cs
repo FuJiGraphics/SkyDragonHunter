@@ -1,15 +1,10 @@
-using SkyDragonHunter.test;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Org.BouncyCastle.Asn1.Cmp;
 
-namespace SkyDragonHunter
-{
+namespace SkyDragonHunter.UI {
 
     public class FacilitySlotHandler : MonoBehaviour
     {
@@ -93,9 +88,9 @@ namespace SkyDragonHunter
                 WorkInProgressObj.SetActive(false);
 
                 // 아이콘 적용
-                if (data?.itemToGenerate?.itemImage != null)
+                if (data?.itemToGenerate?.GetItemIcon() != null)
                 {
-                    itemIcon.sprite = data.itemToGenerate.itemImage;
+                    itemIcon.sprite = data.itemToGenerate.GetItemIcon();
                 }
                 else
                 {
@@ -137,7 +132,7 @@ namespace SkyDragonHunter
         {
             if (data.itemCount > 0)
             {
-                Debug.Log($"{data.itemToGenerate.itemName}을 {data.itemCount}만큼 획득했습니다.");
+                Debug.Log($"{data.itemToGenerate.GetItemName()}을 {data.itemCount}만큼 획득했습니다.");
                 bool wasFull = data.itemCount >= data.maxCount;
                 data.itemCount = 0;
 

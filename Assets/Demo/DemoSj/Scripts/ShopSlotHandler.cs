@@ -1,6 +1,7 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.test;
+using SkyDragonHunter.UI;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,10 +12,10 @@ namespace SkyDragonHunter
     [System.Serializable]
     public class ShopSlotState
     {
-        public ItemStatus item;
+        public ItemSlotData item;
         public int currentCount;
 
-        public ShopSlotState(ItemStatus item)
+        public ShopSlotState(ItemSlotData item)
         {
             this.item = item;
             this.currentCount = item.maxCount;
@@ -35,7 +36,7 @@ namespace SkyDragonHunter
 
         private ShopSlotState slotState;
         private ShopType shopType;
-        private int currentPrice; // 할인 적용된 실제 가격
+        private BigNum currentPrice; // 할인 적용된 실제 가격
 
         [Header("통화 아이콘 스프라이트")]
         [SerializeField] private Sprite diamondSprite;
@@ -53,8 +54,8 @@ namespace SkyDragonHunter
         // Public 메서드
         public void UpdateDiscountedPrice(float discountRate)
         {
-            currentPrice = Mathf.FloorToInt(slotState.item.price * (1f - discountRate));
-            priceText.text = currentPrice.ToString("N0");
+            currentPrice = slotState.item.price * (1f - discountRate);
+            priceText.text = currentPrice.ToUnit();
         }
 
         // 외부에서 슬롯 초기화 시 상태 객체를 전달
@@ -66,13 +67,13 @@ namespace SkyDragonHunter
 
             // 할인율 계산
             float discountRate = favorabilityMgr.GetDiscountRate();
-            currentPrice = Mathf.FloorToInt(state.item.price * (1f - discountRate)); // 할인된 가격 저장
+            currentPrice = slotState.item.price * (1f - discountRate); // 할인된 가격 저장
 
-            var item = state.item;
+            var item = state.item.GetData();
 
-            nameText.text = item.itemName;
-            itemImage.sprite = item.itemImage;
-            priceText.text = currentPrice.ToString("N0");
+            nameText.text = item.Name;
+            itemImage.sprite = item.Icon;
+            priceText.text = currentPrice.ToUnit();
 
             // 통화 스프라이트는 상점 타입에 따라 고정
             currencyImage.sprite = (shopType == ShopType.Diamond) ? diamondSprite : goldSprite;
@@ -112,11 +113,14 @@ namespace SkyDragonHunter
                     return;
                 }
                 AccountMgr.Diamond -= currentPrice;
-            } 
+            }
+
+
+            var itemData = slotState.item.GetData();
 
             if (slotState.currentCount <= 0)
             {
-                Debug.Log($"[{slotState.item.itemName}] 구매 불가: 남은 수량 없음");
+                DrawableMgr.Dialog("Alert", $"[{itemData.Name}] 구매 불가: 남은 수량 없음");
                 return;
             }
 
@@ -124,7 +128,7 @@ namespace SkyDragonHunter
             //if (!currencySystem.TryConsume(currentPrice)) return;
 
             slotState.currentCount--;     // 상태에 직접 반영
-            Debug.Log($"[{slotState.item.itemName}] 구매 완료!");
+            DrawableMgr.Dialog("Alert", $"[{itemData.Name}] 구매 완료!");
             UpdateLimitText();
 
             favorabilityMgr.GainExpFromCurrencyPurchase(currentPrice, shopType);
