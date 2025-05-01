@@ -23,6 +23,7 @@ namespace SkyDragonHunter.Managers
         public static AFKRewardTable AFKRewardTable => Get<AFKRewardTable>(DataTableIds.AFKReward);
         public static WaveTable WaveTable => Get<WaveTable>(DataTableIds.Wave);
         public static RepairTableTemplate RepairTable => Get<RepairTableTemplate>(DataTableIds.Repair);
+        public static TutorialTable TutorialTable => Get<TutorialTable>(DataTableIds.Tutorial);
 
         // Static Constructor
         static DataTableMgr()
@@ -41,6 +42,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            LoadTable<TutorialTable>(DataTableIds.Tutorial);
             // LoadTable<ArtifactTable>(DataTableIds.Artifact);
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
@@ -61,6 +63,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            LoadTable<TutorialTable>(DataTableIds.Tutorial);
             // LoadTable<ArtifactTable>(DataTableIds.Artifact);
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
