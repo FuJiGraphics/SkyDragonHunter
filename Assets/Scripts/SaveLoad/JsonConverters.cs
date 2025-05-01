@@ -23,14 +23,14 @@ namespace SkyDragonHunter.SaveLoad
         }
     }
 
-    public class ItemTableDataConverter : JsonConverter<ItemTableData>
+    public class ItemDataConverter : JsonConverter<ItemData>
     {
-        public override ItemTableData ReadJson(JsonReader reader, Type objectType, ItemTableData existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override ItemData ReadJson(JsonReader reader, Type objectType, ItemData existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var id = Convert.ToInt32(reader.Value);
             return DataTableMgr.ItemTable.Get(id);
         }
-        public override void WriteJson(JsonWriter writer, ItemTableData value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, ItemData value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ID);
         }

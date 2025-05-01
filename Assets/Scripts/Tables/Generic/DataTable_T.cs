@@ -66,6 +66,7 @@ namespace SkyDragonHunter.Tables.Generic {
         public Dictionary<int, T>.ValueCollection Values => m_dict.Values;
         public List<T> ToList() => m_dict.Values.ToList();
         public T[] ToArray() => new SortedDictionary<int, T>(m_dict).Values.ToArray();
+        public int Count => m_dict.Count;
 
         // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]

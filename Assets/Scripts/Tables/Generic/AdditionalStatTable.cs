@@ -4,7 +4,6 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 using System;
 using System.Collections.Generic;
-using UnityEditor.Search;
 
 namespace SkyDragonHunter.Tables {
 
