@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 
@@ -10,6 +11,9 @@ namespace SkyDragonHunter.Tables {
         public BigNum Price { get; set; }
         public float RerollRate { get; set; }
         public int AffinityLevel { get; set; }
+
+        public ItemType GetItemType()
+            => DataTableMgr.ItemTable.Get(ItemID).Type;
     }
 
     public class RerollShopTable : DataTable<RerollShopData>

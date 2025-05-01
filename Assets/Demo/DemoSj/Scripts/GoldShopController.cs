@@ -23,10 +23,11 @@ namespace SkyDragonHunter.UI
     {
         [SerializeField] public ItemType itemType;
         [SerializeField] public float pullRate;
+        [SerializeField] public int currCount;
         [SerializeField] public int maxCount;
         [SerializeField] public CurrencyType currencyType;
 
-        public BigNum Price => 1;
+        public BigNum Price { get; set; }
         public string ItemName => GetData().Name;
         public Sprite ItemIcon => GetData().Icon;
         public Sprite CurrenyIcon => currencyType == CurrencyType.Coin ?
@@ -48,7 +49,6 @@ namespace SkyDragonHunter.UI
 
         [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
 
-
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
         // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
@@ -68,8 +68,33 @@ namespace SkyDragonHunter.UI
         // 유니티 (MonoBehaviour 기본 메서드)
 
         // 시작 시 슬롯 핸들러 수집 및 카테고리 초기화
-        private void Awake()
+        // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
+        private void OnEnable()
         {
+            RefreshCategory(currentCategory);
+        }
+        // Public 메서드
+        public void Init()
+        {
+            if (goldShopItemPool != null && goldShopItemPool.Count > 0)
+                return;
+
+            if (goldShopItemPool == null)
+                goldShopItemPool = new();
+
+            var tableData = DataTableMgr.GoldShopTable.ToArray();
+            foreach (var data in tableData)
+            {
+                ItemSlotData slot = new ItemSlotData();
+                slot.itemType = data.GetItemType();
+                slot.currCount = data.ItemAmount;
+                slot.maxCount = data.ItemBuyLimitCount;
+                slot.currencyType = CurrencyType.Coin;
+                slot.pullRate = data.GenWeight;
+                slot.Price = data.Price;
+                goldShopItemPool.Add(slot);
+            }
+
             // Content 하위의 자식 오브젝트에서 슬롯 핸들러 수집
             for (int i = 0; i < contentParent.childCount; i++)
             {
@@ -82,14 +107,6 @@ namespace SkyDragonHunter.UI
             foreach (GoldShopCategory cat in System.Enum.GetValues(typeof(GoldShopCategory)))
                 categoryItems[cat] = new List<ShopSlotState>();
         }
-
-
-        // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
-        private void OnEnable()
-        {
-            RefreshCategory(currentCategory);
-        }
-        // Public 메서드
 
         // 외부 탭 버튼에서 호출되는 메서드
         public void OnClickTab(int categoryIndex)

@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 using SkyDragonHunter.UI;
@@ -11,6 +12,10 @@ namespace SkyDragonHunter.Tables {
         public BigNum Price { get; set; }                   // 아이템 가격
         public GoldShopCategory BuyLimitType { get; set; }  // 아이템 구매 수량
         public int ItemBuyLimitCount { get; set; }          // 아이템 구매 제한 수량
+        public float GenWeight { get; set; }
+
+        public ItemType GetItemType() 
+            => DataTableMgr.ItemTable.Get(ItemID).Type;
     }
 
     public class GoldShopTable : DataTable<GoldShopData>

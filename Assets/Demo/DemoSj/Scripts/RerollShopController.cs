@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,17 +42,6 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
-        {
-            // Content 아래에 있는 슬롯에 붙어있는 핸들러 수집
-            for (int i = 0; i < contentParent.childCount; i++)
-            {
-                var handler = contentParent.GetChild(i).GetComponent<RerollShopSlotHandler>();
-                if (handler != null)
-                    slotHandlers.Add(handler);
-            }
-        }
-
         private void OnEnable()
         {
             if (currentSlotStates.Count == slotHandlers.Count)
@@ -79,6 +69,35 @@ namespace SkyDragonHunter.UI {
         }
 
         // Public 메서드
+        public void Init()
+        {
+            if (shopItemPool != null && shopItemPool.Count > 0)
+                return;
+
+            if (shopItemPool == null)
+                shopItemPool = new();
+
+            var tableData = DataTableMgr.RerollShopTable.ToArray();
+            foreach (var data in tableData)
+            {
+                ItemSlotData slot = new ItemSlotData();
+                slot.itemType = data.GetItemType();
+                slot.currCount = data.ItemAmount;
+                slot.maxCount = data.ItemAmount;
+                slot.currencyType = CurrencyType.Coin;
+                slot.pullRate = data.RerollRate;
+                slot.Price = data.Price;
+                shopItemPool.Add(slot);
+            }
+
+            // Content 아래에 있는 슬롯에 붙어있는 핸들러 수집
+            for (int i = 0; i < contentParent.childCount; i++)
+            {
+                var handler = contentParent.GetChild(i).GetComponent<RerollShopSlotHandler>();
+                if (handler != null)
+                    slotHandlers.Add(handler);
+            }
+        }
 
         /// <summary>
         /// 외부 버튼에서 호출되는 수동 리롤

@@ -18,7 +18,7 @@ namespace SkyDragonHunter
         public ShopSlotState(ItemSlotData item)
         {
             this.item = item;
-            this.currentCount = item.maxCount;
+            this.currentCount = item.currCount;
         }
     }
 
@@ -118,16 +118,19 @@ namespace SkyDragonHunter
 
             var itemData = slotState.item.GetData();
 
-            if (slotState.currentCount <= 0)
+            if (slotState.item.maxCount != 0 && slotState.currentCount <= 0)
             {
                 DrawableMgr.Dialog("Alert", $"[{itemData.Name}] 구매 불가: 남은 수량 없음");
                 return;
             }
 
+            if (slotState.item.maxCount != 0)
+            {
+                slotState.currentCount--;     // 상태에 직접 반영
+            }
             // 할인 가격 기준 재화 차감
             //if (!currencySystem.TryConsume(currentPrice)) return;
 
-            slotState.currentCount--;     // 상태에 직접 반영
             DrawableMgr.Dialog("Alert", $"[{itemData.Name}] 구매 완료!");
             UpdateLimitText();
 

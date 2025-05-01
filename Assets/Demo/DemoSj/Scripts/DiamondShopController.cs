@@ -47,8 +47,33 @@ namespace SkyDragonHunter.UI
         // 유니티 (MonoBehaviour 기본 메서드)
 
         // 시작 시 슬롯 핸들러 수집 및 카테고리 초기화
-        private void Awake()
+        // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
+        private void OnEnable()
         {
+            RefreshCategory(currentCategory);
+        }
+
+        public void Init()
+        {
+            if (diamondShopItemPool != null && diamondShopItemPool.Count > 0)
+                return;
+
+            if (diamondShopItemPool == null)
+                diamondShopItemPool = new();
+
+            var tableData = DataTableMgr.DiamondShopTable.ToArray();
+            foreach (var data in tableData)
+            {
+                ItemSlotData slot = new ItemSlotData();
+                slot.itemType = data.GetItemType();
+                slot.currCount = data.ItemAmount;
+                slot.maxCount = data.ItemBuyLimitCount;
+                slot.currencyType = CurrencyType.Coin;
+                slot.pullRate = data.GenWeight;
+                slot.Price = data.Price;
+                diamondShopItemPool.Add(slot);
+            }
+
             // Content 하위의 자식 오브젝트에서 슬롯 핸들러 수집
             for (int i = 0; i < contentParent.childCount; i++)
             {
@@ -60,13 +85,6 @@ namespace SkyDragonHunter.UI
             // 각 카테고리에 대해 빈 리스트 초기화
             foreach (DiamondShopCategory cat in System.Enum.GetValues(typeof(DiamondShopCategory)))
                 categoryItems[cat] = new List<ShopSlotState>();
-        }
-
-
-        // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
-        private void OnEnable()
-        {
-            RefreshCategory(currentCategory);
         }
 
         // Public 메서드
@@ -115,12 +133,9 @@ namespace SkyDragonHunter.UI
             List<ShopSlotState> result = new();
 
             for (int i = 0; i < slotHandlers.Count; i++)
-            { 
-                var data = GetWeightedRandomItem(diamondShopItemPool);
-                if (data != null)
-                {
-                    result.Add(new ShopSlotState((ItemSlotData)data));
-                }
+            {
+                var selectedItem = GetWeightedRandomItem(diamondShopItemPool);
+                result.Add(new ShopSlotState((ItemSlotData)selectedItem));
             }
 
             categoryItems[category] = result;
