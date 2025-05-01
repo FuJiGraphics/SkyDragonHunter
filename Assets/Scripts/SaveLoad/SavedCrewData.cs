@@ -4,6 +4,7 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.TestTools.CodeCoverage;
 using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 
@@ -25,15 +26,45 @@ namespace SkyDragonHunter.SaveLoad
     public class SavedCrewData
     {
         public List<SavedCrew> crews;
+        
+        public bool GetCrewLevel(int id, out int level)
+        {
+            if (crews == null || crews.Count == 0)
+            {
+                Debug.LogWarning($"Saved Crews Null, returning 0");
+                level = 0;
+                return false;
+            }
+
+            foreach(var crew in crews)
+            {
+                if(crew.crewData == null)
+                {
+                    Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
+                    level = 0;
+                    return false;
+                }
+
+                if(crew.crewData.ID == id)
+                {
+                    level = crew.level;
+                    return true;
+                }
+            }
+            Debug.LogWarning($"Cannot find Crew, returning 0");
+            level = 0;
+            return false;
+        }
 
         public void InitData()
         {
             crews = new List<SavedCrew>();
             var crewTable = DataTableMgr.CrewTable;
 
-            for (int i = 0; i < crewTable.Count; ++i)
+            foreach(var crewData in crewTable.Values)
             {
                 var savedCrew = new SavedCrew();
+                savedCrew.crewData = crewData;
                 savedCrew.isUnlocked = false;
                 savedCrew.level = 1;
                 savedCrew.accumulatedExp = 0;
@@ -43,7 +74,21 @@ namespace SkyDragonHunter.SaveLoad
                 savedCrew.killCount = 0;
 
                 crews.Add(savedCrew);
-            }            
+            }
+
+            //for (int i = 0; i < crewTable.Count; ++i)
+            //{
+            //    var savedCrew = new SavedCrew();
+            //    savedCrew.isUnlocked = false;
+            //    savedCrew.level = 1;
+            //    savedCrew.accumulatedExp = 0;
+            //    savedCrew.rank = 0;
+            //    savedCrew.count = 0;
+            //
+            //    savedCrew.killCount = 0;
+            //
+            //    crews.Add(savedCrew);
+            //}            
 
         }
 
