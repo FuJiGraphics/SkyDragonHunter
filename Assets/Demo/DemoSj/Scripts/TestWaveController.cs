@@ -14,6 +14,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 namespace SkyDragonHunter
 {
 
@@ -463,6 +465,7 @@ namespace SkyDragonHunter
             {
                 isBossCleared = true;
                 bossSlider.value = 0;
+                AccountMgr.Diamond += 200;
             });
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;
