@@ -21,8 +21,6 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             Debug.Log("GameMgr Init");
-            DataTableMgr.ForceAwake();
-            SaveLoadMgr.Init();
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
@@ -35,11 +33,12 @@ namespace SkyDragonHunter.Managers
             Application.targetFrameRate = 60;
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
             DataTableMgr.InitOnSceneLoaded(scene);
-            ItemTable.Init();
+            //ItemTable.Init();
             AccountMgr.Init();
             GameMgr.LoadedRegisterObjects();
             AccountMgr.LateInit();
             AccountMgr.LoadUserData(scene.name);
+            SaveLoadMgr.Init();
             SaveLoadMgr.LoadGameData();
         }
 

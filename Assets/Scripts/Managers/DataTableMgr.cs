@@ -29,20 +29,20 @@ namespace SkyDragonHunter.Managers
         // Static Constructor
         static DataTableMgr()
         {
-            Tables = new Dictionary<string, DataTable>();
-            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
-            LoadTable<MonsterTable>(DataTableIds.Monster);
-            LoadTable<BossTable>(DataTableIds.Boss);
-            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
-            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
-            LoadTable<AilmentTable>(DataTableIds.Ailment);
-            LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-            LoadTable<ItemTable>(DataTableIds.Item);
-            LoadTable<StageTable>(DataTableIds.Stage);
-            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
-            LoadTable<WaveTable>(DataTableIds.Wave);
-            LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            //Tables = new Dictionary<string, DataTable>();
+            //LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            //LoadTable<CrewTableTemplate>(DataTableIds.Crew);
+            //LoadTable<MonsterTable>(DataTableIds.Monster);
+            //LoadTable<BossTable>(DataTableIds.Boss);
+            //LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
+            //LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
+            //LoadTable<AilmentTable>(DataTableIds.Ailment);
+            //LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+            //LoadTable<ItemTable>(DataTableIds.Item);
+            //LoadTable<StageTable>(DataTableIds.Stage);
+            //LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
+            //LoadTable<WaveTable>(DataTableIds.Wave);
+            //LoadTable<RepairTableTemplate>(DataTableIds.Repair);
             // LoadTable<ArtifactTable>(DataTableIds.Artifact);
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
@@ -67,7 +67,12 @@ namespace SkyDragonHunter.Managers
 
         private static void InitForGameScene()
         {
-            Tables = new Dictionary<string, DataTable>();
+            if (Tables != null && Tables.Count != 0)
+                return;
+            if (Tables == null)
+                Tables = new Dictionary<string, DataTable>();
+            else
+                Tables.Clear();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
             LoadTable<CrewTableTemplate>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
@@ -87,7 +92,12 @@ namespace SkyDragonHunter.Managers
 
         private static void InitForDungeonScene()
         {
-            Tables = new Dictionary<string, DataTable>();
+            if (Tables != null && Tables.Count != 0)
+                return;
+            if (Tables == null)
+                Tables = new Dictionary<string, DataTable>();
+            else
+                Tables.Clear();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
             LoadTable<CrewTableTemplate>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
@@ -96,7 +106,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-            LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<ItemTable>(DataTableIds.Item);
             LoadTable<StageTable>(DataTableIds.Stage);
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);

@@ -40,6 +40,7 @@ namespace SkyDragonHunter.Managers
 
         // Properties
         public static int SaveDataMajorVersion { get; private set; } = 0;
+        private static bool initialized = false;
 
             // SaveDatas
         public static GameSaveDataVC GameData {  get; private set; }
@@ -59,6 +60,8 @@ namespace SkyDragonHunter.Managers
             jsonSettings.Converters.Add(new BigNumConverter());
             jsonSettings.Converters.Add(new ItemTableDataConverter());
             jsonSettings.Converters.Add(new CrewTableDataConverter());
+
+            initialized = false;
 
             GameData = new GameSaveDataVC();
             LocalSettingData = new LocalSettingSaveDataVC();
@@ -205,7 +208,10 @@ namespace SkyDragonHunter.Managers
         
         public static void Init()
         {
-            if(!LoadGameData())
+            if (initialized)
+                return;
+
+            if (!LoadGameData())
             {
                 InitializeGameData();
             }
@@ -214,6 +220,8 @@ namespace SkyDragonHunter.Managers
             {
                 InitializeLocalSettings();
             }
+
+            initialized = true;
         }
 
         // Private Methods

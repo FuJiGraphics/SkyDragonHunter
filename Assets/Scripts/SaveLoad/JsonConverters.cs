@@ -78,6 +78,7 @@ namespace SkyDragonHunter.SaveLoad
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             int id = Convert.ToInt32(reader.Value);
+            
             return DataTableMgr.ItemTable.Get((ItemType)id);
         }
 
