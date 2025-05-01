@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers
 {
@@ -599,8 +600,9 @@ namespace SkyDragonHunter.Managers
                             Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
                         }
                         else
-                        {
-                            Debug.LogError($"Crew Not Set To SaveData");
+                        {            
+                            // TODO :LJH (Need to handle logics on scene change)
+                            Debug.Log($"Crew Not Set To SaveData");
                         }
                     }
                     else

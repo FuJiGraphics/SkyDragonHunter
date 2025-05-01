@@ -42,6 +42,10 @@ namespace SkyDragonHunter.Managers
         public static int SaveDataMajorVersion { get; private set; } = 0;
         private static bool initialized = false;
 
+        // TODO: LJH TEMP
+        private static bool loadedOnce = false;
+        // ~TODO
+
             // SaveDatas
         public static GameSaveDataVC GameData {  get; private set; }
         public static LocalSettingSaveDataVC LocalSettingData { get; private set; }
@@ -62,6 +66,7 @@ namespace SkyDragonHunter.Managers
             jsonSettings.Converters.Add(new CrewTableDataConverter());
 
             initialized = false;
+            loadedOnce = false;
 
             GameData = new GameSaveDataVC();
             LocalSettingData = new LocalSettingSaveDataVC();
@@ -136,6 +141,10 @@ namespace SkyDragonHunter.Managers
 
         public static bool LoadGameData()
         {
+            if(loadedOnce)
+            {
+                Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
+            }
             var path = Path.Combine(SaveDirectory , SaveFileName[0]);
             if(!File.Exists(path))
             {
@@ -153,6 +162,8 @@ namespace SkyDragonHunter.Managers
             GameData = gameData as GameSaveDataVC;
 
             ApplySavedData();
+
+            loadedOnce = true;
             return true;
         }
 

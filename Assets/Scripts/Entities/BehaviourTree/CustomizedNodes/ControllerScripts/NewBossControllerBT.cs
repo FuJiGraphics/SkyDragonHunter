@@ -56,6 +56,18 @@ namespace SkyDragonHunter.Entities
                 bossStatus.status.ResetAll();
             }
         }
+
+        public BigNum MaxATK
+        {
+            get => bossStatus.status.MaxDamage;
+            set
+            {
+                bossStatus.status.MaxDamage = value;
+                bossStatus.status.Damage = value;
+                bossStatus.status.ResetAll();
+            }
+        }
+
         public bool IsSkillAvailable => false;
         //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
