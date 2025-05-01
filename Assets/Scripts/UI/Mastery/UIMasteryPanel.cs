@@ -109,6 +109,13 @@ namespace SkyDragonHunter.UI {
 
         public void OnNodeLevelUp()
         {
+            if (AccountMgr.ItemCount(Tables.ItemType.MasteryLevelUp) <= 0)
+            {
+                DrawableMgr.Dialog("Alert", "마스터리 레벨업 재료가 부족합니다.");
+                return;
+            }
+
+            AccountMgr.AddItemCount(Tables.ItemType.MasteryLevelUp, -1);
             if (m_CilckedNode != null)
             {
                 m_CilckedNode.SocketLevelUp();
