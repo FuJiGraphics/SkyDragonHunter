@@ -46,6 +46,8 @@ namespace SkyDragonHunter.UI {
         {
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+            AccountMgr.RemoveNicknameChangedEvent(OnChangedAccountNickname);
+            AccountMgr.RemoveLevelUpEvent(OnAccountLevelUpEvent);
         }
 
         // Public 메서드
@@ -59,11 +61,26 @@ namespace SkyDragonHunter.UI {
                 node.NextArrowIcon = m_NextArrowIcon;
                 node.LevelUpIcon = m_LevelUpIcon;
             }
+
+            AccountMgr.AddNicknameChangedEvent(OnChangedAccountNickname);
+            AccountMgr.AddLevelUpEvent(OnAccountLevelUpEvent);
+            m_AccountLevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
+            m_AccountNicknameText.text = AccountMgr.Nickname;
             m_AirshipStats = GameMgr.FindObject<CharacterStatus>("Airship");
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
             m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+        }
+
+        public void OnChangedAccountNickname(string nickname)
+        {
+            m_AccountNicknameText.text = nickname;
+        }
+
+        public void OnAccountLevelUpEvent()
+        {
+            m_AccountLevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
         }
 
         public void OnChangedAirshipMaxDamage(BigNum stats)

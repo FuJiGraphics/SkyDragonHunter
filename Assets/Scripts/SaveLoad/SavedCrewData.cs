@@ -2,9 +2,7 @@ using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.TestTools.CodeCoverage;
 using UnityEngine;
 
 namespace SkyDragonHunter.SaveLoad 

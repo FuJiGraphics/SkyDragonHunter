@@ -3,6 +3,7 @@ using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers
@@ -12,6 +13,7 @@ namespace SkyDragonHunter.Managers
     {
         // 필드 (Fields)
         private static Dictionary<string, List<GameObject>> m_LoadObjects;
+        private static bool s_AddressablesInitialized = false;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -20,9 +22,20 @@ namespace SkyDragonHunter.Managers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
+            InitializeAddressablesIfNeeded();
+
             Debug.Log("GameMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
+        private static void InitializeAddressablesIfNeeded()
+        {
+            if (!s_AddressablesInitialized)
+            {
+                Addressables.InitializeAsync().WaitForCompletion();
+                s_AddressablesInitialized = true;
+            }
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)

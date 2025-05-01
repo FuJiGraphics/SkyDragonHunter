@@ -3,7 +3,6 @@ using SkyDragonHunter.Tables;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 namespace SkyDragonHunter.UI {
 

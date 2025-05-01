@@ -5,7 +5,6 @@ using UnityEngine;
 using TMPro;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Structs;
-using NPOI.OpenXmlFormats.Dml.Diagram;
 
 namespace SkyDragonHunter.UI {
 
@@ -77,10 +76,10 @@ namespace SkyDragonHunter.UI {
             InsertAllNodeIntoLevels();
             DirtyMastery();
 
-            m_NicknameText.text = AccountMgr.Nickname;
-            m_LevelText.text = AccountMgr.CurrentLevel.ToString();
             AccountMgr.AddLevelUpEvent(OnAccountLevelUp);
             AccountMgr.AddNicknameChangedEvent(OnChangedNickname);
+            m_NicknameText.text = AccountMgr.Nickname;
+            m_LevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
             var airship = GameMgr.FindObject<CharacterStatus>("Airship");
             airship.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             airship.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
@@ -90,7 +89,7 @@ namespace SkyDragonHunter.UI {
 
         public void OnAccountLevelUp()
         {
-            m_LevelText.text = AccountMgr.CurrentLevel.ToString();
+            m_LevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
         }
 
         public void OnChangedNickname(string newNickname)
