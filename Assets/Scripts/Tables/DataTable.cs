@@ -30,7 +30,7 @@ namespace SkyDragonHunter.Tables {
         public void Load(string fileName)
         {
             var path = string.Format(FormatPath, fileName);
-            var textAsset = ResourcesMgr.Load<TextAsset>(path);
+            var textAsset = Resources.Load<TextAsset>(path);
             LoadFromText(textAsset.text);
         }
 

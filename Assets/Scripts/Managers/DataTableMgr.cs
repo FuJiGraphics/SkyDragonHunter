@@ -32,25 +32,7 @@ namespace SkyDragonHunter.Managers
         // Static Constructor
         static DataTableMgr()
         {
-            Tables = new Dictionary<string, DataTable>();
-            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTable>(DataTableIds.Crew);
-            LoadTable<MonsterTable>(DataTableIds.Monster);
-            LoadTable<BossTable>(DataTableIds.Boss);
-            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
-            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
-            LoadTable<AilmentTable>(DataTableIds.Ailment);
-            LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-            LoadTable<ItemTable>(DataTableIds.Item);
-            LoadTable<StageTable>(DataTableIds.Stage);
-            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
-            LoadTable<WaveTable>(DataTableIds.Wave);
-            LoadTable<RepairTableTemplate>(DataTableIds.Repair);
-            LoadTable<GoldShopTable>(DataTableIds.GoldShop);
-            LoadTable<DiamondShopTable>(DataTableIds.DiamondShop);
-            LoadTable<RerollShopTable>(DataTableIds.RerollShop);
-            // LoadTable<ArtifactTable>(DataTableIds.Artifact);
-            // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
+            // Tables = new Dictionary<string, DataTable>();
         }
 
         public static void ForceAwake()
@@ -58,14 +40,14 @@ namespace SkyDragonHunter.Managers
             // does nothing, tool to trigger static constructor
         }
 
-        public static void InitOnSceneLoaded(Scene scene)
+        public static void InitOnSceneLoaded(string sceneName)
         {
-            switch ((SceneIds)scene.buildIndex)
+            switch (sceneName)
             {
-                case SceneIds.GameScene:
+                case "GameScene":
                     InitForGameScene();
                     break;
-                case SceneIds.DungeonScene:
+                case "DungeonScene":
                     InitForDungeonScene();
                     break;
             }

@@ -21,6 +21,22 @@ namespace SkyDragonHunter {
 
         // 속성 (Properties)
         public GameObject[] EquipSlots => m_EquipSlots;
+        public bool IsEquip
+        {
+            get
+            {
+                bool result = false;
+                foreach (var slot in m_MountableSlots)
+                {
+                    if (!slot.IsEmpty())
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+                return result;
+            }
+        }
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

@@ -82,6 +82,13 @@ namespace SkyDragonHunter {
                 return;
             }
 
+            // TODO: 임시적으로 단원 장착 시에만 발사하도록 조건
+            if (TryGetComponent<CrewEquipmentController>(out var crewEquipComp))
+            {
+                if (!crewEquipComp.IsEquip)
+                    return;
+            }
+
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
                 return;
             if (m_EnemySearchProvider.Target == null)

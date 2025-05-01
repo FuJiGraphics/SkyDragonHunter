@@ -25,16 +25,22 @@ namespace SkyDragonHunter.Managers
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
-            s_SampleExplosionEffect = Resources.Load<GameObject>("Prefabs/SampleExplosionEffect");
+            if (scene.name == "GameScene" || scene.name == "DungeonScene")
+            {
+                Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
+                Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
+                s_SampleExplosionEffect = Resources.Load<GameObject>("Prefabs/SampleExplosionEffect");
+            }
         }
 
         private static void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
-            s_SampleExplosionEffect = null;
-            Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
+            if (scene.name == "GameScene" || scene.name == "DungeonScene")
+            {
+                Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
+                s_SampleExplosionEffect = null;
+                Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
+            }
         }
 
         public static void Play(Vector2 position, float radius, float duration)

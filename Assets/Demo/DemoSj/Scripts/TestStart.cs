@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,9 @@ namespace SkyDragonHunter {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        public void OnStartLoadingScene()
+        public void OnStart()
         {
-            SceneManager.LoadScene(loadingSceneName);
+            SceneMgr.LoadScene(loadingSceneName);
         }
         // Public 메서드
         // Private 메서드

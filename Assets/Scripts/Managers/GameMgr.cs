@@ -22,14 +22,12 @@ namespace SkyDragonHunter.Managers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            InitializeAddressablesIfNeeded();
-
             Debug.Log("GameMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
-        private static void InitializeAddressablesIfNeeded()
+        public static void InitializeAddressablesIfNeeded()
         {
             if (!s_AddressablesInitialized)
             {
@@ -40,32 +38,34 @@ namespace SkyDragonHunter.Managers
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (!Application.isPlaying)
-                return;
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
             Application.targetFrameRate = 60;
-            m_LoadObjects = new Dictionary<string, List<GameObject>>();
-            DataTableMgr.InitOnSceneLoaded(scene);
-            //ItemTable.Init();
-            AccountMgr.Init();
-            GameMgr.LoadedRegisterObjects();
-            AccountMgr.LateInit();
-            AccountMgr.LoadUserData(scene.name);
-            SaveLoadMgr.Init();
-            SaveLoadMgr.LoadGameData();
+
+            DataTableMgr.InitOnSceneLoaded(scene.name);
+            if (scene.name != "LoadingScene" && scene.name != "StartScene")
+            {
+                m_LoadObjects = new Dictionary<string, List<GameObject>>();
+                //ItemTable.Init();
+                AccountMgr.Init();
+                GameMgr.LoadedRegisterObjects();
+                AccountMgr.LateInit();
+                AccountMgr.LoadUserData(scene.name);
+                SaveLoadMgr.Init();
+                SaveLoadMgr.LoadGameData();
+            }
         }
 
         private static void OnSceneUnloaded(Scene scene)
         {
-            if (!Application.isPlaying)
-                return;
-
-            SaveLoadMgr.SaveGameData();
-            Debug.Log($"[GameMgr] Load된 Object 정리 중");
-            DataTableMgr.Release();
-            AccountMgr.Release();
-            m_LoadObjects.Clear();
-            Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
+            if (scene.name != "LoadingScene" && scene.name != "StartScene")
+            {
+                SaveLoadMgr.SaveGameData();
+                Debug.Log($"[GameMgr] Load된 Object 정리 중");
+                DataTableMgr.Release();
+                AccountMgr.Release();
+                m_LoadObjects.Clear();
+                Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
+            }
         }
 
         public static bool RegisterObject(string id, GameObject obj)
