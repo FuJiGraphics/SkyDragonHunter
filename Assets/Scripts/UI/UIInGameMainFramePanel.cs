@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.Tables;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;

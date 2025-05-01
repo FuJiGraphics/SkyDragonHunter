@@ -1,24 +1,57 @@
-using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
-using System.Collections;
+using SkyDraonHunter.Utility;
 using System.Collections.Generic;
-using System.Data;
-using UnityEngine;
 
 namespace SkyDragonHunter.Tables {
 
-    public class  ArtifactData : DataTableData
+    public enum ArtifactGrade
     {
-        // public int ID { get; set; }
-        public string Name { get; set; }
-        public Rank ArtifactRank { get; set; }
-        public StatType OwnedBonusType { get; set; }
-        public double InitialOwnedValue { get; set; }
-        public double IncreasingOwnedValue { get; set; }
+        Rare,
+        Epic,
+        Unique,
+        Legend,
+    }
+
+    public enum ArtifactHoldStatType
+    {
+        Damage,
+        Health,
+        Armor,
+        Resilient,
+        CriticalChance,
+        CriticalMultiplier,
+        BossMultiplier,
+        SkillEffectMultiplier,
+    }
+
+    public class ArtifactData : DataTableData
+    {
+        public ArtifactGrade Grade { get; set; }
+        public ArtifactHoldStatType StatType { get; set; }
+        public BigNum StatValue { get; set; }
     }
 
     public class ArtifactTable : DataTable<ArtifactData>
-    {        
+    {
+        public Dictionary<ArtifactGrade, List<ArtifactData>> m_Cache = new();
+        
+        public ArtifactData Random(ArtifactGrade grade)
+        {
+            if (!m_Cache.ContainsKey(grade))
+            {
+                m_Cache.Add(grade, new());
+                foreach (var data in m_dict)
+                {
+                    if (data.Value.Grade == grade)
+                    {
+                        m_Cache[grade].Add(data.Value);
+                    }
+                }
+            }
+            return RandomMgr.Random(m_Cache[grade]);
+        }
+    
     } // Scope by class ArtifactTable
 
 } // namespace Root

@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,7 +52,6 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[GameMgr] Load된 Object 정리 중");
             DataTableMgr.Release();
             AccountMgr.Release();
-            ItemTable.Release();
             m_LoadObjects.Clear();
             Debug.Log($"[GameMgr] 씬 언로드됨: {scene.name}");
         }

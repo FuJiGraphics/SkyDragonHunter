@@ -15,11 +15,12 @@ namespace SkyDragonHunter.Managers
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
         public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
         public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
+        public static AdditionalStatTable AdditionalStatTable => Get<AdditionalStatTable>(DataTableIds.AdditionalStat);
         public static MasteryNodeTable MasteryNodeTable => Get<MasteryNodeTable>(DataTableIds.MasteryNode);
         public static MasterySocketTable MasterySocketTable => Get<MasterySocketTable>(DataTableIds.MasterySocket);
         public static AilmentTable AilmentTable => Get<AilmentTable>(DataTableIds.Ailment);
         public static DefaultGrowthTable DefaultGrowthTable => Get<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-        public static ItemTableTemplate ItemTable => Get<ItemTableTemplate>(DataTableIds.Item);
+        public static ItemTable ItemTable => Get<ItemTable>(DataTableIds.Item);
         public static StageTable StageTable => Get<StageTable>(DataTableIds.Stage);
         public static AFKRewardTable AFKRewardTable => Get<AFKRewardTable>(DataTableIds.AFKReward);
         public static WaveTable WaveTable => Get<WaveTable>(DataTableIds.Wave);
@@ -37,11 +38,13 @@ namespace SkyDragonHunter.Managers
             LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-            LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<ItemTable>(DataTableIds.Item);
             LoadTable<StageTable>(DataTableIds.Stage);
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            // LoadTable<ArtifactTable>(DataTableIds.Artifact);
+            // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
         public static void ForceAwake()
@@ -73,11 +76,13 @@ namespace SkyDragonHunter.Managers
             LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
             LoadTable<AilmentTable>(DataTableIds.Ailment);
             LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
-            LoadTable<ItemTableTemplate>(DataTableIds.Item);
+            LoadTable<ItemTable>(DataTableIds.Item);
             LoadTable<StageTable>(DataTableIds.Stage);
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            // LoadTable<ArtifactTable>(DataTableIds.Artifact);
+            // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
         private static void InitForDungeonScene()

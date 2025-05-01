@@ -1,13 +1,12 @@
-using Newtonsoft.Json;
-using SkyDragonHunter.SaveLoad;
+using SkyDragonHunter.Tables.Generic;
 using System;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace SkyDragonHunter.Structs
 {
-
-    [JsonConverter(typeof(BigNumConverter))]
+    //[JsonConverter(typeof(BigNumConverter))]
     [Serializable]
     public struct BigNum : IComparable<BigNum>, IEquatable<BigNum>, ISerializationCallbackReceiver
     {

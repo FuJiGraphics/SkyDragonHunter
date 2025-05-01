@@ -428,7 +428,7 @@ namespace SkyDragonHunter
                         bool isGenerateDungenTicket = randVal < 0.7f;
                         if (isGenerateDungenTicket)
                         {
-                            AccountMgr.Ticket += 1;
+                            AccountMgr.WaveDungeonTicket += 1;
                         }
                     });
 

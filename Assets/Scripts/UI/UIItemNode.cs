@@ -1,7 +1,5 @@
-using SkyDragonHunter.Database;
-using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Tables;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +21,7 @@ namespace SkyDragonHunter.UI {
         public string ItemName => m_Item.Name;
         public string ItemDesc => m_Item.Desc;
         public ItemType ItemType => m_Item.Type;
-        public ItemUnit UnitType => m_Item.UnitType;
+        public ItemUnit UnitType => m_Item.Unit;
         public Button ClickButton => m_ItemClickButton;
 
         // 외부 종속성 필드 (External dependencies field)
@@ -34,7 +32,7 @@ namespace SkyDragonHunter.UI {
         {
             m_Item = item;
             m_ItemIcon.sprite = item.Icon;
-            switch (item.UnitType)
+            switch (item.Unit)
             {
                 case ItemUnit.Number:
                     m_ItemCountText.text = AccountMgr.ItemCount(ItemType).ToString();

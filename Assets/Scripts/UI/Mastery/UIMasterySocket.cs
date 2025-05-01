@@ -17,9 +17,9 @@ namespace SkyDragonHunter.UI {
         Health = 1, 
         Armor = 2, 
         Resilient = 3,
-        CriticalMultiplier = 5,
-        BossDamageMultiplier = 6,
-        SkillEffectMultiplier = 7,
+        CriticalMultiplier = 4,
+        BossDamageMultiplier = 5,
+        SkillEffectMultiplier = 6,
     }
 
     // 소켓은 생성된 후 절대 게임 도중 메모리에서 제외되면 안됩니다.
@@ -117,7 +117,7 @@ namespace SkyDragonHunter.UI {
         {
             int resultCount = 1;
 
-            int safeMaxLoopCount = 100;
+            int safeMaxLoopCount = 100000;
             int next = NextID;
             for (int i = 0; i < safeMaxLoopCount; ++i)
             {

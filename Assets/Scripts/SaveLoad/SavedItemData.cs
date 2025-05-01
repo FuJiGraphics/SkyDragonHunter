@@ -1,16 +1,14 @@
-using SkyDragonHunter.Database;
+using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
-using System;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
 
 namespace SkyDragonHunter.SaveLoad
 {
     public class SavedItem
     {
-        public ItemTableData itemData;
+        public ItemData itemData;
         public BigNum count;
     }
 
@@ -61,8 +59,8 @@ namespace SkyDragonHunter.SaveLoad
                     case ItemType.Diamond:
                         item.count = AccountMgr.Diamond;
                         break;
-                    case ItemType.Ticket:
-                        item.count = AccountMgr.Ticket;
+                    case ItemType.WaveDungeonTicket:
+                        item.count = AccountMgr.WaveDungeonTicket;
                         break;
                 }
             }
@@ -82,8 +80,8 @@ namespace SkyDragonHunter.SaveLoad
                     case ItemType.Diamond:
                         AccountMgr.Diamond = item.count;
                         break;
-                    case ItemType.Ticket:
-                        AccountMgr.Ticket = item.count;
+                    case ItemType.WaveDungeonTicket:
+                        AccountMgr.WaveDungeonTicket = item.count;
                         break;
                 }
             }

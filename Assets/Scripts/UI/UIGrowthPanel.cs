@@ -42,6 +42,12 @@ namespace SkyDragonHunter.UI {
             }
         }
 
+        private void OnDestroy()
+        {
+            m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+        }
+
         // Public 메서드
         public void Init()
         {
@@ -54,7 +60,20 @@ namespace SkyDragonHunter.UI {
                 node.LevelUpIcon = m_LevelUpIcon;
             }
             m_AirshipStats = GameMgr.FindObject<CharacterStatus>("Airship");
-            UpdateAirshipAndAccountInfo();
+            m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+            m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+        }
+
+        public void OnChangedAirshipMaxDamage(BigNum stats)
+        {
+            m_AttackInfoText.text = stats.ToUnit();
+        }
+
+        public void OnChangedAirshipMaxHealth(BigNum stats)
+        {
+            m_HealthInfoText.text = stats.ToUnit();
         }
 
         public void OnLevelUp(UIGrowthNode node)
@@ -88,7 +107,6 @@ namespace SkyDragonHunter.UI {
                     break;
             }
             AccountMgr.DirtyAccountAndAirshipStat();
-            UpdateAirshipAndAccountInfo();
             UpdateNodeLevelUpArrowState();
         }
 
@@ -97,9 +115,9 @@ namespace SkyDragonHunter.UI {
             m_LevelUpInc = 1;
             ClearAllClickableIcons();
             m_ClickableIcons[0].SetActive(true);
-            UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -109,9 +127,9 @@ namespace SkyDragonHunter.UI {
             m_LevelUpInc = 10;
             ClearAllClickableIcons();
             m_ClickableIcons[1].SetActive(true);
-            UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -121,9 +139,9 @@ namespace SkyDragonHunter.UI {
             m_LevelUpInc = 100;
             ClearAllClickableIcons();
             m_ClickableIcons[2].SetActive(true);
-            UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -133,9 +151,9 @@ namespace SkyDragonHunter.UI {
             m_LevelUpInc = 1000;
             ClearAllClickableIcons();
             m_ClickableIcons[3].SetActive(true);
-            UpdateAirshipAndAccountInfo();
             foreach (var node in growthNodes)
             {
+                node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
             }
             UpdateNodeLevelUpArrowState();
@@ -150,7 +168,6 @@ namespace SkyDragonHunter.UI {
             {
                 node.DirtyUI();
             }
-            UpdateAirshipAndAccountInfo();
         }
         
         public void OnClearAllNodes()
@@ -164,7 +181,6 @@ namespace SkyDragonHunter.UI {
             }
             AccountMgr.DefaultGrowthStats.ResetAllZero();
             AccountMgr.DirtyAccountAndAirshipStat();
-            UpdateAirshipAndAccountInfo();
         }
 
         // Private 메서드

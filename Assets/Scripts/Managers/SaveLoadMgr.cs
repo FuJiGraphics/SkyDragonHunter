@@ -53,7 +53,12 @@ namespace SkyDragonHunter.Managers
                 Formatting = Formatting.Indented,
                 TypeNameHandling = TypeNameHandling.All,
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
+            jsonSettings.Converters.Add(new Vector3Converter());
+            jsonSettings.Converters.Add(new BigNumConverter());
+            jsonSettings.Converters.Add(new ItemTableDataConverter());
+            jsonSettings.Converters.Add(new CrewTableDataConverter());
 
             GameData = new GameSaveDataVC();
             LocalSettingData = new LocalSettingSaveDataVC();

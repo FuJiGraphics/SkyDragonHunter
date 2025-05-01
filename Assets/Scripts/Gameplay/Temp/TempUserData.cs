@@ -1,8 +1,5 @@
-using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Interfaces;
-using SkyDragonHunter.Utility;
-using System.Collections;
+using SkyDragonHunter.Tables;
 using System.Collections.Generic;
 using UnityEngine;
 

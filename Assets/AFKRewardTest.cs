@@ -65,6 +65,7 @@ public class AFKRewardTest : MonoBehaviour
         var waveControllerGo = GameMgr.FindObject("WaveController");
         m_WaveController = waveControllerGo.GetComponent<TestWaveController>();
     }
+
     private void AddListeners()
     {
         m_AFKButton.onClick.AddListener(OnClickAFKButton);

@@ -106,11 +106,11 @@ namespace SkyDragonHunter.Tables.Generic {
         // 필드 (Fields)
         protected Dictionary<int, T> m_dict = new Dictionary<int, T>();
         
-        // Properties
         public T First => m_dict.First().Value;
-        public int Count => m_dict.Count();
-        public List<int> Keys => m_dict.Keys.ToList();
-        public List<T> Values => m_dict.Values.ToList();
+        public Dictionary<int, T>.ValueCollection Values => m_dict.Values;
+        public List<T> ToList() => m_dict.Values.ToList();
+        public T[] ToArray() => new SortedDictionary<int, T>(m_dict).Values.ToArray();
+        public int Count => m_dict.Count;
 
         // Public 메서드
         [Obsolete("LoadCSV<T> Method is unavailable in DataTable<T>, please use non-generic LoadCSV instead", true)]
