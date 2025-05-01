@@ -183,6 +183,36 @@ namespace SkyDragonHunter.Entities
             isMounted = mounted;
         }
 
+        public void SetDataFromTableWithExistingIDTemp(int level)
+        {
+            Debug.LogWarning($"Starting Crew SetData ID/LVL[{ID}/{level}]");
+            var lvlBonus = Mathf.Min(0, level - 1);
+
+            var crewData = DataTableMgr.CrewTable.Get(ID);
+
+            Debug.LogWarning($"CrewData = {crewData}");
+
+            gameObject.name = crewData.UnitName;
+
+            var health = crewData.UnitbasicHP;
+            health += crewData.LevelBracketHP * lvlBonus;
+            crewStatus.status.MaxHealth = health;
+
+            var atk = crewData.UnitbasicATK;
+            atk += crewData.LevelBracketATK * lvlBonus;
+            crewStatus.status.MaxDamage = atk;
+
+            var def = crewData.UnitbasicDEF;
+            def += crewData.LevelBracketDEF * lvlBonus;
+            crewStatus.status.MaxArmor = def;
+
+            var reg = crewData.UnitbasicREC;
+            reg += crewData.LevelBracketREC * lvlBonus;
+            crewStatus.status.MaxResilient = reg;
+
+            crewStatus.status.ResetAll();
+        }
+
         // Private Methods
         private void Init()
         {

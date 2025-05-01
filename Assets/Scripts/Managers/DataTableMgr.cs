@@ -1,6 +1,8 @@
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers 
 {
@@ -9,7 +11,7 @@ namespace SkyDragonHunter.Managers
         // 속성 (Properties)
         public static Dictionary<string, DataTable> Tables { get; private set; }
         public static CrystalLevelTable CrystalLevelTable => Get<CrystalLevelTable>(DataTableIds.CrystalLevel);
-        public static CrewTableTemplate CrewTable => Get<CrewTableTemplate>(DataTableIds.Crew);
+        public static CrewTable CrewTable => Get<CrewTable>(DataTableIds.Crew);
         public static MonsterTable MonsterTable => Get<MonsterTable>(DataTableIds.Monster);
         public static BossTable BossTable => Get<BossTable>(DataTableIds.Boss);
         public static ArtifactTable ArtifactTable => Get<ArtifactTable>(DataTableIds.Artifact);
@@ -51,11 +53,34 @@ namespace SkyDragonHunter.Managers
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
-        public static void InitForGameScene()
+        public static void ForceAwake()
         {
-            Tables = new Dictionary<string, DataTable>();
+            // does nothing, tool to trigger static constructor
+        }
+
+        public static void InitOnSceneLoaded(Scene scene)
+        {
+            switch ((SceneIds)scene.buildIndex)
+            {
+                case SceneIds.GameScene:
+                    InitForGameScene();
+                    break;
+                case SceneIds.DungeonScene:
+                    InitForDungeonScene();
+                    break;
+            }
+        }
+
+        private static void InitForGameScene()
+        {
+            if (Tables != null && Tables.Count != 0)
+                return;
+            if (Tables == null)
+                Tables = new Dictionary<string, DataTable>();
+            else
+                Tables.Clear();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
+            LoadTable<CrewTable>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
             LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
@@ -74,6 +99,28 @@ namespace SkyDragonHunter.Managers
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
+        private static void InitForDungeonScene()
+        {
+            if (Tables != null && Tables.Count != 0)
+                return;
+            if (Tables == null)
+                Tables = new Dictionary<string, DataTable>();
+            else
+                Tables.Clear();
+            LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
+            LoadTable<CrewTable>(DataTableIds.Crew);
+            LoadTable<MonsterTable>(DataTableIds.Monster);
+            LoadTable<BossTable>(DataTableIds.Boss);
+            LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);
+            LoadTable<MasteryNodeTable>(DataTableIds.MasteryNode);
+            LoadTable<AilmentTable>(DataTableIds.Ailment);
+            LoadTable<DefaultGrowthTable>(DataTableIds.DefaultGrowth);
+            LoadTable<ItemTable>(DataTableIds.Item);
+            LoadTable<StageTable>(DataTableIds.Stage);
+            LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
+            LoadTable<WaveTable>(DataTableIds.Wave);
+            LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+        }
 
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
@@ -98,7 +145,7 @@ namespace SkyDragonHunter.Managers
             Tables.Add(id, table);
         }
 
-        public static void UnloadAll()
+        public static void Release()
         {
             Tables.Clear();
         }

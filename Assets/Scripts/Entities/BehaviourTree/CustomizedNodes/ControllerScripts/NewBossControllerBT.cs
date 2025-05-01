@@ -29,7 +29,7 @@ namespace SkyDragonHunter.Entities
         private BehaviourTree<NewBossControllerBT> m_BehaviourTree;
         private float slowMultiplier;
 
-        private int projectileId;
+        private string projectileId;
 
 
 
@@ -100,6 +100,11 @@ namespace SkyDragonHunter.Entities
         {
             Init();
         }
+        private void Start()
+        {
+            InitBehaviourTree();
+        }
+
         private void Update()
         {
             m_BehaviourTree.Update();
@@ -196,13 +201,15 @@ namespace SkyDragonHunter.Entities
             {
                 Debug.LogError($"Airship Null");
             }
-            SetDataFromTable(ID);
-            InitBehaviourTree();
         }
 
-        private void SetDataFromTable(int id)
+        public void SetDataFromTable(int id)
+            => SetDataFromTable(id, 1, 1);
+
+        public void SetDataFromTable(int id, BigNum hpMultipler, BigNum atkMultiplier)
         {
             ID = id;
+
             var data = DataTableMgr.BossTable.Get(id);
             if (data == null)
             {
@@ -210,12 +217,10 @@ namespace SkyDragonHunter.Entities
                 return;
             }
 
-            name = data.Name;
+            name = "(Boss)"+data.Name;
             m_AttackType = data.Type;
-            bossStatus.status.MaxHealth = data.HP;
-            bossStatus.status.MaxDamage = data.ATK;
-            bossStatus.status.MaxArmor = data.DEF;
-            bossStatus.status.MaxResilient = data.REG;
+            bossStatus.status.MaxHealth = data.HP * hpMultipler;
+            bossStatus.status.MaxDamage = data.ATK * atkMultiplier;
             projectileId = data.ProjectileID;
             bossStatus.attackInterval = data.AttackInterval;
             bossStatus.attackRange = data.AttackRange;

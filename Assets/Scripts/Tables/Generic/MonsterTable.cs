@@ -11,7 +11,7 @@ namespace SkyDragonHunter.Tables
         public double ATK { get; set; }
         public float AttackInterval { get; set; }
         public MonsterType Type { get; set; }
-        public int ProjectileID { get; set; }
+        public string ProjectileID { get; set; }
         public float AttackRange { get; set; }
         public float AggroRange { get; set; }
         public float Speed { get; set; }

@@ -19,25 +19,25 @@ namespace SkyDragonHunter.Tables {
         public int Zone { get; set; }
         public int WaveTableID { get; set; }
         public float WaveDistance { get; set; }
-        public float MonsterMultiplierHP { get; set; }
-        public float MonsterMultiplierATK { get; set; }
+        public BigNum MonsterMultiplierHP { get; set; }
+        public BigNum MonsterMultiplierATK { get; set; }
         public BigNum MonsterGOLD { get; set; }
         public BigNum MonsterEXP { get; set; }
         public TreasureDropGrade_Temp TreasureDropGrade { get; set; }
         public float WaveLength { get; set; }
         public int ChallengeBossID { get; set; }
-        public float BossMultiplierHP { get; set; }
-        public float BossMultiplierATK { get; set; }
+        public BigNum BossMultiplierHP { get; set; }
+        public BigNum BossMultiplierATK { get; set; }
         public string ClearRewardGold { get; set; }
         public string ClearRewardEXP { get; set; }
         public int ClearRewardDiamond { get; set; }
         public TreasureDropGrade_Temp ClearRewardTreasureGrade { get; set; }
         public int ClearStageID { get; set; }
-        public int FailStageID { get; set; }
         public int AFKRewardTableID { get; set; }
-        public string GroundImg { get; set; }
-        public string BackgroundImg1 {  get; set; }
-        public string BackgroundImg2 { get; set; }
+        public int FailStageID { get; set; }
+        public string ForeGround { get; set; }
+        public string MidGround {  get; set; }
+        public string BackGround { get; set; }
     }
     public class StageTable : DataTable<StageData>
     {

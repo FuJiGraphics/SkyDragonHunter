@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Structs;
@@ -567,9 +568,32 @@ namespace SkyDragonHunter.Managers
                 foreach (var crew in comp.crewDataPrefabs)
                 {
                     GameObject instance = GameObject.Instantiate<GameObject>(crew);
+
+                    // TODO: LJH
+                    if (instance != null)
+                    {
+                        var crewBT = instance.GetComponent<NewCrewControllerBT>();
+
+                        if (SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(crewBT.ID, out var level))
+                        {
+                            crewBT.SetDataFromTableWithExistingIDTemp(level);
+                            Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
+                        }
+                        else
+                        {
+                            Debug.LogError($"Crew Not Set To SaveData");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"Crew Prefab Null");
+                    }
+                    // ~TODO
+
                     SyncCrewData(instance);
-                    RegisterCrew(instance);
-                    instance.GetComponent<AccountStatProvider>().Init();
+                    RegisterCrew(instance);                    
+
+                    instance.GetComponent<AccountStatProvider>().Init();                    
                     instance.SetActive(false);
                 }
                 #endregion
@@ -667,6 +691,7 @@ namespace SkyDragonHunter.Managers
                                 break;
                             }
                         }
+
                         SaveEquipStorage saveData = new SaveEquipStorage();
                         saveData.slotIndex = slotIndex;
                         saveData.crewPrefab = crewPrefab;

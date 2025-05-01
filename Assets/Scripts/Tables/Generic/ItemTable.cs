@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.Tables {
+namespace SkyDragonHunter.Tables
+{
 
     public enum ItemType
     {
