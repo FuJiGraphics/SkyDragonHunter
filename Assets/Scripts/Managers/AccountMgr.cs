@@ -78,7 +78,8 @@ namespace SkyDragonHunter.Managers
                 if (!s_HeldItems.ContainsKey(ItemType.Diamond))
                     s_HeldItems.Add(ItemType.Diamond, 0);
                 s_HeldItems[ItemType.Diamond] = value;
-                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();                
+                s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();
+                onItemCountChangedEvents?.Invoke(ItemType.Diamond);
             }
         }
 
@@ -95,6 +96,7 @@ namespace SkyDragonHunter.Managers
                 if (!s_HeldItems.ContainsKey(ItemType.WaveDungeonTicket))
                     s_HeldItems.Add(ItemType.WaveDungeonTicket, 0);
                 s_HeldItems[ItemType.WaveDungeonTicket] = value;
+                onItemCountChangedEvents?.Invoke(ItemType.WaveDungeonTicket);
             }
         }
 
@@ -223,6 +225,16 @@ namespace SkyDragonHunter.Managers
             return s_HeldItems[type];
         }
 
+        public static void AddItemCount(ItemType type, BigNum count)
+        {
+            if (!s_HeldItems.ContainsKey(type))
+            {
+                s_HeldItems.Add(type, 0);
+            }
+            s_HeldItems[type] += count;
+            onItemCountChangedEvents?.Invoke(type);
+        }
+
         public static void SetItemCount(ItemType type, BigNum count)
         {
             if (!s_HeldItems.ContainsKey(type))
@@ -230,6 +242,7 @@ namespace SkyDragonHunter.Managers
                 s_HeldItems.Add(type, 0);
             }
             s_HeldItems[type] = count;
+            onItemCountChangedEvents?.Invoke(type);
         }
 
         public static void LoadLevel(int id)

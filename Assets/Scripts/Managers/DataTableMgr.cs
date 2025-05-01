@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Managers
         {
             Tables = new Dictionary<string, DataTable>();
             LoadTable<CrystalLevelTable>(DataTableIds.CrystalLevel);
-            LoadTable<CrewTableTemplate>(DataTableIds.Crew);
+            LoadTable<CrewTable>(DataTableIds.Crew);
             LoadTable<MonsterTable>(DataTableIds.Monster);
             LoadTable<BossTable>(DataTableIds.Boss);
             LoadTable<MasterySocketTable>(DataTableIds.MasterySocket);

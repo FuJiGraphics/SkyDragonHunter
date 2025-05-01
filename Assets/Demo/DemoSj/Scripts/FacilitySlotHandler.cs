@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using SkyDragonHunter.Managers;
 
 namespace SkyDragonHunter.UI {
 
@@ -31,12 +32,13 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Awake()
+        private void Start()
         {
             // acquireButton에 붙은 이미지 컴포넌트 캐싱
             itemIcon = acquireButton.GetComponent<Image>();
             isLevelUpCompleteReady = true;
         }
+
         // Public 메서드
         // 슬롯 초기화 메서드
         public void Initialize(FacilitySystemMgr.FacilityData facilityData)
@@ -133,6 +135,8 @@ namespace SkyDragonHunter.UI {
             if (data.itemCount > 0)
             {
                 Debug.Log($"{data.itemToGenerate.ItemName}을 {data.itemCount}만큼 획득했습니다.");
+                AccountMgr.AddItemCount(data.itemToGenerate.itemType, data.itemCount);
+
                 bool wasFull = data.itemCount >= data.maxCount;
                 data.itemCount = 0;
 

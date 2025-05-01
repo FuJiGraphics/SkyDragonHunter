@@ -3,6 +3,7 @@ using SkyDragonHunter.Tables;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 namespace SkyDragonHunter.UI {
 
@@ -27,12 +28,35 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnDestroy()
+        {
+            AccountMgr.RemoveItemCountChangedEvent(OnChangedItemCountEvent);
+        }
+
         // Public 메서드
         public void Init(ItemData item)
         {
             m_Item = item;
             m_ItemIcon.sprite = item.Icon;
-            switch (item.Unit)
+            UpdateItemCountState();
+            AccountMgr.RemoveItemCountChangedEvent(OnChangedItemCountEvent);
+            AccountMgr.AddItemCountChangedEvent(OnChangedItemCountEvent);
+        }
+
+        public void SetSelectState(bool enabled)
+            => m_SelectOutline?.SetActive(enabled);
+
+        public void OnChangedItemCountEvent(ItemType type)
+        {
+            if (type == m_Item.Type)
+            {
+                UpdateItemCountState();
+            }
+        }
+
+        public void UpdateItemCountState()
+        {
+            switch (m_Item.Unit)
             {
                 case ItemUnit.Number:
                     m_ItemCountText.text = AccountMgr.ItemCount(ItemType).ToString();
@@ -42,10 +66,6 @@ namespace SkyDragonHunter.UI {
                     break;
             }
         }
-
-        public void SetSelectState(bool enabled)
-            => m_SelectOutline?.SetActive(enabled);
-
         // Private 메서드
         // Others
 
