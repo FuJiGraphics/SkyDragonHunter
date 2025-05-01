@@ -1,5 +1,6 @@
 using CsvHelper;
 using Org.BouncyCastle.Tls;
+using SkyDragonHunter.Managers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,12 +30,8 @@ namespace SkyDragonHunter.Tables {
         public void Load(string fileName)
         {
             var path = string.Format(FormatPath, fileName);
-            AsyncOperationHandle<TextAsset> handle = Addressables.LoadAssetAsync<TextAsset>(path);
-            handle.WaitForCompletion();
-
-            LoadFromText(handle.Result.text);
-
-            handle.Release();
+            var textAsset = ResourcesMgr.Load<TextAsset>(path);
+            LoadFromText(textAsset.text);
         }
 
         public abstract void LoadFromText(string text);

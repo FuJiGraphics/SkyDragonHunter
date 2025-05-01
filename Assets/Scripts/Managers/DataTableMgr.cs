@@ -23,6 +23,9 @@ namespace SkyDragonHunter.Managers
         public static AFKRewardTable AFKRewardTable => Get<AFKRewardTable>(DataTableIds.AFKReward);
         public static WaveTable WaveTable => Get<WaveTable>(DataTableIds.Wave);
         public static RepairTableTemplate RepairTable => Get<RepairTableTemplate>(DataTableIds.Repair);
+        public static GoldShopTable GoldShopTable => Get<GoldShopTable>(DataTableIds.GoldShop);
+        public static DiamondShopTable DiamondShopTable => Get<DiamondShopTable>(DataTableIds.DiamondShop);
+        public static RerollShopTable RerollShopTable => Get<RerollShopTable>(DataTableIds.RerollShop);
 
         // Static Constructor
         static DataTableMgr()
@@ -41,6 +44,9 @@ namespace SkyDragonHunter.Managers
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            LoadTable<GoldShopTable>(DataTableIds.GoldShop);
+            LoadTable<DiamondShopTable>(DataTableIds.DiamondShop);
+            LoadTable<RerollShopTable>(DataTableIds.RerollShop);
             // LoadTable<ArtifactTable>(DataTableIds.Artifact);
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
@@ -61,6 +67,9 @@ namespace SkyDragonHunter.Managers
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            LoadTable<GoldShopTable>(DataTableIds.GoldShop);
+            LoadTable<DiamondShopTable>(DataTableIds.DiamondShop);
+            LoadTable<RerollShopTable>(DataTableIds.RerollShop);
             // LoadTable<ArtifactTable>(DataTableIds.Artifact);
             // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }

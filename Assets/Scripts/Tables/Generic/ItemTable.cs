@@ -80,8 +80,11 @@ namespace SkyDragonHunter.Tables {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
-        public ItemTable()
+        public void Init()
         {
+            if (m_ItemMap != null)
+                return;
+
             m_ItemMap = new Dictionary<ItemType, ItemData>();
             var sortedList = base.ToArray();
             foreach (var element in sortedList)
@@ -91,7 +94,10 @@ namespace SkyDragonHunter.Tables {
         }
 
         public ItemData Get(ItemType type)
-            => m_ItemMap[type];
+        {
+            Init();
+            return m_ItemMap[type];
+        }
 
     } // Scope by class ItemTable
 } // namespace Root

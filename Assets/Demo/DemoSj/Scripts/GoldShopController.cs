@@ -19,18 +19,19 @@ namespace SkyDragonHunter.UI
     }
 
     [System.Serializable]
-    public class ItemSlotData
+    public struct ItemSlotData
     {
         [SerializeField] public ItemType itemType;
         [SerializeField] public float pullRate;
         [SerializeField] public int maxCount;
-        [SerializeField] public BigNum price;
         [SerializeField] public CurrencyType currencyType;
 
-        public string GetItemName() => GetData().Name;
-        public Sprite GetItemIcon() => GetData().Icon;
-        public Sprite GetCurrenyIcon() => currencyType == CurrencyType.Coin ?
+        public BigNum Price => 1;
+        public string ItemName => GetData().Name;
+        public Sprite ItemIcon => GetData().Icon;
+        public Sprite CurrenyIcon => currencyType == CurrencyType.Coin ?
             DataTableMgr.ItemTable.Get(ItemType.Coin).Icon : DataTableMgr.ItemTable.Get(ItemType.Diamond).Icon;
+
         public ItemData GetData() => DataTableMgr.ItemTable.Get(itemType);
     }
 
@@ -136,9 +137,8 @@ namespace SkyDragonHunter.UI
 
             for (int i = 0; i < slotHandlers.Count; i++)
             {
-                ItemSlotData selectedItem = GetWeightedRandomItem(goldShopItemPool);
-                if (selectedItem != null)
-                    result.Add(new ShopSlotState(selectedItem));
+                var selectedItem = GetWeightedRandomItem(goldShopItemPool);
+                result.Add(new ShopSlotState((ItemSlotData)selectedItem));
             }
 
             categoryItems[category] = result;
@@ -156,9 +156,9 @@ namespace SkyDragonHunter.UI
         }
 
         // 출현 확률(pullRate)을 기반으로 하나의 아이템을 선택
-        private ItemSlotData GetWeightedRandomItem(List<ItemSlotData> pool)
+        private ItemSlotData? GetWeightedRandomItem(List<ItemSlotData> pool)
         {
-            var valid = pool.Where(p => p != null).ToList();
+            var valid = pool.ToList();
             if (valid.Count == 0)
             {
                 Debug.LogError("GetWeightedRandomItem: 유효한 아이템이 없습니다.");

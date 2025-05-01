@@ -1,6 +1,7 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using System;
 using System.Collections.Generic;

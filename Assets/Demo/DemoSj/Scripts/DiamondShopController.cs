@@ -6,13 +6,11 @@ using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.test
+namespace SkyDragonHunter.UI
 {
-
     // 상점 종류를 나타내는 열거형 정의 (일반 / 일일 / 주간 / 월간)
     public enum DiamondShopCategory { Common, Daily, Weekly, Monthly }
 
@@ -117,10 +115,12 @@ namespace SkyDragonHunter.test
             List<ShopSlotState> result = new();
 
             for (int i = 0; i < slotHandlers.Count; i++)
-            {
-                ItemSlotData selectedItem = GetWeightedRandomItem(diamondShopItemPool);
-                if (selectedItem != null)
-                    result.Add(new ShopSlotState(selectedItem));
+            { 
+                var data = GetWeightedRandomItem(diamondShopItemPool);
+                if (data != null)
+                {
+                    result.Add(new ShopSlotState((ItemSlotData)data));
+                }
             }
 
             categoryItems[category] = result;
@@ -138,9 +138,9 @@ namespace SkyDragonHunter.test
         }
 
         // 출현 확률(pullRate)을 기반으로 하나의 아이템을 선택
-        private ItemSlotData GetWeightedRandomItem(List<ItemSlotData> pool)
+        private ItemSlotData? GetWeightedRandomItem(List<ItemSlotData> pool)
         {
-            var valid = pool.Where(p => p != null).ToList();
+            var valid = pool.ToList();
             if (valid.Count == 0)
             {
                 Debug.LogError("GetWeightedRandomItem: 유효한 아이템이 없습니다.");

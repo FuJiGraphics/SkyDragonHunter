@@ -163,9 +163,10 @@ namespace SkyDragonHunter.UI{
 
         public void DirtyUI()
         {
+            BigNum next = m_CurrentStat + m_NextStat;
             levelText.text = levelTextFormat + m_CurrentLevel.ToString();
             UpdatetStatText(currStatText, ref m_CurrentStat);
-            UpdatetStatText(nextStatText, ref m_NextStat);
+            UpdatetStatText(nextStatText, ref next);
             needCoinText.text = m_NeedCoin.ToUnit();
             UpdateLevelUpArrowState();
         }
@@ -198,7 +199,7 @@ namespace SkyDragonHunter.UI{
                 return;
 
             Level = Mathf.Min(Level + increase, MaxLevel);
-            CurrentStat = NextStat;
+            CurrentStat += NextStat;
             AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin), 0);
 
             if (levelUpType == GrowthLevelUpType.Table)
@@ -220,6 +221,7 @@ namespace SkyDragonHunter.UI{
                 NeedCoin = BasicCost * costMultiplier;
             }
 
+            DirtyUI();
             UpdateLevelUpArrowState();
         }
 

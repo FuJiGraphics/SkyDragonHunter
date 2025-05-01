@@ -211,6 +211,15 @@ namespace SkyDragonHunter.Managers
             return s_HeldItems[type];
         }
 
+        public static void SetItemCount(ItemType type, BigNum count)
+        {
+            if (!s_HeldItems.ContainsKey(type))
+            {
+                s_HeldItems.Add(type, 0);
+            }
+            s_HeldItems[type] = count;
+        }
+
         public static void LoadLevel(int id)
         {
             // 크리스탈 등급 증가

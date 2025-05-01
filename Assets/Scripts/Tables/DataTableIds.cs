@@ -27,6 +27,9 @@ namespace SkyDragonHunter.Tables {
         public static readonly string AFKReward = "AFKRewardTable";
         public static readonly string Wave = "WaveTable";
         public static readonly string Repair = "RepairTable";
+        public static readonly string GoldShop = "GoldShopTable";
+        public static readonly string DiamondShop = "DiamondShopTable";
+        public static readonly string RerollShop = "RerollShopTable";
 
     } // Scope by class DataTableIds
 

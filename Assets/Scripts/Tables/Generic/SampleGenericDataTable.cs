@@ -21,7 +21,8 @@ namespace SkyDragonHunter.Tables
     }
 
     public class SampleGenericDataTable : DataTable<SampleData>
-    {        
+    {     
+        
     } // Scope by class SampleGenericDataTable
 
 } // namespace Root

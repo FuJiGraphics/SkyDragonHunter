@@ -88,9 +88,9 @@ namespace SkyDragonHunter.UI {
                 WorkInProgressObj.SetActive(false);
 
                 // 아이콘 적용
-                if (data?.itemToGenerate?.GetItemIcon() != null)
+                if (data?.itemToGenerate.ItemIcon != null)
                 {
-                    itemIcon.sprite = data.itemToGenerate.GetItemIcon();
+                    itemIcon.sprite = data.itemToGenerate.ItemIcon;
                 }
                 else
                 {
@@ -132,7 +132,7 @@ namespace SkyDragonHunter.UI {
         {
             if (data.itemCount > 0)
             {
-                Debug.Log($"{data.itemToGenerate.GetItemName()}을 {data.itemCount}만큼 획득했습니다.");
+                Debug.Log($"{data.itemToGenerate.ItemName}을 {data.itemCount}만큼 획득했습니다.");
                 bool wasFull = data.itemCount >= data.maxCount;
                 data.itemCount = 0;
 

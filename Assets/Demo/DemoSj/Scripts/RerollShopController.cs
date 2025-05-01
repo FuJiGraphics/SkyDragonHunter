@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.UI {
 
     [System.Serializable]
     public class RerollShopSlotState
@@ -92,7 +92,7 @@ namespace SkyDragonHunter {
                 if (!slot.IsLocked())
                 {
                     var item = GetWeightedRandomItem(shopItemPool);
-                    slot.Initialize(item, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
+                    slot.Initialize((ItemSlotData)item, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
                 }
 
                 currentSlotStates.Add(slot.GetSlotState());
@@ -133,9 +133,9 @@ namespace SkyDragonHunter {
         /// <summary>
         /// 출현 확률(PullRate)에 따라 아이템을 무작위 선택 (중복 허용)
         /// </summary>
-        private ItemSlotData GetWeightedRandomItem(List<ItemSlotData> pool)
+        private ItemSlotData? GetWeightedRandomItem(List<ItemSlotData> pool)
         {
-            var valid = pool.Where(p => p != null).ToList();
+            var valid = pool.ToList();
             if (valid.Count == 0)
             {
                 Debug.LogError("리롤 상점에 사용할 유효한 아이템이 없습니다.");

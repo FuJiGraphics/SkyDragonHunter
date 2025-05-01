@@ -42,7 +42,7 @@ namespace SkyDragonHunter
         // 외부에서 할인율 변경 시 가격 반영
         public void UpdateDiscountedPrice(float discountRate)
         {
-            currentPrice = itemData.price * (1f - discountRate);
+            currentPrice = itemData.Price * (1f - discountRate);
             priceText.text = currentPrice.ToUnit();
         }
 
@@ -73,12 +73,12 @@ namespace SkyDragonHunter
             this.isPurchased = isPurchased;
 
             float discountRate = favorabilityMgr.GetDiscountRate();
-            currentPrice = item.price * (1f - discountRate);
+            currentPrice = item.Price * (1f - discountRate);
 
             var tableData = item.GetData();
             itemNameText.text = tableData.Name;
             itemImage.sprite = tableData.Icon;
-            currencyImage.sprite = item.GetCurrenyIcon();
+            currencyImage.sprite = item.CurrenyIcon;
             currencyType = item.currencyType;
             priceText.text = currentPrice.ToString();
 
@@ -102,23 +102,23 @@ namespace SkyDragonHunter
         {
             if (itemData.currencyType == CurrencyType.Coin)
             {
-                if (AccountMgr.Coin < itemData.price)
+                if (AccountMgr.Coin < itemData.Price)
                 {
                     var diff = currentPrice - AccountMgr.Coin;
                     DrawableMgr.Dialog("알림", $"골드가 부족합니다. = {new BigNum(diff).ToUnit()}");
                     return;
                 }
-                AccountMgr.Coin -= itemData.price;
+                AccountMgr.Coin -= itemData.Price;
             }
             else if (itemData.currencyType == CurrencyType.Diamond)
             {
-                if (AccountMgr.Diamond < itemData.price)
+                if (AccountMgr.Diamond < itemData.Price)
                 {
                     var diff = currentPrice - AccountMgr.Diamond;
                     DrawableMgr.Dialog("알림", $"다이아 부족합니다. = {new BigNum(diff).ToString()}");
                     return;
                 }
-                AccountMgr.Diamond -= itemData.price;
+                AccountMgr.Diamond -= itemData.Price;
             }
 
             if (isPurchased) return;

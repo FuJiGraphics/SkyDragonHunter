@@ -119,6 +119,7 @@ namespace SkyDragonHunter.UI {
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
+                node.DirtyUI();
             }
             UpdateNodeLevelUpArrowState();
         }
@@ -131,6 +132,7 @@ namespace SkyDragonHunter.UI {
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
+                node.DirtyUI();
             }
             UpdateNodeLevelUpArrowState();
         }
@@ -143,6 +145,7 @@ namespace SkyDragonHunter.UI {
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
+                node.DirtyUI();
             }
             UpdateNodeLevelUpArrowState();
         }
@@ -155,6 +158,7 @@ namespace SkyDragonHunter.UI {
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
+                node.DirtyUI();
             }
             UpdateNodeLevelUpArrowState();
         }
