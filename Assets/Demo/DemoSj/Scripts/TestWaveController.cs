@@ -409,6 +409,7 @@ namespace SkyDragonHunter
             if (waveSpawnCount != currentWaveData.MonsterCounts.Length)
                 Debug.LogError($"Length of Monster ID, Count do not match");
             
+
             for(int i = 0; i < waveSpawnCount; ++i)
             {
                 for(int j = 0; j < currentWaveData.MonsterCounts[i]; ++j)
@@ -463,6 +464,7 @@ namespace SkyDragonHunter
             {
                 isBossCleared = true;
                 bossSlider.value = 0;
+                AccountMgr.Diamond += 200;
             });
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;

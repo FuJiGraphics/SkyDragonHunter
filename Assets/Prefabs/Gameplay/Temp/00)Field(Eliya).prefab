@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5261577503925332203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1660982444029444820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7099769282757681882}
+  m_Layer: 0
+  m_Name: StatusBarDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7099769282757681882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660982444029444820}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5261577503925332203}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8615149287224319549
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,6 +89,7 @@ GameObject:
   - component: {fileID: 4554868606220688470}
   - component: {fileID: 1741405417052036712}
   - component: {fileID: 7632944305410029127}
+  - component: {fileID: 7278534522657317889}
   m_Layer: 0
   m_Name: 00)Field(Eliya)
   m_TagString: Crew
@@ -78,6 +110,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 7099769282757681882}
   - {fileID: 6983568295832109561}
   - {fileID: 8223736841155750326}
   m_Father: {fileID: 0}
@@ -433,6 +466,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7278534522657317889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8615149287224319549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898d19ed766f375419cd4ddee6fba629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIStatusBarPrefab: {fileID: 1610943178153985568, guid: 6e2c953fa9302464e8c7eef2737e3839, type: 3}
+  m_SpawnAnchor: {fileID: 7099769282757681882}
+  m_Scale: {x: 0.3, y: 0.45}
+  m_SyncStats: {fileID: 0}
 --- !u!1001 &1134324430442188439
 PrefabInstance:
   m_ObjectHideFlags: 0

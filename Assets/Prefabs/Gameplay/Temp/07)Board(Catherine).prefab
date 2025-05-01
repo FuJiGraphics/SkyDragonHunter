@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 8488090794993690949}
   - component: {fileID: -6033639378234065553}
   - component: {fileID: -3380555558828637257}
+  - component: {fileID: 7253060897118213083}
   m_Layer: 0
   m_Name: 07)Board(Catherine)
   m_TagString: Crew
@@ -47,6 +48,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 1724312204109141180}
   - {fileID: 3647546199048771086}
   - {fileID: 671728564140126778}
   m_Father: {fileID: 0}
@@ -400,6 +402,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7253060897118213083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898d19ed766f375419cd4ddee6fba629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIStatusBarPrefab: {fileID: 1610943178153985568, guid: 6e2c953fa9302464e8c7eef2737e3839, type: 3}
+  m_SpawnAnchor: {fileID: 1724312204109141180}
+  m_Scale: {x: 0.3, y: 0.45}
+  m_SyncStats: {fileID: 0}
+--- !u!1 &3437402014107187727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1724312204109141180}
+  m_Layer: 0
+  m_Name: StatusBarDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1724312204109141180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3437402014107187727}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3183777661675102306}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4789872148619396876
 GameObject:
   m_ObjectHideFlags: 0
