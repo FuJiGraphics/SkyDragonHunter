@@ -26,8 +26,18 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
 
+        private static string m_NickName = "Default";
+
         // 속성 (Properties)
-        public static string Nickname { get; set; } = "Default";
+        public static string Nickname
+        {
+            get => m_NickName;
+            set
+            {
+                m_NickName = value;
+                onNicknameChangedEvents?.Invoke(value);
+            }
+        }
         public static int CurrentStageLevel { get; set; } = 1;
         public static int CurrentStageZoneLevel { get; set; } = 1;
         public static int CurrentLevel => Crystal.CurrentLevel;
@@ -157,8 +167,9 @@ namespace SkyDragonHunter.Managers
         private static UIInGameMainFramePanel s_InGameMainFramePanel;
 
         // 이벤트 (Events)
-        public static event Action onLevelUpEvents;
+        private static event Action onLevelUpEvents;
         private static event Action<ItemType> onItemCountChangedEvents;
+        private static event Action<string> onNicknameChangedEvents;
 
         // Public 메서드
         public static void Init()
@@ -705,9 +716,34 @@ namespace SkyDragonHunter.Managers
             }
         }
 
+        public static void AddLevelUpEvent(Action callback)
+        {
+            onLevelUpEvents += callback;
+        }
+
+        public static void RemoveLevelUpEvent(Action callback)
+        {
+            onLevelUpEvents -= callback;
+        }
+
         public static void AddItemCountChangedEvent(Action<ItemType> callback)
         {
             onItemCountChangedEvents += callback;
+        }
+
+        public static void RemoveItemCountChangedEvent(Action<ItemType> callback)
+        {
+            onItemCountChangedEvents -= callback;
+        }
+
+        public static void AddNicknameChangedEvent(Action<string> callback)
+        {
+            onNicknameChangedEvents += callback;
+        }
+
+        public static void RemoveNicknameChangedEvent(Action<string> callback)
+        {
+            onNicknameChangedEvents -= callback;
         }
 
         private static void SyncCrewData(GameObject crewInstance)

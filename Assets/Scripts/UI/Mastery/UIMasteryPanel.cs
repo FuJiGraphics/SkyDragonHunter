@@ -3,6 +3,9 @@ using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Structs;
+using NPOI.OpenXmlFormats.Dml.Diagram;
 
 namespace SkyDragonHunter.UI {
 
@@ -20,6 +23,12 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_UiPrevNodeInfo;
         [SerializeField] private TextMeshProUGUI m_UiNextNodeInfo;
 
+        [Header("Airship UI Settings")]
+        [SerializeField] private TextMeshProUGUI m_NicknameText;
+        [SerializeField] private TextMeshProUGUI m_LevelText;
+        [SerializeField] private TextMeshProUGUI m_DamageText;
+        [SerializeField] private TextMeshProUGUI m_HealthText;
+
         private Dictionary<int, List<UIMasteryNode>> m_GenNodeMap;
         private UIMasteryNode m_CilckedNode;
 
@@ -29,6 +38,15 @@ namespace SkyDragonHunter.UI {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void OnDestroy()
+        {
+            var airship = GameMgr.FindObject<CharacterStatus>("Airship");
+            airship?.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            airship?.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+            AccountMgr.RemoveLevelUpEvent(OnAccountLevelUp);
+            AccountMgr.RemoveNicknameChangedEvent(OnChangedNickname);
+        }
+
         // Public 메서드
         public void Init()
         {
@@ -58,6 +76,36 @@ namespace SkyDragonHunter.UI {
             SetMaxLevel(maxLevel);
             InsertAllNodeIntoLevels();
             DirtyMastery();
+
+            m_NicknameText.text = AccountMgr.Nickname;
+            m_LevelText.text = AccountMgr.CurrentLevel.ToString();
+            AccountMgr.AddLevelUpEvent(OnAccountLevelUp);
+            AccountMgr.AddNicknameChangedEvent(OnChangedNickname);
+            var airship = GameMgr.FindObject<CharacterStatus>("Airship");
+            airship.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            airship.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+            airship.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
+            airship.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+        }
+
+        public void OnAccountLevelUp()
+        {
+            m_LevelText.text = AccountMgr.CurrentLevel.ToString();
+        }
+
+        public void OnChangedNickname(string newNickname)
+        {
+            m_NicknameText.text = newNickname;
+        }
+
+        public void OnChangedAirshipMaxDamage(BigNum stat)
+        {
+            m_DamageText.text = stat.ToUnit();
+        }
+
+        public void OnChangedAirshipMaxHealth(BigNum stat)
+        {
+            m_HealthText.text = stat.ToUnit();
         }
 
         public void OnNodeLevelUp()

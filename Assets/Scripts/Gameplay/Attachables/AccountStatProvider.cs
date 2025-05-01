@@ -40,7 +40,7 @@ namespace SkyDragonHunter.Gameplay {
                 repairExecutor.onUnequipEvents -= OnUnequipRepairEvents;
             }
 
-            AccountMgr.onLevelUpEvents -= MergedAccountStatsForCharacter;
+            AccountMgr.AddLevelUpEvent(MergedAccountStatsForCharacter);
         }
 
         // Public 메서드
@@ -65,12 +65,7 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.MaxDamage = m_FirstStats.MaxDamage * mergeDamage;
             m_Stats.MaxHealth = m_FirstStats.MaxHealth * mergeHealth;
             m_Stats.MaxArmor = m_FirstStats.MaxArmor * mergeArmor;
-
-            // 기본 회복력 1
-            if (mergeRes > 0)
-            {
-                m_Stats.MaxResilient = m_FirstStats.MaxResilient * mergeRes;
-            }
+            m_Stats.MaxResilient = m_FirstStats.MaxResilient * mergeRes;
 
             // 합연산
             m_Stats.CriticalChance = m_FirstStats.CriticalChance + accStats.CriticalChance;
@@ -181,7 +176,7 @@ namespace SkyDragonHunter.Gameplay {
 
             m_Stats.ResetAll();
 
-            AccountMgr.onLevelUpEvents += MergedAccountStatsForCharacter;
+            AccountMgr.AddLevelUpEvent(MergedAccountStatsForCharacter);
 
             MergedAccountStatsForCharacter();
         }

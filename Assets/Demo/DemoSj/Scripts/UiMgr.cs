@@ -110,6 +110,11 @@ namespace SkyDragonHunter.Test {
             }
         }
 
+        private void OnDestroy()
+        {
+            AccountMgr.RemoveItemCountChangedEvent(OnChangedItemCount);
+        }
+
         // Public 메서드
         public void OnInGamePanels()
         {

@@ -252,18 +252,41 @@ namespace SkyDragonHunter.UI{
         private BigNum CalculateNextStat(int currLevel)
         {
             int level = Mathf.Min(currLevel - 1, MaxLevel);
-            int weight = 1 + (level / 100);
-            BigNum currStatInc = weight * Level * StatIncrease;
-            return BasicStat + currStatInc;
+            BigNum total = BasicStat;
+
+            int fullSections = level / 100;
+            int remainder = level % 100;
+
+            for (int i = 0; i < fullSections; i++)
+            {
+                int weight = i + 1;
+                total += StatIncrease * weight * 100;
+            }
+
+            int currentWeight = fullSections + 1;
+            total += StatIncrease * currentWeight * remainder;
+
+            return total;
         }
 
         private BigNum CalculateNeedCoin(int currLevel)
         {
             int level = Mathf.Min(currLevel - 1, MaxLevel);
-            int weight = 1 + (level / 100);
-            BigNum currCostInc = weight * level * CostIncrease;
-            return BasicCost + currCostInc;
-        }
+            BigNum total = BasicCost;
 
+            int fullSections = level / 100;
+            int remainder = level % 100;
+
+            for (int i = 0; i < fullSections; i++)
+            {
+                int weight = i + 1; 
+                total += CostIncrease * weight * 100;
+            }
+
+            int currentWeight = fullSections + 1;
+            total += CostIncrease * currentWeight * remainder;
+
+            return total;
+        }
     } // class UIGrowthNode
 } // namespace Root
