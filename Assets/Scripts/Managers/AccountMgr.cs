@@ -47,7 +47,6 @@ namespace SkyDragonHunter.Managers
         public static CommonStats DefaultGrowthStats { get; set; }
         public static Crystal Crystal { get; private set; }
         public static bool IsMaxLevel => Crystal?.NextLevelId <= 0;
-
         public static BigNum Coin
         {
             get
@@ -600,7 +599,7 @@ namespace SkyDragonHunter.Managers
                             Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
                         }
                         else
-                        {            
+                        {
                             // TODO :LJH (Need to handle logics on scene change)
                             Debug.Log($"Crew Not Set To SaveData");
                         }
@@ -612,9 +611,9 @@ namespace SkyDragonHunter.Managers
                     // ~TODO
 
                     SyncCrewData(instance);
-                    RegisterCrew(instance);                    
+                    RegisterCrew(instance);            
 
-                    instance.GetComponent<AccountStatProvider>().Init();                    
+                    instance.GetComponent<AccountStatProvider>().Init();       
                     instance.SetActive(false);
                 }
                 #endregion

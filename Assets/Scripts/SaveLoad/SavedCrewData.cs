@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -92,6 +93,20 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateData()
         {
+            var tempUserDataGO = GameMgr.FindObject("TempUserData");
+            var tempUserData = tempUserDataGO.GetComponent<TempUserData>();
+            if (tempUserData == null)
+            {
+                Debug.LogError($"[SavedCrewData] Update Failed, Temp User Data Null");
+                return;
+            }
+
+            var crewGOs = tempUserData.crewDataPrefabs;
+            
+
+
+
+
 
         }
         public void ApplySavedData()

@@ -71,6 +71,7 @@ namespace SkyDragonHunter.Managers
             GameData = new GameSaveDataVC();
             LocalSettingData = new LocalSettingSaveDataVC();
         }
+
         // Public Methods
         public static void UpdateSaveData()
             => UpdateSaveData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
@@ -93,6 +94,7 @@ namespace SkyDragonHunter.Managers
                 Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
             }
         }
+
         public static void ApplySavedData()
             => ApplySavedData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
 

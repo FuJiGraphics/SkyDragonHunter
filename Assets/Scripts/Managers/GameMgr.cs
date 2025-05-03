@@ -1,6 +1,3 @@
-using SkyDragonHunter.Database;
-using SkyDragonHunter.SaveLoad;
-using SkyDragonHunter.Test;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -49,9 +46,9 @@ namespace SkyDragonHunter.Managers
                 AccountMgr.Init();
                 GameMgr.LoadedRegisterObjects();
                 AccountMgr.LateInit();
-                AccountMgr.LoadUserData(scene.name);
                 SaveLoadMgr.Init();
                 SaveLoadMgr.LoadGameData();
+                AccountMgr.LoadUserData(scene.name);
             }
         }
 
@@ -142,6 +139,7 @@ namespace SkyDragonHunter.Managers
         public static T[] FindObjects<T>()
         {
             List<T> result = new List<T>();
+
             foreach (var go in m_LoadObjects)
             {
                 var list = go.Value;
@@ -154,6 +152,7 @@ namespace SkyDragonHunter.Managers
                     }
                 }
             }
+
             return result.ToArray();
         }
 
@@ -172,8 +171,6 @@ namespace SkyDragonHunter.Managers
                 Debug.Log($"초기화 이벤트 호출: {comp.id}");
             }
         }
-
         // Others
-
     } // Scope by class GameMgr
 } // namespace Root

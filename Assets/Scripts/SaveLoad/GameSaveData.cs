@@ -88,7 +88,7 @@ namespace SkyDragonHunter.SaveLoad
                     savedItemData.UpdateData();
                     break;
                 case SaveDataTypes.Crew:
-
+                    savedCrewData.UpdateData();
                     break;
                 case SaveDataTypes.Dungeon:
 
@@ -128,7 +128,7 @@ namespace SkyDragonHunter.SaveLoad
                     savedItemData.ApplySavedData();
                     break;
                 case SaveDataTypes.Crew:
-
+                    savedCrewData.ApplySavedData();
                     break;
                 case SaveDataTypes.Dungeon:
 
