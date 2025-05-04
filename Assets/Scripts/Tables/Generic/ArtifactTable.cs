@@ -1,7 +1,10 @@
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 using SkyDraonHunter.Utility;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace SkyDragonHunter.Tables {
 
@@ -27,9 +30,14 @@ namespace SkyDragonHunter.Tables {
 
     public class ArtifactData : DataTableData
     {
+        public string Name { get; set; }
+        public string Desc { get; set; }
+        public string IconName { get; set; }
         public ArtifactGrade Grade { get; set; }
         public ArtifactHoldStatType StatType { get; set; }
         public BigNum StatValue { get; set; }
+
+        public Sprite Icon => ResourcesMgr.Load<GameObject>(IconName)?.GetComponent<Image>()?.sprite;
     }
 
     public class ArtifactTable : DataTable<ArtifactData>

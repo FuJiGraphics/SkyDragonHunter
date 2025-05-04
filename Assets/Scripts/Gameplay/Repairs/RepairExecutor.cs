@@ -87,7 +87,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_CurrentEquipRepairInstance == null)
             {
-                Unequip();
+                // Unequip();
                 return;
             }
 

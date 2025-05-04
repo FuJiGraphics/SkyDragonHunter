@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
+
     public class RegisterObject : MonoBehaviour
     {
         // 필드 (Fields)

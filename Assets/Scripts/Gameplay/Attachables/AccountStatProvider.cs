@@ -47,19 +47,20 @@ namespace SkyDragonHunter.Gameplay {
         public void MergedAccountStatsForCharacter()
         {
             CommonStats accStats = AccountMgr.AccountStats;
+            CommonStats artifactStats = AccountMgr.ArtifactStats;
             CommonStats canonHoldStats = AccountMgr.GetCanonHoldStats();
             CommonStats repairHoldStats = AccountMgr.GetRepairHoldStats();
             CommonStats socketStats = AccountMgr.GetSocketStat();
 
-            BigNum prevLostHealth = m_Stats.MaxHealth - m_Stats.Health;
+            double prevHealthWeight = (double)m_Stats.Health / (double)m_Stats.MaxHealth;
 
-            var mergeDamage = (accStats.MaxDamage + socketStats.MaxDamage + AccountMgr.DefaultGrowthStats.MaxDamage);
-            var mergeHealth = (accStats.MaxHealth + socketStats.MaxHealth + AccountMgr.DefaultGrowthStats.MaxHealth);
-            var mergeArmor = (accStats.MaxArmor + socketStats.MaxArmor + AccountMgr.DefaultGrowthStats.MaxArmor);
-            var mergeRes = accStats.MaxResilient + socketStats.MaxResilient + AccountMgr.DefaultGrowthStats.MaxResilient;
-            var mergeCriMul = (accStats.CriticalMultiplier + socketStats.CriticalMultiplier + AccountMgr.DefaultGrowthStats.CriticalMultiplier);
-            var mergeBossDamMul = (accStats.BossDamageMultiplier + socketStats.BossDamageMultiplier);
-            var mergeSkillMul = (accStats.SkillEffectMultiplier + socketStats.SkillEffectMultiplier);
+            var mergeDamage = (accStats.MaxDamage + artifactStats.MaxDamage + socketStats.MaxDamage + AccountMgr.DefaultGrowthStats.MaxDamage);
+            var mergeHealth = (accStats.MaxHealth + artifactStats.MaxHealth + socketStats.MaxHealth + AccountMgr.DefaultGrowthStats.MaxHealth);
+            var mergeArmor = (accStats.MaxArmor + artifactStats.MaxArmor + socketStats.MaxArmor + AccountMgr.DefaultGrowthStats.MaxArmor);
+            var mergeRes = accStats.MaxResilient + artifactStats.MaxResilient + socketStats.MaxResilient + AccountMgr.DefaultGrowthStats.MaxResilient;
+            var mergeCriMul = (accStats.CriticalMultiplier + artifactStats.CriticalMultiplier + socketStats.CriticalMultiplier + AccountMgr.DefaultGrowthStats.CriticalMultiplier);
+            var mergeBossDamMul = (accStats.BossDamageMultiplier + artifactStats.BossDamageMultiplier + socketStats.BossDamageMultiplier);
+            var mergeSkillMul = (accStats.SkillEffectMultiplier + artifactStats.SkillEffectMultiplier + socketStats.SkillEffectMultiplier);
 
             // 곱연산
             m_Stats.MaxDamage = m_FirstStats.MaxDamage * mergeDamage;
@@ -68,7 +69,7 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.MaxResilient = m_FirstStats.MaxResilient * mergeRes;
 
             // 합연산
-            m_Stats.CriticalChance = m_FirstStats.CriticalChance + accStats.CriticalChance;
+            m_Stats.CriticalChance = m_FirstStats.CriticalChance + accStats.CriticalChance + artifactStats.CriticalChance;
             m_Stats.CriticalMultiplier = m_FirstStats.CriticalMultiplier + mergeCriMul;
             m_Stats.BossDamageMultiplier = m_FirstStats.BossDamageMultiplier + mergeBossDamMul;
             m_Stats.SkillEffectMultiplier = m_FirstStats.SkillEffectMultiplier + mergeSkillMul;
@@ -106,7 +107,7 @@ namespace SkyDragonHunter.Gameplay {
             m_Stats.ResetHealth();
             m_Stats.ResetArmor();
             m_Stats.ResetResilient();
-            m_Stats.Health -= prevLostHealth;
+            m_Stats.Health *= prevHealthWeight;
         }
 
         public void OnEquipCannonEvents(CanonDummy canonDummy)

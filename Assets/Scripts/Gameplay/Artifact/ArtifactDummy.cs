@@ -2,7 +2,6 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDraonHunter.Utility;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +17,73 @@ namespace SkyDragonHunter.Gameplay {
             StatValue = value;
             StatType = type;
         }
+
+        public CommonStats ToCommonStats()
+        {
+            CommonStats result = new CommonStats();
+            result.ResetAllZero();
+            switch (StatType)
+            {
+                case ArtifactHoldStatType.Damage:
+                    result.SetMaxDamage(StatValue);
+                    break;
+                case ArtifactHoldStatType.Health:
+                    result.SetMaxHealth(StatValue);
+                    break;
+                case ArtifactHoldStatType.Armor:
+                    result.SetMaxArmor(StatValue);
+                    break;
+                case ArtifactHoldStatType.Resilient:
+                    result.SetMaxResilient(StatValue);
+                    break;
+                case ArtifactHoldStatType.CriticalChance:
+                    result.SetCriticalChance((float)StatValue);
+                    break;
+                case ArtifactHoldStatType.CriticalMultiplier:
+                    result.SetCriticalMultiplier((float)StatValue);
+                    break;
+                case ArtifactHoldStatType.BossMultiplier:
+                    result.SetBossDamageMultiplier((float)StatValue);
+                    break;
+                case ArtifactHoldStatType.SkillEffectMultiplier:
+                    result.SetSkillEffectMultiplier((float)StatValue);
+                    break;
+            }
+            return result;
+        }
+        public override string ToString()
+        {
+            string result = "";
+            switch (StatType)
+            {
+                case ArtifactHoldStatType.Damage:
+                    result = "공격력 +";
+                    break;
+                case ArtifactHoldStatType.Health:
+                    result = "체력 +";
+                    break;
+                case ArtifactHoldStatType.Armor:
+                    result = "방어력 +";
+                    break;
+                case ArtifactHoldStatType.Resilient:
+                    result = "회복력 +";
+                    break;
+                case ArtifactHoldStatType.CriticalChance:
+                    result = "치명타 확률 +";
+                    break;
+                case ArtifactHoldStatType.CriticalMultiplier:
+                    result = "치명타 배율 +";
+                    break;
+                case ArtifactHoldStatType.BossMultiplier:
+                    result = "보스데미지 배율 +";
+                    break;
+                case ArtifactHoldStatType.SkillEffectMultiplier:
+                    result = "스킬 효과 배율 +";
+                    break;
+            }
+            result += StatValue.ToString();
+            return result;
+        }
     }
 
     public struct AdditionalStat
@@ -29,6 +95,74 @@ namespace SkyDragonHunter.Gameplay {
         {
             StatValue = value;
             StatType = type;
+        }
+
+        public CommonStats ToCommonStats()
+        {
+            CommonStats result = new CommonStats();
+            result.ResetAllZero();
+            switch (StatType)
+            {
+                case AdditionalStatType.Damage:
+                    result.SetMaxDamage(StatValue);
+                    break;
+                case AdditionalStatType.Health:
+                    result.SetMaxHealth(StatValue);
+                    break;
+                case AdditionalStatType.Armor:
+                    result.SetMaxArmor(StatValue);
+                    break;
+                case AdditionalStatType.Resilient:
+                    result.SetMaxResilient(StatValue);
+                    break;
+                case AdditionalStatType.CriticalChance:
+                    result.SetCriticalChance((float)StatValue);
+                    break;
+                case AdditionalStatType.CriticalMultiplier:
+                    result.SetCriticalMultiplier((float)StatValue);
+                    break;
+                case AdditionalStatType.BossMultiplier:
+                    result.SetBossDamageMultiplier((float)StatValue);
+                    break;
+                case AdditionalStatType.SkillEffectMultiplier:
+                    result.SetSkillEffectMultiplier((float)StatValue);
+                    break;
+            }
+            return result;
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            switch (StatType)
+            {
+                case AdditionalStatType.Damage:
+                    result = "공격력 +";
+                    break;
+                case AdditionalStatType.Health:
+                    result = "체력 +";
+                    break;
+                case AdditionalStatType.Armor:
+                    result = "방어력 +";
+                    break;
+                case AdditionalStatType.Resilient:
+                    result = "회복력 +";
+                    break;
+                case AdditionalStatType.CriticalChance:
+                    result = "치명타 확률 +";
+                    break;
+                case AdditionalStatType.CriticalMultiplier:
+                    result = "치명타 배율 +";
+                    break;
+                case AdditionalStatType.BossMultiplier:
+                    result = "보스데미지 배율 +";
+                    break;
+                case AdditionalStatType.SkillEffectMultiplier:
+                    result = "스킬 효과 배율 +";
+                    break;
+            }
+            result += StatValue.ToString();
+            return result;
         }
     }
 
@@ -44,9 +178,28 @@ namespace SkyDragonHunter.Gameplay {
         private List<AdditionalStat> m_CacheAdditionalStats;
 
         // 속성 (Properties)
+        public string Name => m_ArtifactData.Name;
+        public string Desc => m_ArtifactData.Desc;
+        public Sprite Icon => m_ArtifactData.Icon;
         public ArtifactGrade Grade => m_ArtifactData.Grade;
         public ConstantStat ConstantStat => m_CacheConstantStat;
         public AdditionalStat[] AdditionalStats => m_CacheAdditionalStats.ToArray();
+        public CommonStats CommonStatValue
+        {
+            get
+            {
+                CommonStats result = new CommonStats();
+                result.ResetAllZero();
+
+                result += ConstantStat.ToCommonStats();
+                foreach (var stat in AdditionalStats)
+                {
+                    result += stat.ToCommonStats();
+                }
+
+                return result;
+            }
+        }
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -67,15 +220,19 @@ namespace SkyDragonHunter.Gameplay {
             int randCount = RandomMgr.RandomWithWeights<int>(
                 (m_PickRandomMinCount, 0.75f), 
                 (m_PickRandomMaxCount, 0.25f));
-            m_AdditionalStats = GetRandomAdditionalStats(randCount);
+            m_AdditionalStats = GetRandomAdditionalStats(randCount, grade);
             m_CacheAdditionalStats = GetAdditionalStats();
         }
 
         public void RerollAdditionalStats()
-            => m_AdditionalStats = GetRandomAdditionalStats(m_AdditionalStats.Length);
+        {
+            m_AdditionalStats = GetRandomAdditionalStats(m_AdditionalStats.Length, Grade);
+            m_CacheAdditionalStats = GetAdditionalStats();
+        }
+
         // Private 메서드
-        private AdditionalStatData[] GetRandomAdditionalStats(int count)
-            => DataTableMgr.AdditionalStatTable.Random(count);
+        private AdditionalStatData[] GetRandomAdditionalStats(int count, ArtifactGrade grade)
+            => DataTableMgr.AdditionalStatTable.Random(count, grade);
 
         private List<AdditionalStat> GetAdditionalStats()
         {

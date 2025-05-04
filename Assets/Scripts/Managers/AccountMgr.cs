@@ -6,6 +6,7 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
 using SkyDragonHunter.UI;
+using Spine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,14 @@ namespace SkyDragonHunter.Managers
         private static Dictionary<RepairType, Dictionary<RepairGrade, RepairDummy>> s_HeldRepairs = new();
         private static List<RepairDummy> s_SortedRepairs = new();
 
+        private static Dictionary<ArtifactGrade, List<ArtifactDummy>> s_HeldArtifacts = new();
+        private static List<ArtifactDummy> s_SortedArtifacts = new();
+
         private static Dictionary<string, GameObject> s_CollectedCrews; // 인스턴스
         private static Dictionary<MasterySocketType, List<UIMasterySocket>> s_CollectedSockets;
 
+        private static int s_MaxArtifactSlotCount = 3;
+        private static List<ArtifactDummy> s_ArtifactStats = new();
         private static string m_NickName = "Default";
 
         // 속성 (Properties)
@@ -45,6 +51,22 @@ namespace SkyDragonHunter.Managers
         public static int CurrentLevel => Crystal.CurrentLevel;
         public static CommonStats AccountStats { get; private set; }
         public static CommonStats DefaultGrowthStats { get; set; }
+        public static CommonStats ArtifactStats
+        {
+            get
+            {
+                CommonStats commonStats = new CommonStats();
+                commonStats.ResetAllZero();
+                foreach (var stat in s_ArtifactStats)
+                {
+                    if (stat != null)
+                    {
+                        commonStats += stat.CommonStatValue;
+                    }
+                }
+                return commonStats;
+            }
+        }
         public static Crystal Crystal { get; private set; }
         public static bool IsMaxLevel => Crystal?.NextLevelId <= 0;
 
@@ -113,68 +135,11 @@ namespace SkyDragonHunter.Managers
         public static RepairDummy[] HeldRepairs => s_SortedRepairs.ToArray();
         public static RepairDummy EquipRepairDummy { get; set; } = null;
 
-        public static bool CanonGradeUp(CanonDummy target)
-        {
-            if (target.Type == CanonType.Freeze && target.Grade == CanonGrade.Legend)
-            {
-                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
-                return false;
-            }
-
-            CanonType targetType = target.Type;
-            CanonGrade targetGrade = target.Grade;
-            if (targetType != CanonType.Freeze)
-            {
-                targetType++;
-            }
-            else
-            {
-                targetType = CanonType.Normal;
-                if (targetGrade != CanonGrade.Legend)
-                {
-                    targetGrade++;
-                }
-            }
-
-            target.Count -= 5;
-            s_HeldCanons[targetType][targetGrade].Count++;
-
-            return true;
-        }
-
-        public static bool RepairGradeUp(RepairDummy target)
-        {
-            if (target.Type == RepairType.Divine && target.Grade == RepairGrade.Legend)
-            {
-                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
-                return false;
-            }
-
-            RepairType targetType = target.Type;
-            RepairGrade targetGrade = target.Grade;
-            if (targetType != RepairType.Divine)
-            {
-                targetType++;
-            }
-            else
-            {
-                targetType = RepairType.Normal;
-                if (targetGrade != RepairGrade.Legend)
-                {
-                    targetGrade++;
-                }
-            }
-
-            target.Count -= 5;
-            s_HeldRepairs[targetType][targetGrade].Count++;
-
-            return true;
-        }
-
         // 외부 종속성 필드 (External dependencies field)
         private static ICrystalLevelUpHandler[] m_CrystalLevelUpHandlers;
         private static ISaveLoadHandler[] m_SaveLoadHandlers;
         private static UIInGameMainFramePanel s_InGameMainFramePanel;
+        private static UITreasureEquipmentPanel S_TreasureEquipmentPanel;
 
         // 이벤트 (Events)
         private static event Action onLevelUpEvents;
@@ -194,6 +159,11 @@ namespace SkyDragonHunter.Managers
             DefaultGrowthStats.ResetAllZero();
 
             s_CollectedSockets = new Dictionary<MasterySocketType, List<UIMasterySocket>>();
+            s_ArtifactStats = new();
+            for (int i = 0; i < s_MaxArtifactSlotCount; ++i)
+            {
+                s_ArtifactStats.Add(null);
+            }
         }
 
         public static void LateInit()
@@ -209,6 +179,10 @@ namespace SkyDragonHunter.Managers
             if (s_InGameMainFramePanel == null)
             {
                 s_InGameMainFramePanel = GameMgr.FindObject<UIInGameMainFramePanel>("InGameMainFramePanel");
+            }
+            if (S_TreasureEquipmentPanel == null)
+            {
+                S_TreasureEquipmentPanel = GameMgr.FindObject<UITreasureEquipmentPanel>("TreasureEquipmentPanel");
             }
         }
 
@@ -240,6 +214,39 @@ namespace SkyDragonHunter.Managers
             }
             s_HeldItems[type] += count;
             onItemCountChangedEvents?.Invoke(type);
+        }
+        
+        public static void AddArtifact(ArtifactDummy dummy)
+        {
+            if (!s_HeldArtifacts.ContainsKey(dummy.Grade))
+            {
+                s_HeldArtifacts.Add(dummy.Grade, new());
+            }
+            s_HeldArtifacts[dummy.Grade].Add(dummy);
+            s_SortedArtifacts.Add(dummy);
+
+            // 보물 UI에 등록하기
+            S_TreasureEquipmentPanel.AddSlot(dummy);
+        }
+
+        public static void RemoveArtifact(ArtifactDummy dummy)
+        {
+            if (!s_HeldArtifacts.ContainsKey(dummy.Grade))
+            {
+                DrawableMgr.Dialog("Error", $"[AccountMgr]: 제거할 요소를 찾을 수 없습니다. {dummy}");
+                return;
+            }
+
+            if (!s_HeldArtifacts[dummy.Grade].Contains(dummy))
+            {
+                DrawableMgr.Dialog("Error", $"[AccountMgr]: 제거할 요소를 찾을 수 없습니다. {dummy}");
+                return;
+            }
+
+            s_HeldArtifacts[dummy.Grade].Remove(dummy);
+
+            // 보물 UI에서 제거하기
+            S_TreasureEquipmentPanel.RemoveSlot(dummy);
         }
 
         public static void SetItemCount(ItemType type, BigNum count)
@@ -431,6 +438,34 @@ namespace SkyDragonHunter.Managers
             return stats;
         }
 
+        public static void SetArtifactSlot(ArtifactDummy artifact, int slot)
+        {
+            if (slot < 0 || slot >= s_ArtifactStats.Count)
+            {
+                DrawableMgr.Dialog("Error", $"보물 등록 실패! slot 범위를 초과하였습니다. {slot}");
+                return;
+            }
+
+            s_ArtifactStats[slot] = artifact;
+            DirtyAccountAndAirshipStat();
+        }
+
+        public static void RemoveArtifactSlot(ArtifactDummy artifact)
+        {
+            if (artifact == null)
+                return;
+
+            for (int i = 0; i < s_ArtifactStats.Count; ++i)
+            {
+                if (s_ArtifactStats[i] == artifact)
+                {
+                    s_ArtifactStats[i] = null;
+                    DirtyAccountAndAirshipStat();
+                    break;
+                }
+            }
+        }
+
         public static void OnSocketLevelUp()
         {
             // AccountStatProvider의 MergedAccountStatsForCharacter를 호출함
@@ -446,16 +481,62 @@ namespace SkyDragonHunter.Managers
             inGameMainFramePanel.HpText = (Crystal.IncreaseHealth + DefaultGrowthStats.MaxHealth).ToUnit();
         }
 
-        // Private 메서드
-        private static void InitAccountData(CrystalLevelData data)
+        public static bool CanonGradeUp(CanonDummy target)
         {
-            Crystal = new Crystal(data);
+            if (target.Type == CanonType.Freeze && target.Grade == CanonGrade.Legend)
+            {
+                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
+                return false;
+            }
 
-            // 계정 스탯과 통합
-            AccountStats.SetMaxDamage(AccountStats.MaxDamage + Crystal.IncreaseDamage);
-            AccountStats.ResetDamage();
-            AccountStats.SetMaxHealth(AccountStats.MaxHealth + Crystal.IncreaseHealth);
-            AccountStats.ResetHealth();
+            CanonType targetType = target.Type;
+            CanonGrade targetGrade = target.Grade;
+            if (targetType != CanonType.Freeze)
+            {
+                targetType++;
+            }
+            else
+            {
+                targetType = CanonType.Normal;
+                if (targetGrade != CanonGrade.Legend)
+                {
+                    targetGrade++;
+                }
+            }
+
+            target.Count -= 5;
+            s_HeldCanons[targetType][targetGrade].Count++;
+
+            return true;
+        }
+
+        public static bool RepairGradeUp(RepairDummy target)
+        {
+            if (target.Type == RepairType.Divine && target.Grade == RepairGrade.Legend)
+            {
+                DrawableMgr.Dialog("Alert", "최대 등급입니다.");
+                return false;
+            }
+
+            RepairType targetType = target.Type;
+            RepairGrade targetGrade = target.Grade;
+            if (targetType != RepairType.Divine)
+            {
+                targetType++;
+            }
+            else
+            {
+                targetType = RepairType.Normal;
+                if (targetGrade != RepairGrade.Legend)
+                {
+                    targetGrade++;
+                }
+            }
+
+            target.Count -= 5;
+            s_HeldRepairs[targetType][targetGrade].Count++;
+
+            return true;
         }
 
         public static void RegisterCrew(GameObject crewInstance)
@@ -673,6 +754,11 @@ namespace SkyDragonHunter.Managers
                 #region 아이템 로드
                 #endregion
 
+                // 아티팩트 등록
+                for(int i = 0; i < 50; ++i)
+                {
+                    AddArtifact(new ArtifactDummy((ArtifactGrade)(i % (int)ArtifactGrade.Legend)));
+                }
                 foreach (var handler in m_SaveLoadHandlers)
                 {
                     handler.OnLoad(comp);
@@ -790,6 +876,18 @@ namespace SkyDragonHunter.Managers
         public static void RemoveNicknameChangedEvent(Action<string> callback)
         {
             onNicknameChangedEvents -= callback;
+        }
+        
+        // Private 메서드
+        private static void InitAccountData(CrystalLevelData data)
+        {
+            Crystal = new Crystal(data);
+
+            // 계정 스탯과 통합
+            AccountStats.SetMaxDamage(AccountStats.MaxDamage + Crystal.IncreaseDamage);
+            AccountStats.ResetDamage();
+            AccountStats.SetMaxHealth(AccountStats.MaxHealth + Crystal.IncreaseHealth);
+            AccountStats.ResetHealth();
         }
 
         private static void SyncCrewData(GameObject crewInstance)

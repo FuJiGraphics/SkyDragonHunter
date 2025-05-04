@@ -30,21 +30,52 @@ namespace SkyDragonHunter.Tables {
 
     public class AdditionalStatTable : DataTable<AdditionalStatData>
     {
-        public AdditionalStatData[] Random(int count)
+        public AdditionalStatData[] Random(int count, ArtifactGrade grade)
         {
             List<AdditionalStatData> result = new();
 
-            List<AdditionalStatData> randPick = new(base.ToArray());
+            var randPick = GetArtifactList(grade);
 
             count = Math.Min(count, randPick.Count);
             for (int i = 0; i < count; ++i)
             {
                 int randIndex = UnityEngine.Random.Range(0, randPick.Count);
                 result.Add(randPick[randIndex]);
-                randPick.RemoveAt(randIndex);
+                // randPick.RemoveAt(randIndex); 중복 방지 코드
             }
 
             return result.ToArray();
+        }
+
+        private List<AdditionalStatData> GetArtifactList(ArtifactGrade grade)
+        {
+            var allElements = base.ToArray();
+            List<AdditionalStatData> result = new();
+
+            foreach (var element in allElements)
+            {
+                switch (grade)
+                {
+                    case ArtifactGrade.Rare:
+                        if (element.RareStatValue != 0)
+                            result.Add(element);
+                        break;
+                    case ArtifactGrade.Epic:
+                        if (element.EpicStatValue != 0)
+                            result.Add(element);
+                        break;
+                    case ArtifactGrade.Unique:
+                        if (element.UniqueStatValue != 0)
+                            result.Add(element);
+                        break;
+                    case ArtifactGrade.Legend:
+                        if (element.LegendStatValue != 0)
+                            result.Add(element);
+                        break;
+                }
+            }
+
+            return result;
         }
 
     } // Scope by class AdditionalStatTable

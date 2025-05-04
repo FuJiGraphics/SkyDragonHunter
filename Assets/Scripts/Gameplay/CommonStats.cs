@@ -152,6 +152,27 @@ namespace SkyDragonHunter.Gameplay
         public void SetSkillEffectMultiplier(float multiplier)
             => SkillEffectMultiplier = Math.Max(0f, multiplier);
 
+        public static CommonStats operator +(CommonStats a, CommonStats b)
+        {
+            CommonStats result = new CommonStats();
+            result.ResetAllZero();
+            result.SetMaxDamage(a.MaxDamage + b.MaxDamage);
+            result.SetDamage(a.Damage + b.Damage);
+            result.SetMaxHealth(a.MaxHealth + b.MaxHealth);
+            result.SetHealth(a.Health + b.Health);
+            result.SetMaxShield(a.MaxShield + b.MaxShield);
+            result.SetShield(a.Shield + b.Shield);
+            result.SetMaxArmor(a.MaxArmor + b.MaxArmor);
+            result.SetArmor(a.Armor + b.Armor);
+            result.SetMaxResilient(a.MaxResilient + b.MaxResilient);
+            result.SetResilient(a.Resilient + b.Resilient);
+            result.SetCriticalChance(a.CriticalChance + b.CriticalChance);
+            result.SetCriticalMultiplier(a.CriticalMultiplier + b.CriticalMultiplier);
+            result.SetBossDamageMultiplier(a.BossDamageMultiplier + b.BossDamageMultiplier);
+            result.SetSkillEffectMultiplier(a.SkillEffectMultiplier + b.SkillEffectMultiplier);
+            return result;
+        }
+
         public override string ToString()
         {
             return $"HP: {Health}/{MaxHealth}, DMG: {Damage}, Crit: {CriticalChance * 100f:F1}%";

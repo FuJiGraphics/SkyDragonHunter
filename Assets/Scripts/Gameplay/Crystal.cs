@@ -1,6 +1,5 @@
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Structs;
-using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 

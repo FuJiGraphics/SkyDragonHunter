@@ -90,7 +90,7 @@ namespace SkyDragonHunter.Managers
                     continue;
 
                 GameData.UpdateData(saveDataType);
-                Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
+                // Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
             }
         }
         public static void ApplySavedData()
@@ -111,7 +111,7 @@ namespace SkyDragonHunter.Managers
                     continue;
 
                 GameData.ApplySavedData(saveDataType);
-                Debug.Log($"Saved Data type [{saveDataType}] applied to game successfully");
+                // Debug.Log($"Saved Data type [{saveDataType}] applied to game successfully");
             }
         }
 

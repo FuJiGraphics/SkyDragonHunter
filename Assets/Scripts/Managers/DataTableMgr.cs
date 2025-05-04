@@ -77,8 +77,8 @@ namespace SkyDragonHunter.Managers
             LoadTable<GoldShopTable>(DataTableIds.GoldShop);
             LoadTable<DiamondShopTable>(DataTableIds.DiamondShop);
             LoadTable<RerollShopTable>(DataTableIds.RerollShop);
-            // LoadTable<ArtifactTable>(DataTableIds.Artifact);
-            // LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
+            LoadTable<ArtifactTable>(DataTableIds.Artifact);
+            LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
         }
 
         private static void InitForDungeonScene()
