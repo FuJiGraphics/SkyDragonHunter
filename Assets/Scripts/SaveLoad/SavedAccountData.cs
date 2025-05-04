@@ -24,6 +24,11 @@ namespace SkyDragonHunter.SaveLoad
 
         public DateTime lastOnlineTime;
 
+        public SavedAccountData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             isGuest = true;
@@ -42,7 +47,7 @@ namespace SkyDragonHunter.SaveLoad
             critDmgLevel = 0;
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
             userNickName = TempUserData.s_Nickname;
             crystalLevel = TempUserData.s_CrystalLevelID;

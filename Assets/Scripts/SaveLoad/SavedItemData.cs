@@ -17,6 +17,12 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedItem> items;
 
+
+        public SavedItemData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             items = new List<SavedItem>();
@@ -46,7 +52,7 @@ namespace SkyDragonHunter.SaveLoad
             SaveLoadMgr.SaveGameData();
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
             foreach( var item in items)
             {

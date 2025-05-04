@@ -14,6 +14,12 @@ namespace SkyDragonHunter.SaveLoad
     {
         public Dictionary<int, SavedArtifact> artifactDict;
 
+
+        public SavedArtifactsData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             artifactDict = new Dictionary<int, SavedArtifact>();

@@ -9,6 +9,7 @@ namespace SkyDragonHunter.UI {
     {
         public GameObject crewNode;
         public GameObject crewInstance;
+        public int crewId;
     }
 
     public class UICrewInfoNode : MonoBehaviour

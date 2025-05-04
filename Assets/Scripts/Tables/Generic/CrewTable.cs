@@ -4,8 +4,10 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace SkyDragonHunter.Tables
 {
@@ -46,6 +48,33 @@ namespace SkyDragonHunter.Tables
         public BigNum                       LevelBracketREC { get; set; }
         public int                          LevelBracketPassiveStat1 { get; set;}
         public int                          LevelBracketPassiveStat2 { get; set;}
+
+        // Private Fields
+        private const string CrewIconSpriteDirectory = "Sprites/CrewIcons/";
+        private const string CrewPreviewSpriteDirectory = "Sprites/CrewPreviews";
+
+        // Properties
+
+
+        public Sprite IconSprite
+        {
+            get
+            {
+                var path = Path.Combine(CrewIconSpriteDirectory, ID.ToString());
+                var iconSprite = ResourcesMgr.Load<Sprite>(path);
+                return iconSprite;
+            }
+        }
+
+        public Sprite PreviewSprite
+        {
+            get
+            {
+                var path = Path.Combine(CrewPreviewSpriteDirectory, ID.ToString());
+                var previewSprite = ResourcesMgr.Load<Sprite>(path);
+                return previewSprite;
+            }
+        }
 
         public override string ToString()
         {

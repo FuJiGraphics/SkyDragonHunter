@@ -11,6 +11,12 @@ namespace SkyDragonHunter.SaveLoad
         public int critRateUpgradedCounts;
         public int critDmgUpgradedCounts;
 
+
+        public SavedUpgradeCounts()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             atkUpgradedCounts = 0;
@@ -18,7 +24,7 @@ namespace SkyDragonHunter.SaveLoad
             critRateUpgradedCounts = 0;
             critDmgUpgradedCounts = 0;
         }
-        public void UpdateData()
+        public void UpdateSavedData()
         {
 
         }

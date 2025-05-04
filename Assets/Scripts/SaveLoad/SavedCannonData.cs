@@ -17,6 +17,11 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedCannon> cannons;
 
+        public SavedCannonData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             var gradeCount = Enum.GetValues(typeof(CanonGrade)).Length;

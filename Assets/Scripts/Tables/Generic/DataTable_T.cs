@@ -109,6 +109,7 @@ namespace SkyDragonHunter.Tables.Generic {
         
         public T First => m_dict.First().Value;
         public Dictionary<int, T>.ValueCollection Values => m_dict.Values;
+        public Dictionary<int, T>.KeyCollection Keys => m_dict.Keys;
         public List<T> ToList() => m_dict.Values.ToList();
         public T[] ToArray() => new SortedDictionary<int, T>(m_dict).Values.ToArray();
         public int Count => m_dict.Count;

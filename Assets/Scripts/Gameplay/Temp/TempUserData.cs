@@ -9,6 +9,7 @@ namespace SkyDragonHunter.Test
     {
         public int slotIndex;
         public GameObject crewPrefab;
+        public int crewId;
     }
 
     [System.Serializable]

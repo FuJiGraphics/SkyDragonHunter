@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers
-{
+{    
     public static class AccountMgr
     {
         // 필드 (Fields)
@@ -457,27 +457,38 @@ namespace SkyDragonHunter.Managers
             AccountStats.ResetHealth();
         }
 
-        public static void RegisterCrew(GameObject crewInstance)
-        {
-            if (crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
-            {
-                if (!s_CollectedCrews.ContainsKey(provider.Name))
-                {
-                    s_CollectedCrews.Add(provider.Name, crewInstance);
-                    AddUICrewListNode(crewInstance);
-                    AddCrewUIAssignUnitToFortressPanel(crewInstance);
-                    Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {provider.Name}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[AccountMgr]: 이미 등록된 Crew입니다. {crewInstance.name}");
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 Crew가 아닙니다. {crewInstance.name}");
-            }
+        //public static void RegisterCrew(GameObject crewInstance)
+        //{
+        //    if (crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
+        //    {
+        //        if (!s_CollectedCrews.ContainsKey(provider.Name))
+        //        {
+        //            s_CollectedCrews.Add(provider.Name, crewInstance);
+        //            AddUICrewListNode(crewInstance);
+        //            AddCrewUIAssignUnitToFortressPanel(crewInstance);
+        //            Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {provider.Name}");
+        //        }
+        //        else
+        //        {
+        //            Debug.LogWarning($"[AccountMgr]: 이미 등록된 Crew입니다. {crewInstance.name}");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning($"[AccountMgr]: 등록하려는 오브젝트가 Crew가 아닙니다. {crewInstance.name}");
+        //    }
+        //
+        //}
 
+        public static void RegisterCrew(int crewId)
+        {
+            if (!SaveLoadMgr.GameData.savedCrewData.GetSavedCrew(crewId, out var savedCrew))
+            {
+                Debug.LogError($"[AccountMgr]: Cannot register crew, no crew found with id '{crewId}'");
+                return;
+            }
+            AddUICrewListNode(crewId);
+            AddCrewUIAssignUnitToFortressPanel(crewId);
         }
 
         public static void RegisterCanon(CanonDummy canonDummy)
@@ -531,14 +542,29 @@ namespace SkyDragonHunter.Managers
         public static GameObject[] GetCrewInstanceList()
             => s_CollectedCrews.Values.ToArray();
 
-        public static void AddUICrewListNode(GameObject crewInstance)
+        //public static void AddUICrewListNode(GameObject crewInstance)
+        //{
+        //    // Crew 정보창에 자신을 등록
+        //    GameObject findPanelGo = GameMgr.FindObject("UICrewInfoPanel");
+        //    if (findPanelGo != null
+        //        && findPanelGo.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
+        //    {
+        //        crewInfoPanel.AddCrewNode(crewInstance);
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
+        //    }
+        //}
+
+        public static void AddUICrewListNode(int crewId)
         {
             // Crew 정보창에 자신을 등록
             GameObject findPanelGo = GameMgr.FindObject("UICrewInfoPanel");
             if (findPanelGo != null
                 && findPanelGo.TryGetComponent<UICrewInfoPanel>(out var crewInfoPanel))
             {
-                crewInfoPanel.AddCrewNode(crewInstance);
+                crewInfoPanel.AddCrewNode(crewId);
             }
             else
             {
@@ -546,13 +572,27 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        public static void AddCrewUIAssignUnitToFortressPanel(GameObject crewInstance)
+        //public static void AddCrewUIAssignUnitToFortressPanel(GameObject crewInstance)
+        //{
+        //    GameObject findPanelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
+        //    if (findPanelGo != null
+        //        && findPanelGo.TryGetComponent<UIAssignUnitTofortressPanel>(out var crewInfoPanel))
+        //    {
+        //        crewInfoPanel.AddCrewNode(crewInstance);
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
+        //    }
+        //}
+
+        public static void AddCrewUIAssignUnitToFortressPanel(int crewId)
         {
             GameObject findPanelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-            if (findPanelGo != null 
+            if (findPanelGo != null
                 && findPanelGo.TryGetComponent<UIAssignUnitTofortressPanel>(out var crewInfoPanel))
             {
-                crewInfoPanel.AddCrewNode(crewInstance);
+                crewInfoPanel.AddCrewNode(crewId);
             }
             else
             {
@@ -584,38 +624,38 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 단원 인스턴스화 및 저장
-                foreach (var crew in comp.crewDataPrefabs)
-                {
-                    GameObject instance = GameObject.Instantiate<GameObject>(crew);
-
-                    // TODO: LJH
-                    if (instance != null)
-                    {
-                        var crewBT = instance.GetComponent<NewCrewControllerBT>();
-
-                        if (SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(crewBT.ID, out var level))
-                        {
-                            crewBT.SetDataFromTableWithExistingIDTemp(level);
-                            Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
-                        }
-                        else
-                        {
-                            // TODO :LJH (Need to handle logics on scene change)
-                            Debug.Log($"Crew Not Set To SaveData");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError($"Crew Prefab Null");
-                    }
-                    // ~TODO
-
-                    SyncCrewData(instance);
-                    RegisterCrew(instance);            
-
-                    instance.GetComponent<AccountStatProvider>().Init();       
-                    instance.SetActive(false);
-                }
+                //foreach (var crew in comp.crewDataPrefabs)
+                //{
+                //    GameObject instance = GameObject.Instantiate<GameObject>(crew);
+                //
+                //    // TODO: LJH
+                //    if (instance != null)
+                //    {
+                //        var crewBT = instance.GetComponent<NewCrewControllerBT>();
+                //
+                //        if (SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(crewBT.ID, out var level))
+                //        {
+                //            crewBT.SetDataFromTableWithExistingIDTemp(level);
+                //            Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
+                //        }
+                //        else
+                //        {
+                //            // TODO :LJH (Need to handle logics on scene change)
+                //            Debug.Log($"Crew Not Set To SaveData");
+                //        }
+                //    }
+                //    else
+                //    {
+                //        Debug.LogError($"Crew Prefab Null");
+                //    }
+                //    // ~TODO
+                //
+                //    SyncCrewData(instance);
+                //    RegisterCrew(instance);
+                //
+                //    instance.GetComponent<AccountStatProvider>().Init();       
+                //    instance.SetActive(false);
+                //}
                 #endregion
 
                 #region 대포 정보 불러오기
@@ -637,23 +677,23 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 단원 탑승 정보 UI 적용
-                foreach (var crewEquipStorage in comp.airshipEquipSlots)
-                {
-                    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
-                    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-                    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
-                    if (crewEquipStorage.crewPrefab == null)
-                        continue;
-
-                    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
-                    {
-                        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
-                        {
-                            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
-                            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
-                        }
-                    }
-                }
+                //foreach (var crewEquipStorage in comp.airshipEquipSlots)
+                //{
+                //    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
+                //    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
+                //    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
+                //    if (crewEquipStorage.crewPrefab == null)
+                //        continue;
+                //
+                //    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
+                //    {
+                //        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
+                //        {
+                //            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
+                //            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
+                //        }
+                //    }
+                //}
                 #endregion
 
                 #region 계정 정보 UI 적용
@@ -684,40 +724,40 @@ namespace SkyDragonHunter.Managers
         {
             Debug.Log("[AccountMgr]: 유저 데이터 세이브");
             var tempUserData = GameMgr.FindObject("TempUserData");
-
+            
             if (tempUserData.TryGetComponent<TempUserData>(out var comp))
             {
                 #region 비공정 탑승 정보 저장
-                GameObject airshipInstance = GameMgr.FindObject("Airship");
-                if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
-                {
-                    var equipSlots = equipController.EquipSlots;
-                    comp.airshipEquipSlots = new List<SaveEquipStorage>();
-                    for (int i = 0; i < equipSlots.Length; ++i)
-                    {
-                        int slotIndex = i;
-                        GameObject crewPrefab = null;
-                        // 크루 프리팹 찾기
-                        foreach (var findGo in comp.crewDataPrefabs)
-                        {
-                            if (equipSlots[i] == null)
-                                continue;
-
-                            var equipCrewInfo = equipSlots[i].GetComponent<CrewInfoProvider>();
-                            var findCrewInfo = findGo.GetComponent<CrewInfoProvider>();
-                            if (equipCrewInfo.Name == findCrewInfo.Name)
-                            {
-                                crewPrefab = findGo;
-                                break;
-                            }
-                        }
-
-                        SaveEquipStorage saveData = new SaveEquipStorage();
-                        saveData.slotIndex = slotIndex;
-                        saveData.crewPrefab = crewPrefab;
-                        comp.airshipEquipSlots.Add(saveData);
-                    }
-                }
+                //GameObject airshipInstance = GameMgr.FindObject("Airship");
+                //if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
+                //{
+                //    var equipSlots = equipController.EquipSlots;
+                //    comp.airshipEquipSlots = new List<SaveEquipStorage>();
+                //    for (int i = 0; i < equipSlots.Length; ++i)
+                //    {
+                //        int slotIndex = i;
+                //        GameObject crewPrefab = null;
+                //        // 크루 프리팹 찾기
+                //        foreach (var findGo in comp.crewDataPrefabs)
+                //        {
+                //            if (equipSlots[i] == null)
+                //                continue;
+                //            
+                //            var equipCrewInfo = equipSlots[i].GetComponent<CrewInfoProvider>();
+                //            var findCrewInfo = findGo.GetComponent<CrewInfoProvider>();
+                //            if (equipCrewInfo.Name == findCrewInfo.Name)
+                //            {
+                //                crewPrefab = findGo;
+                //                break;
+                //            }
+                //        }
+                //
+                //        SaveEquipStorage saveData = new SaveEquipStorage();
+                //        saveData.slotIndex = slotIndex;
+                //        saveData.crewPrefab = crewPrefab;
+                //        comp.airshipEquipSlots.Add(saveData);
+                //    }
+                //}
                 #endregion
 
                 #region 크리스탈 레벨 저장

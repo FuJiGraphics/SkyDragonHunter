@@ -12,6 +12,11 @@ namespace SkyDragonHunter.SaveLoad
         public int clearedStage;
         public int clearedZone;
 
+        public SavedStageData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             currentStage = 1;
@@ -20,7 +25,7 @@ namespace SkyDragonHunter.SaveLoad
             clearedStage = 0;
             clearedZone = 0;
         }
-        public void UpdateData()
+        public void UpdateSavedData()
         {
 
         }

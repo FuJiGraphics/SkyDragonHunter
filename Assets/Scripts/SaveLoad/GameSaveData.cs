@@ -10,7 +10,7 @@ namespace SkyDragonHunter.SaveLoad
         public int MajorVersion { get; protected set; }
         public abstract GameSaveData VersionUp();
         public abstract void Initialize();
-        public abstract void UpdateData(SaveDataTypes saveDataType);
+        public abstract void UpdateSavedData(SaveDataTypes saveDataType);
         public abstract void ApplySavedData(SaveDataTypes saveDataType);
     } // Scope by class SaveData
 
@@ -20,11 +20,11 @@ namespace SkyDragonHunter.SaveLoad
         public DateTime lastSavedTime;
         public SavedAccountData savedAccountData;
         public SavedStageData savedStageData;
+        public SavedCrewData savedCrewData;
         public SavedAirshipData savedAirshipData;
         public SavedCannonData savedCannonData;
         public SavedRepairerData savedRepairerData;
         public SavedItemData savedItemData;
-        public SavedCrewData savedCrewData;
         public SavedDungeonData savedDungeonData;
         public SavedArtifactsData savedArtifactData;
         public SavedUpgradeCounts savedUpgradeCounts;
@@ -34,61 +34,49 @@ namespace SkyDragonHunter.SaveLoad
 
         public GameSaveDataV0()
         {
-            MajorVersion = 0;
-            savedAccountData = new SavedAccountData();
-            savedStageData = new SavedStageData();
-            savedAirshipData = new SavedAirshipData();
-            savedCannonData = new SavedCannonData();
-            savedRepairerData = new SavedRepairerData();
-            savedItemData = new SavedItemData();
-            savedCrewData = new SavedCrewData();
-            savedDungeonData = new SavedDungeonData();
-            savedArtifactData = new SavedArtifactsData();
-            savedUpgradeCounts = new SavedUpgradeCounts();
-            savedQuestProgresses = new SavedQuestProgresses();
-
-            savedAccountData.InitData();
-            savedStageData.InitData();
-            savedAirshipData.InitData();
-            savedCannonData.InitData();
-            savedRepairerData.InitData();
-            savedItemData.InitData();
-            savedCrewData.InitData();
-            savedDungeonData.InitData();
-            savedArtifactData.InitData();
-            savedUpgradeCounts.InitData();
-            savedQuestProgresses.InitData();
+            Initialize();
         }
 
         public override void Initialize()
         {
-            
+            MajorVersion = 0;
+            savedAccountData = new SavedAccountData();
+            savedStageData = new SavedStageData();
+            savedCrewData = new SavedCrewData();
+            savedAirshipData = new SavedAirshipData();
+            savedCannonData = new SavedCannonData();
+            savedRepairerData = new SavedRepairerData();
+            savedItemData = new SavedItemData();
+            savedDungeonData = new SavedDungeonData();
+            savedArtifactData = new SavedArtifactsData();
+            savedUpgradeCounts = new SavedUpgradeCounts();
+            savedQuestProgresses = new SavedQuestProgresses();
         }        
 
-        public override void UpdateData(SaveDataTypes saveDataType)
+        public override void UpdateSavedData(SaveDataTypes saveDataType)
         {
             switch (saveDataType)
             {
                 case SaveDataTypes.Account:
-                    savedAccountData.UpdateData();
+                    savedAccountData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Stage:
-                    savedStageData.UpdateData();
+                    savedStageData.UpdateSavedData();
+                    break;
+                case SaveDataTypes.Crew:
+                    savedCrewData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Airship:
-                    savedAirshipData.UpdateData();
+                    savedAirshipData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Cannon:
-
+                    
                     break;
                 case SaveDataTypes.Repairer:
 
                     break;
                 case SaveDataTypes.Item:
-                    savedItemData.UpdateData();
-                    break;
-                case SaveDataTypes.Crew:
-                    savedCrewData.UpdateData();
+                    savedItemData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Dungeon:
 
@@ -97,10 +85,10 @@ namespace SkyDragonHunter.SaveLoad
 
                     break;
                 case SaveDataTypes.UpgradeCount:
-                    savedUpgradeCounts.UpdateData();
+                    savedUpgradeCounts.UpdateSavedData();
                     break;
                 case SaveDataTypes.QuestProgress:
-                    savedQuestProgresses.UpdateData();
+                    savedQuestProgresses.UpdateSavedData();
                     break;
             }
         }
@@ -115,6 +103,9 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Stage:
                     savedStageData.ApplySavedData();
                     break;
+                case SaveDataTypes.Crew:
+                    savedCrewData.ApplySavedData();
+                    break;
                 case SaveDataTypes.Airship:
                     savedAirshipData.ApplySavedData();
                     break;
@@ -126,9 +117,6 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.Item:
                     savedItemData.ApplySavedData();
-                    break;
-                case SaveDataTypes.Crew:
-                    savedCrewData.ApplySavedData();
                     break;
                 case SaveDataTypes.Dungeon:
 

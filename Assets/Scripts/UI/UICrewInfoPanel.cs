@@ -1,11 +1,15 @@
+using JetBrains.Annotations;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,53 +102,96 @@ namespace SkyDragonHunter.UI {
                 m_UiCrewReady.sprite = m_UiCrewReadyNo;
         }
 
-        public void AddCrewNode(GameObject crew)
+        //public void AddCrewNode(GameObject crew)
+        //{
+        //    if (m_CrewListNodeObjects == null)
+        //    {
+        //        m_CrewListNodeObjects = new List<CrewNode>();
+        //    }
+        //
+        //    if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
+        //    {
+        //        GameObject nodeGo = Instantiate<GameObject>(m_UiCrewListNodePrefab);
+        //        m_CrewListNodeObjects.Add(new CrewNode{ crewNode = nodeGo, crewInstance = crew });
+        //        if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
+        //        {
+        //            nodeIcon.sprite = provider.Icon;
+        //        }
+        //        if (nodeGo.TryGetComponent<Button>(out var nodeButton))
+        //        {
+        //            nodeButton.onClick.AddListener(() => {
+        //                SetName(provider.Name);
+        //                SetDamage(provider.Damage);
+        //                SetHealth(provider.Health);
+        //                SetDefense(provider.Defense);
+        //                SetPreview(provider.Preview);
+        //                SetMountedState(provider.IsEquip);
+        //                m_PrevClickButton = nodeButton;
+        //            });
+        //        }
+        //        nodeGo.transform.SetParent(m_UiCrewListContent.transform);
+        //        nodeIcon.transform.localScale = Vector3.one;
+        //    }
+        //    else
+        //    {
+        //        Debug.LogWarning("[UICrewInfoPanel]: ICrewInfoProvider를 찾을 수 없습니다.");
+        //    }
+        //}
+
+        public void AddCrewNode(int crewID)
         {
-            if (m_CrewListNodeObjects == null)
+            if (!SaveLoadMgr.GameData.savedCrewData.GetSavedCrew(crewID, out var savedCrewData))
             {
-                m_CrewListNodeObjects = new List<CrewNode>();
+                Debug.Log($"[UICrewInfoPanel] Add Crew Node Failed : cannot find crew with ID [{crewID}]");
+                return;
             }
 
-            if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
+            var nodeGo = Instantiate(m_UiCrewListNodePrefab);
+            if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
             {
-                GameObject nodeGo = Instantiate<GameObject>(m_UiCrewListNodePrefab);
-                m_CrewListNodeObjects.Add(new CrewNode{ crewNode = nodeGo, crewInstance = crew });
-                if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
-                {
-                    nodeIcon.sprite = provider.Icon;
-                }
-                if (nodeGo.TryGetComponent<Button>(out var nodeButton))
-                {
-                    nodeButton.onClick.AddListener(() => {
-                        SetName(provider.Name);
-                        SetDamage(provider.Damage);
-                        SetHealth(provider.Health);
-                        SetDefense(provider.Defense);
-                        SetPreview(provider.Preview);
-                        SetMountedState(provider.IsEquip);
-                        m_PrevClickButton = nodeButton;
-                    });
-                }
-                nodeGo.transform.SetParent(m_UiCrewListContent.transform);
-                nodeIcon.transform.localScale = Vector3.one;
+                nodeIcon.sprite = savedCrewData.crewData.IconSprite;
             }
-            else
+            if (nodeGo.TryGetComponent<Button>(out var nodeButton))
             {
-                Debug.LogWarning("[UICrewInfoPanel]: ICrewInfoProvider를 찾을 수 없습니다.");
+                nodeButton.onClick.AddListener(() => {
+                    SetName(savedCrewData.crewData.UnitName);
+                    SetDamage(savedCrewData.CurrentDamage().ToString());
+                    SetHealth(savedCrewData.CurrentHP().ToString());
+                    SetDefense(savedCrewData.CurrentArmor().ToString());
+                    SetPreview(savedCrewData.crewData.PreviewSprite);
+                    SetMountedState(savedCrewData.isMounted);
+                    m_PrevClickButton = nodeButton;
+                });
             }
+            nodeGo.transform.SetParent(m_UiCrewListContent.transform);
+            nodeIcon.transform.localScale = Vector3.one;
         }
 
         public void SortedEquipCrewNode()
         {
+            //foreach (var node in m_CrewListNodeObjects)
+            //{
+            //    if (node.crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
+            //    {
+            //        if (provider.IsEquip)
+            //        {
+            //            node.crewNode.transform.SetAsFirstSibling();
+            //        }
+            //    }
+            //}
+
             foreach (var node in m_CrewListNodeObjects)
             {
-                if (node.crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
+                if(!SaveLoadMgr.GameData.savedCrewData.GetSavedCrew(node.crewId, out var savedCrewData))
                 {
-                    if (provider.IsEquip)
-                    {
-                        node.crewNode.transform.SetAsFirstSibling();
-                    }
+                    Debug.LogError($"[UICrewInfoPanel]: Cannot find crew with id '{node.crewId}'");
+                    continue;
                 }
+                if(savedCrewData.isMounted)
+                {
+                    node.crewNode.transform.SetAsFirstSibling();
+                }
+
             }
         }
 
@@ -162,6 +209,22 @@ namespace SkyDragonHunter.UI {
                 }
             }
         }
+
+        public void SetClickNode(int crewID)
+        {
+            foreach (var node in m_CrewListNodeObjects)
+            {
+                if (node.crewNode.TryGetComponent<Button>(out var button))
+                {
+                    if (node.crewId == crewID)
+                    {
+                        button.onClick.Invoke();
+                        m_PrevClickButton = button;
+                    }
+                }
+            }
+        }
+
         
         // Private 메서드
         // Others

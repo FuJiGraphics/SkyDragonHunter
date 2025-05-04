@@ -17,6 +17,11 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedRepairer> repairers;
 
+        public SavedRepairerData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             var gradeCount = Enum.GetValues(typeof(CanonGrade)).Length;

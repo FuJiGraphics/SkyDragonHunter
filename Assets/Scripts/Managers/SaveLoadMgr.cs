@@ -14,11 +14,11 @@ namespace SkyDragonHunter.Managers
     {
         Account,
         Stage,
+        Crew,
         Airship,
         Cannon,
         Repairer,
         Item,
-        Crew,
         Dungeon,
         Artifact,
         UpgradeCount,
@@ -90,7 +90,7 @@ namespace SkyDragonHunter.Managers
                 if (!processed.Add(saveDataType)) // returns false on duplication
                     continue;
 
-                GameData.UpdateData(saveDataType);
+                GameData.UpdateSavedData(saveDataType);
                 Debug.Log($"Data type [{saveDataType}] Updated to save data successfully");
             }
         }
@@ -224,14 +224,17 @@ namespace SkyDragonHunter.Managers
             if (initialized)
                 return;
 
+            InitializeGameData();
+            InitializeLocalSettings();
+
             if (!LoadGameData())
             {
-                InitializeGameData();
+                SaveGameData();
             }
 
             if(!LoadLocalSettings())
             {
-                InitializeLocalSettings();
+                SaveLocalSettings();
             }
 
             initialized = true;
@@ -241,7 +244,7 @@ namespace SkyDragonHunter.Managers
         private static void InitializeGameData()
         {
             GameData.Initialize();
-            SaveGameData();
+            //SaveGameData();
         }
 
         private static void InitializeLocalSettings()
@@ -250,7 +253,7 @@ namespace SkyDragonHunter.Managers
             LocalSettingData.bgmVolume = 0.2f;
             LocalSettingData.fpsSetting = 60;
             LocalSettingData.isVibrationEnabled = true;
-            SaveLocalSettings();
+            //SaveLocalSettings();
         }        
     } // Scope by class SaveLoadMgr
 

@@ -25,13 +25,19 @@ namespace SkyDragonHunter.SaveLoad
     {
         public Dictionary<QuestType, Dictionary<int, SavedQuest>> questsDict;
 
+
+        public SavedQuestProgresses()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             questsDict = new Dictionary<QuestType, Dictionary<int, SavedQuest>>();
 
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
 
         }

@@ -16,6 +16,12 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedDungeon> dungeons;
 
+
+        public SavedDungeonData()
+        {
+            InitData();
+        }
+
         public void InitData()
         {
             dungeons = new List<SavedDungeon>();
