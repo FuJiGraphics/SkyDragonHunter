@@ -267,13 +267,25 @@ namespace SkyDragonHunter.Editors {
                                 var field = selectedType.GetField(header[i], BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                                 if (field != null)
                                 {
-                                    object value = row[i];
-                                    if (field.FieldType == typeof(int) && int.TryParse(row[i], out int iVal)) value = iVal;
-                                    else if (field.FieldType == typeof(float) && float.TryParse(row[i], out float fVal)) value = fVal;
-                                    else if (field.FieldType == typeof(double) && double.TryParse(row[i], out double dVal)) value = dVal;
-                                    else if (field.FieldType == typeof(bool) && bool.TryParse(row[i], out bool bVal)) value = bVal;
-                                    field.SetValue(instanceToUse, value);
-                                    EditorUtility.SetDirty(instanceToUse);
+                                    try
+                                    {
+                                        object value = null;
+                                        string cell = row[i];
+
+                                        if (field.FieldType == typeof(int) && int.TryParse(cell, out int iVal)) value = iVal;
+                                        else if (field.FieldType == typeof(float) && float.TryParse(cell, out float fVal)) value = fVal;
+                                        else if (field.FieldType == typeof(double) && double.TryParse(cell, out double dVal)) value = dVal;
+                                        else if (field.FieldType == typeof(bool) && bool.TryParse(cell, out bool bVal)) value = bVal;
+                                        else if (field.FieldType == typeof(string)) value = cell;
+                                        else continue; // 지원하지 않는 타입은 무시
+
+                                        field.SetValue(instanceToUse, value);
+                                        EditorUtility.SetDirty(instanceToUse);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Debug.LogWarning($"[{field.Name}] 필드에 값 설정 중 예외 발생: {ex.Message}");
+                                    }
                                 }
                             }
 

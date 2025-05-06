@@ -24,7 +24,7 @@ namespace SkyDragonHunter.Scriptables {
         public float skillMultiplier;       // 스킬이 적용받는 공격력의 비율
         public int skillHitCount;           // 스킬이 적용되었을 때 타격 횟수
         public float skillHitDuration;      // 스킬이 적용되는 간격의 시간
-        public int buffID;                  // 효과 ID
+        public string buffID;                // 효과 ID
         public int buffTarget;              // 효과 적용 대상 (0: 효과 없음, 1: 스킬 적용 대상, 2: 시전자, 3:아군 전체)
         public int ailmentID;               // 상태이상의 ID
         public float ailmentDuration;       // 상태이상의 지속 시간

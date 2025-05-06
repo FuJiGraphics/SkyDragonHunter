@@ -1,0 +1,42 @@
+using SkyDragonHunter.Entities;
+using SkyDragonHunter.Tables.Generic;
+using System.Text;
+using UnityEngine;
+
+namespace SkyDragonHunter.Tables
+{
+    public enum BuffType
+    {
+        Buff,
+        Debuff,
+    }
+
+    public enum BuffStatType
+    {
+        Damage,
+        Health,
+        Armor,
+        Resilient,
+        CriticalChance,
+        CriticalMultiplier,
+        BossMultiplier,
+        SkillEffectMultiplier,
+        AttackSpeed,
+        CooldownResilient,
+    }
+
+    public class BuffData : DataTableData
+    {
+        public BuffType BuffApply { get; set; }         // 버프 효과의 적용 방법 0: 상승, 1: 감소
+        public string BuffEffect { get; set; }          // 버프 이펙트 리소스 명
+        public BuffStatType BuffStatType { get; set; }  // 적용 스탯 타입
+        public float BuffMultiplier { get; set; }       // 1 => 100%
+        public float BuffDuration { get; set; }         // 0일 경우 지속 시간 무한
+    }
+
+    public class BuffTable : DataTable<BuffData>
+    {
+
+    } // Scope by class BuffTable
+
+} // namespace Root

@@ -28,6 +28,7 @@ namespace SkyDragonHunter.Managers
         public static GoldShopTable GoldShopTable => Get<GoldShopTable>(DataTableIds.GoldShop);
         public static DiamondShopTable DiamondShopTable => Get<DiamondShopTable>(DataTableIds.DiamondShop);
         public static RerollShopTable RerollShopTable => Get<RerollShopTable>(DataTableIds.RerollShop);
+        public static BuffTable BuffTable => Get<BuffTable>(DataTableIds.Buff);
 
         // Static Constructor
         static DataTableMgr()
@@ -79,6 +80,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<RerollShopTable>(DataTableIds.RerollShop);
             LoadTable<ArtifactTable>(DataTableIds.Artifact);
             LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
+            LoadTable<BuffTable>(DataTableIds.Buff);
         }
 
         private static void InitForDungeonScene()
