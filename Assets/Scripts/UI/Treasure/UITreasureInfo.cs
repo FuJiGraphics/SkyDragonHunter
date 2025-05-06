@@ -17,6 +17,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_EffectText;
 
         [Header("Additional Panel")]
+        [SerializeField] private Button m_AddStatChangeButton;
         [SerializeField] private int m_AddStatChangePrice;
         [SerializeField] private TextMeshProUGUI m_AddStatChangeText;
         [SerializeField] private TextMeshProUGUI[] m_SlotTexts;
@@ -24,6 +25,7 @@ namespace SkyDragonHunter.UI {
         [Header("Equipment Panel")]
         [SerializeField] private UITreasureEquipmentSlotPanel m_TargetEquipSlotPanel;
         [SerializeField] private Button m_EquipButton;
+        [SerializeField] private TextMeshProUGUI m_EquipButtonText;
 
         private ArtifactDummy m_CurrentTarget;
 
@@ -37,6 +39,14 @@ namespace SkyDragonHunter.UI {
                 gameObject.SetActive(false);
         }
 
+        private void OnDisable()
+        {
+            m_TargetEquipSlotPanel.Unequip(m_CurrentTarget);
+            m_TargetEquipSlotPanel.ClickedDummy = null;
+            m_CurrentTarget = null;
+            m_Icon.sprite = null;
+        }
+
         // Public 메서드
         public void ShowInfo(ArtifactDummy target)
         {
@@ -44,26 +54,39 @@ namespace SkyDragonHunter.UI {
             m_Icon.sprite = target.Icon;
             m_NameText.text = target.Name;
             m_EffectText.text = target.ConstantStat.ToString();
-            m_AddStatChangeText.text = "추가 스탯 변경 :" + m_AddStatChangePrice.ToString();
+            m_AddStatChangeText.text = "스탯 변경 " + m_AddStatChangePrice.ToString();
+            m_TargetEquipSlotPanel.ClickedDummy = target;
 
             var addStatList = target.AdditionalStats;
             for (int i = 0; i < m_SlotTexts.Length; ++i)
             {
                 if (i < addStatList.Length)
-                {
                     m_SlotTexts[i].text = addStatList[i].ToString();
-                }
                 else
-                {
                     m_SlotTexts[i].text = "잠금 상태";
-                }
             }
 
-            m_EquipButton.onClick.RemoveAllListeners();
-            m_EquipButton.onClick.AddListener(() => 
+            if (UITreasureEquipmentPanel.IsFusionMode)
             {
-                m_TargetEquipSlotPanel.Equip(target);
-            });
+                m_EquipButton.gameObject.SetActive(false);
+                m_AddStatChangeButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                m_EquipButton.gameObject.SetActive(true);
+                m_AddStatChangeButton.gameObject.SetActive(true);
+                EquipButtonStateDirty();
+                m_EquipButton.onClick.RemoveAllListeners();
+                m_EquipButton.onClick.AddListener(() =>
+                {
+                    if (m_TargetEquipSlotPanel.IsArtifactEquipped(target))
+                        m_TargetEquipSlotPanel.Unequip(target);
+                    else
+                        m_TargetEquipSlotPanel.Equip(target);
+
+                    EquipButtonStateDirty();
+                });
+            }
         }
 
         public void ChangedStats()
@@ -85,6 +108,16 @@ namespace SkyDragonHunter.UI {
             ShowInfo(m_CurrentTarget);
             AccountMgr.DirtyAccountAndAirshipStat();
         }
+
+        public void EquipButtonStateDirty()
+        {
+            if (!m_TargetEquipSlotPanel.IsArtifactEquipped(m_TargetEquipSlotPanel.ClickedDummy))
+                m_EquipButtonText.text = "장착";
+            else
+                m_EquipButtonText.text = "장착해제";
+        }
+
+
         // Private 메서드
         // Others
 

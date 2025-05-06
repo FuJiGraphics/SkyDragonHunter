@@ -14,6 +14,7 @@ namespace SkyDragonHunter.Tables {
         Epic,
         Unique,
         Legend,
+        None,
     }
 
     public enum ArtifactHoldStatType

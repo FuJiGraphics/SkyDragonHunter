@@ -10,7 +10,7 @@ namespace SkyDragonHunter.UI {
         // 필드 (Fields)
         [SerializeField] private Button[] m_Buttons;
 
-        private bool m_IsAnimEnd = false;
+        [SerializeField] private bool m_IsAnimEnd = false;
 
         // 속성 (Properties)
         public bool IsAnimEnd => m_IsAnimEnd;

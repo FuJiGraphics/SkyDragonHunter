@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace SkyDragonHunter.UI {
 
@@ -21,11 +22,11 @@ namespace SkyDragonHunter.UI {
     {
         // 필드 (Fields)
         [SerializeField] private UITreasureEquipmentSlotPanel m_UiTreasureEquipPanel;
+        [SerializeField] private UITreasureFusionPanel m_UiTreasureFusionPanel;
         [SerializeField] private UITreasureInfo m_UiTreasureInfo;
         [SerializeField] private UITreasureSlot m_SlotPrefab;
         [SerializeField] private Transform m_Content;
         [SerializeField] private TMP_Dropdown m_SortedDropdown;
-
 
         private ArtifactSortedTypes m_SortedType;
         private Dictionary<ArtifactDummy, UITreasureSlot> m_GenMap;
@@ -62,6 +63,7 @@ namespace SkyDragonHunter.UI {
 
             var instance = Instantiate(m_SlotPrefab);
             instance.TargetEquipPanel = m_UiTreasureEquipPanel;
+            instance.TargetFusionPanel = m_UiTreasureFusionPanel;
             instance.TargetInfoPanel = m_UiTreasureInfo;
             instance.SetSlot(artifact);
             instance.transform.SetParent(m_Content);
@@ -79,30 +81,53 @@ namespace SkyDragonHunter.UI {
                 DrawableMgr.Dialog("Alert", $"[UITreasureSelect]: 슬롯을 찾을 수 없습니다. {artifact}");
                 return;
             }
-            Destroy(m_GenMap[artifact]);
+
+            for (int i = 0; i < m_SortedByAcquiredTime.Count; ++i)
+            {
+                if (m_SortedByAcquiredTime[i].Value == artifact)
+                {
+                    m_SortedByAcquiredTime.RemoveAt(i);
+                    break;
+                }
+            }
+
+            Destroy(m_GenMap[artifact].gameObject);
             m_GenMap.Remove(artifact);
+        }
+
+        public void UpdateSortedState()
+        {
+            OnChangedSortedType((int)m_SortedType);
         }
 
         public void OnChangedSortedType(int type)
         {
-            ArtifactSortedTypes sortedType = (ArtifactSortedTypes)type;
-            switch (sortedType)
+            m_SortedType = (ArtifactSortedTypes)type;
+            switch (m_SortedType)
             {
                 case ArtifactSortedTypes.GetASC:
                     OrderByGet(false);
+                    UITreasureSlot.SortedSelectList();
                     break;
                 case ArtifactSortedTypes.GetDESC:
                     OrderByGet(true);
+                    UITreasureSlot.SortedSelectList();
                     break;
                 case ArtifactSortedTypes.GradeASC:
                     OrderByGrade(false);
+                    UITreasureSlot.SortedSelectList();
                     break;
                 case ArtifactSortedTypes.GradeDESC:
                     OrderByGrade(true);
+                    UITreasureSlot.SortedSelectList();
                     break;
                 case ArtifactSortedTypes.EquipASC:
+                    OrderByEquip(false);
+                    UITreasureSlot.SortedSelectList();
                     break;
                 case ArtifactSortedTypes.EquipDESC:
+                    OrderByEquip(true);
+                    UITreasureSlot.SortedSelectList();
                     break;
             }
         }
@@ -130,6 +155,38 @@ namespace SkyDragonHunter.UI {
             foreach (var element in sortedList)
             {
                 element.Key.transform.SetAsFirstSibling();
+            }
+        }
+
+        public void OrderByEquip(bool isDescending)
+        {
+            var targetList = UITreasureEquipmentSlotPanel.EquipList;
+
+            var sortedList = targetList.ToList();
+
+            if (!isDescending)
+            {
+                sortedList.Reverse();
+            }
+
+            foreach (var artifact in sortedList)
+            {
+                var slot = UITreasureSlot.FindSlot(artifact);
+                if (slot != null)
+                {
+                    slot.transform.SetAsFirstSibling();
+                }
+            }
+        }
+
+        public void ClearClickedIcon()
+        {
+            if (m_GenMap == null)
+                return;
+
+            foreach (var slot in m_GenMap)
+            {
+                slot.Value.SetClickedIcon(false);
             }
         }
         // Private 메서드

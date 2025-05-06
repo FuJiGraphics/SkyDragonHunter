@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace SkyDragonHunter.Managers
     public static class DrawableMgr
     {
         // 필드 (Fields)
-        public static GameObject s_UIDamageMeterPrefab;
-        public static GameObject s_UIAlertDialogPrefab;
-
-        public static GameObject s_PrevGenDialogInstance;
+        private static GameObject s_UIDamageMeterPrefab;
+        private static GameObject s_UIAlertDialogPrefab;
+        private static GameObject s_UIAlertArtifactInfoPrefab;
+        private static GameObject s_PrevGenDialogInstance;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -33,6 +34,7 @@ namespace SkyDragonHunter.Managers
             Debug.Log($"[DrawableMgr] UIDamageMeter Prefab 생성중");
             s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIDamageMeter");
             s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertDialog");
+            s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("UIAlertArtifactInfo");
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -79,6 +81,24 @@ namespace SkyDragonHunter.Managers
             var meter = damageMeterUI.GetComponent<UIDamageMeter>();
             meter.SetText(str);
             meter.SetColor(color);
+        }
+
+        public static void DialogWithArtifactInfo(string title, ArtifactDummy artifact)
+        {
+            if (s_PrevGenDialogInstance != null)
+                GameObject.Destroy(s_PrevGenDialogInstance);
+
+            s_PrevGenDialogInstance = GameObject.Instantiate(s_UIAlertArtifactInfoPrefab);
+            s_PrevGenDialogInstance?.SetActive(true);
+            if (s_PrevGenDialogInstance.TryGetComponent<UIAlertArtifactInfo>(out var dialogComp))
+            {
+                dialogComp.Title = title;
+                dialogComp.ShowInfo(artifact);
+            }
+            else
+            {
+                Debug.LogError($"[DrawableMgr]: {s_PrevGenDialogInstance}에서 UIAlertDialog를 찾을 수 없습니다.");
+            }
         }
 
         // Private 메서드

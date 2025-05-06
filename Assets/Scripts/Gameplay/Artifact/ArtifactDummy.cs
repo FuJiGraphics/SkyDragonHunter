@@ -2,6 +2,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDraonHunter.Utility;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,30 +59,37 @@ namespace SkyDragonHunter.Gameplay {
             {
                 case ArtifactHoldStatType.Damage:
                     result = "공격력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case ArtifactHoldStatType.Health:
                     result = "체력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case ArtifactHoldStatType.Armor:
                     result = "방어력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case ArtifactHoldStatType.Resilient:
                     result = "회복력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case ArtifactHoldStatType.CriticalChance:
                     result = "치명타 확률 +";
+                    result += StatValue.ToString();
                     break;
                 case ArtifactHoldStatType.CriticalMultiplier:
                     result = "치명타 배율 +";
+                    result += StatValue.ToString();
                     break;
                 case ArtifactHoldStatType.BossMultiplier:
                     result = "보스데미지 배율 +";
+                    result += StatValue.ToString();
                     break;
                 case ArtifactHoldStatType.SkillEffectMultiplier:
                     result = "스킬 효과 배율 +";
+                    result += StatValue.ToString();
                     break;
             }
-            result += StatValue.ToString();
             return result;
         }
     }
@@ -138,30 +146,37 @@ namespace SkyDragonHunter.Gameplay {
             {
                 case AdditionalStatType.Damage:
                     result = "공격력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case AdditionalStatType.Health:
                     result = "체력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case AdditionalStatType.Armor:
                     result = "방어력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case AdditionalStatType.Resilient:
                     result = "회복력 +";
+                    result += StatValue.ToUnit();
                     break;
                 case AdditionalStatType.CriticalChance:
                     result = "치명타 확률 +";
+                    result += StatValue.ToString();
                     break;
                 case AdditionalStatType.CriticalMultiplier:
                     result = "치명타 배율 +";
+                    result += StatValue.ToString();
                     break;
                 case AdditionalStatType.BossMultiplier:
                     result = "보스데미지 배율 +";
+                    result += StatValue.ToString();
                     break;
                 case AdditionalStatType.SkillEffectMultiplier:
                     result = "스킬 효과 배율 +";
+                    result += StatValue.ToString();
                     break;
             }
-            result += StatValue.ToString();
             return result;
         }
     }
@@ -182,6 +197,8 @@ namespace SkyDragonHunter.Gameplay {
         public string Desc => m_ArtifactData.Desc;
         public Sprite Icon => m_ArtifactData.Icon;
         public ArtifactGrade Grade => m_ArtifactData.Grade;
+        public ArtifactGrade NextGrade => Enum.IsDefined(typeof(ArtifactGrade), (int)m_ArtifactData.Grade + 1) 
+            ? (ArtifactGrade)((int)m_ArtifactData.Grade + 1) : m_ArtifactData.Grade;
         public ConstantStat ConstantStat => m_CacheConstantStat;
         public AdditionalStat[] AdditionalStats => m_CacheAdditionalStats.ToArray();
         public CommonStats CommonStatValue

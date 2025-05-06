@@ -35,6 +35,9 @@ namespace SkyDragonHunter.UI {
 
         public void Clear()
         {
+            var slot = UITreasureSlot.FindSlot(Value);
+            UITreasureEquipmentSlotPanel.EquipList.Remove(Value);
+            slot.SetClickedIcon(false);
             AccountMgr.RemoveArtifactSlot(Value);
             Value = null;
             m_Icon.sprite = m_BackUpBasicIcon;

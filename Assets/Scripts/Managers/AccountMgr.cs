@@ -243,10 +243,18 @@ namespace SkyDragonHunter.Managers
                 return;
             }
 
-            s_HeldArtifacts[dummy.Grade].Remove(dummy);
+            var equipPanel = GameMgr.FindObject<UITreasureEquipmentSlotPanel>("UITreasureEquipmentSlotPanel");
+            if (equipPanel.IsArtifactEquipped(dummy))
+            {
+                DrawableMgr.Dialog("Alert", $"장착 중인 보물은 제거할 수 없습니다. {dummy}");
+                return;
+            }
 
+            s_HeldArtifacts[dummy.Grade].Remove(dummy);
             // 보물 UI에서 제거하기
             S_TreasureEquipmentPanel.RemoveSlot(dummy);
+
+            RemoveArtifactSlot(dummy);
         }
 
         public static void SetItemCount(ItemType type, BigNum count)
