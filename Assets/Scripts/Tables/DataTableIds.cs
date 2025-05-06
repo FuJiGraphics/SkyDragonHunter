@@ -30,6 +30,7 @@ namespace SkyDragonHunter.Tables {
         public static readonly string GoldShop = "GoldShopTable";
         public static readonly string DiamondShop = "DiamondShopTable";
         public static readonly string RerollShop = "RerollShopTable";
+        public static readonly string Buff = "BuffTable";
 
     } // Scope by class DataTableIds
 
