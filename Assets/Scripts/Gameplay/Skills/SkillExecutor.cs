@@ -1,12 +1,13 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gamplay {
 
     [System.Serializable]
     public class SkillSlotUI

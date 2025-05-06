@@ -1,9 +1,11 @@
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
+
     public class SkillMovementLinear : MonoBehaviour
         , IDirectional
     {

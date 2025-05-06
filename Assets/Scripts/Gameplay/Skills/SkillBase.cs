@@ -2,7 +2,8 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
+
     public class SkillBase : MonoBehaviour
     {
         // 필드 (Fields)

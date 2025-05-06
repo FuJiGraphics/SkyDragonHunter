@@ -22,6 +22,7 @@ namespace SkyDragonHunter.Gameplay
         Armor,
         MaxResilient,
         Resilient,
+        All,
     }
 
     public class CharacterStatus : MonoBehaviour
