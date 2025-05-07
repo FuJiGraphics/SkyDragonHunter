@@ -4,9 +4,17 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 
+    public enum SkillType
+    {
+        Damage,
+        Affect,     // 버프/디버프 등
+        Active,     // 액티브 스킬
+    }
+
     public class SkillBase : MonoBehaviour
     {
         // 필드 (Fields)
+        [SerializeField] private SkillType m_SkillType;
         [SerializeField] private SkillDefinition m_SkillData;
         [SerializeField] private float m_Lifetime = 5f;
 
@@ -15,6 +23,7 @@ namespace SkyDragonHunter.Gameplay {
         public float LifeTime => m_Lifetime;
         public GameObject Caster { get; set; }
         public GameObject Receiver { get; set; }
+        public SkillType SkillType => m_SkillType;
 
         // 외부 종속성 필드 (External dependencies field)
         private ISkillLifecycleHandler[] m_Handlers;
@@ -36,8 +45,6 @@ namespace SkyDragonHunter.Gameplay {
 
         private void OnEnable()
         {
-            Init();
-
             // TODO: 임시
             Destroy(gameObject, m_Lifetime);
         }
@@ -102,15 +109,21 @@ namespace SkyDragonHunter.Gameplay {
         }
 
         // Public 메서드
-        // Private 메서드
-        private void Init()
+        public void Init(GameObject caster, GameObject receiver)
         {
+            Caster = caster;
+            Receiver = receiver;
             foreach (var handler in m_Handlers)
             {
                 handler.OnSkillCast(Caster);
             }
+            foreach (var handler in m_EffectHandlers)
+            {
+                handler.OnCastEffect(Caster);
+            }
         }
 
+        // Private 메서드
         private void OnHitBefore()
         {
             foreach (var handler in m_Handlers)

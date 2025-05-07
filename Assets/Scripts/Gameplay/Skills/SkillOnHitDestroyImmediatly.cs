@@ -1,10 +1,9 @@
 using SkyDragonHunter.Interfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
-    public class BallOnHitDestroyImmediatly : MonoBehaviour
+namespace SkyDragonHunter.Gameplay {
+
+    public class SkillOnHitDestroyImmediatly : MonoBehaviour
         , ISkillEffectLifecycleHandler
     {
         // 필드 (Fields)
@@ -15,6 +14,10 @@ namespace SkyDragonHunter {
         // Public 메서드
         // Private 메서드
         // Others
+        public void OnCastEffect(GameObject caster)
+        {
+        }
+
         public void OnHitEnterEffect(GameObject caster, GameObject receiver)
         {
             Destroy(gameObject);

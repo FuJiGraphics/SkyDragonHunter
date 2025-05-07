@@ -13,6 +13,7 @@ namespace SkyDragonHunter.Gamplay {
     public class SkillSlotUI
     {
         public Button button;       // 스킬이 발동할 버튼
+        public Image icon;
         public Slider cooldown;     // 스킬 쿨다운
         public SkillBase skill;     // 스킬 프리팹에 붙어있는 스킬 베이스
         public string[] targetTags;
@@ -77,6 +78,8 @@ namespace SkyDragonHunter.Gamplay {
         // Public 메서드
         public void Execute(int index)
         {
+            m_Slots[index].icon.sprite = m_Slots[index].skill.SkillData.Icon;
+
             if (!IsCooldownComplete)
             {
                 UpdateCooldownSlider(index);
@@ -84,44 +87,68 @@ namespace SkyDragonHunter.Gamplay {
             }
 
             // TODO: 임시적으로 단원 장착 시에만 발사하도록 조건
-            if (TryGetComponent<CrewEquipmentController>(out var crewEquipComp))
-            {
-                if (!crewEquipComp.IsEquip)
-                    return;
-            }
+            //if (TryGetComponent<CrewEquipmentController>(out var crewEquipComp))
+            //{
+            //    if (!crewEquipComp.IsEquip)
+            //        return;
+            //}
 
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
                 return;
             if (m_EnemySearchProvider.Target == null)
                 return;
 
-            float targetDistance = 0f;
-            if (m_SkillAnchor != null)
+            SkillType skillType = m_Slots[index].skill.SkillType;
+
+            if (SkillType.Affect == skillType)
             {
-                targetDistance = Vector2.Distance(
-                    m_SkillAnchor.firePoint.position, 
-                    m_EnemySearchProvider.Target.transform.position);
-            }
-            else
-            {
-                targetDistance = Vector2.Distance(
-                    transform.position, 
-                    m_EnemySearchProvider.Target.transform.position);
+                if (TryGetComponent<BuffExecutor>(out var buffExecutor))
+                {
+                    // 현재 버프가 시전중이면 스킬 진행 취소함
+                    if (buffExecutor.HasBuff(m_Slots[index].skill.SkillData.BuffData))
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"[SkillExecutor]: Buff를 사용할 BuffExecutor 컴포넌트를 찾을 수 없습니다. Caster: {gameObject}");
+                    return;
+                }
             }
 
-            if (targetDistance > m_Distance)
-                return;
+            float targetDistance = 0f;
+            if (SkillType.Damage == skillType)
+            {
+                if (m_SkillAnchor != null)
+                {
+                    targetDistance = Vector2.Distance(
+                        m_SkillAnchor.firePoint.position,
+                        m_EnemySearchProvider.Target.transform.position);
+                }
+                else
+                {
+                    targetDistance = Vector2.Distance(
+                        transform.position,
+                        m_EnemySearchProvider.Target.transform.position);
+                }
+
+                if (targetDistance > m_Distance)
+                    return;
+            }
 
             ResetEndTime();
 
-            // TODO: 임시 구현
             SkillBase skill = Instantiate(m_Slots[index].skill);
-            skill.Caster = gameObject;
-            skill.Receiver = m_EnemySearchProvider.Target;
+            skill.Init(gameObject, m_EnemySearchProvider.Target);
             // 스킬을 적용 받을 타겟을 등록
             if (skill.TryGetComponent<AttackTargetSelector>(out var selector))
             {
-                selector.SetAllowedTarget(m_Slots[index].targetTags);
+                // 타겟팅 설정이 Caster에 종속적인지 체크
+                if (!selector.IsSelfTargeting)
+                {
+                    selector.SetAllowedTarget(m_Slots[index].targetTags);
+                }
             }
 
             // 스킬 시전 위치에 대한 앵커가 있는지 체크

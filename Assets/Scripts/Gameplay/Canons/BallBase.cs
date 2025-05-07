@@ -1,3 +1,4 @@
+using NPOI.SS.Formula.Functions;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Scriptables;
 using UnityEngine;
@@ -104,6 +105,10 @@ namespace SkyDragonHunter.Gameplay {
             foreach (var handler in m_HitHandlers)
             {
                 handler.OnStart(Caster);
+            }
+            foreach (var handler in m_EffectHandlers)
+            {
+                handler.OnCastEffect(Caster);
             }
         }
 

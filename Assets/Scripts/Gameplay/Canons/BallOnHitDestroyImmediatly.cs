@@ -14,6 +14,10 @@ namespace SkyDragonHunter.Gameplay {
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
+        public void OnCastEffect(GameObject attacker)
+        {
+        }
+
         public void OnHitEnterEffect(GameObject attacker, GameObject defender)
         {
             Destroy(gameObject);

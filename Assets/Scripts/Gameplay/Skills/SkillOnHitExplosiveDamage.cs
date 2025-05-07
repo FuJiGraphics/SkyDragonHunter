@@ -31,7 +31,7 @@ namespace SkyDragonHunter {
         public void OnSkillEnd(GameObject caster) { }
         public void OnSkillHitAfter(GameObject caster)
         {
-            EffectMgr.Play(transform.position, radius, 0.5f);
+            EffectMgr.SampleExplosionPlay(transform.position, radius, 0.5f);
         }
         public void OnSkillHitBefore(GameObject caster) { }
         public void OnSkillHitEnter(GameObject defender)

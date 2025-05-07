@@ -43,7 +43,46 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        public static void Play(Vector2 position, float radius, float duration)
+        public static void Play(string effectName, Vector2 position, float duration)
+        { 
+            var effectGo = ResourcesMgr.Load<GameObject>(effectName);
+            GameObject effect = GameObject.Instantiate(effectGo);
+            effect.transform.position = position;
+            GameObject.Destroy(effect, duration);
+        }
+
+        public static void Play(string effectName, Vector2 position, Vector2 scale, float duration)
+        {
+            var effectGo = ResourcesMgr.Load<GameObject>(effectName);
+            GameObject effect = GameObject.Instantiate(effectGo);
+            effect.transform.position = position;
+            effect.transform.localScale = scale;
+            GameObject.Destroy(effect, duration);
+        }
+
+        public static void Play(string effectName, GameObject target, float duration)
+        {
+            var effectGo = ResourcesMgr.Load<GameObject>(effectName);
+            GameObject effect = GameObject.Instantiate(effectGo);
+
+            Vector3 newPos = target.transform.position;
+            newPos.z = -1f;   // 앞으로 고정
+
+            var collider = target.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                effect.transform.position = newPos + (Vector3)collider.offset;
+                effect.transform.localScale = collider.size;
+            }
+            else
+            {
+                effect.transform.position = newPos;
+            }
+
+            GameObject.Destroy(effect, duration);
+        }
+
+        public static void SampleExplosionPlay(Vector2 position, float radius, float duration)
         {
             GameObject effect = GameObject.Instantiate(s_SampleExplosionEffect);
             effect.transform.position = position;

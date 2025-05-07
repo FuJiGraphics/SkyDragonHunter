@@ -2,9 +2,12 @@ using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using SkyDragonHunter.Utility;
 using SkyDraonHunter.Utility;
 using System;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
@@ -15,6 +18,7 @@ namespace SkyDragonHunter.Scriptables {
         // 필드 (Fields)
         public int ID;                      // 스킬 아이디
         public string skillName;            // 스킬의 이름
+        public string skillIcon;            // 스킬 아이콘 리소스 이름
         public int skillType;               // 스킬의 타입 0 : 근거리(단일), 1 : 근거리(범위), 2 : 원거리(단일), 3 : 원거리(범위), 4 : 투사체 없는 원거리(단일), 5 : 투사체 없는 원거리(범위) 6 : 글로벌
         public string skillEffect;          // 스킬 이펙트 리소스의 이름
         public string projectileName;       // 투사체 리소스 이름
@@ -30,6 +34,18 @@ namespace SkyDragonHunter.Scriptables {
         public float ailmentDuration;       // 상태이상의 지속 시간
 
         // 속성 (Properties)
+        public BuffData[] BuffData => buffID.Length <= 0 ?
+            null : buffID.Split('/')
+                         .Select(s => DataTableMgr.BuffTable.Get(int.Parse(s, CultureInfo.InvariantCulture)))
+                         .ToArray();
+
+        public float BuffMaxDuration => buffID.Length <= 0 ?
+            1f : buffID.Split('/')
+                       .Select(s => DataTableMgr.BuffTable.Get(int.Parse(s, CultureInfo.InvariantCulture)).BuffDuration)
+                       .Max();
+
+        public Sprite Icon => ResourcesMgr.Load<Sprite>(skillIcon);
+
         // 외부 종속성 필드 (External dependencies field)3
         // 이벤트 (Events)
         // 유니티 (ScriptableObject 기본 메서드)
