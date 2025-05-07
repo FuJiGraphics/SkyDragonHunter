@@ -2,6 +2,7 @@ using SkyDragonHunter.Database;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
@@ -9,8 +10,10 @@ using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.Managers
 {    
@@ -40,6 +43,11 @@ namespace SkyDragonHunter.Managers
                 onNicknameChangedEvents?.Invoke(value);
             }
         }
+        // TODO: LJH
+        public static int LastStageLevel { get; set; } = 1;
+        public static int LastZoneLevel { get; set; } = 1;
+
+        // ~TODO
         public static int CurrentStageLevel { get; set; } = 1;
         public static int CurrentStageZoneLevel { get; set; } = 1;
         public static int CurrentLevel => Crystal.CurrentLevel;
@@ -659,21 +667,21 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 대포 정보 불러오기
-                s_SortedCanons.Clear();
-                s_HeldCanons.Clear();
-                foreach (var canon in comp.canonDataPrefabs)
-                {
-                    RegisterCanon(canon);
-                }
+                //s_SortedCanons.Clear();
+                //s_HeldCanons.Clear();
+                //foreach (var canon in comp.canonDataPrefabs)
+                //{
+                //    RegisterCanon(canon);
+                //}
                 #endregion
 
                 #region 수리공 정보 불러오기
-                s_SortedRepairs.Clear();
-                s_HeldRepairs.Clear();
-                foreach (var repair in comp.repairDatas)
-                {
-                    RegisterRepair(repair);
-                }
+                //s_SortedRepairs.Clear();
+                //s_HeldRepairs.Clear();
+                //foreach (var repair in comp.repairDatas)
+                //{
+                //    RegisterRepair(repair);
+                //}
                 #endregion
 
                 #region 단원 탑승 정보 UI 적용
@@ -697,16 +705,16 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 계정 정보 UI 적용
-                AccountMgr.Nickname = comp.nickname;
-                var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
-                if (inGameMainFramePanelGo != null && 
-                    inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
-                {
-                    inGameMainFramePanel.Nickname = comp.nickname;
-                    inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
-                    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
-                    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
-                }
+                //AccountMgr.Nickname = comp.nickname;
+                //var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
+                //if (inGameMainFramePanelGo != null && 
+                //    inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
+                //{
+                //    inGameMainFramePanel.Nickname = comp.nickname;
+                //    inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
+                //    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
+                //    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
+                //}
                 #endregion
 
                 #region 아이템 로드
@@ -761,7 +769,7 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 크리스탈 레벨 저장
-                comp.crystalLevelID = Crystal.CurrLevelId;
+                //comp.crystalLevelID = Crystal.CurrLevelId;
                 #endregion
 
                 #region 스테이지 정보 저장 (임시)
@@ -775,20 +783,20 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 계정 정보 저장
-                comp.nickname = AccountMgr.Nickname;
+                //comp.nickname = AccountMgr.Nickname;
                 #endregion
 
                 #region 아이템 정보 저장
                 #endregion
 
                 #region 대포 정보 저장
-                List<CanonDummy> newCanonSaveDummys = new List<CanonDummy>(HeldCanons);
-                comp.canonDataPrefabs = newCanonSaveDummys.ToArray();
+                //List<CanonDummy> newCanonSaveDummys = new List<CanonDummy>(HeldCanons);
+                //comp.canonDataPrefabs = newCanonSaveDummys.ToArray();
                 #endregion
 
                 #region 수리공 정보 저장
-                List<RepairDummy> newRepairSaveDummys = new List<RepairDummy>(HeldRepairs);
-                comp.repairDatas = newRepairSaveDummys.ToArray();
+                //List<RepairDummy> newRepairSaveDummys = new List<RepairDummy>(HeldRepairs);
+                //comp.repairDatas = newRepairSaveDummys.ToArray();
                 #endregion
 
                 foreach (var handler in m_SaveLoadHandlers)
@@ -831,6 +839,188 @@ namespace SkyDragonHunter.Managers
             onNicknameChangedEvents -= callback;
         }
 
+        public static void SetHeldCannons(Dictionary<CanonType, Dictionary<CanonGrade, CanonDummy>> cannons)
+        {
+            s_HeldCanons = cannons;
+        }
+
+        public static void SetHeldCannons(Dictionary<CanonType, Dictionary<CanonGrade, SavedCannon>> cannons)
+        {
+            var newDict = new Dictionary<CanonType, Dictionary<CanonGrade, CanonDummy>>();
+            var sorted = new Dictionary<CanonGrade, Dictionary<CanonType, CanonDummy>>();
+
+            foreach(var cannonDictByType in cannons)
+            {
+                if (!newDict.ContainsKey(cannonDictByType.Key))
+                    newDict.Add(cannonDictByType.Key, new Dictionary<CanonGrade, CanonDummy>());
+
+                foreach(var cannonKvp in cannonDictByType.Value)
+                {
+                    var saved = cannonKvp.Value;
+                    var newCannonDummy = new CanonDummy();
+                    //newCannonDummy.IsUnlock = saved.isUnlocked;
+                    newCannonDummy.ID = saved.id;
+                    newCannonDummy.Level = saved.level;
+                    newCannonDummy.Type = saved.cannonType;
+                    newCannonDummy.Grade = saved.cannonGrade;
+                    newCannonDummy.IsEquip = saved.isEquipped;
+                    newCannonDummy.Count = saved.count;
+
+                    if (!newDict[cannonDictByType.Key].ContainsKey(cannonKvp.Key))
+                        newDict[cannonDictByType.Key].Add(cannonKvp.Key, newCannonDummy);
+                    if (!sorted.ContainsKey(cannonKvp.Key))
+                    {
+                        sorted.Add(cannonKvp.Key, new());
+                    }
+                    if (!sorted[cannonKvp.Key].ContainsKey(cannonDictByType.Key))
+                    {                        
+                        sorted[cannonKvp.Key].Add(cannonDictByType.Key, newCannonDummy);
+                    }
+
+                    newCannonDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
+                }
+            }
+            s_HeldCanons = newDict;
+            
+            foreach (var dictByGrade in sorted)
+            {
+                foreach (var cannonKvp in dictByGrade.Value)
+                {
+                    s_SortedCanons.Add(cannonKvp.Value);
+                }
+            }                
+        }
+
+        public static Dictionary<CanonType, Dictionary<CanonGrade, CanonDummy>> GetHeldCannons()
+        {
+            return s_HeldCanons;
+        }
+
+        public static Dictionary<CanonType, Dictionary<CanonGrade, SavedCannon>> GetHeldCannonsAsSavedCannons()
+        {
+            var newDict = new Dictionary<CanonType, Dictionary<CanonGrade, SavedCannon>>();
+            foreach (var cannonDictByType in s_HeldCanons)
+            {
+                if (!newDict.ContainsKey(cannonDictByType.Key))
+                    newDict.Add(cannonDictByType.Key, new Dictionary<CanonGrade, SavedCannon>());
+
+                foreach (var cannonKvp in cannonDictByType.Value)
+                {
+                    var held = cannonKvp.Value;
+                    var newSavedCannon = new SavedCannon();
+                    newSavedCannon.isUnlocked = held.IsUnlock;
+                    newSavedCannon.id = held.ID;
+                    newSavedCannon.level = held.Level;
+                    newSavedCannon.cannonType = held.Type;
+                    newSavedCannon.cannonGrade = held.Grade;
+                    newSavedCannon.isEquipped = held.IsEquip;
+                    newSavedCannon.count = held.Count;
+
+                    if (!newDict[cannonDictByType.Key].ContainsKey(cannonKvp.Key))
+                        newDict[cannonDictByType.Key].Add(cannonKvp.Key, newSavedCannon);
+                }
+            }
+            return newDict;
+        }
+
+        public static void SetHeldRepairers(Dictionary<RepairType, Dictionary<RepairGrade, RepairDummy>> repairers)
+        {
+            s_HeldRepairs = repairers;
+        }
+
+        public static void SetHeldRepairers(Dictionary<RepairType, Dictionary<RepairGrade, SavedRepairer>> repairers)
+        {
+            var newDict = new Dictionary<RepairType, Dictionary<RepairGrade, RepairDummy>>();
+            var sorted = new Dictionary<RepairGrade, Dictionary<RepairType, RepairDummy>>();
+
+            foreach (var repairerDictByType in repairers)
+            {
+                if (!newDict.ContainsKey(repairerDictByType.Key))
+                    newDict.Add(repairerDictByType.Key, new Dictionary<RepairGrade, RepairDummy>());
+
+                foreach (var cannonKvp in repairerDictByType.Value)
+                {
+                    var saved = cannonKvp.Value;
+                    var newRepairerDummy = new RepairDummy();
+                    //newCannonDummy.IsUnlock = saved.isUnlocked;
+                    newRepairerDummy.ID = saved.id;
+                    newRepairerDummy.Level = saved.level;
+                    newRepairerDummy.Type = saved.repairerType;
+                    newRepairerDummy.Grade = saved.repairerGrade;
+                    newRepairerDummy.IsEquip = saved.isEquipped;
+                    newRepairerDummy.Count = saved.count;
+
+                    if (!newDict[repairerDictByType.Key].ContainsKey(cannonKvp.Key))
+                        newDict[repairerDictByType.Key].Add(cannonKvp.Key, newRepairerDummy);
+                    if (!sorted.ContainsKey(cannonKvp.Key))
+                    {
+                        sorted.Add(cannonKvp.Key, new());
+                    }
+                    if (!sorted[cannonKvp.Key].ContainsKey(repairerDictByType.Key))
+                    {
+                        sorted[cannonKvp.Key].Add(repairerDictByType.Key, newRepairerDummy);
+                    }
+
+                    newRepairerDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
+                }
+            }
+            s_HeldRepairs = newDict;
+
+            foreach (var dictByGrade in sorted)
+            {
+                foreach (var repairerKvp in dictByGrade.Value)
+                {
+                    s_SortedRepairs.Add(repairerKvp.Value);
+                }
+            }
+        }
+
+        public static Dictionary<RepairType, Dictionary<RepairGrade, RepairDummy>> GetHeldRepairers()
+        {
+            return s_HeldRepairs;
+        }
+
+        public static Dictionary<RepairType, Dictionary<RepairGrade, SavedRepairer>> GetHeldRepairersAsSavedRepairers()
+        {
+            var newDict = new Dictionary<RepairType, Dictionary<RepairGrade, SavedRepairer>>();
+            foreach (var repairerDictByType in s_HeldRepairs)
+            {
+                if (!newDict.ContainsKey(repairerDictByType.Key))
+                    newDict.Add(repairerDictByType.Key, new Dictionary<RepairGrade, SavedRepairer>());
+
+                foreach (var cannonKvp in repairerDictByType.Value)
+                {
+                    var held = cannonKvp.Value;
+                    var newSavedCannon = new SavedRepairer();
+                    newSavedCannon.isUnlocked = held.IsUnlock;
+                    newSavedCannon.id = held.ID;
+                    newSavedCannon.level = held.Level;
+                    newSavedCannon.repairerType = held.Type;
+                    newSavedCannon.repairerGrade = held.Grade;
+                    newSavedCannon.isEquipped = held.IsEquip;
+                    newSavedCannon.count = held.Count;
+
+                    if (!newDict[repairerDictByType.Key].ContainsKey(cannonKvp.Key))
+                        newDict[repairerDictByType.Key].Add(cannonKvp.Key, newSavedCannon);
+                }
+            }
+            return newDict;
+        }
+
+        public static void SetUserData(string nickName)
+        {
+            Nickname = nickName;
+            var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
+            if (inGameMainFramePanelGo != null &&
+                inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
+            {
+                inGameMainFramePanel.Nickname = nickName;
+                inGameMainFramePanel.Level = Crystal.CurrentLevel.ToString();
+                inGameMainFramePanel.AtkText = Crystal.IncreaseDamage.ToUnit();
+                inGameMainFramePanel.HpText = Crystal.IncreaseHealth.ToUnit();
+            }
+        }
+
         private static void SyncCrewData(GameObject crewInstance)
         {
             if (crewInstance == null)
@@ -847,8 +1037,6 @@ namespace SkyDragonHunter.Managers
             var airshipProvider = GameMgr.FindObject<AccountStatProvider>("Airship");
             airshipProvider.MergedAccountStatsForCharacter();
         }
-
         // Others
-
     } // Scope by class GameMgr
 } // namespace Root

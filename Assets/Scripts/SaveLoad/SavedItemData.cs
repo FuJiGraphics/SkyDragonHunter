@@ -93,6 +93,11 @@ namespace SkyDragonHunter.SaveLoad
                 }
             }
         }
+
+        public void LateApplySavedData()
+        {
+
+        }
     } // Scope by class SavedItemData
 
 } // namespace Root

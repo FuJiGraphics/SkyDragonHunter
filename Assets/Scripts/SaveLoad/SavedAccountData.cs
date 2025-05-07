@@ -49,17 +49,30 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateSavedData()
         {
-            userNickName = TempUserData.s_Nickname;
-            crystalLevel = TempUserData.s_CrystalLevelID;
+            // AccountMgr
+            userNickName = AccountMgr.Nickname;
+            crystalLevel = AccountMgr.CurrentLevel;
+
+            // TempUserData
+            //userNickName = TempUserData.s_Nickname;
+            //crystalLevel = TempUserData.s_CrystalLevelID;
             lastOnlineTime = DateTime.UtcNow;
         }
 
         public void ApplySavedData()
         {
-            TempUserData.s_Nickname = userNickName;
-            TempUserData.s_CrystalLevelID = crystalLevel;            
+            // AccountMgr            
+
+            // TempUserData
+            //TempUserData.s_Nickname = userNickName;
+            //TempUserData.s_CrystalLevelID = crystalLevel;            
         }
 
+        public void LateApplySavedData()
+        {
+            AccountMgr.LoadLevel(crystalLevel);
+            AccountMgr.SetUserData(userNickName);
+        }
     } // Scope by class SavedAccountData
 
 } // namespace Root

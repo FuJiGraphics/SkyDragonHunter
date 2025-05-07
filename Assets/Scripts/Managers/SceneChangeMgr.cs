@@ -36,6 +36,7 @@ namespace SkyDragonHunter {
             {
                 beforeSceneLoad(currentScene);
             }
+            SaveLoadMgr.ResetLoaded();
             LoadSceneMode mode = LoadSceneMode.Single;
             SceneManager.LoadScene(sceneName, mode);
         }
@@ -46,6 +47,7 @@ namespace SkyDragonHunter {
             {
                 beforeSceneLoad(currentScene);
             }
+            SaveLoadMgr.ResetLoaded();
             SceneManager.LoadScene(sceneBuildIndex, mode);
         }
 
@@ -55,6 +57,7 @@ namespace SkyDragonHunter {
             {
                 beforeSceneLoad(currentScene);
             }
+            SaveLoadMgr.ResetLoaded();
             LoadSceneMode mode = LoadSceneMode.Single;
             SceneManager.LoadScene(sceneBuildIndex, mode);
         }

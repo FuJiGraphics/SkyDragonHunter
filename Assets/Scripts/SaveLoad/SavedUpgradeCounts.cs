@@ -31,6 +31,10 @@ namespace SkyDragonHunter.SaveLoad
         {
 
         }
+        public void LateApplySavedData()
+        {
+
+        }
     } // Scope by class SavedUpgradeCount
 
 } // namespace Root

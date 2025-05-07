@@ -126,6 +126,10 @@ namespace SkyDragonHunter {
                 //crewBT.SetDataFromTableWithExistingIDTemp(level);
             }
         }
+        public void LateApplySavedData()
+        {
+
+        }
     } // Scope by class SavedAirshipData
 
 } // namespace Root

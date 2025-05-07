@@ -70,10 +70,10 @@ namespace SkyDragonHunter.SaveLoad
                     savedAirshipData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Cannon:
-                    
+                    savedCannonData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Repairer:
-
+                    savedRepairerData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Item:
                     savedItemData.UpdateSavedData();
@@ -98,7 +98,7 @@ namespace SkyDragonHunter.SaveLoad
             switch (saveDataType)
             {
                 case SaveDataTypes.Account:
-                    savedAccountData.ApplySavedData();
+                    savedAccountData.LateApplySavedData();
                     break;
                 case SaveDataTypes.Stage:
                     savedStageData.ApplySavedData();
@@ -110,10 +110,10 @@ namespace SkyDragonHunter.SaveLoad
                     savedAirshipData.ApplySavedData();
                     break;
                 case SaveDataTypes.Cannon:
-
+                    savedCannonData.ApplySavedData();
                     break;
                 case SaveDataTypes.Repairer:
-
+                    savedRepairerData.ApplySavedData();
                     break;
                 case SaveDataTypes.Item:
                     savedItemData.ApplySavedData();
@@ -129,6 +129,43 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.QuestProgress:
                     savedQuestProgresses.ApplySavedData();
+                    break;
+            }
+
+            switch (saveDataType)
+            {
+                case SaveDataTypes.Account:
+                    savedAccountData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Stage:
+                    savedStageData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Crew:
+                    savedCrewData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Airship:
+                    savedAirshipData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Cannon:
+                    savedCannonData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Repairer:
+                    savedRepairerData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Item:
+                    savedItemData.LateApplySavedData();
+                    break;
+                case SaveDataTypes.Dungeon:
+
+                    break;
+                case SaveDataTypes.Artifact:
+
+                    break;
+                case SaveDataTypes.UpgradeCount:
+                    savedUpgradeCounts.LateApplySavedData();
+                    break;
+                case SaveDataTypes.QuestProgress:
+                    savedQuestProgresses.LateApplySavedData();
                     break;
             }
         }

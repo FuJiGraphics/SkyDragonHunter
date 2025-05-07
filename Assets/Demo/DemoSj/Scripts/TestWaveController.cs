@@ -64,10 +64,47 @@ namespace SkyDragonHunter
         private bool isCanSpawn;
         private bool isSuccessChangeBackGround;
         private int backGroundIndex;
-        private int currentMissionLevel = 1;
-        private int currentZonelLevel = 1;
-        private int lastTriedZonelLevel = 1;
-        private int lastTriedMissionLevel = 1;
+        // TODO: LJH
+        private int _currentMissionLevel = 1;
+        private int currentMissionLevel
+        {
+            get => _currentMissionLevel;
+            set
+            {
+                _currentMissionLevel = value;
+                AccountMgr.CurrentStageLevel = _currentMissionLevel;
+            }
+        }
+        private int _currentZoneLevel = 1;
+        private int currentZonelLevel
+        {
+            get => _currentZoneLevel;
+            set
+            {
+                _currentZoneLevel = value;
+                AccountMgr.CurrentStageZoneLevel = _currentZoneLevel;
+            }
+        }
+        private int _lastTriedZoneLevel = 1;
+        private int lastTriedZonelLevel {
+            get => _lastTriedZoneLevel;
+            set
+            {
+                _lastTriedZoneLevel = value;
+                AccountMgr.LastZoneLevel = _lastTriedZoneLevel;
+            }
+        }
+        private int _lastTriedMissionLevel = 1;
+        private int lastTriedMissionLevel
+        {
+            get => _lastTriedMissionLevel;
+            set
+            {
+                _lastTriedMissionLevel = value;
+                AccountMgr.LastStageLevel = _lastTriedMissionLevel;
+            }
+        }
+        // ~TODO
         private int currentSpawnMonsters = 0;
         private float currentOpenPanel = 0f;
         private StageInfo stageInfo;
@@ -122,8 +159,8 @@ namespace SkyDragonHunter
             isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
-            currentMissionLevel = AccountMgr.CurrentStageLevel;
-            currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
+            currentMissionLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
+            currentZonelLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
             isSuccessChangeBackGround = true;
             SetStageText(currentMissionLevel, currentZonelLevel);
             //OnSaveLastClearWave();

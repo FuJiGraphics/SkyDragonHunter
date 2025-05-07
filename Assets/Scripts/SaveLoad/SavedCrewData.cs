@@ -119,7 +119,8 @@ namespace SkyDragonHunter.SaveLoad
                 savedCrew.killCount = 0;
 
                 crews.Add(savedCrew);
-                m_CrewDict.Add(crewData.ID, savedCrew);
+                if(!m_CrewDict.ContainsKey(crewData.ID))
+                    m_CrewDict.Add(crewData.ID, savedCrew);
             }
 
             //for (int i = 0; i < crewTable.Count; ++i)
@@ -157,6 +158,10 @@ namespace SkyDragonHunter.SaveLoad
                 //var crewData = DataTableMgr.CrewTable.Get(key);
                 AccountMgr.RegisterCrew(key);
             }
+        }
+        public void LateApplySavedData()
+        {
+
         }
     } // Scope by class SavedCrewData
 

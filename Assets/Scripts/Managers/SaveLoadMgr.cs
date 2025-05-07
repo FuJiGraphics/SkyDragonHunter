@@ -98,6 +98,7 @@ namespace SkyDragonHunter.Managers
         public static void ResetLoaded()
         {
             loadedOnce = false;
+            Debug.LogWarning($"Loaded Reset");
         }
 
         public static void ApplySavedData()
