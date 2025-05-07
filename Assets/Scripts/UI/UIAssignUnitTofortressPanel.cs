@@ -22,8 +22,8 @@ namespace SkyDragonHunter.UI {
     public class UIEquipmentMountSlot
     {
         public int slotNumber;
-        public GameObject crewInstance;
         // TODO: LJH
+        //public GameObject crewInstance;
         public int crewId;
         // ~TODO
         public Button mountSlotButton;
@@ -51,7 +51,7 @@ namespace SkyDragonHunter.UI {
             damageText.text = "0";
             armorIcon.sprite = null;
             armorText.text = "0";
-            crewInstance = null;
+            //crewInstance = null;
 
             // TODO: LJH
             crewId = 0;
@@ -153,13 +153,6 @@ namespace SkyDragonHunter.UI {
             m_PrevClickedCrewId = 0;
             // ~TODO
         }
-
-        // TODO: LJH
-        private void Awake()
-        {
-            m_CrewListNodeObjects = new List<CrewNode>();
-        }
-        // ~TODO
 
         // Public 메서드
         public void Init()
@@ -307,10 +300,10 @@ namespace SkyDragonHunter.UI {
 
         }
 
-        public void UnequipCrew(GameObject crewInstance)
-        {
-            RemoveDuplicateCrew(crewInstance);
-        }
+        //public void UnequipCrew(GameObject crewInstance)
+        //{
+        //    RemoveDuplicateCrew(crewInstance);
+        //}
 
         public void UnequipCrew(int crewId)
         {
@@ -323,7 +316,7 @@ namespace SkyDragonHunter.UI {
             {
                 throw new ArgumentOutOfRangeException(nameof(slot), "[UIAssignUnitTofortressPanel]: 슬롯 범위 초과");
             }
-            RemoveDuplicateCrew(m_MountSlots[slot].crewInstance);
+            RemoveDuplicateCrew(m_MountSlots[slot].crewId);
         }
 
         //public void EquipCrew(UIEquipmentMountSlot targetSlot, GameObject crewInstance)
@@ -554,22 +547,23 @@ namespace SkyDragonHunter.UI {
             }
         }
 
-        private void RemoveDuplicateCrew(GameObject crewInstance)
-        {
-            if (crewInstance == null)
-                return;
+        //private void RemoveDuplicateCrew(GameObject crewInstance)
+        //{
+        //    if (crewInstance == null)
+        //        return;
+        //
+        //    for (int i = 0; i < m_MountSlots.Length; ++i)
+        //    {
+        //        if (m_MountSlots[i].crewInstance == crewInstance)
+        //        {
+        //            m_AirshipEquipController.UnequipSlot(crewInstance);
+        //            m_MountSlots[i].ResetSlot();
+        //            m_EquipmentPanel.mountSlotIcons[i].sprite = null;
+        //            break;
+        //        }
+        //    }
+        //}
 
-            for (int i = 0; i < m_MountSlots.Length; ++i)
-            {
-                if (m_MountSlots[i].crewInstance == crewInstance)
-                {
-                    m_AirshipEquipController.UnequipSlot(crewInstance);
-                    m_MountSlots[i].ResetSlot();
-                    m_EquipmentPanel.mountSlotIcons[i].sprite = null;
-                    break;
-                }
-            }
-        }
         private void RemoveDuplicateCrew(int crewID)
         {
             if (crewID == 0)
@@ -587,19 +581,19 @@ namespace SkyDragonHunter.UI {
             }
         }
 
-        private UIEquipmentMountSlot FindSlotCrew(GameObject crewInstance)
-        {
-            UIEquipmentMountSlot result = null;
-            foreach (var slot in m_MountSlots)
-            {
-                if (slot.crewInstance == crewInstance)
-                {
-                    result = slot;
-                    break;
-                }
-            }
-            return result;
-        }
+        //private UIEquipmentMountSlot FindSlotCrew(GameObject crewInstance)
+        //{
+        //    UIEquipmentMountSlot result = null;
+        //    foreach (var slot in m_MountSlots)
+        //    {
+        //        if (slot.crewInstance == crewInstance)
+        //        {
+        //            result = slot;
+        //            break;
+        //        }
+        //    }
+        //    return result;
+        //}
 
         private UIEquipmentMountSlot FindSlotCrew(int crewId)
         {
@@ -625,6 +619,11 @@ namespace SkyDragonHunter.UI {
                 }
             }
         }
+
+        //private void ClearAllNodeDetails()
+        //{
+        //    foreach(var node in m_CrewListNodeObjects)
+        //}
 
         //private void OnClickedNodeDetails(GameObject targetCrew)
         //{

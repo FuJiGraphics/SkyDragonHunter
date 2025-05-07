@@ -95,6 +95,11 @@ namespace SkyDragonHunter.Managers
             }
         }
 
+        public static void ResetLoaded()
+        {
+            loadedOnce = false;
+        }
+
         public static void ApplySavedData()
             => ApplySavedData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
 
@@ -143,11 +148,11 @@ namespace SkyDragonHunter.Managers
 
         public static bool LoadGameData()
         {
-            //if(loadedOnce)
-            //{
-            //    Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
-            //    return false;
-            //}
+            if(loadedOnce)
+            {
+                Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
+                return false;
+            }
             var path = Path.Combine(SaveDirectory , SaveFileName[0]);
             if(!File.Exists(path))
             {
@@ -166,7 +171,7 @@ namespace SkyDragonHunter.Managers
 
             ApplySavedData();
 
-            //loadedOnce = true;
+            loadedOnce = true;
             return true;
         }
 

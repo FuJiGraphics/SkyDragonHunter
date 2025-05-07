@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using UnityEngine.Events;
 using UnityEngine.Internal;
 using UnityEngine.SceneManagement;
@@ -25,7 +26,7 @@ namespace SkyDragonHunter {
             {
                 beforeSceneLoad(currentScene);
             }
-
+            SaveLoadMgr.ResetLoaded();
             SceneManager.LoadScene(sceneName, mode);
         }
 
