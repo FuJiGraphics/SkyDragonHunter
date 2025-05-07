@@ -183,7 +183,7 @@ namespace SkyDragonHunter.Entities
             isMounted = mounted;
         }
 
-        public void SetDataFromTableWithExistingIDTemp(int level)
+        public CharacterStatus SetDataFromTableWithExistingIDTemp(int level)
         {
             Debug.LogWarning($"Starting Crew SetData ID/LVL[{ID}/{level}]");
             var lvlBonus = Mathf.Min(0, level - 1);
@@ -211,6 +211,7 @@ namespace SkyDragonHunter.Entities
             crewStatus.status.MaxResilient = reg;
 
             crewStatus.status.ResetAll();
+            return crewStatus.status;
         }
 
         // Private Methods

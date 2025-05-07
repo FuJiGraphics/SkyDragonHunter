@@ -123,7 +123,9 @@ namespace SkyDragonHunter {
             
             var crewBT = crewInstance.GetComponent<NewCrewControllerBT>();
             SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(crewId, out var level);
-            crewBT.SetDataFromTableWithExistingIDTemp(level);
+            var crewStatus = crewBT.SetDataFromTableWithExistingIDTemp(level);
+            var accountInfoHandler = crewInstance.GetComponent<CrewAccountStatInfoHandler>();
+            accountInfoHandler.Init(crewStatus);
 
             m_EquipSlots[slot] = crewInstance;
             m_EquipIdSlots[slot] = crewId;

@@ -265,7 +265,6 @@ namespace SkyDragonHunter.UI {
             nodeGo.name = savedCrewData.crewData.UnitName + "(Slot)";
 
             m_CrewListNodeObjects.Add(new CrewNode { crewNode = nodeGo, crewId = crewID });
-
             if (nodeGo.TryGetComponent<UICrewInfoNode>(out var crewInfoNode))
             {               
                 crewInfoNode.UIDetailsButton.onClick.AddListener(

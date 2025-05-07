@@ -82,7 +82,6 @@ GameObject:
   - component: {fileID: 238202621918945723}
   - component: {fileID: 7791475739281254788}
   - component: {fileID: 1329097970844600860}
-  - component: {fileID: 7829082297169091079}
   - component: {fileID: 7295901706949356332}
   - component: {fileID: 3025901778920459960}
   - component: {fileID: 7494052092526040395}
@@ -90,6 +89,7 @@ GameObject:
   - component: {fileID: -2333234137143098526}
   - component: {fileID: 7275731792251762875}
   - component: {fileID: -5970780032260339284}
+  - component: {fileID: -6894621911162452164}
   m_Layer: 0
   m_Name: 01)Field(Anais)
   m_TagString: Crew
@@ -352,18 +352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7829082297169091079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8323954928373851172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef08377868f5077489808ee2fb1a8130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7295901706949356332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +470,18 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 6233085081356094570}
   m_Scale: {x: 0.3, y: 0.45}
   m_SyncStats: {fileID: 0}
+--- !u!114 &-6894621911162452164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de833084f7cae3c4980e5aaa4cfa1df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4907484004920437550
 PrefabInstance:
   m_ObjectHideFlags: 0

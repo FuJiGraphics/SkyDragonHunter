@@ -82,7 +82,6 @@ GameObject:
   - component: {fileID: 5011650249588835538}
   - component: {fileID: 3637952646031912539}
   - component: {fileID: 786071863896747689}
-  - component: {fileID: 5837189810079575865}
   - component: {fileID: 6049730274005947024}
   - component: {fileID: 9095745092787425377}
   - component: {fileID: -3027173153780964096}
@@ -90,6 +89,7 @@ GameObject:
   - component: {fileID: 1741405417052036712}
   - component: {fileID: 7632944305410029127}
   - component: {fileID: 7278534522657317889}
+  - component: {fileID: -9124645838371496612}
   m_Layer: 0
   m_Name: 00)Field(Eliya)
   m_TagString: Crew
@@ -352,18 +352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5837189810079575865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8615149287224319549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef08377868f5077489808ee2fb1a8130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6049730274005947024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +470,18 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 7099769282757681882}
   m_Scale: {x: 0.3, y: 0.45}
   m_SyncStats: {fileID: 0}
+--- !u!114 &-9124645838371496612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8615149287224319549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de833084f7cae3c4980e5aaa4cfa1df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1134324430442188439
 PrefabInstance:
   m_ObjectHideFlags: 0
