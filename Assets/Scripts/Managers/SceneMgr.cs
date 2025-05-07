@@ -15,6 +15,9 @@ namespace SkyDragonHunter.Managers
 
         [SerializeField] private TextMeshProUGUI textUI;
         [SerializeField] private Slider progressBar;
+        [SerializeField] private string prefabLabel = "Prefabs";
+        [SerializeField] private string textureLabel = "Textures";
+        [SerializeField] private string fontLabel = "Fonts";
 
         public static void LoadScene(string sceneName)
         {
@@ -27,32 +30,65 @@ namespace SkyDragonHunter.Managers
             StartCoroutine(this.LoadSceneProcess());
         }
 
+        private IEnumerator Loading(string label, string text)
+        {
+            textUI.text = text;
+            var fontSizeHandle = Addressables.GetDownloadSizeAsync(label);
+            yield return fontSizeHandle;
+
+            long fontTotalBytes = fontSizeHandle.Result;
+            if (fontTotalBytes > 0)
+            {
+                var fontDownloadHandle = Addressables.DownloadDependenciesAsync(label);
+                while (!fontDownloadHandle.IsDone)
+                {
+                    float percent = fontDownloadHandle.PercentComplete;
+                    float downloadedKB = percent * fontTotalBytes / 1024f;
+                    float totalKB = fontTotalBytes / 1024f;
+
+                    textUI.text = text + $" {downloadedKB:F1} KB / {totalKB:F1} KB";
+                    progressBar.value = percent;
+                    yield return null;
+                }
+                Addressables.Release(fontDownloadHandle);
+            }
+        }
+
+        private IEnumerator LoadMemory<T>(string label)
+            where T : UnityEngine.Object
+        {
+            var fontHandle = Addressables.LoadAssetAsync<T>(fontLabel);
+            yield return fontHandle;
+
+            if (fontHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                T loadedFont = fontHandle.Result;
+            }
+            else
+            {
+                textUI.text = "로드 실패!";
+            }
+        }
+
         private IEnumerator LoadSceneProcess()
         {
             DataTableMgr.InitOnSceneLoaded(nextScene);
             GameMgr.InitializeAddressablesIfNeeded(); 
             yield return Addressables.InitializeAsync();
 
-            // Get size
-            var sizeHandle = Addressables.GetDownloadSizeAsync(nextScene);
-            yield return sizeHandle;
 
-            long totalBytes = sizeHandle.Result;
-            if (totalBytes > 0)
-            {
-                var downloadHandle = Addressables.DownloadDependenciesAsync(nextScene);
-                while (!downloadHandle.IsDone)
-                {
-                    float percent = downloadHandle.PercentComplete;
-                    float downloadedKB = percent * totalBytes / 1024f;
-                    float totalKB = totalBytes / 1024f;
+            // 폰트 다운로드
+            yield return Loading(fontLabel, "폰트 다운로드 중...");
+            yield return LoadMemory<TMP_FontAsset>(fontLabel);
 
-                    textUI.text = $"Downloading {downloadedKB:F1} KB / {totalKB:F1} KB";
-                    progressBar.value = percent;
-                    yield return null;
-                }
-                Addressables.Release(downloadHandle);
-            }
+            // 텍스처 다운로드
+            yield return Loading(textureLabel, "텍스처 다운로드 중...");
+
+            // 프리팹 다운로드
+            yield return Loading(prefabLabel, "프리팹 다운로드 중...");
+
+            // 씬 다운로드
+            yield return Loading(nextScene, "씬 다운로드 중...");
 
             // Load scene
             AsyncOperationHandle<SceneInstance> loadHandle =
