@@ -2,7 +2,7 @@ Shader "Unlit/TutorialMaskShader"
 {
     Properties
     {
-        _Color ("Color", Color) = (1, 0, 0, 0.5) // 어두운 색 + 알파
+        _Color ("Color", Color) = (1, 0, 0, 0.01) // 어두운 색 + 알파
         _Rect ("Rect (xy = min, zw = max)", Vector) = (0, 0, 0, 0) // 뚫을 사각형 영역
     }
 

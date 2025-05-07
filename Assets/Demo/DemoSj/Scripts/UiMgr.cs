@@ -118,6 +118,12 @@ namespace SkyDragonHunter.Test {
             inGameWaveInfoPanel.SetActive(true);
             questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
+            if (!waveControlerScript.tutorialController.endTutorial &&
+                waveControlerScript.tutorialController.firstActive &&
+                !waveControlerScript.tutorialController.secondActive)
+            {
+                waveControlerScript.tutorialController.OnSecondActive();
+            }
         }
 
         public void OnTreasureCodexPanel()

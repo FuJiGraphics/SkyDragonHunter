@@ -41,14 +41,13 @@ namespace SkyDragonHunter
         [SerializeField] private BoxCollider2D spawnArea;
         [SerializeField] private float maxWaveTime;
         [SerializeField] private float bossTimer;
-        private const float c_InitialBossTimer = 40f;
-        private bool isBossCleared;
         [SerializeField] private MonsterPrefabLoader prefabLoader;
         [SerializeField] private List<GameObject> currentEnemy;
         [SerializeField] private Sprite[] TestBackGround;
         [SerializeField] private Sprite[] TestBackGroundMid;
         [SerializeField] private Sprite[] TestBackGroundFront;
         [SerializeField] private int spawnableMonsters = 10;
+        public TutorialController tutorialController;
         public Slider bossSlider;
         public Slider bossTimerSlider;
         public int CurrentTriedZonelLevel => currentZonelLevel;
@@ -76,6 +75,8 @@ namespace SkyDragonHunter
         private StageData stageData;
         private float waveSpawnDistance;
         private float waveDuration;
+        private const float c_InitialBossTimer = 40f;
+        private bool isBossCleared;
 
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
@@ -86,6 +87,10 @@ namespace SkyDragonHunter
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void Start()
+        {
+            tutorialController.tutorialPanel.gameObject.SetActive(true);
+        }
 
         private void Update()
         {
@@ -102,6 +107,23 @@ namespace SkyDragonHunter
             // TODO: LJH
             UpdateBossSliders();
             // ~TODO
+
+            if (!tutorialController.tutorialMgr.tutorialEnd && tutorialController.tutorialPanel.gameObject.activeSelf)
+            {
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+
+            if (isStopped)
+            {
+                if (!tutorialController.endTutorial && !tutorialController.firstActive)
+                {
+                    tutorialController.OnFirstActive();
+                }
+            }
         }
 
         // Public 메서드
@@ -226,12 +248,12 @@ namespace SkyDragonHunter
 
         private void NormalWaveUpdate()
         {
-            if (!isStopped && changeSuccess && 
-                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
+            if (!isStopped && changeSuccess)
             {
                 currentWaveTime += Time.deltaTime * oldAllSpeed;
                 currentSpawnTime += Time.deltaTime * oldAllSpeed;
                 waveSlider.value = currentWaveTime;
+               
             }
 
             if (!isCanSpawn && currentWaveTime < waveDuration && 
@@ -388,6 +410,7 @@ namespace SkyDragonHunter
             if (shouldStop && !isStopped)
             {
                 isStopped = true;
+                
                 backGroundController.SetScrollSpeed(0f);
             }
             else if (!shouldStop && isStopped)

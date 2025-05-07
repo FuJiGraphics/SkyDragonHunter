@@ -13,6 +13,8 @@ namespace SkyDragonHunter.Tables {
         public bool         MidPanel { get; set; }
         public bool         RightPanel { get; set; }
         public string       Dialogue { get; set; }          // 대사
+        public int          ButtonIndex { get; set; }          // 버튼 인덱스
+        public bool         IsActive { get; set; }          // 게임오브젝트 활성
     }
 
     public class TutorialTable : DataTable<TutorialTableData>
