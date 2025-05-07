@@ -131,8 +131,13 @@ namespace SkyDragonHunter {
             AccountMgr.SaveUserData();
         }
 
-        public void UnequipSlot(int slot)
+        public void UnequipSlot(int slot, bool isSlotIndex = true)
         {
+            if(!isSlotIndex)
+            {
+                UnequipSlotWithCrewId(slot);
+                return;
+            }
             if (slot < 0 || slot >= m_EquipSlots.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(slot), "[CrewEquipmentController]: 슬롯 범위 초과");
@@ -167,6 +172,18 @@ namespace SkyDragonHunter {
                 Debug.LogError("[CrewEquipmentController]: 알 수 없는 오류. CrewInfoProvider를 찾을 수 없습니다.");
             }
             AccountMgr.SaveUserData();
+        }
+
+        private void UnequipSlotWithCrewId(int crewId)
+        {
+            for (int i = 0; i < m_EquipIdSlots.Length; ++i)
+            {
+                if (m_EquipIdSlots[i] == crewId)
+                {
+                    UnequipSlot(i);
+                    break;
+                }
+            }
         }
 
         public void UnequipSlot(GameObject crewInstance)
@@ -217,12 +234,7 @@ namespace SkyDragonHunter {
                 Debug.LogError("[CrewEquipmentController]: 알 수 없는 오류. CrewInfoProvider를 찾을 수 없습니다.");
             }
             AccountMgr.SaveUserData();
-        }
-        
-        public void UpequipSlotWithID(int crewId)
-        {
-            
-        }
+        }        
 
         public GameObject GetSlotCrew(int slot)
         {

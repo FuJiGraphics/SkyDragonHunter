@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Internal;
 using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers
@@ -22,6 +23,7 @@ namespace SkyDragonHunter.Managers
             Debug.Log("GameMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
+            SceneChangeMgr.beforeSceneLoad += BeforeSceneLoad;
         }
 
         public static void InitializeAddressablesIfNeeded()
@@ -33,10 +35,16 @@ namespace SkyDragonHunter.Managers
             }
         }
 
+        private static void BeforeSceneLoad(Scene scene)
+        {
+            SaveLoadMgr.SaveGameData();
+        }
+
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
             Application.targetFrameRate = 60;
+            SceneChangeMgr.SetCurrentScene(scene);
 
             DataTableMgr.InitOnSceneLoaded(scene.name);
             if (scene.name != "LoadingScene" && scene.name != "StartScene")
@@ -56,7 +64,7 @@ namespace SkyDragonHunter.Managers
         {
             if (scene.name != "LoadingScene" && scene.name != "StartScene")
             {
-                SaveLoadMgr.SaveGameData();
+                //SaveLoadMgr.SaveGameData();
                 Debug.Log($"[GameMgr] Load된 Object 정리 중");
                 DataTableMgr.Release();
                 AccountMgr.Release();
@@ -154,7 +162,7 @@ namespace SkyDragonHunter.Managers
             }
 
             return result.ToArray();
-        }
+        } 
 
         // Private 메서드
         private static void LoadedRegisterObjects()

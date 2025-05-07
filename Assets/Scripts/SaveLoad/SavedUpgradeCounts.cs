@@ -10,8 +10,7 @@ namespace SkyDragonHunter.SaveLoad
         public int hpUpgradedCounts;
         public int critRateUpgradedCounts;
         public int critDmgUpgradedCounts;
-
-
+        
         public SavedUpgradeCounts()
         {
             InitData();

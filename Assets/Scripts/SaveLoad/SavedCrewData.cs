@@ -140,15 +140,7 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateSavedData()
         {
-            var tempUserDataGO = GameMgr.FindObject("TempUserData");
-            var tempUserData = tempUserDataGO.GetComponent<TempUserData>();
-            if (tempUserData == null)
-            {
-                Debug.LogError($"[SavedCrewData] Update Failed, Temp User Data Null");
-                return;
-            }
-
-            var crewGOs = tempUserData.crewDataPrefabs;
+            //AccountMgr.
             
 
         }
@@ -163,10 +155,8 @@ namespace SkyDragonHunter.SaveLoad
             foreach ( var key in DataTableMgr.CrewTable.Keys)
             {
                 //var crewData = DataTableMgr.CrewTable.Get(key);
-                AccountMgr.RegisterCrew(key);                
+                AccountMgr.RegisterCrew(key);
             }
-
-
         }
     } // Scope by class SavedCrewData
 

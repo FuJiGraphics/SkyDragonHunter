@@ -89,7 +89,7 @@ namespace SkyDragonHunter.UI
         private void OnClickExitButton()
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene((int)SceneIds.GameScene);
+            SceneChangeMgr.LoadScene((int)SceneIds.GameScene);
         }
 
         private void OnClickRetryButton()

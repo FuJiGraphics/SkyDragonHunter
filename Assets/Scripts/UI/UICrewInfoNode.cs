@@ -8,7 +8,7 @@ namespace SkyDragonHunter.UI {
     public struct CrewNode
     {
         public GameObject crewNode;
-        public GameObject crewInstance;
+        //public GameObject crewInstance;
         public int crewId;
     }
 

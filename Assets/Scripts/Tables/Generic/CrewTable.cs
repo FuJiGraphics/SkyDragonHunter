@@ -23,6 +23,7 @@ namespace SkyDragonHunter.Tables
     public class CrewTableData : DataTableData
     {
         public string                       UnitName { get; set; }
+        public string                       FileName { get; set; }
         public CrewGrade                    UnitGrade { get; set; }
         public string                       UnitType { get; set; }
         public string                       ActiveSkillID { get; set; }
@@ -51,17 +52,15 @@ namespace SkyDragonHunter.Tables
 
         // Private Fields
         private const string CrewIconSpriteDirectory = "Sprites/CrewIcons/";
-        private const string CrewPreviewSpriteDirectory = "Sprites/CrewPreviews";
+        private const string CrewPreviewSpriteDirectory = "Sprites/CrewPreviews/";
 
         // Properties
-
-
         public Sprite IconSprite
         {
             get
             {
-                var path = Path.Combine(CrewIconSpriteDirectory, ID.ToString());
-                var iconSprite = ResourcesMgr.Load<Sprite>(path);
+                var path = Path.Combine(CrewIconSpriteDirectory, FileName);
+                var iconSprite = Addressables.LoadAssetAsync<Sprite>(path).WaitForCompletion();
                 return iconSprite;
             }
         }
@@ -70,8 +69,8 @@ namespace SkyDragonHunter.Tables
         {
             get
             {
-                var path = Path.Combine(CrewPreviewSpriteDirectory, ID.ToString());
-                var previewSprite = ResourcesMgr.Load<Sprite>(path);
+                var path = Path.Combine(CrewPreviewSpriteDirectory, FileName);
+                var previewSprite = Addressables.LoadAssetAsync<Sprite>(path).WaitForCompletion();
                 return previewSprite;
             }
         }

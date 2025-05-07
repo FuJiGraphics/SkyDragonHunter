@@ -140,6 +140,11 @@ namespace SkyDragonHunter.UI {
 
         public void AddCrewNode(int crewID)
         {
+            if (m_CrewListNodeObjects == null)
+            {
+                m_CrewListNodeObjects = new List<CrewNode>();
+            }
+
             if (!SaveLoadMgr.GameData.savedCrewData.GetSavedCrew(crewID, out var savedCrewData))
             {
                 Debug.Log($"[UICrewInfoPanel] Add Crew Node Failed : cannot find crew with ID [{crewID}]");
@@ -147,6 +152,7 @@ namespace SkyDragonHunter.UI {
             }
 
             var nodeGo = Instantiate(m_UiCrewListNodePrefab);
+            m_CrewListNodeObjects.Add(new CrewNode { crewNode = nodeGo, crewId = crewID });
             if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
             {
                 nodeIcon.sprite = savedCrewData.crewData.IconSprite;
@@ -195,20 +201,20 @@ namespace SkyDragonHunter.UI {
             }
         }
 
-        public void SetClickNode(GameObject crewInstance)
-        {
-            foreach (var node in m_CrewListNodeObjects)
-            {
-                if (node.crewNode.TryGetComponent<Button>(out var button))
-                {
-                    if (node.crewInstance == crewInstance)
-                    {
-                        button.onClick.Invoke();
-                        m_PrevClickButton = button;
-                    }
-                }
-            }
-        }
+        //public void SetClickNode(GameObject crewInstance)
+        //{
+        //    foreach (var node in m_CrewListNodeObjects)
+        //    {
+        //        if (node.crewNode.TryGetComponent<Button>(out var button))
+        //        {
+        //            if (node.crewInstance == crewInstance)
+        //            {
+        //                button.onClick.Invoke();
+        //                m_PrevClickButton = button;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void SetClickNode(int crewID)
         {
