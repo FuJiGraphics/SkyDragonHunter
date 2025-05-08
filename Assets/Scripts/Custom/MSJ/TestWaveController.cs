@@ -492,6 +492,8 @@ namespace SkyDragonHunter
                         {
                             AccountMgr.WaveDungeonTicket += 1;
                         }
+
+                        AccountMgr.CurrentExp += stageData.MonsterEXP;
                     });
 
                     currentEnemy.Add(spawned.gameObject);

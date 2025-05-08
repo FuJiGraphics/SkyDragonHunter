@@ -7,8 +7,7 @@ namespace SkyDragonHunter.Gameplay {
     public enum SkillType
     {
         Damage,
-        Affect,     // 버프/디버프 등
-        Active,     // 액티브 스킬
+        Affect,     // 액티브/패시브 등
     }
 
     public class SkillBase : MonoBehaviour

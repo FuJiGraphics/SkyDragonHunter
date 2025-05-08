@@ -1,5 +1,6 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -11,7 +12,7 @@ namespace SkyDragonHunter.UI
 {
     public enum IncreaseType
     {
-        Coin, Diamond, CrystalLevel, 
+        Coin, Diamond, CrystalLevel, MasteryLevelUp
     }
 
     public class UIDebugElement : MonoBehaviour
@@ -64,6 +65,10 @@ namespace SkyDragonHunter.UI
                         }
                         AccountMgr.LevelUp(levelValue);
                     }
+                    break;
+                case IncreaseType.MasteryLevelUp:
+                    AccountMgr.SetItemCount(ItemType.MasteryLevelUp, coinValue);
+                    DrawableMgr.Dialog("Alert", $"마스터리 재료가 {coinValue}만큼 설정되었습니다.");
                     break;
             }            
         }
