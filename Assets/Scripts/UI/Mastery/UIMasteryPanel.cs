@@ -23,8 +23,6 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_UiNextNodeInfo;
 
         [Header("Airship UI Settings")]
-        [SerializeField] private TextMeshProUGUI m_NicknameText;
-        [SerializeField] private TextMeshProUGUI m_LevelText;
         [SerializeField] private TextMeshProUGUI m_DamageText;
         [SerializeField] private TextMeshProUGUI m_HealthText;
 
@@ -42,8 +40,6 @@ namespace SkyDragonHunter.UI {
             var airship = GameMgr.FindObject<CharacterStatus>("Airship");
             airship?.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             airship?.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
-            AccountMgr.RemoveLevelUpEvent(OnAccountLevelUp);
-            AccountMgr.RemoveNicknameChangedEvent(OnChangedNickname);
         }
 
         // Public 메서드
@@ -76,25 +72,11 @@ namespace SkyDragonHunter.UI {
             InsertAllNodeIntoLevels();
             DirtyMastery();
 
-            AccountMgr.AddLevelUpEvent(OnAccountLevelUp);
-            AccountMgr.AddNicknameChangedEvent(OnChangedNickname);
-            m_NicknameText.text = AccountMgr.Nickname;
-            m_LevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
             var airship = GameMgr.FindObject<CharacterStatus>("Airship");
             airship.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             airship.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
             airship.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             airship.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
-        }
-
-        public void OnAccountLevelUp()
-        {
-            m_LevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
-        }
-
-        public void OnChangedNickname(string newNickname)
-        {
-            m_NicknameText.text = newNickname;
         }
 
         public void OnChangedAirshipMaxDamage(BigNum stat)
@@ -115,7 +97,8 @@ namespace SkyDragonHunter.UI {
                 return;
             }
 
-            AccountMgr.AddItemCount(Tables.ItemType.MasteryLevelUp, -1);
+            BigNum currentCount = AccountMgr.ItemCount(Tables.ItemType.MasteryLevelUp);
+            AccountMgr.SetItemCount(Tables.ItemType.MasteryLevelUp, currentCount - 1);
             if (m_CilckedNode != null)
             {
                 m_CilckedNode.SocketLevelUp();

@@ -35,6 +35,8 @@ namespace SkyDragonHunter.Managers
         private static int s_MaxArtifactSlotCount = 3;
         private static List<ArtifactDummy> s_ArtifactStats = new();
         private static string m_NickName = "Default";
+        private static readonly BigNum s_MaxAccountExp = new BigNum("134422977479810000000000000000000");
+        private static BigNum s_AccountExp = 0;
 
         // 속성 (Properties)
         public static string Nickname
@@ -69,6 +71,23 @@ namespace SkyDragonHunter.Managers
         }
         public static Crystal Crystal { get; private set; }
         public static bool IsMaxLevel => Crystal?.NextLevelId <= 0;
+        public static BigNum NextExp => Crystal.NeedExp;
+        public static BigNum CurrentExp 
+        { 
+            get
+            {
+                return s_AccountExp;
+            }
+            set
+            {
+                if (value <= s_MaxAccountExp)
+                {
+                    s_AccountExp = value;
+                    onChangedExpEvent?.Invoke(value);
+                }
+            }
+        }
+
 
         public static BigNum Coin
         {
@@ -145,6 +164,7 @@ namespace SkyDragonHunter.Managers
         private static event Action onLevelUpEvents;
         private static event Action<ItemType> onItemCountChangedEvents;
         private static event Action<string> onNicknameChangedEvents;
+        private static event Action<BigNum> onChangedExpEvent;
 
         // Public 메서드
         public static void Init()
@@ -295,6 +315,7 @@ namespace SkyDragonHunter.Managers
                 return;
             }
 
+            BigNum needExp = 0;
             for (int i = 0; i < level; ++i)
             {
                 prevLevelData = currLevelData;
@@ -303,7 +324,18 @@ namespace SkyDragonHunter.Managers
                 {
                     break;
                 }
+                else
+                {
+                    needExp += new BigNum(currLevelData.NeedEXP);
+                }
             }
+
+            if (CurrentExp < needExp)
+            {
+                DrawableMgr.Dialog("Alert", "레벨업에 필요한 경험치가 부족합니다.");
+                return;
+            }
+            CurrentExp -= needExp;
 
             if (currLevelData != null)
             {
@@ -885,7 +917,17 @@ namespace SkyDragonHunter.Managers
         {
             onNicknameChangedEvents -= callback;
         }
-        
+
+        public static void AddExpChangedEvent(Action<BigNum> callback)
+        {
+            onChangedExpEvent += callback;
+        }
+
+        public static void RemoveExpChangedEvent(Action<BigNum> callback)
+        {
+            onChangedExpEvent -= callback;
+        }
+
         // Private 메서드
         private static void InitAccountData(CrystalLevelData data)
         {

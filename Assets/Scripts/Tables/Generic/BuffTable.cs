@@ -23,6 +23,7 @@ namespace SkyDragonHunter.Tables
         SkillEffectMultiplier,
         AttackSpeed,
         CooldownResilient,
+        Shield,
     }
 
     public class BuffData : DataTableData

@@ -10,7 +10,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.Test {
+namespace SkyDragonHunter.Test
+{
 
     public class UiMgr : MonoBehaviour
     {
@@ -123,23 +124,31 @@ namespace SkyDragonHunter.Test {
             inGameWaveInfoPanel.SetActive(true);
             questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
-            if (!waveControlerScript.tutorialController.endTutorial &&
-                waveControlerScript.tutorialController.firstActive &&
-                !waveControlerScript.tutorialController.secondActive)
+
+            if (waveControlerScript.tutorialController == null)
             {
-                waveControlerScript.tutorialController.OnSecondActive();
+                return;
             }
-            else if (!waveControlerScript.tutorialController.endTutorial &&
-                waveControlerScript.tutorialController.thirdActive &&
-                !waveControlerScript.tutorialController.fourthActive)
+            else
             {
-                waveControlerScript.tutorialController.OnFourthActive();
-            }
-            else if (!waveControlerScript.tutorialController.endTutorial &&
-                waveControlerScript.tutorialController.sixthActive &&
-                !waveControlerScript.tutorialController.seventhActive)
-            {
-                waveControlerScript.tutorialController.OnSeventhActive();
+                if (!waveControlerScript.tutorialController.endTutorial &&
+                    waveControlerScript.tutorialController.firstActive &&
+                    !waveControlerScript.tutorialController.secondActive)
+                {
+                    waveControlerScript.tutorialController.OnSecondActive();
+                }
+                else if (!waveControlerScript.tutorialController.endTutorial &&
+                    waveControlerScript.tutorialController.thirdActive &&
+                    !waveControlerScript.tutorialController.fourthActive)
+                {
+                    waveControlerScript.tutorialController.OnFourthActive();
+                }
+                else if (!waveControlerScript.tutorialController.endTutorial &&
+                    waveControlerScript.tutorialController.sixthActive &&
+                    !waveControlerScript.tutorialController.seventhActive)
+                {
+                    waveControlerScript.tutorialController.OnSeventhActive();
+                }
             }
         }
 

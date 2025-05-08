@@ -28,6 +28,8 @@ GameObject:
   - component: {fileID: -6033639378234065553}
   - component: {fileID: -3380555558828637257}
   - component: {fileID: 7253060897118213083}
+  - component: {fileID: -3003071279934444797}
+  - component: {fileID: 4975649312660796387}
   m_Layer: 0
   m_Name: 07)Board(Catherine)
   m_TagString: Crew
@@ -314,9 +316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
   allowedTargetTags:
   - Monster
-  - Boss
 --- !u!114 &523848715014122482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +355,7 @@ MonoBehaviour:
   crewStatus: {fileID: 0}
   floater: {fileID: 0}
   animController: {fileID: 0}
+  skillExecutor: {fileID: 0}
   m_MountSlot: {fileID: 0}
 --- !u!114 &8488090794993690949
 MonoBehaviour:
@@ -418,6 +421,35 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 1724312204109141180}
   m_Scale: {x: 0.3, y: 0.45}
   m_SyncStats: {fileID: 0}
+--- !u!114 &-3003071279934444797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
+  allowedTargetTags:
+  - Monster
+--- !u!114 &4975649312660796387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemySearchType: 0
+  m_AttackTargetSelector: {fileID: 0}
 --- !u!1 &3437402014107187727
 GameObject:
   m_ObjectHideFlags: 0

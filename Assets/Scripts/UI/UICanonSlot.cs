@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,9 +49,16 @@ namespace SkyDragonHunter.UI {
             {
                 canonLockIcon.gameObject.SetActive(false);
                 GetComponent<Image>().color = Color.white;
+                GetComponent<Button>().interactable = true;
             }
             else
             {
+                var tutorialMgr = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+                if (tutorialMgr.TutorialEnd)
+                    GetComponent<Button>().interactable = true;
+                else
+                    GetComponent<Button>().interactable = false;
+
                 canonLockIcon.gameObject.SetActive(true);
                 GetComponent<Image>().color = Color.gray;
             }

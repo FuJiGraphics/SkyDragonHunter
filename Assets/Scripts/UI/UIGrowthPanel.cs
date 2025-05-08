@@ -1,3 +1,4 @@
+using NPOI.SS.Formula.Functions;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
@@ -23,6 +24,10 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Image m_HealthInfoIcon;
         [SerializeField] private TextMeshProUGUI m_HealthInfoText;
         [SerializeField] private UIGrowthNode[] growthNodes;
+
+        [Header("Level Up Panel")]
+        [SerializeField] private Button m_LevelUpButton;
+        [SerializeField] private Slider m_ExpSlider;
 
         private int m_LevelUpInc = 1;
         private CharacterStatus m_AirshipStats;
@@ -62,10 +67,16 @@ namespace SkyDragonHunter.UI {
                 node.LevelUpIcon = m_LevelUpIcon;
             }
 
+            AccountMgr.RemoveNicknameChangedEvent(OnChangedAccountNickname);
             AccountMgr.AddNicknameChangedEvent(OnChangedAccountNickname);
+            AccountMgr.RemoveLevelUpEvent(OnAccountLevelUpEvent);
             AccountMgr.AddLevelUpEvent(OnAccountLevelUpEvent);
+            AccountMgr.RemoveExpChangedEvent(OnChangedAccountExp);
+            AccountMgr.AddExpChangedEvent(OnChangedAccountExp);
             m_AccountLevelText.text = "Lv: " + AccountMgr.CurrentLevel.ToString();
             m_AccountNicknameText.text = AccountMgr.Nickname;
+            m_ExpSlider.value = (float)((double)AccountMgr.CurrentExp / (double)AccountMgr.NextExp);
+            m_LevelUpButton.onClick.AddListener(() => { AccountMgr.LevelUp(1); });
             m_AirshipStats = GameMgr.FindObject<CharacterStatus>("Airship");
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
@@ -91,6 +102,20 @@ namespace SkyDragonHunter.UI {
         public void OnChangedAirshipMaxHealth(BigNum stats)
         {
             m_HealthInfoText.text = stats.ToUnit();
+        }
+
+        public void OnChangedAccountExp(BigNum exp)
+        {
+            double value = (double)exp / (double)AccountMgr.NextExp;
+            m_ExpSlider.value = (float)value;
+            if (Mathf.Approximately(m_ExpSlider.value, m_ExpSlider.maxValue))
+            {
+                m_LevelUpButton.interactable = true;
+            }
+            else
+            {
+                m_LevelUpButton.interactable = false;
+            }
         }
 
         public void OnLevelUp(UIGrowthNode node)

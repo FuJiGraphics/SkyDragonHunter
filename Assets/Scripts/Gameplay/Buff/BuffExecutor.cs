@@ -90,6 +90,9 @@ namespace SkyDragonHunter.Gameplay {
 
         public bool HasBuff(BuffData target)
         {
+            if (m_CommandList != null && m_CommandList.Count <= 0)
+                return false;
+
             bool result = false;
             if (m_CommandList[target.BuffApply].ContainsKey(target.BuffStatType))
             {
@@ -100,6 +103,9 @@ namespace SkyDragonHunter.Gameplay {
 
         public bool HasBuff(BuffData[] targets)
         {
+            if (m_CommandList != null && m_CommandList.Count <= 0)
+                return false;
+
             bool result = false;
             foreach (var target in targets)
             {
@@ -122,10 +128,25 @@ namespace SkyDragonHunter.Gameplay {
             var statType = target.BuffStatType;
             if (!m_OriginalStatCache.ContainsKey(statType))
             {
-                m_OriginalStatCache[statType] = GetStatValue(statType);
+                if (target.BuffStatType == BuffStatType.Shield)
+                {
+                    m_OriginalStatCache[statType] = 0;
+                }
+                else
+                {
+                    m_OriginalStatCache[statType] = GetStatValue(statType);
+                }
             }
 
-            BigNum modified = m_OriginalStatCache[statType] * target.EffectiveMultiplier;
+            BigNum modified;
+            if (target.BuffStatType == BuffStatType.Shield)
+            {
+                modified = m_OriginalStatCache[BuffStatType.Health] * target.EffectiveMultiplier;
+            }
+            else
+            {
+                modified = m_OriginalStatCache[statType] * target.EffectiveMultiplier;
+            }
             SetStatValue(statType, modified);
         }
 
@@ -151,6 +172,7 @@ namespace SkyDragonHunter.Gameplay {
                 BuffStatType.CriticalMultiplier => m_Status.CriticalMultiplier,
                 BuffStatType.BossMultiplier => m_Status.BossDamageMultiplier,
                 BuffStatType.SkillEffectMultiplier => m_Status.SkillEffectMultiplier,
+                BuffStatType.Shield => m_Status.Shield,
                 _ => throw new ArgumentOutOfRangeException(nameof(type))
             };
         }
@@ -185,6 +207,10 @@ namespace SkyDragonHunter.Gameplay {
                     break;
                 case BuffStatType.SkillEffectMultiplier:
                     m_Status.SkillEffectMultiplier = (float)value;
+                    break;
+                case BuffStatType.Shield:
+                    m_Status.MaxShield = value;
+                    m_Status.ResetShield();
                     break;
                 //case BuffStatType.AttackSpeed:
                 //case BuffStatType.CooldownResilient:
