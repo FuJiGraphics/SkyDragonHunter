@@ -39,7 +39,7 @@ namespace SkyDragonHunter
         [SerializeField] private TutorialClickListener listener; // 마스크 처리
 
         public bool IsStartTutorial => m_IsStartTutorial;
-        public bool tutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
+        public bool TutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
         public int step { get; private set; } = 0;             // 현재 스텝
         private int currentTargetIndex = -1; // 현재 스텝의 버튼 인덱스
 
@@ -67,7 +67,7 @@ namespace SkyDragonHunter
                 if (DataTableMgr.TutorialTable.Get(step) == null)
                 {
                     Debug.Log("튜토리얼 종료");
-                    tutorialEnd = true;
+                    TutorialEnd = true;
                     return;
                 }
 
@@ -84,7 +84,7 @@ namespace SkyDragonHunter
                 return;
 
             var data = DataTableMgr.TutorialTable.Get(step);
-            if (data == null || tutorialEnd) return;
+            if (data == null || TutorialEnd) return;
 
             Debug.Log($"[튜토리얼] NotifyClicked 호출됨: {clicked.name}");
 
@@ -137,7 +137,7 @@ namespace SkyDragonHunter
             step++;
             if (DataTableMgr.TutorialTable.Get(step) == null)
             {
-                tutorialEnd = true;
+                TutorialEnd = true;
                 return;
             }
             ApplyStep();
@@ -171,7 +171,7 @@ namespace SkyDragonHunter
                         
             if (data == null)
             {
-                tutorialEnd = true;
+                TutorialEnd = true;
                 return;
             }
 
@@ -225,7 +225,7 @@ namespace SkyDragonHunter
                 return;
 
             var data = DataTableMgr.TutorialTable.Get(step);
-            if (data == null || tutorialEnd) return;
+            if (data == null || TutorialEnd) return;
 
             if (data.ButtonIndex >= 0)
             {
