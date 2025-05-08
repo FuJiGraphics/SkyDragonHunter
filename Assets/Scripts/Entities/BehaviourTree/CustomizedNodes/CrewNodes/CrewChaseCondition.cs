@@ -14,7 +14,7 @@ namespace SkyDragonHunter {
 
         protected override NodeStatus OnUpdate()
         {
-            if (m_Context.IsSkillAvailable)
+            if (m_Context.skillExecutor != null && m_Context.skillExecutor.IsCooldownComplete)
                 return NodeStatus.Failure;
             if (m_Context.IsTargetInAttackRange)
                 return NodeStatus.Failure;

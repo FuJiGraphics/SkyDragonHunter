@@ -2,6 +2,7 @@ using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.UI;
 using Spine;
 using System;
 using System.Collections;
@@ -18,6 +19,8 @@ namespace SkyDragonHunter {
         [SerializeField] private MountableSlot[] m_MountableSlots;
         [Tooltip("크기만 지정 가능하며, 실제 슬롯의 값은 null이어야 합니다.")]
         [SerializeField] private GameObject[] m_EquipSlots;
+
+        private UISkillButtons m_TargetSkillSlots;
 
         // 속성 (Properties)
         public GameObject[] EquipSlots => m_EquipSlots;
@@ -41,6 +44,11 @@ namespace SkyDragonHunter {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+        private void Start()
+        {
+            m_TargetSkillSlots = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
+        }
+
         // Public 메서드
         public void EquipSlot(int slot, GameObject crewInstance)
         {
@@ -62,13 +70,21 @@ namespace SkyDragonHunter {
                 crewProviderComp.SetEquipState(true); 
                 m_EquipSlots[slot] = crewInstance;
                 crewInstance.SetActive(true);
-                if (crewInstance.TryGetComponent<ICrewEquipEventHandler>(out var equipEventController))
+
+                var equipEvents = crewInstance.GetComponents<ICrewEquipEventHandler>();
+                if (equipEvents != null)
                 {
-                    equipEventController.OnEquip(slot);
+                    foreach (var equipEvent in equipEvents)
+                    {
+                        equipEvent.OnEquip(slot, crewInstance);
+                    }
                 }
                 if (crewInstance.TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
                     btComp.AllocateMountSlot(m_MountableSlots[slot], slot);
+
+                    // 스킬 슬롯에 등록
+                    m_TargetSkillSlots.Equip(slot, btComp.skillExecutor);
                 }
                 else
                 {
@@ -98,6 +114,7 @@ namespace SkyDragonHunter {
             {
                 if (m_EquipSlots[slot].TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
+                    m_TargetSkillSlots.Unequip(slot);
                     btComp.m_MountSlot.Dismounting();
                     btComp.MountAction(false);
                 }
@@ -106,9 +123,13 @@ namespace SkyDragonHunter {
                     Debug.LogError("[CrewEquipmentController]: CrewControllerBT를 찾을 수 없습니다.");
                 }
 
-                if (m_EquipSlots[slot].TryGetComponent<ICrewEquipEventHandler>(out var equipEventController))
+                var equipEvents = m_EquipSlots[slot].GetComponents<ICrewEquipEventHandler>();
+                if (equipEvents != null)
                 {
-                    equipEventController.OnEquip(slot);
+                    foreach (var equipEvent in equipEvents)
+                    {
+                        equipEvent.OnUnequip(slot);
+                    }
                 }
                 providerComp.SetEquipState(false);
                 m_EquipSlots[slot].SetActive(false);

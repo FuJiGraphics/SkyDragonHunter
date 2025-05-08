@@ -43,24 +43,26 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        public static void Play(string effectName, Vector2 position, float duration)
+        public static GameObject Play(string effectName, Vector2 position, float duration)
         { 
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
             effect.transform.position = position;
             GameObject.Destroy(effect, duration);
+            return effect;
         }
 
-        public static void Play(string effectName, Vector2 position, Vector2 scale, float duration)
+        public static GameObject Play(string effectName, Vector2 position, Vector2 scale, float duration)
         {
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
             effect.transform.position = position;
             effect.transform.localScale = scale;
             GameObject.Destroy(effect, duration);
+            return effect;
         }
 
-        public static void Play(string effectName, GameObject target, float duration)
+        public static GameObject Play(string effectName, GameObject target, float duration)
         {
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
@@ -70,6 +72,7 @@ namespace SkyDragonHunter.Managers
             effect.transform.localScale = effect.transform.localScale * 2f;
 
             GameObject.Destroy(effect, duration);
+            return effect;
         }
 
         public static void SampleExplosionPlay(Vector2 position, float radius, float duration)

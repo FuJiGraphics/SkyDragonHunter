@@ -3,7 +3,6 @@ using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Test;
-using SkyDragonHunter.Gamplay;
 using JetBrains.Annotations;
 
 namespace SkyDragonHunter.Entities 
@@ -66,17 +65,6 @@ namespace SkyDragonHunter.Entities
         //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
-        public bool IsSkillAvailable
-        {
-            get
-            {
-                if (skillExecutor == null)
-                    return false;
-                if (skillExecutor.IsNull)
-                    return false;
-                return skillExecutor.IsCooldownComplete;
-            }
-        }
         public bool IsTargetInAttackRange => TargetDistance < crewStatus.attackRange;
         public bool IsTargetInAggroRange => TargetDistance < crewStatus.aggroRange;
         public bool IsTargetAllocated => m_Target != null;

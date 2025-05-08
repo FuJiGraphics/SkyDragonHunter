@@ -446,6 +446,7 @@ MonoBehaviour:
   m_CrewType: 1
   m_Target: {fileID: 0}
   isMounted: 0
+  mountedSlotIndex: -1
   aggroBox: {x: 0, y: 0}
   onFieldOriginPosition: {x: 0, y: 0}
   exhaustionRemainingTime: 0
@@ -454,6 +455,7 @@ MonoBehaviour:
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
   m_MountSlot: {fileID: 0}
+  damageTypeSpellCasted: 0
 --- !u!114 &4554868606220688470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,14 +535,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Slots:
-  - button: {fileID: 0}
-    icon: {fileID: 0}
-    cooldown: {fileID: 0}
-    skill: {fileID: 8938616387491736917, guid: 7eec4ef8132368941850c7ebe8d88a40, type: 3}
-    targetTags: []
+  m_Skill: {fileID: 8938616387491736917, guid: 7eec4ef8132368941850c7ebe8d88a40, type: 3}
+  m_TargetTags: []
   m_SkillCooldown: 10
-  m_IsAutoExecute: 0
+  m_IsAutoExecute: 1
   m_Distance: 35
   m_EndTime: 0
   m_EnemySearchProvider: {fileID: 0}
