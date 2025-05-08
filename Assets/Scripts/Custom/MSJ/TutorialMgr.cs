@@ -18,8 +18,8 @@ namespace SkyDragonHunter
         [SerializeField] private bool m_IsStartTutorial = false;
 
         [SerializeField] private UiMgr uiMgr;
-        [SerializeField] private GameObject AllButtonsBlockPanel;
         [SerializeField] private GameObject tutorialPanel;
+        [SerializeField] private GameObject[] tutorialBlocks;
         [Header("텍스트 위치 앵커 오브젝트")]
         [SerializeField] private GameObject leftObj;     // 왼쪽 정렬용
         [SerializeField] private GameObject midObj;      // 중앙 정렬용
@@ -40,7 +40,9 @@ namespace SkyDragonHunter
 
 
         [SerializeField] private TutorialClickListener listener; // 마스크 처리
+        private bool oneGo = false;
 
+        public GameObject allButtonsBlockPanel;
         public bool IsStartTutorial => m_IsStartTutorial;
         public bool TutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
         public int step { get; private set; } = 0;             // 현재 스텝
@@ -68,6 +70,10 @@ namespace SkyDragonHunter
 
         private void Update()
         {
+            if (!m_IsStartTutorial && !oneGo)
+            {
+                OffBlocks();
+            }
             // 테스트용: Space 키로 다음 스텝 이동
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -87,7 +93,7 @@ namespace SkyDragonHunter
         public void OnTutorialPanel()
         {
             tutorialPanel.SetActive(true);
-            AllButtonsBlockPanel.SetActive(false);
+            allButtonsBlockPanel.SetActive(false);
         }
 
         public void OffTutorialPanel()
@@ -95,7 +101,7 @@ namespace SkyDragonHunter
             // 패널 비활성화
             if (step <= 138)
             {
-                AllButtonsBlockPanel.SetActive(true);
+                allButtonsBlockPanel.SetActive(true);
             }
             else
             {
@@ -339,6 +345,14 @@ namespace SkyDragonHunter
             }
         }
 
+        private void OffBlocks()
+        {
+            foreach (GameObject block in tutorialBlocks)
+            {
+                block.SetActive(false);
+            }
+            oneGo = true;
+        }
 
     }
 

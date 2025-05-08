@@ -25,7 +25,7 @@ namespace SkyDragonHunter
         {
             if (!tutorialMgr.IsStartTutorial)
                 return;
-
+            
             if (this.gameObject.name == "SkillButton1Block")
             {
                 if (tutorialMgr.step > 45)
@@ -34,6 +34,13 @@ namespace SkyDragonHunter
                 }
 
             }
+            else if (this.gameObject.name == "CanonInfoBlock")
+            {
+                if (tutorialMgr.step > 74)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
             else if (this.gameObject.name == "EquipAndLevelUpButtonBlock")
             {
                 if (tutorialMgr.step > 79)
@@ -41,9 +48,16 @@ namespace SkyDragonHunter
                     Destroy(this.gameObject);
                 }
             }
-            else if (this.gameObject.name == "LevelUpSliderRect")
+            else if (this.gameObject.name == "LevelUpSliderRectBlock")
             {
                 if (tutorialMgr.step > 92)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
+            else if (this.gameObject.name == "LevelUpButtonBlock")
+            {
+                if (tutorialMgr.step > 94)
                 {
                     Destroy(this.gameObject);
                 }
