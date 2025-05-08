@@ -30,7 +30,7 @@ namespace SkyDragonHunter {
 
         public void PlaySkillAnimation(bool loop = false)
         {
-            int randomTriggerIndex = Random.Range(0, m_AttackAnimTriggers.Length);
+            int randomTriggerIndex = Random.Range(0, m_SkillAnimTriggers.Length);
             m_SkeletonAnim.AnimationState.SetAnimation(0, m_SkillAnimTriggers[randomTriggerIndex], loop);
             m_SkeletonAnim.AnimationState.AddAnimation(0, s_AnimTagIdle1, true, 0);
         }

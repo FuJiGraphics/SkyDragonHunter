@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.UI;
@@ -27,7 +28,7 @@ namespace SkyDragonHunter.Gamplay {
         [SerializeField] private bool m_IsAutoExecute;
         [SerializeField] private float m_Distance;
 
-        private float m_EndTime;
+        [SerializeField] private float m_EndTime;
         // 속성 (Properties)
         public float CooldownProgress
         {
@@ -78,13 +79,18 @@ namespace SkyDragonHunter.Gamplay {
         // Public 메서드
         public void Execute(int index)
         {
-            m_Slots[index].icon.sprite = m_Slots[index].skill.SkillData.Icon;
+            Debug.LogWarning($"{gameObject.name} Excuted Skill {index}");
+
+            if (m_Slots[index].icon != null)
+                m_Slots[index].icon.sprite = m_Slots[index].skill.SkillData.Icon;
 
             if (!IsCooldownComplete)
             {
                 UpdateCooldownSlider(index);
                 return;
             }
+
+            Debug.LogWarning($"{gameObject.name} Not Complted Cooldown Yet");
 
             // TODO: 임시적으로 단원 장착 시에만 발사하도록 조건
             //if (TryGetComponent<CrewEquipmentController>(out var crewEquipComp))
@@ -94,9 +100,33 @@ namespace SkyDragonHunter.Gamplay {
             //}
 
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
+            {
+                if(m_Slots == null)
+                {
+                    Debug.LogWarning($"{gameObject.name} m_Slot Null");
+                }
+                if (index < 0)
+                {
+                    Debug.LogWarning($"{gameObject.name} index < 0");
+                }
+                if (index >  m_Slots.Length)
+                {
+                    Debug.LogWarning($"{gameObject.name} index [{index}] > m_Slots.Length [{m_Slots.Length}]");
+                }
                 return;
-            if (m_EnemySearchProvider.Target == null)
+            }
+            if (m_EnemySearchProvider == null || m_EnemySearchProvider.Target == null)
+            {
+                if (m_EnemySearchProvider == null)
+                {
+                    Debug.LogWarning($"{gameObject.name} EnemySearchProvider Null");
+                }
+                else
+                {
+                    Debug.LogWarning($"{gameObject.name} EnemySearchProvider Target Null");
+                }
                 return;
+            }
 
             SkillType skillType = m_Slots[index].skill.SkillType;
 
@@ -107,6 +137,7 @@ namespace SkyDragonHunter.Gamplay {
                     // 현재 버프가 시전중이면 스킬 진행 취소함
                     if (buffExecutor.HasBuff(m_Slots[index].skill.SkillData.BuffData))
                     {
+                        Debug.LogWarning($"{gameObject.name} Has Buff");
                         return;
                     }
                 }
@@ -138,6 +169,7 @@ namespace SkyDragonHunter.Gamplay {
             }
 
             ResetEndTime();
+            Debug.LogWarning($"{gameObject.name} Skill Reset End Time");
 
             SkillBase skill = Instantiate(m_Slots[index].skill);
             skill.Init(gameObject, m_EnemySearchProvider.Target);
@@ -174,7 +206,8 @@ namespace SkyDragonHunter.Gamplay {
             for (int i = 0; i < m_Slots.Length; ++i)
             {
                 int capturedIndex = i;
-                m_Slots[i].button.onClick.AddListener(() => { Execute(capturedIndex); });
+                if (m_Slots[i].button != null)
+                    m_Slots[i].button.onClick.AddListener(() => { Execute(capturedIndex); });
             }
             m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
             m_SkillAnchor = GetComponent<SkillAnchorProvider>();
@@ -201,7 +234,8 @@ namespace SkyDragonHunter.Gamplay {
         {
             foreach (var slot in m_Slots)
             {
-                slot.button.enabled = enabled;
+                if(slot.button != null)
+                    slot.button.enabled = enabled;
             }
         }
 

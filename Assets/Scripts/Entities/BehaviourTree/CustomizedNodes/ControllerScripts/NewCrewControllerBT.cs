@@ -1,9 +1,10 @@
 using UnityEngine;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Entities;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Test;
+using SkyDragonHunter.Gamplay;
+using JetBrains.Annotations;
 
 namespace SkyDragonHunter.Entities 
 {
@@ -36,6 +37,7 @@ namespace SkyDragonHunter.Entities
         private float exhaustionTime = 10f;
         private Vector2 airshipPos;
         [SerializeField] private bool isMounted;
+        private int mountedSlotIndex = -1;
 
         // Public Fields
         public bool IsMounted => isMounted;
@@ -47,6 +49,7 @@ namespace SkyDragonHunter.Entities
         public CrewStats crewStatus;
         public FloatingEffect floater;
         public CrewAnimationController animController;
+        public SkillExecutor skillExecutor;
 
         // TODO: ChangeName
         public MountableSlot m_MountSlot;
@@ -58,7 +61,15 @@ namespace SkyDragonHunter.Entities
         //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
-        public bool IsSkillAvailable => !(skillTimer > 0);
+        public bool IsSkillAvailable
+        {
+            get
+            {
+                if (skillExecutor == null)
+                    return false;
+                return skillExecutor.IsCooldownComplete;
+            }
+        }
         public bool IsTargetInAttackRange => TargetDistance < crewStatus.attackRange;
         public bool IsTargetInAggroRange => TargetDistance < crewStatus.aggroRange;
         public bool IsTargetAllocated => m_Target != null;
@@ -209,7 +220,7 @@ namespace SkyDragonHunter.Entities
             var reg = crewData.UnitbasicREC;
             reg += crewData.LevelBracketREC * lvlBonus;
             crewStatus.status.MaxResilient = reg;
-
+            
             crewStatus.status.ResetAll();
         }
 
@@ -220,7 +231,8 @@ namespace SkyDragonHunter.Entities
             crewStatus = GetComponent<CrewStats>();
             floater = GetComponent<FloatingEffect>();
             floater.enabled = false;
-            animController = GetComponent<CrewAnimationController>();            
+            animController = GetComponent<CrewAnimationController>();
+            skillExecutor = GetComponent<SkillExecutor>();
             SetAggroBox();
             InitBehaviourTree();
 
@@ -269,10 +281,10 @@ namespace SkyDragonHunter.Entities
         {
             var rootSelector = new SelectorNode<NewCrewControllerBT>(this);
 
-            //var skillSequence = new SequenceNode<NewCrewControllerBT>(this);
-            //skillSequence.AddChild(new CrewSkillCondition(this));
-            //skillSequence.AddChild(new CrewSkillAction(this));
-            //rootSelector.AddChild(skillSequence);
+            var skillSequence = new SequenceNode<NewCrewControllerBT>(this);
+            skillSequence.AddChild(new CrewSkillCondition(this));
+            skillSequence.AddChild(new CrewSkillAction(this));
+            rootSelector.AddChild(skillSequence);
 
             var attackSequence = new SequenceNode<NewCrewControllerBT>(this);
             attackSequence.AddChild(new CrewAttackCondition(this));
