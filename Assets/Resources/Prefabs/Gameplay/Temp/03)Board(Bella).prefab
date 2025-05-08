@@ -62,6 +62,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6264208576672410837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8557785359667735353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 792073247073672486}
+  m_Layer: 0
+  m_Name: SkillFirePointDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &792073247073672486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8557785359667735353}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.31, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6264208576672410837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8967289640035744741
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +123,11 @@ GameObject:
   - component: {fileID: -6527578543179037198}
   - component: {fileID: 7634418780564435533}
   - component: {fileID: 545002272898313575}
+  - component: {fileID: -9020101637216293148}
+  - component: {fileID: 2022784789856320431}
+  - component: {fileID: 5655683887028899938}
+  - component: {fileID: -4155735740137728613}
+  - component: {fileID: 4440403298505445246}
   m_Layer: 0
   m_Name: 03)Board(Bella)
   m_TagString: Crew
@@ -112,6 +148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 792073247073672486}
   - {fileID: 3734885795605205858}
   - {fileID: 3834167275027283608}
   - {fileID: 3247827983406259250}
@@ -411,6 +448,7 @@ MonoBehaviour:
   m_CrewType: 0
   m_Target: {fileID: 0}
   isMounted: 0
+  mountedSlotIndex: -1
   aggroBox: {x: 0, y: 0}
   onFieldOriginPosition: {x: 0, y: 0}
   exhaustionRemainingTime: 0
@@ -419,6 +457,7 @@ MonoBehaviour:
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
   m_MountSlot: {fileID: 0}
+  damageTypeSpellCasted: 0
 --- !u!114 &-3300403590417210570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,7 +493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AttackAnimTriggers:
   - Attack_2
-  m_SkillAnimTriggers: []
+  m_SkillAnimTriggers:
+  - Attack_2
 --- !u!114 &-3789091702014220330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +552,79 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySearchType: 0
   m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &-9020101637216293148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Slots: []
+  m_SkillCooldown: 0
+  m_IsAutoExecute: 0
+  m_Distance: 0
+  m_EndTime: 0
+  m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &2022784789856320431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+--- !u!114 &5655683887028899938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0464ae7e504c2e409aec1d754485a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 792073247073672486}
+--- !u!114 &-4155735740137728613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemySearchType: 0
+  m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &4440403298505445246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
+  allowedTargetTags: []
 --- !u!1001 &5428840327788410652
 PrefabInstance:
   m_ObjectHideFlags: 0

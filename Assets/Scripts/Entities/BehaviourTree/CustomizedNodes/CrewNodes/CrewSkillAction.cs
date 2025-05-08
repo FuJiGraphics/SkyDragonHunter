@@ -11,11 +11,14 @@ namespace SkyDragonHunter {
     {
         // Protected Field
         private SkillExecutor skillExecutor;
+        private SkillType skillType;
 
 
         public CrewSkillAction(NewCrewControllerBT context) : base(context)
         {
             skillExecutor = context.skillExecutor;
+            skillExecutor.GetSkillType(out var type);
+            skillType = type;
         }
 
         protected override void OnStart()
@@ -33,6 +36,9 @@ namespace SkyDragonHunter {
             {
                 skillExecutor.Execute(0);
                 m_Context.animController.PlaySkillAnimation();
+                if(skillType == SkillType.Damage)
+                    m_Context.damageTypeSpellCasted = true;
+
                 return NodeStatus.Success;
             }
             return NodeStatus.Failure;

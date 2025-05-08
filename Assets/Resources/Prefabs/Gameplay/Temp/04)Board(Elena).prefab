@@ -30,6 +30,11 @@ GameObject:
   - component: {fileID: -3513091144317607330}
   - component: {fileID: -8210656881272519520}
   - component: {fileID: -2328343831438710472}
+  - component: {fileID: -5778737849578978135}
+  - component: {fileID: -4317321992935201489}
+  - component: {fileID: -530457613615808665}
+  - component: {fileID: 2851240765455744923}
+  - component: {fileID: 7801278534081460037}
   m_Layer: 0
   m_Name: 04)Board(Elena)
   m_TagString: Crew
@@ -50,6 +55,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 9073676426226619489}
   - {fileID: 818110397874735517}
   - {fileID: 3647546199048771086}
   - {fileID: 6288933208152511243}
@@ -349,6 +355,7 @@ MonoBehaviour:
   m_CrewType: 0
   m_Target: {fileID: 0}
   isMounted: 0
+  mountedSlotIndex: -1
   aggroBox: {x: 0, y: 0}
   onFieldOriginPosition: {x: 0, y: 0}
   exhaustionRemainingTime: 0
@@ -357,6 +364,7 @@ MonoBehaviour:
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
   m_MountSlot: {fileID: 0}
+  damageTypeSpellCasted: 0
 --- !u!114 &8488090794993690949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AttackAnimTriggers:
   - Attack_2
-  m_SkillAnimTriggers: []
+  m_SkillAnimTriggers:
+  - Attack_2
 --- !u!114 &-684235355510057561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,6 +459,110 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySearchType: 0
   m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &-5778737849578978135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Slots: []
+  m_SkillCooldown: 0
+  m_IsAutoExecute: 0
+  m_Distance: 0
+  m_EndTime: 0
+  m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &-4317321992935201489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+--- !u!114 &-530457613615808665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0464ae7e504c2e409aec1d754485a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 9073676426226619489}
+--- !u!114 &2851240765455744923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemySearchType: 0
+  m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &7801278534081460037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
+  allowedTargetTags: []
+--- !u!1 &2833702163455001388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9073676426226619489}
+  m_Layer: 0
+  m_Name: SkillFirePointDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9073676426226619489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2833702163455001388}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.31, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3183777661675102306}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4789872148619396876
 GameObject:
   m_ObjectHideFlags: 0

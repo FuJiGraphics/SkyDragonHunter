@@ -1,5 +1,6 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Gamplay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,10 @@ using UnityEngine;
 namespace SkyDragonHunter {
 
     public class CrewAttackCondition : ConditionNode<NewCrewControllerBT>
-    {
+    {  
         public CrewAttackCondition(NewCrewControllerBT context) : base(context)
         {
+
         }
 
         protected override NodeStatus OnUpdate()

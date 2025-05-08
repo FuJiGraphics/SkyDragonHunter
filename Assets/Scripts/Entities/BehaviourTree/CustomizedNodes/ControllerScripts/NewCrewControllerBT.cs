@@ -37,7 +37,7 @@ namespace SkyDragonHunter.Entities
         private float exhaustionTime = 10f;
         private Vector2 airshipPos;
         [SerializeField] private bool isMounted;
-        private int mountedSlotIndex = -1;
+        [SerializeField] private int mountedSlotIndex = -1;
 
         // Public Fields
         public bool IsMounted => isMounted;
@@ -53,6 +53,7 @@ namespace SkyDragonHunter.Entities
 
         // TODO: ChangeName
         public MountableSlot m_MountSlot;
+        public bool damageTypeSpellCasted;
 
         // Properties
         public int ID => m_Id;
@@ -66,6 +67,8 @@ namespace SkyDragonHunter.Entities
             get
             {
                 if (skillExecutor == null)
+                    return false;
+                if (!skillExecutor.IsSkillAvailable())
                     return false;
                 return skillExecutor.IsCooldownComplete;
             }
@@ -108,6 +111,12 @@ namespace SkyDragonHunter.Entities
         {
             Init();
             GetAirshipPosX();
+        }
+
+        private void Start()
+        {
+            //Init();
+            //GetAirshipPosX();
         }
 
         private void Update()
@@ -160,12 +169,33 @@ namespace SkyDragonHunter.Entities
         {
             animController.PlayIdleAnimation();
             m_MountSlot = slot;
+            mountedSlotIndex = slotIndex;
             onFieldOriginPosition = new Vector2(0f, 6f - slotIndex * 4f);
             transform.position = m_MountSlot.transform.position;
             isMounted = false;
             MountAction(true);
             transform.position = m_MountSlot.transform.position;
             exhaustionRemainingTime = 0.3f;
+
+            var crewData = DataTableMgr.CrewTable.Get(ID);
+            GameObject loadedSkillGo = null;
+
+            if (crewData.SkillPrefabName != "0")
+            {
+                loadedSkillGo = ResourcesMgr.Load<GameObject>(crewData.SkillPrefabName);
+                Debug.LogWarning($"[{gameObject.name}] skill [{crewData.SkillPrefabName}] allocated.");
+            }
+            else
+            {
+                Debug.LogWarning($"[{gameObject.name}] skill not set, skill prefab name '0'");
+            }
+            SkillBase loadedSkill = null;
+            if (loadedSkillGo != null)
+            {
+                loadedSkill = loadedSkillGo.GetComponent<SkillBase>();
+            }
+
+            skillExecutor.SetSkillSlotUI(slotIndex, loadedSkill);
         }
 
         public void OnSlowBegin(float slowMultiplier)
@@ -227,6 +257,7 @@ namespace SkyDragonHunter.Entities
         // Private Methods
         private void Init()
         {
+            mountedSlotIndex = -1;
             slowMultiplier = 1f;
             crewStatus = GetComponent<CrewStats>();
             floater = GetComponent<FloatingEffect>();

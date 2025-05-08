@@ -24,7 +24,7 @@ namespace SkyDragonHunter {
 
         // Public Methods
         public void PlayIdleAnimation(bool loop = true)
-        {            
+        {
             m_SkeletonAnim.AnimationState.SetAnimation(0, s_AnimTagIdle1, loop);
         }
 

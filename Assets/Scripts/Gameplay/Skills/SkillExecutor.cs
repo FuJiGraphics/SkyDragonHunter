@@ -1,9 +1,11 @@
 using JetBrains.Annotations;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,21 +76,33 @@ namespace SkyDragonHunter.Gamplay {
                     Execute(i);
                 }
             }
+            if (!IsCooldownComplete)
+            {
+                UpdateCooldownSlider(0);
+                return;
+            }
         }
 
         // Public 메서드
         public void Execute(int index)
         {
             // Debug.LogWarning($"{gameObject.name} Excuted Skill {index}");
+            if (m_Slots == null || m_Slots.Length == 0 || m_Slots[0].skill == null)
+            {
+                ResetEndTime();
+                Debug.Log($"Skill Cannot be Executed, no skill data");
+                return;
+            }
+
 
             if (m_Slots[index].icon != null)
                 m_Slots[index].icon.sprite = m_Slots[index].skill.SkillData.Icon;
 
-            if (!IsCooldownComplete)
-            {
-                UpdateCooldownSlider(index);
-                return;
-            }
+            //if (!IsCooldownComplete)
+            //{
+            //    UpdateCooldownSlider(index);
+            //    return;
+            //}
 
             // Debug.LogWarning($"{gameObject.name} Not Complted Cooldown Yet");
 
@@ -137,7 +151,7 @@ namespace SkyDragonHunter.Gamplay {
                     // 현재 버프가 시전중이면 스킬 진행 취소함
                     if (buffExecutor.HasBuff(m_Slots[index].skill.SkillData.BuffData))
                     {
-                        Debug.LogWarning($"{gameObject.name} Has Buff");
+                        //Debug.LogWarning($"{gameObject.name} Has Buff");
                         return;
                     }
                 }
@@ -198,6 +212,107 @@ namespace SkyDragonHunter.Gamplay {
                 Vector2 dPos = skill.Receiver.transform.position;
                 dir.SetDirection(dPos - aPos);
             }
+        }
+
+        public bool GetSkillType(out SkillType skillType)
+        {
+            if (m_Slots != null && m_Slots.Length != 0 && m_Slots[0].skill != null)
+            {
+                skillType = m_Slots[0].skill.SkillType;
+                return true;
+            }
+
+            skillType = SkillType.Affect;
+            return false;
+        }
+
+        public bool IsSkillAvailable()
+        {
+            if (m_Slots == null || m_Slots.Length == 0 || m_Slots[0].skill == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void SetSkillSlotUI(int mountSlotIndex, SkillBase skill)
+        {
+            if(m_Slots != null && m_Slots.Length != 0 && m_Slots[0] != null)
+            {                
+                if (m_Slots[0].cooldown != null)
+                {
+                    m_Slots[0].cooldown = null;
+                }
+                if (m_Slots[0].icon != null)
+                {
+                    m_Slots[0].icon = null;
+                }
+                if (m_Slots[0].button != null)
+                {
+                    m_Slots[0].button.onClick.RemoveAllListeners();
+                    m_Slots[0].button = null;
+                }
+                if (m_Slots[0].skill != null)
+                {
+                    m_Slots[0].skill = null;
+                }
+            }
+
+            if (skill == null)
+            {
+                Debug.LogWarning($"Skill not set to mountSlot [{mountSlotIndex}], skill null");
+                return;
+            }
+
+            string skillButtonName = "SkillButton" + (mountSlotIndex + 1).ToString();
+            var skillButtonGo = GameMgr.FindObject(skillButtonName);
+            if (skillButtonGo == null)
+            {
+                Debug.LogError($"SkillButtonGo Not Found with name {skillButtonName}");
+                return;
+            }
+            var skillButton = skillButtonGo.GetComponent<Button>();
+            if (skillButton != null)
+                m_Slots[0].button = skillButton;
+            else
+                Debug.LogError($"skillButton Null");
+
+            var skillSlider = skillButtonGo.GetComponentInChildren<Slider>();
+            if (skillSlider != null)
+                m_Slots[0].cooldown = skillSlider;
+            else
+                Debug.LogError($"Skill Slider Null");
+            m_Slots[0].skill = skill;
+            var skillButtonImages = skillButtonGo.GetComponentsInChildren<Image>();
+            Image skillImage = null;
+            foreach(var image in skillButtonImages)
+            {
+                if(image.gameObject.name == "Icon")
+                {
+                    skillImage = image;
+                    break;
+                }
+            }
+            if(skillImage != null)
+            {
+                m_Slots[0].icon = skillImage;
+            }
+            else
+            {
+                Debug.LogError($"Skill Image Icon Could not be found, index[{mountSlotIndex}]");
+            }
+            var skillIcon = skill.SkillData.Icon;
+            m_Slots[0].icon.sprite = skillIcon;
+
+            if (m_Slots[0].button != null)
+            {
+                m_Slots[0].button.onClick.AddListener(() =>
+                {
+                    Execute(0);
+                });
+            }
+            ResetEndTime();
+            ActiveButtons(!m_IsAutoExecute);
         }
 
         // Private 메서드

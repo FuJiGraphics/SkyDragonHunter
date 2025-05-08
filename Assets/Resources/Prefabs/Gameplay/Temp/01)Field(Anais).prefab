@@ -62,6 +62,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4176610631376465532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5015676275034018991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3946375959445855189}
+  m_Layer: 0
+  m_Name: SkillFirePointDummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3946375959445855189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5015676275034018991}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.31, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4176610631376465532}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8323954928373851172
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,6 +122,11 @@ GameObject:
   - component: {fileID: 7275731792251762875}
   - component: {fileID: -5970780032260339284}
   - component: {fileID: 1754429555905174141}
+  - component: {fileID: -8537930315106028098}
+  - component: {fileID: -2903007977868032487}
+  - component: {fileID: -1718771658244626982}
+  - component: {fileID: -3092186332005203092}
+  - component: {fileID: -5859029834034561209}
   m_Layer: 0
   m_Name: 01)Field(Anais)
   m_TagString: Crew
@@ -111,6 +147,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 3946375959445855189}
   - {fileID: 6233085081356094570}
   - {fileID: 1492788081921871353}
   - {fileID: 3233972495070800271}
@@ -410,6 +447,7 @@ MonoBehaviour:
   m_CrewType: 1
   m_Target: {fileID: 0}
   isMounted: 0
+  mountedSlotIndex: -1
   aggroBox: {x: 0, y: 0}
   onFieldOriginPosition: {x: 0, y: 0}
   exhaustionRemainingTime: 0
@@ -418,6 +456,7 @@ MonoBehaviour:
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
   m_MountSlot: {fileID: 0}
+  damageTypeSpellCasted: 0
 --- !u!114 &-8977685205693247618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,7 +494,8 @@ MonoBehaviour:
   - Attack_1
   - Attack_3
   - Attack_6
-  m_SkillAnimTriggers: []
+  m_SkillAnimTriggers:
+  - Attack_2
 --- !u!114 &7275731792251762875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,6 +538,80 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySearchType: 0
   m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &-8537930315106028098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Slots: []
+  m_SkillCooldown: 0
+  m_IsAutoExecute: 0
+  m_Distance: 0
+  m_EndTime: 0
+  m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &-2903007977868032487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+--- !u!114 &-1718771658244626982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0464ae7e504c2e409aec1d754485a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 3946375959445855189}
+--- !u!114 &-3092186332005203092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b39860f3117c42489804119444fb121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemySearchType: 0
+  m_AttackTargetSelector: {fileID: 0}
+--- !u!114 &-5859029834034561209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
+  allowedTargetTags:
+  - Monster
 --- !u!1001 &4907484004920437550
 PrefabInstance:
   m_ObjectHideFlags: 0
