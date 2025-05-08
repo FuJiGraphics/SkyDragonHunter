@@ -18,7 +18,11 @@ namespace SkyDragonHunter {
             if (m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
                 return NodeStatus.Failure;
 
-            return m_Context.IsSkillAvailable ? NodeStatus.Success : NodeStatus.Failure;
+            if (m_Context.skillExecutor == null)
+                return NodeStatus.Failure;
+
+            return m_Context.skillExecutor.IsCooldownComplete 
+                ? NodeStatus.Success : NodeStatus.Failure;
         }
     } // Scope by class CrewSkillCondition
 

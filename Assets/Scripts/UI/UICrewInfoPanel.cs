@@ -1,5 +1,6 @@
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,8 +43,12 @@ namespace SkyDragonHunter.UI {
 
         [Header("Crew Skill Info Settings")]
         [SerializeField] private Button m_UiExitButton;
-        [SerializeField] private GameObject m_UiCrewActiveSkill;
-        [SerializeField] private GameObject m_UiCrewPassiveSkill;
+        [SerializeField] private Image m_UiCrewActiveSkillIcon;
+        [SerializeField] private TextMeshProUGUI m_UiCrewActiveSkillNameText;
+        [SerializeField] private TextMeshProUGUI m_UiCrewActiveSkillDescText;
+        [SerializeField] private Image m_UiCrewPassiveSkillIcon;
+        [SerializeField] private TextMeshProUGUI m_UiCrewPassiveSkillNameText;
+        [SerializeField] private TextMeshProUGUI m_UiCrewPassiveSkillDescText;
         [SerializeField] private Button m_UiCrewLevelUpButton;
 
         [Header("Crew List Panel Settings")]
@@ -98,6 +103,28 @@ namespace SkyDragonHunter.UI {
                 m_UiCrewReady.sprite = m_UiCrewReadyNo;
         }
 
+        public void SetSkillInfo(SkillDefinition skill)
+        {
+            if (skill == null)
+            {
+                m_UiCrewActiveSkillIcon.sprite = null;
+                m_UiCrewActiveSkillNameText.text = "없음";
+                m_UiCrewActiveSkillDescText.text = "없음";
+                m_UiCrewPassiveSkillIcon.sprite = null;
+                m_UiCrewPassiveSkillNameText.text = "없음";
+                m_UiCrewPassiveSkillDescText.text = "없음";
+            }
+            else
+            {
+                m_UiCrewActiveSkillIcon.sprite = skill.ActiveSkillIcon;
+                m_UiCrewActiveSkillNameText.text = skill.skillActiveName;
+                m_UiCrewActiveSkillDescText.text = skill.skillActiveDesc;
+                m_UiCrewPassiveSkillIcon.sprite = skill.PassiveSkillIcon;
+                m_UiCrewPassiveSkillNameText.text = skill.skillPassiveName;
+                m_UiCrewPassiveSkillDescText.text = skill.skillPassiveDesc;
+            }
+        }
+
         public void AddCrewNode(GameObject crew)
         {
             if (m_CrewListNodeObjects == null)
@@ -122,6 +149,7 @@ namespace SkyDragonHunter.UI {
                         SetDefense(provider.Defense);
                         SetPreview(provider.Preview);
                         SetMountedState(provider.IsEquip);
+                        SetSkillInfo(provider.Skill);
                         m_PrevClickButton = nodeButton;
                     });
                 }

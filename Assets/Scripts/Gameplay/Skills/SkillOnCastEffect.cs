@@ -11,6 +11,7 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private bool m_MatchBoxColliderSize = false;
 
         private SkillBase m_SkillBase;
+        private GameObject m_CacheEffectInstance;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -19,6 +20,11 @@ namespace SkyDragonHunter.Gameplay {
         private void Awake()
         {
             m_SkillBase = GetComponent<SkillBase>();
+        }
+
+        private void OnDisable()
+        {
+            Destroy(m_CacheEffectInstance);
         }
 
         // Public 메서드
@@ -31,9 +37,9 @@ namespace SkyDragonHunter.Gameplay {
                 if (m_SkillBase.SkillType == SkillType.Affect)
                     duration = m_SkillBase.SkillData.BuffMaxDuration;
                 if (m_MatchBoxColliderSize)
-                    EffectMgr.Play(effectName, caster, duration);
+                    m_CacheEffectInstance = EffectMgr.Play(effectName, caster, duration);
                 else
-                    EffectMgr.Play(effectName, caster.transform.position, duration);
+                    m_CacheEffectInstance = EffectMgr.Play(effectName, caster.transform.position, duration);
             }
         }
 

@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.Gameplay {
+namespace SkyDragonHunter.Gameplay
+{
 
     public class BehaviourTree<T> where T : MonoBehaviour
     {

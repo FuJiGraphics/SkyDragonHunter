@@ -1,3 +1,4 @@
+using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.Structs;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace SkyDragonHunter.Interfaces
         bool IsMounted { get; }
         bool IsEquip { get; }
         int QuantityCount { get; }
+        SkillDefinition Skill { get; }
 
     } // Scope by interface IAttackTargetProvider
 } // namespace SkyDragonHunter.Interfaces

@@ -16,7 +16,7 @@ namespace SkyDragonHunter {
         }
 
         // Public 메서드
-        public void OnEquip(int slotIndex)
+        public void OnEquip(int slotIndex, GameObject crewInstance)
         {
             DungeonMgr.RegisterCrew(slotIndex, m_CrewController.ID);
         }

@@ -1,6 +1,7 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.UI;
 using UnityEngine;
 
@@ -48,6 +49,8 @@ namespace SkyDragonHunter.Gameplay {
         public bool IsMounted => m_Controller.IsMounted;
         public int QuantityCount => m_QuantityCount;
         public bool IsEquip => m_EquipState;
+        public SkillDefinition Skill => m_Controller.skillExecutor != null 
+            ? m_Controller.skillExecutor.SkillData : null;
 
         // Private ¸Þ¼­µå
         // Others

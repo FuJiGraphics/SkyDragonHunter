@@ -18,6 +18,7 @@ namespace SkyDragonHunter.Gameplay {
 
         private Dictionary<BuffType, Dictionary<BuffStatType, Coroutine>> m_CommandList; 
         private Dictionary<BuffStatType, BigNum> m_OriginalStatCache = new();
+        private List<BuffStatType> m_CachingApplyTypes = new();
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -40,6 +41,11 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+        private void OnDisable()
+        {
+            StopAll();
+        }
+
         private void OnDestroy()
         {
             StopAll();
@@ -48,6 +54,9 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public void Execute(BuffData target)
         {
+            if (m_CommandList == null || !m_CommandList.ContainsKey(target.BuffApply))
+                return;
+
             if (m_CommandList[target.BuffApply].ContainsKey(target.BuffStatType))
                 return;
 
@@ -65,6 +74,9 @@ namespace SkyDragonHunter.Gameplay {
 
         public void Stop(BuffData target)
         {
+            if (m_CommandList == null || !m_CommandList.ContainsKey(target.BuffApply))
+                return;
+
             if (m_CommandList[target.BuffApply].ContainsKey(target.BuffStatType))
             {
                 StopCoroutine(m_CommandList[target.BuffApply][target.BuffStatType]);
@@ -74,6 +86,10 @@ namespace SkyDragonHunter.Gameplay {
 
         public void StopAll()
         {
+            foreach (var buffType in m_CachingApplyTypes)
+            {
+                Revert(buffType);
+            }
             foreach (var command in m_CommandList)
             {
                 foreach (var coroutine in command.Value)
@@ -85,7 +101,7 @@ namespace SkyDragonHunter.Gameplay {
                 }
                 command.Value.Clear();
             }
-            m_CommandList.Clear();
+            m_CachingApplyTypes.Clear();
         }
 
         public bool HasBuff(BuffData target)
@@ -120,6 +136,9 @@ namespace SkyDragonHunter.Gameplay {
         // Private 메서드
         private void RemoveBuff(BuffData target)
         {
+            if (m_CommandList != null && m_CommandList.Count <= 0)
+                return;
+
             m_CommandList[target.BuffApply].Remove(target.BuffStatType);
         }
 
@@ -150,9 +169,9 @@ namespace SkyDragonHunter.Gameplay {
             SetStatValue(statType, modified);
         }
 
-        private void Revert(BuffData target)
+        private void Revert(BuffStatType type)
         {
-            var statType = target.BuffStatType;
+            var statType = type;
             if (m_OriginalStatCache.TryGetValue(statType, out BigNum originalValue))
             {
                 SetStatValue(statType, originalValue);
@@ -229,18 +248,15 @@ namespace SkyDragonHunter.Gameplay {
             float endTime = Time.time + target.BuffDuration;
 
             Apply(target);
+            m_CachingApplyTypes.Add(target.BuffStatType);
             while (Time.time <= endTime)
             {
                 yield return null;
                 if (!HasBuff(target))
                     break;
             }
-            Revert(target);
-
-            if (HasBuff(target))
-            {
-                RemoveBuff(target);
-            }
+            Revert(target.BuffStatType);
+            RemoveBuff(target);
         }
 
     } // Scope by class BuffExecutor

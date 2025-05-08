@@ -17,8 +17,12 @@ namespace SkyDragonHunter.Scriptables {
     {
         // 필드 (Fields)
         public int ID;                      // 스킬 아이디
-        public string skillName;            // 스킬의 이름
-        public string skillIcon;            // 스킬 아이콘 리소스 이름
+        public string skillActiveName;      // 액티브 스킬의 이름
+        public string skillActiveIcon;      // 액티브 스킬 아이콘 리소스 이름
+        public string skillActiveDesc;      // 액티브 스킬 설명
+        public string skillPassiveName;     // 패시브 스킬의 이름
+        public string skillPassiveIcon;     // 패시브 아이콘 리소스 이름
+        public string skillPassiveDesc;     // 패시브 스킬 설명
         public int skillType;               // 스킬의 타입 0 : 근거리(단일), 1 : 근거리(범위), 2 : 원거리(단일), 3 : 원거리(범위), 4 : 투사체 없는 원거리(단일), 5 : 투사체 없는 원거리(범위) 6 : 글로벌
         public string skillEffect;          // 스킬 이펙트 리소스의 이름
         public string projectileName;       // 투사체 리소스 이름
@@ -44,7 +48,8 @@ namespace SkyDragonHunter.Scriptables {
                        .Select(s => DataTableMgr.BuffTable.Get(int.Parse(s, CultureInfo.InvariantCulture)).BuffDuration)
                        .Max();
 
-        public Sprite Icon => ResourcesMgr.Load<Sprite>(skillIcon);
+        public Sprite ActiveSkillIcon => ResourcesMgr.Load<Sprite>(skillActiveIcon);
+        public Sprite PassiveSkillIcon => ResourcesMgr.Load<Sprite>(skillPassiveIcon);
 
         // 외부 종속성 필드 (External dependencies field)3
         // 이벤트 (Events)

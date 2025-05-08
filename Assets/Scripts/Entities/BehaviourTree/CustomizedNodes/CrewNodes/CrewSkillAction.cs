@@ -1,6 +1,5 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
-using SkyDragonHunter.Gamplay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,9 +34,8 @@ namespace SkyDragonHunter {
             if(m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
                 return NodeStatus.Failure;
 
-            if(m_Context.IsSkillAvailable)
+            if(m_Context.skillExecutor != null && m_Context.skillExecutor.IsCooldownComplete)
             {
-                skillExecutor.Execute(0);
                 m_Context.animController.PlaySkillAnimation();
                 if(skillType == SkillType.Damage)
                     m_Context.damageTypeSpellCasted = true;
