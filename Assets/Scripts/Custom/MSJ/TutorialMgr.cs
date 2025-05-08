@@ -1,6 +1,7 @@
 using Org.BouncyCastle.Asn1.X509;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Test;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,9 @@ namespace SkyDragonHunter
         [Header("튜토리얼 패널 오브젝트")]
         [SerializeField] private bool m_IsStartTutorial = false;
 
-        [SerializeField] private GameObject tutorialPanel;     // 왼쪽 정렬용
+        [SerializeField] private UiMgr uiMgr;
+        [SerializeField] private GameObject AllButtonsBlockPanel;
+        [SerializeField] private GameObject tutorialPanel;
         [Header("텍스트 위치 앵커 오브젝트")]
         [SerializeField] private GameObject leftObj;     // 왼쪽 정렬용
         [SerializeField] private GameObject midObj;      // 중앙 정렬용
@@ -45,6 +48,12 @@ namespace SkyDragonHunter
 
         private void Start()
         {
+            if (uiMgr == null)
+            {
+                uiMgr = GameMgr.FindObject<UiMgr>("InGameUI");
+            }
+
+
             if (m_IsStartTutorial)
             {
                 AttachClickListeners(); // 수정됨: 클릭 리스너 연결 메서드 호출
@@ -75,6 +84,28 @@ namespace SkyDragonHunter
             }
         }
 
+        public void OnTutorialPanel()
+        {
+            tutorialPanel.SetActive(true);
+            AllButtonsBlockPanel.SetActive(false);
+        }
+
+        public void OffTutorialPanel()
+        {
+            // 패널 비활성화
+            if (step <= 138)
+            {
+                AllButtonsBlockPanel.SetActive(true);
+            }
+            else
+            {
+                //임시 기본 튜토까지만 작동하게 하는 로직
+                tutorialEnd = true;
+            }
+            tutorialPanel.SetActive(false);
+            uiMgr.OnInGamePanels();
+
+        }
         /// <summary>
         /// 마스크 또는 리스너에서 호출되는 외부 클릭 처리 메서드
         /// </summary>
@@ -168,17 +199,17 @@ namespace SkyDragonHunter
                 return;
 
             var data = DataTableMgr.TutorialTable.Get(step);
-                        
+
             if (data == null)
             {
                 TutorialEnd = true;
                 return;
             }
 
-            tutorialPanel.gameObject.SetActive(data.IsActive);
             if (!data.IsActive)
             {
-                holeMaskCtrl.DisableHole(); // 구멍도 꺼줘야 함
+                OffTutorialPanel();
+                
                 return;
             }
 
@@ -188,7 +219,7 @@ namespace SkyDragonHunter
             {
                 StartCoroutine(DelayedAttachChildListeners(data.ButtonIndex));
             }
-           
+
 
             if (data.Character >= 0 && data.Character < characters.Length)
             {
