@@ -21,7 +21,7 @@ namespace SkyDragonHunter {
         protected override void OnStart()
         {
             base.OnStart();
-            Debug.LogError($"[{m_Context.gameObject.name}] used skill!");
+            //Debug.LogError($"[{m_Context.gameObject.name}] used skill!");
         }
 
         protected override NodeStatus OnUpdate()
@@ -30,7 +30,7 @@ namespace SkyDragonHunter {
                 return NodeStatus.Failure;
 
             if(m_Context.IsSkillAvailable)
-            {                
+            {
                 skillExecutor.Execute(0);
                 m_Context.animController.PlaySkillAnimation();
                 return NodeStatus.Success;
@@ -40,7 +40,7 @@ namespace SkyDragonHunter {
         protected override void OnEnd()
         {
             base.OnEnd();
-            Debug.LogError($"[{m_Context.gameObject.name}] finished using skill!");
+            //Debug.LogError($"[{m_Context.gameObject.name}] finished using skill!");
         }
     } // Scope by class CrewSkillAction
 
