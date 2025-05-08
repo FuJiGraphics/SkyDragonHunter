@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: -6527578543179037198}
   - component: {fileID: 7634418780564435533}
   - component: {fileID: 545002272898313575}
-  - component: {fileID: -9020101637216293148}
   - component: {fileID: 2022784789856320431}
   - component: {fileID: 5655683887028899938}
   - component: {fileID: -4155735740137728613}
@@ -552,24 +551,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemySearchType: 0
   m_AttackTargetSelector: {fileID: 0}
---- !u!114 &-9020101637216293148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8967289640035744741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Slots: []
-  m_SkillCooldown: 0
-  m_IsAutoExecute: 0
-  m_Distance: 0
-  m_EndTime: 0
-  m_EnemySearchProvider: {fileID: 0}
 --- !u!114 &2022784789856320431
 MonoBehaviour:
   m_ObjectHideFlags: 0

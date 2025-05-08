@@ -59,6 +59,10 @@ namespace SkyDragonHunter.Entities
         public int ID => m_Id;
         public float ExhaustionTime => 5f;
         public Vector2 MountSlotPosition => m_MountSlot.transform.position;
+
+        // TODO: CCJ
+        public int CurrentMountedSlotIndex => mountedSlotIndex;
+
         //public Vector2 AdjustedPosition => transform.position;
         public Transform Target => m_Target;
         public bool IsTargetRequiredForSkill => true;
@@ -68,7 +72,7 @@ namespace SkyDragonHunter.Entities
             {
                 if (skillExecutor == null)
                     return false;
-                if (!skillExecutor.IsSkillAvailable())
+                if (skillExecutor.IsNull)
                     return false;
                 return skillExecutor.IsCooldownComplete;
             }
@@ -195,7 +199,7 @@ namespace SkyDragonHunter.Entities
                 loadedSkill = loadedSkillGo.GetComponent<SkillBase>();
             }
 
-            skillExecutor.SetSkillSlotUI(slotIndex, loadedSkill);
+            // skillExecutor.SetSkillSlotUI(slotIndex, loadedSkill);
         }
 
         public void OnSlowBegin(float slowMultiplier)

@@ -1,14 +1,18 @@
 using JetBrains.Annotations;
+using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SkyDragonHunter.Gamplay {
+namespace SkyDragonHunter.Gamplay
+{
 
     [System.Serializable]
     public class SkillSlotUI
@@ -29,6 +33,11 @@ namespace SkyDragonHunter.Gamplay {
         [SerializeField] private float m_Distance;
 
         [SerializeField] private float m_EndTime;
+
+        private NewCrewControllerBT m_CurrentBT;
+        private UISkillButtons m_SkillButtons;
+        private int m_TargetIndex = -1;
+
         // 속성 (Properties)
         public float CooldownProgress
         {
@@ -54,6 +63,12 @@ namespace SkyDragonHunter.Gamplay {
         }
         public bool IsCooldownComplete => Time.time >= m_EndTime;
 
+        public SkillType SkillType => m_Slots[CurrentIndex] == null ?
+           SkillType.Undefined : m_Slots[CurrentIndex].skill.SkillType;
+
+        public int CurrentIndex { get; private set; } = 0;
+        public bool IsNull => m_Slots == null;
+
         // 외부 종속성 필드 (External dependencies field)
         [SerializeField] private EnemySearchProvider m_EnemySearchProvider;
         private SkillAnchorProvider m_SkillAnchor;
@@ -63,6 +78,11 @@ namespace SkyDragonHunter.Gamplay {
         private void Awake()
         {
             Init();
+        }
+
+        private void Start()
+        {
+            m_SkillButtons = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
         }
 
         private void Update()
@@ -79,8 +99,16 @@ namespace SkyDragonHunter.Gamplay {
         // Public 메서드
         public void Execute(int index)
         {
-            // Debug.LogWarning($"{gameObject.name} Excuted Skill {index}");
+            if (m_TargetIndex != m_CurrentBT.CurrentMountedSlotIndex)
+            {
+                m_TargetIndex = m_CurrentBT.CurrentMountedSlotIndex;
+                m_Slots[index].icon = m_SkillButtons.Icons[m_TargetIndex];
+                m_Slots[index].cooldown = m_SkillButtons.CooldownSliders[m_TargetIndex];
+                m_Slots[index].icon.sprite = null;
+                m_Slots[index].cooldown.value = 0;
+            }
 
+            // Debug.LogWarning($"{gameObject.name} Excuted Skill {index}");
             if (m_Slots[index].icon != null)
                 m_Slots[index].icon.sprite = m_Slots[index].skill.SkillData.Icon;
 
@@ -101,7 +129,7 @@ namespace SkyDragonHunter.Gamplay {
 
             if (m_Slots == null || index < 0 || index > m_Slots.Length)
             {
-                if(m_Slots == null)
+                if (m_Slots == null)
                 {
                     Debug.LogWarning($"{gameObject.name} m_Slot Null");
                 }
@@ -170,6 +198,7 @@ namespace SkyDragonHunter.Gamplay {
 
             ResetEndTime();
             //Debug.LogWarning($"{gameObject.name} Skill Reset End Time");
+            CurrentIndex = index;
 
             SkillBase skill = Instantiate(m_Slots[index].skill);
             skill.Init(gameObject, m_EnemySearchProvider.Target);
@@ -213,6 +242,11 @@ namespace SkyDragonHunter.Gamplay {
             m_SkillAnchor = GetComponent<SkillAnchorProvider>();
             ResetEndTime();
             ActiveButtons(!m_IsAutoExecute);
+
+            if (TryGetComponent<NewCrewControllerBT>(out var bt))
+            {
+                m_CurrentBT = bt;
+            }
         }
 
         private void UpdateCooldownSlider(int slotIndex)
@@ -234,7 +268,7 @@ namespace SkyDragonHunter.Gamplay {
         {
             foreach (var slot in m_Slots)
             {
-                if(slot.button != null)
+                if (slot.button != null)
                     slot.button.enabled = enabled;
             }
         }

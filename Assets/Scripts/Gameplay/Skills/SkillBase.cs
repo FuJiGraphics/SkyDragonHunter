@@ -8,6 +8,7 @@ namespace SkyDragonHunter.Gameplay {
     {
         Damage,
         Affect,     // 액티브/패시브 등
+        Undefined,
     }
 
     public class SkillBase : MonoBehaviour

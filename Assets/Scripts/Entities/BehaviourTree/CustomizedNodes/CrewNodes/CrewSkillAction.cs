@@ -17,8 +17,11 @@ namespace SkyDragonHunter {
         public CrewSkillAction(NewCrewControllerBT context) : base(context)
         {
             skillExecutor = context.skillExecutor;
-            skillExecutor.GetSkillType(out var type);
-            skillType = type;
+            skillType = SkillType.Undefined;
+            if (skillExecutor != null)
+            {
+                 skillType = skillExecutor.SkillType;
+            }
         }
 
         protected override void OnStart()
