@@ -122,7 +122,7 @@ namespace SkyDragonHunter.Test
             AllPanelsOff();
             inGameButtonPanel.SetActive(true);
             inGameWaveInfoPanel.SetActive(true);
-            questPanel.SetActive(true);
+            //questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
 
             if (waveControlerScript.tutorialController == null)
@@ -605,26 +605,26 @@ namespace SkyDragonHunter.Test
             }
         }
 
-        public void OnOffHideQuestPanel()
-        {
-            //rectTransform.DOAnchorPosX(-270f, 0.3f); // 패키지 필요
-            if (moveCoroutine != null)
-            {
-                StopCoroutine(moveCoroutine);
-                moveCoroutine = null;
-            }
+        //public void OnOffHideQuestPanel()
+        //{
+        //    //rectTransform.DOAnchorPosX(-270f, 0.3f); // 패키지 필요
+        //    if (moveCoroutine != null)
+        //    {
+        //        StopCoroutine(moveCoroutine);
+        //        moveCoroutine = null;
+        //    }
 
-            if (!isHideQuestPanel)
-            {
-                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -150f, 0.5f));
-                isHideQuestPanel = true;
-            }
-            else
-            {
-                moveCoroutine = StartCoroutine(MovePanelX(rectTransform, 0f, 0.5f));
-                isHideQuestPanel = false;
-            }
-        }
+        //    if (!isHideQuestPanel)
+        //    {
+        //        moveCoroutine = StartCoroutine(MovePanelX(rectTransform, -150f, 0.5f));
+        //        isHideQuestPanel = true;
+        //    }
+        //    else
+        //    {
+        //        moveCoroutine = StartCoroutine(MovePanelX(rectTransform, 0f, 0.5f));
+        //        isHideQuestPanel = false;
+        //    }
+        //}
 
 
         // Private 메서드
@@ -672,21 +672,21 @@ namespace SkyDragonHunter.Test
         //    }
         //}
         // Others
-        private IEnumerator MovePanelX(RectTransform target, float toX, float duration)
-        {
-            Vector2 start = target.anchoredPosition;
-            Vector2 end = new Vector2(toX, start.y);
-            float time = 0f;
+        //private IEnumerator MovePanelX(RectTransform target, float toX, float duration)
+        //{
+        //    Vector2 start = target.anchoredPosition;
+        //    Vector2 end = new Vector2(toX, start.y);
+        //    float time = 0f;
 
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                target.anchoredPosition = Vector2.Lerp(start, end, time / duration);
-                yield return null;
-            }
+        //    while (time < duration)
+        //    {
+        //        time += Time.deltaTime;
+        //        target.anchoredPosition = Vector2.Lerp(start, end, time / duration);
+        //        yield return null;
+        //    }
 
-            target.anchoredPosition = end;
-        }
+        //    target.anchoredPosition = end;
+        //}
 
         public void AllPanelsOff()
         {
