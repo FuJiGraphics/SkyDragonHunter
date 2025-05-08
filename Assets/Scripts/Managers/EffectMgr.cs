@@ -65,19 +65,9 @@ namespace SkyDragonHunter.Managers
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
 
-            Vector3 newPos = target.transform.position;
-            newPos.z = -1f;   // 앞으로 고정
-
-            var collider = target.GetComponent<BoxCollider2D>();
-            if (collider != null)
-            {
-                effect.transform.position = newPos + (Vector3)collider.offset;
-                effect.transform.localScale = collider.size;
-            }
-            else
-            {
-                effect.transform.position = newPos;
-            }
+            effect.transform.SetParent(target.transform);
+            effect.transform.localPosition = new Vector3(0f, 0f, -1f);
+            effect.transform.localScale = effect.transform.localScale * 2f;
 
             GameObject.Destroy(effect, duration);
         }
