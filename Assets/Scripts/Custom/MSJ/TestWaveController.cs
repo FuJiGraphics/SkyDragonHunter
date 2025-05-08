@@ -123,7 +123,7 @@ namespace SkyDragonHunter
             }
             else
             {
-                if (!tutorialController.tutorialMgr.tutorialEnd && tutorialController.tutorialPanel.gameObject.activeSelf)
+                if (!tutorialController.tutorialMgr.TutorialEnd && tutorialController.tutorialPanel.gameObject.activeSelf)
                 {
                     Time.timeScale = 0f;
                 }

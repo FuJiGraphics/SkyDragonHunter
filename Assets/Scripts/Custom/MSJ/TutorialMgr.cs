@@ -100,7 +100,7 @@ namespace SkyDragonHunter
             else
             {
                 //임시 기본 튜토까지만 작동하게 하는 로직
-                tutorialEnd = true;
+                TutorialEnd = true;
             }
             tutorialPanel.SetActive(false);
             uiMgr.OnInGamePanels();

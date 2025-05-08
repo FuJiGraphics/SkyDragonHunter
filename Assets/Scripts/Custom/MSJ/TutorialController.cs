@@ -41,7 +41,7 @@ namespace SkyDragonHunter {
             if (!tutorialMgr.IsStartTutorial)
                 return;
 
-            if (tutorialMgr.tutorialEnd)
+            if (tutorialMgr.TutorialEnd)
             {
                 Destroy(tutorialPanel);
                 Destroy(tutorialRewardPanel);
