@@ -21,6 +21,12 @@ namespace SkyDragonHunter {
                 return NodeStatus.Failure;            
             if (!m_Context.IsTargetInAttackRange)
                 return NodeStatus.Failure;
+            
+            if(m_Context.damageTypeSpellCasted)
+            {
+                m_Context.damageTypeSpellCasted = false;
+                return NodeStatus.Failure;
+            }
 
             if (lastAttackTime + m_Context.crewStatus.attackInterval < Time.time)
             {

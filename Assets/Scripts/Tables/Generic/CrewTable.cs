@@ -5,7 +5,6 @@ using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
 using System.Text;
-using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {
@@ -23,6 +22,7 @@ namespace SkyDragonHunter.Tables
         public string                       UnitName { get; set; }
         public CrewGrade                    UnitGrade { get; set; }
         public string                       UnitType { get; set; }
+        public string                       SkillPrefabName { get; set; }
         public string                       ActiveSkillID { get; set; }
         public float                        ActiveSkillNormalcooltime { get; set; }
         public float                        ActiveSkillStartingcooltime { get; set; }

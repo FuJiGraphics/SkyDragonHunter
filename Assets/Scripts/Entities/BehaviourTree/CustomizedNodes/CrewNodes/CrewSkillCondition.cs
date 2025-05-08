@@ -7,7 +7,7 @@ using UnityEngine;
 namespace SkyDragonHunter {
 
     public class CrewSkillCondition : ConditionNode<NewCrewControllerBT>
-    {
+    {        
         public CrewSkillCondition(NewCrewControllerBT context) : base(context)
         {
 
