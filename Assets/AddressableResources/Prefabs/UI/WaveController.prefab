@@ -1,0 +1,241 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &22976427522924676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5525623379842242346}
+  - component: {fileID: 1390594380999938773}
+  m_Layer: 0
+  m_Name: SpwanArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5525623379842242346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22976427522924676}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 106, y: -20.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7951261400370368363}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1390594380999938773
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22976427522924676}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 7.059021, y: -9.748441}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 15.118044, y: 16.567362}
+  m_EdgeRadius: 0
+--- !u!1 &1460814089921492022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6166978204130585107}
+  - component: {fileID: 1183766505872213282}
+  m_Layer: 0
+  m_Name: TutorialController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6166978204130585107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460814089921492022}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7951261400370368363}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1183766505872213282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460814089921492022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001812c0e3558944498ad291873dd19c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiMgr: {fileID: 0}
+  tutorialRewardPanel: {fileID: 0}
+  tutorialPanel: {fileID: 0}
+  tutorialMgr: {fileID: 0}
+--- !u!1 &8991951754933951724
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7951261400370368363}
+  - component: {fileID: 5056235766857252441}
+  - component: {fileID: 504886660034442510}
+  m_Layer: 0
+  m_Name: WaveController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7951261400370368363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991951754933951724}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.12103635, y: 2.9872668, z: 0.6421039}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6166978204130585107}
+  - {fileID: 5525623379842242346}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5056235766857252441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991951754933951724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7afd4a88219c43a19d2dcd0be9c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: WaveController
+  onInitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &504886660034442510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8991951754933951724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 058e3f100660871458617d624f383205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveSlider: {fileID: 0}
+  waveLevelText: {fileID: 0}
+  clearPanel: {fileID: 0}
+  feildPanel: {fileID: 0}
+  backGround: {fileID: 0}
+  backGroundController: {fileID: 0}
+  airship: {fileID: 0}
+  monster: {fileID: 7434643913460656674, guid: 5e497bcd1ce990b45a71368d17fa3280, type: 3}
+  boss: {fileID: 7434643913460656674, guid: a671568c6a169f040b823491c5713795, type: 3}
+  spawnArea: {fileID: 1390594380999938773}
+  maxWaveTime: 10
+  bossTimer: 0
+  prefabLoader: {fileID: 0}
+  currentEnemy: []
+  TestBackGround:
+  - {fileID: 21300000, guid: 0f79f12485a9f4a49a51353df3759d0c, type: 3}
+  - {fileID: 21300000, guid: bb04e63f8d37f384ebed94296ebe0cd0, type: 3}
+  - {fileID: 21300000, guid: ceff872993a43ae4cbdeedad3d6aadff, type: 3}
+  - {fileID: 21300000, guid: 4fdf22bc254e10f49875802cccc14d5a, type: 3}
+  - {fileID: 21300000, guid: c3462766c1006ef4eb7115bfeeda13f2, type: 3}
+  - {fileID: 21300000, guid: 3d0a19564d1e50b4e8822fd76ca40b44, type: 3}
+  - {fileID: 21300000, guid: 259e333bae462174ca41500df2a4b4ad, type: 3}
+  - {fileID: 21300000, guid: 2e8480ab654922f4e8ba3ef65e6f27c9, type: 3}
+  - {fileID: 21300000, guid: 2fd6cae30c152d3499f5bbd3f23246e8, type: 3}
+  - {fileID: 21300000, guid: 94529d5a712dd774f9664133e2630ea7, type: 3}
+  TestBackGroundMid:
+  - {fileID: 21300000, guid: 9bc0ca521142c1946b4b132e8a65fc62, type: 3}
+  - {fileID: 21300000, guid: de7f354f9903553408cf28b818528c61, type: 3}
+  - {fileID: 21300000, guid: 4757ebbf025e8b54b9f55138b298f312, type: 3}
+  - {fileID: 21300000, guid: 83a6981398f851f4e849c9a004fce15a, type: 3}
+  - {fileID: 21300000, guid: a75e0912050021d4dacd931350a52a54, type: 3}
+  - {fileID: 21300000, guid: 8c6616f75a028664f85e3095f5671a98, type: 3}
+  - {fileID: 21300000, guid: 3fd50822595303c47b08d8abb114e7a1, type: 3}
+  - {fileID: 21300000, guid: 6c5fa53d46e9c5b41a71fb22aeffac19, type: 3}
+  - {fileID: 21300000, guid: b843985ed37da4b46941d5da64216a77, type: 3}
+  - {fileID: 21300000, guid: b264336a81d170a47848aa9dd374c9cf, type: 3}
+  TestBackGroundFront:
+  - {fileID: 21300000, guid: 3148ea60111777844b6738cb5806588e, type: 3}
+  - {fileID: 21300000, guid: e79eb8713df0a234fb960c2b9774a739, type: 3}
+  - {fileID: 21300000, guid: 190d7326442255d4f87044d31f093760, type: 3}
+  - {fileID: 21300000, guid: 36ccfa459a24ef742a611636496102d9, type: 3}
+  - {fileID: 21300000, guid: f531175374d9549469dc3cb81ea9abf1, type: 3}
+  - {fileID: 21300000, guid: ced04038422394e41bd21bf136a59b5e, type: 3}
+  - {fileID: 21300000, guid: 7890d0e3686079f45a0fb212afc48a8c, type: 3}
+  - {fileID: 21300000, guid: f82f56d3c1a263b4db0c60685b8d8627, type: 3}
+  - {fileID: 21300000, guid: 2ce3ed34403242141850c3f0c9ecbd8c, type: 3}
+  - {fileID: 21300000, guid: 1df355f9cf09d7a4db208dce15665da2, type: 3}
+  tutorialController: {fileID: 1183766505872213282}
+  bossSlider: {fileID: 0}
+  bossTimerSlider: {fileID: 0}
+  isBossSpawn: 0

@@ -190,7 +190,7 @@ namespace SkyDragonHunter.Entities
 
             var crewData = DataTableMgr.CrewTable.Get(ID);
 
-            Debug.LogWarning($"CrewData = {crewData}");
+            // Debug.LogWarning($"CrewData = {crewData}");
 
             gameObject.name = crewData.UnitName;
 

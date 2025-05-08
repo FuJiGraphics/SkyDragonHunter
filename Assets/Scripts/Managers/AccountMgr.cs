@@ -226,7 +226,7 @@ namespace SkyDragonHunter.Managers
             s_SortedArtifacts.Add(dummy);
 
             // 보물 UI에 등록하기
-            S_TreasureEquipmentPanel.AddSlot(dummy);
+            S_TreasureEquipmentPanel?.AddSlot(dummy);
         }
 
         public static void RemoveArtifact(ArtifactDummy dummy)

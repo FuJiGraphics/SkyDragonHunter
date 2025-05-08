@@ -5462,6 +5462,7 @@ GameObject:
   - component: {fileID: 848839947569504017}
   - component: {fileID: 1239982993766888046}
   - component: {fileID: 3292642393580337770}
+  - component: {fileID: 5939318671275507117}
   m_Layer: 0
   m_Name: Airship
   m_TagString: Player
@@ -5667,6 +5668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
   allowedTargetTags:
   - Monster
 --- !u!114 &1335269385575473336
@@ -5736,11 +5738,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Slots:
   - button: {fileID: 0}
+    icon: {fileID: 0}
     cooldown: {fileID: 0}
-    skill: {fileID: 6311727942934268204, guid: 34b1fa64a5ae8694fab79cc1dba5726e, type: 3}
-    targetTags:
-    - Monster
-  m_SkillCooldown: 3.5
+    skill: {fileID: 8938616387491736917, guid: 7eec4ef8132368941850c7ebe8d88a40, type: 3}
+    targetTags: []
+  m_SkillCooldown: 10
   m_IsAutoExecute: 1
   m_Distance: 35
   m_EnemySearchProvider: {fileID: 0}
@@ -5825,3 +5827,17 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 4154342409135812893}
   m_Scale: {x: 1, y: 1}
   m_SyncStats: {fileID: 539343835289769523}
+--- !u!114 &5939318671275507117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560377368911355534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}

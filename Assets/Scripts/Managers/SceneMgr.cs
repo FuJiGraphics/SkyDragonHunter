@@ -15,9 +15,15 @@ namespace SkyDragonHunter.Managers
 
         [SerializeField] private TextMeshProUGUI textUI;
         [SerializeField] private Slider progressBar;
-        [SerializeField] private string prefabLabel = "Prefabs";
-        [SerializeField] private string textureLabel = "Textures";
         [SerializeField] private string fontLabel = "Fonts";
+        [SerializeField] private string prefabLabel = "Prefabs";
+        [SerializeField] private string soLabel = "ScriptableObjects";
+        [SerializeField] private string textureLabel = "Textures";
+        [SerializeField] private string soundLabel = "Sounds";
+        [SerializeField] private string animLabel = "Animations";
+        [SerializeField] private string matLabel = "Materials";
+        [SerializeField] private string shaderLabel = "Shaders";
+        [SerializeField] private string sanctumLabel = "sanctum_pixel";
 
         public static void LoadScene(string sceneName)
         {
@@ -76,18 +82,18 @@ namespace SkyDragonHunter.Managers
             GameMgr.InitializeAddressablesIfNeeded(); 
             yield return Addressables.InitializeAsync();
 
-
             // 폰트 다운로드
-            yield return Loading(fontLabel, "폰트 다운로드 중...");
+            yield return Loading(fontLabel, "리소스 다운로드 중...");
             yield return LoadMemory<TMP_FontAsset>(fontLabel);
 
-            // 텍스처 다운로드
-            yield return Loading(textureLabel, "텍스처 다운로드 중...");
-
-            // 프리팹 다운로드
             yield return Loading(prefabLabel, "프리팹 다운로드 중...");
-
-            // 씬 다운로드
+            yield return Loading(soLabel, "스크립터블 오브젝트 다운로드 중...");
+            yield return Loading(textureLabel, "텍스처 다운로드 중...");
+            yield return Loading(soundLabel, "사운드 다운로드 중...");
+            yield return Loading(animLabel, "애니메이션 다운로드 중...");
+            yield return Loading(matLabel, "머티리얼 다운로드 중...");
+            yield return Loading(shaderLabel, "셰이더 다운로드 중...");
+            yield return Loading(sanctumLabel, "리소스 다운로드 중...");
             yield return Loading(nextScene, "씬 다운로드 중...");
 
             // Load scene

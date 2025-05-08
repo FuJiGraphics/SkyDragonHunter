@@ -21,13 +21,16 @@ namespace SkyDragonHunter.Managers {
         public static T Load<T>(string path) where T : UnityEngine.Object
         {
             T result = null;
-            if (!AddressableMode)
-                result = LoadResource<T>(path);
-            else
-                result = LoadAssetSync<T>(path);
-            if (result == null)
+            if (!string.IsNullOrEmpty(path))
             {
-                Debug.LogError($"[ResourcesMgr]: 데이터 로드에 실패하였습니다. {path}");
+                if (!AddressableMode)
+                    result = LoadResource<T>(path);
+                else
+                    result = LoadAssetSync<T>(path);
+                if (result == null)
+                {
+                    Debug.LogError($"[ResourcesMgr]: 데이터 로드에 실패하였습니다. {path}");
+                }
             }
             return result;
         }

@@ -29,6 +29,7 @@ namespace SkyDragonHunter.Managers
         public static DiamondShopTable DiamondShopTable => Get<DiamondShopTable>(DataTableIds.DiamondShop);
         public static RerollShopTable RerollShopTable => Get<RerollShopTable>(DataTableIds.RerollShop);
         public static BuffTable BuffTable => Get<BuffTable>(DataTableIds.Buff);
+        public static TutorialTable TutorialTable => Get<TutorialTable>(DataTableIds.Tutorial);
 
         // Static Constructor
         static DataTableMgr()
@@ -81,6 +82,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<ArtifactTable>(DataTableIds.Artifact);
             LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
             LoadTable<BuffTable>(DataTableIds.Buff);
+            LoadTable<TutorialTable>(DataTableIds.Tutorial);
         }
 
         private static void InitForDungeonScene()
@@ -104,6 +106,9 @@ namespace SkyDragonHunter.Managers
             LoadTable<AFKRewardTable>(DataTableIds.AFKReward);
             LoadTable<WaveTable>(DataTableIds.Wave);
             LoadTable<RepairTableTemplate>(DataTableIds.Repair);
+            LoadTable<ArtifactTable>(DataTableIds.Artifact);
+            LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
+            LoadTable<BuffTable>(DataTableIds.Buff);
         }
 
         // Public 메서드

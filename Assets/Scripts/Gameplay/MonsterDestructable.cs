@@ -20,8 +20,11 @@ namespace SkyDragonHunter {
             // TODO: LJH
             if (dropItems != null && dropItems.Length != 0)
             {
-                var item = Instantiate(dropItems[Random.Range(0, dropItems.Length)]);
-                item.transform.position = gameObject.transform.position;            
+                if (dropItems[Random.Range(0, dropItems.Length)] != null)
+                {
+                    var item = Instantiate(dropItems[Random.Range(0, dropItems.Length)]);
+                    item.transform.position = gameObject.transform.position;
+                }
             }
             // ~TODO
             Destroy(gameObject);

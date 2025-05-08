@@ -45,7 +45,6 @@ namespace SkyDragonHunter.UI{
         private BigNum m_CurrentStat;
         private BigNum m_NextStat;
         private BigNum m_NeedCoin;
-        private bool m_FirstLevelUp = true;
 
         public GrowthStatType StatType { get; set; }
         public int MaxLevel { get; set; } = 10;
@@ -155,7 +154,6 @@ namespace SkyDragonHunter.UI{
 
         public void Clear()
         {
-            m_FirstLevelUp = true;
             Init();
             DirtyUI();
             levelUpButton.onClick?.Invoke();
