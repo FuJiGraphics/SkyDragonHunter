@@ -18,23 +18,23 @@ namespace SkyDragonHunter.Managers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            Debug.Log("DrawableMgr Init");
+            //Debug.Log("DrawableMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
+            //Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
+            //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
             s_SampleExplosionEffect = Resources.Load<GameObject>("Prefabs/SampleExplosionEffect");
         }
 
         private static void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
+            //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
             s_SampleExplosionEffect = null;
-            Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
+            //Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
         }
 
         public static void Play(Vector2 position, float radius, float duration)

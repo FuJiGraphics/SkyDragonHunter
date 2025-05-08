@@ -20,7 +20,7 @@ namespace SkyDragonHunter.Managers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            Debug.Log("GameMgr Init");
+            //Debug.Log("GameMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
@@ -29,7 +29,7 @@ namespace SkyDragonHunter.Managers
         {
             if (!Application.isPlaying)
                 return;
-            Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
+            //Debug.Log($"[GameMgr] 씬 로드됨: {scene.name}");
             Application.targetFrameRate = 60;
             m_LoadObjects = new Dictionary<string, List<GameObject>>();
 
@@ -147,12 +147,12 @@ namespace SkyDragonHunter.Managers
             foreach (RegisterObject comp in components)
             {
                 RegisterObject(comp.id, comp.gameObject);
-                Debug.Log($"게임 매니저에 등록됨: {comp.id}");
+                //Debug.Log($"게임 매니저에 등록됨: {comp.id}");
             }
             foreach (RegisterObject comp in components)
             {
                 comp.onInitEvents.Invoke();
-                Debug.Log($"초기화 이벤트 호출: {comp.id}");
+                //Debug.Log($"초기화 이벤트 호출: {comp.id}");
             }
         }
 

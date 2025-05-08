@@ -33,6 +33,9 @@ namespace SkyDragonHunter
         [Header("구멍 마스크 컨트롤러")]
         [SerializeField] private SingleHoleMaskController holeMaskCtrl; // 마스크 처리
 
+
+        [SerializeField] private TutorialClickListener listener; // 마스크 처리
+
         public bool tutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
         public int step { get; private set; } = 0;             // 현재 스텝
         private int currentTargetIndex = -1; // 현재 스텝의 버튼 인덱스
@@ -67,15 +70,24 @@ namespace SkyDragonHunter
         public void NotifyClicked(GameObject clicked)
         {
             var data = DataTableMgr.TutorialTable.Get(step);
-            if (data == null || tutorialEnd)
-                return;
+            if (data == null || tutorialEnd) return;
+
+            Debug.Log($"[튜토리얼] NotifyClicked 호출됨: {clicked.name}");
 
             if (data.ButtonIndex >= 0 && data.ButtonIndex < targetRects.Length)
             {
-                if (targetRects[data.ButtonIndex].gameObject == clicked)
+                var expected = targetRects[data.ButtonIndex];
+                Debug.Log($"[튜토리얼] 클릭: {clicked.name}, 기대값: {expected.name}");
+
+                if (clicked == expected.gameObject || clicked.transform.IsChildOf(expected))
                 {
+                    Debug.Log("[튜토리얼] 클릭 일치 → 스텝 증가");
                     StepUp();
                     ApplyStep();
+                }
+                else
+                {
+                    Debug.LogWarning("[튜토리얼] 클릭 대상 불일치");
                 }
             }
         }
@@ -146,6 +158,12 @@ namespace SkyDragonHunter
 
             AttachClickListeners(); // 추가: 비활성 → 재활성된 UI에도 다시 리스너 적용
 
+            if (data.ButtonIndex == 5 || data.ButtonIndex == 12 || data.ButtonIndex == 43)
+            {
+                StartCoroutine(DelayedAttachChildListeners(data.ButtonIndex));
+            }
+           
+
             if (data.Character >= 0 && data.Character < characters.Length)
             {
                 character.sprite = characters[data.Character];
@@ -175,6 +193,32 @@ namespace SkyDragonHunter
             holeMaskCtrl.DisableHole();
         }
 
+        public void AdvanceStepIfValid(GameObject clicked)
+        {
+            var data = DataTableMgr.TutorialTable.Get(step);
+            if (data == null || tutorialEnd) return;
+
+            if (data.ButtonIndex >= 0)
+            {
+                var target = targetRects[data.ButtonIndex];
+
+                Transform clickedTr = clicked.transform;
+                Transform targetTr = target.transform;
+
+                if (clickedTr == targetTr || clickedTr.IsChildOf(targetTr) || targetTr.IsChildOf(clickedTr))
+                {
+                    StepUp();
+                    ApplyStep();
+                }
+            }
+            else
+            {
+                // 버튼 없는 스텝이면 그냥 진행
+                StepUp();
+                ApplyStep();
+            }
+        }
+
         /// <summary>
         /// 수정됨: targetRects 배열을 순회하며 TutorialClickListener를 부착하고 참조 연결
         /// </summary>
@@ -184,6 +228,43 @@ namespace SkyDragonHunter
             {
                 if (rt == null) continue;
 
+                // 수정됨: 비활성 상태에서도 AddComponent 가능하게 하기 위해서 임시 활성화
+                GameObject targetGO = rt.gameObject;
+
+                bool wasInactive = !targetGO.activeSelf;
+                if (wasInactive)
+                    targetGO.SetActive(true);
+
+                var listener = targetGO.GetComponent<TutorialClickListener>();
+                if (listener == null)
+                {
+                    listener = targetGO.AddComponent<TutorialClickListener>();
+                }
+
+                listener.SetTutorialMgr(this);
+
+                if (wasInactive)
+                    targetGO.SetActive(false);
+            }
+        }
+
+        private IEnumerator DelayedAttachChildListeners(int index)
+        {
+            yield return null; // 한 프레임 대기
+
+            AttachChildListenersOfIndex(index);
+        }
+
+        private void AttachChildListenersOfIndex(int index)
+        {
+            if (index < 0 || index >= targetRects.Length) return;
+
+            var parent = targetRects[index];
+            foreach (Transform child in parent)
+            {
+                var rt = child.GetComponent<RectTransform>();
+                if (rt == null) continue;
+
                 var listener = rt.GetComponent<TutorialClickListener>();
                 if (listener == null)
                     listener = rt.gameObject.AddComponent<TutorialClickListener>();
@@ -191,5 +272,9 @@ namespace SkyDragonHunter
                 listener.SetTutorialMgr(this);
             }
         }
+
+
     }
+
+
 }

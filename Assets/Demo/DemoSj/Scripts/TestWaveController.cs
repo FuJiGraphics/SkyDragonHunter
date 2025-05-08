@@ -77,6 +77,7 @@ namespace SkyDragonHunter
         private float waveDuration;
         private const float c_InitialBossTimer = 40f;
         private bool isBossCleared;
+        private bool checkDistance;
 
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
@@ -95,6 +96,7 @@ namespace SkyDragonHunter
         private void Update()
         {
             //backGroundController.SetScrollSpeed(1f);
+            CheckMonterProximity();
             OnBackGroundStop();
             if (!isInfiniteMode)
             {
@@ -117,11 +119,24 @@ namespace SkyDragonHunter
                 Time.timeScale = 1f;
             }
 
-            if (isStopped)
+            if (isStopped && checkDistance)
             {
                 if (!tutorialController.endTutorial && !tutorialController.firstActive)
                 {
                     tutorialController.OnFirstActive();
+                }
+            }
+            else
+            {
+                if (!tutorialController.endTutorial && tutorialController.fourthActive &&
+                    !tutorialController.fifthActive && lastTriedZonelLevel == 2 && changeSuccess)
+                {
+                    tutorialController.OnFifthActive();
+                }
+                if (!tutorialController.endTutorial && tutorialController.fifthActive &&
+                    !tutorialController.sixthActive && lastTriedZonelLevel == 3 && changeSuccess)
+                {
+                    tutorialController.OnSixthActive();
                 }
             }
         }
@@ -197,12 +212,14 @@ namespace SkyDragonHunter
                 if (isInfiniteMode)
                 {
                     isInfiniteMode = false;
+                    isStopped = false;
                     waveSlider.gameObject.SetActive(false);
                     OnSetLastTriedtWave();
                 }
                 else
                 {
                     isInfiniteMode = true;
+                    isStopped = false;
                     OnSetCurrentWave();
                 }
                 isSuccessChangeBackGround = false;
@@ -248,12 +265,17 @@ namespace SkyDragonHunter
 
         private void NormalWaveUpdate()
         {
-            if (!isStopped && changeSuccess)
+            if (changeSuccess && 
+                (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null))))
             {
                 currentWaveTime += Time.deltaTime * oldAllSpeed;
                 currentSpawnTime += Time.deltaTime * oldAllSpeed;
                 waveSlider.value = currentWaveTime;
-               
+                isStopped = false;
+            }
+            else
+            {
+                isStopped = true;
             }
 
             if (!isCanSpawn && currentWaveTime < waveDuration && 
@@ -391,7 +413,20 @@ namespace SkyDragonHunter
 
         private void OnBackGroundStop()
         {
-            bool shouldStop = false;
+            if (isStopped)
+            {
+                backGroundController.SetScrollSpeed(0f);
+            }
+            else
+            {
+                backGroundController.SetScrollSpeed(oldAllSpeed);
+            }
+            
+        }
+
+        private void CheckMonterProximity()
+        {
+            checkDistance = false;
 
             foreach (var monster in currentEnemy)
             {
@@ -402,23 +437,11 @@ namespace SkyDragonHunter
                 float distance = Vector3.Distance(airship.transform.position, monster.transform.position);
                 if (distance <= 50f)
                 {
-                    shouldStop = true;
-                    break;
+                    checkDistance = true;
                 }
-            }
-
-            if (shouldStop && !isStopped)
-            {
-                isStopped = true;
-                
-                backGroundController.SetScrollSpeed(0f);
-            }
-            else if (!shouldStop && isStopped)
-            {
-                if (currentEnemy == null || currentEnemy.All(e => e == null || e.Equals(null)))
+                else
                 {
-                    isStopped = false;
-                    backGroundController.SetScrollSpeed(oldAllSpeed);
+                    checkDistance = false; 
                 }
             }
         }

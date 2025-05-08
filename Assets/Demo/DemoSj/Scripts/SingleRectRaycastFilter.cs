@@ -21,7 +21,6 @@ namespace SkyDragonHunter {
         public void SetHoleRect(Rect newRect)
         {
             holeTarget = newRect; // 수정됨: 클릭 통과 영역 설정
-            Debug.Log($"[RaycastFilter] SetHoleRect: {newRect.position}, size = {newRect.size}");
         }
 
         public void SetHole(int step) 

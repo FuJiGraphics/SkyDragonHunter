@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 namespace SkyDragonHunter
@@ -12,8 +13,9 @@ namespace SkyDragonHunter
     public class TutorialClickListener : MonoBehaviour, IPointerClickHandler
     {
         // 필드 (Fields)
-       
+
         private TutorialMgr tutorialMgr;    //TutorialMgr 참조를 저장할 필드 추가
+        private Button button;
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -21,7 +23,23 @@ namespace SkyDragonHunter
         private void OnEnable()
         {
             if (tutorialMgr == null)
-                tutorialMgr = FindObjectOfType<TutorialMgr>(); // 또는 외부에서 다시 할당
+            {
+                tutorialMgr = FindAnyObjectByType<TutorialMgr>();
+            }
+        }
+
+        private void Awake()
+        {
+            button = GetComponent<Button>();
+
+            // 수정됨: 버튼이 있으면 onClick에 연결
+            if (button != null)
+            {
+                button.onClick.AddListener(() =>
+                {
+                    tutorialMgr?.AdvanceStepIfValid(gameObject);
+                });
+            }
         }
 
         // Public 메서드
@@ -33,13 +51,13 @@ namespace SkyDragonHunter
             tutorialMgr = mgr;
         }
 
-        /// <summary>
-        /// 클릭되었을 때 TutorialMgr에게 알림 전송
-        /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log($"[튜토리얼] 클릭 감지됨: {gameObject.name}"); // 수정됨: 클릭 확인용 디버그 출력
-            tutorialMgr?.NotifyClicked(gameObject); // 수정됨: 싱글톤 사용 안 함
+            // 버튼이 없다면 직접 처리
+            if (button == null)
+            {
+                tutorialMgr?.AdvanceStepIfValid(gameObject);
+            }
         }
         // Private 메서드
         // Others

@@ -34,7 +34,6 @@ namespace SkyDragonHunter {
             if (tutorialMgr != null)
             {
                 tutorialMgr.OnTutorialMaskClicked(); // 구멍이 없을 때만 반응
-                Debug.Log("[튜토리얼] 패널 클릭 감지됨");
             }
         }
         // Private 메서드
