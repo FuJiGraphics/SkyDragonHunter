@@ -41,6 +41,14 @@ namespace SkyDragonHunter {
             if (!tutorialMgr.IsStartTutorial)
                 return;
 
+            if (tutorialMgr.tutorialEnd)
+            {
+                Destroy(tutorialPanel);
+                Destroy(tutorialRewardPanel);
+                Destroy(tutorialMgr);
+                Destroy(this.gameObject);
+            }
+
             if (!tutorialPanel.activeSelf && secondActive && !thirdActive && !endTutorial)
             {
                 thirdTutorialStartTime += Time.deltaTime;
@@ -49,11 +57,6 @@ namespace SkyDragonHunter {
                     OnThirdActive();
                     thirdTutorialStartTime = 0;
                 }
-            }
-
-            if (!tutorialPanel.activeSelf)
-            {
-                uiMgr.OnInGamePanels();
             }
 
             if (!tutorialPanel.activeSelf && seventhActive && !eighthActive && !endTutorial)
@@ -85,7 +88,7 @@ namespace SkyDragonHunter {
             firstActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnSecondActive()    
         {
@@ -95,7 +98,7 @@ namespace SkyDragonHunter {
             secondActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnThirdActive()     
         {
@@ -105,7 +108,7 @@ namespace SkyDragonHunter {
             thirdActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnFourthActive()    
         {
@@ -115,7 +118,7 @@ namespace SkyDragonHunter {
             fourthActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnFifthActive()     
         {
@@ -125,7 +128,7 @@ namespace SkyDragonHunter {
             fifthActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnSixthActive()     
         {
@@ -135,7 +138,7 @@ namespace SkyDragonHunter {
             sixthActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnSeventhActive()   
         {
@@ -145,7 +148,7 @@ namespace SkyDragonHunter {
             seventhActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnEighthActive()    
         {
@@ -162,7 +165,7 @@ namespace SkyDragonHunter {
             ninthActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnTenthActive()     
         {
@@ -172,7 +175,7 @@ namespace SkyDragonHunter {
             tenthActive = true;
             tutorialMgr.StepUp();
             tutorialMgr.ApplyStep();
-            tutorialPanel.SetActive(true);
+            tutorialMgr.OnTutorialPanel();
         }
         public void OnEndTutorial()     
         {
