@@ -41,14 +41,6 @@ namespace SkyDragonHunter {
             if (!tutorialMgr.IsStartTutorial)
                 return;
 
-            if (tutorialMgr.TutorialEnd)
-            {
-                Destroy(tutorialPanel);
-                Destroy(tutorialRewardPanel);
-                Destroy(tutorialMgr);
-                Destroy(this.gameObject);
-            }
-
             if (!tutorialPanel.activeSelf && secondActive && !thirdActive && !endTutorial)
             {
                 thirdTutorialStartTime += Time.deltaTime;
@@ -68,6 +60,7 @@ namespace SkyDragonHunter {
                     tutorialRewardPanel.SetActive(true);
                     AccountMgr.Diamond += 3000;
                     eighthTutorialStartTime = 0;
+                    
                 }
             }
 
@@ -192,6 +185,16 @@ namespace SkyDragonHunter {
 
             tutorialRewardPanel.SetActive(false);
         }
+
+        public void TutorialObjDestroy()
+        {
+            Destroy(tutorialPanel);
+            Destroy(tutorialRewardPanel);
+            Destroy(tutorialMgr.gameObject);
+            Destroy(tutorialMgr.allButtonsBlockPanel);
+            Destroy(this.gameObject);
+        }
+
         // Private 메서드
         // Others
 
