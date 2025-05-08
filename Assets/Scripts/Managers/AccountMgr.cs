@@ -556,7 +556,7 @@ namespace SkyDragonHunter.Managers
                     s_CollectedCrews.Add(provider.Name, crewInstance);
                     AddUICrewListNode(crewInstance);
                     AddCrewUIAssignUnitToFortressPanel(crewInstance);
-                    Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {provider.Name}");
+                    //Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {provider.Name}");
                 }
                 else
                 {
@@ -906,7 +906,7 @@ namespace SkyDragonHunter.Managers
             }
 
             // TODO: 크루 스탯 정보 등 서버와 동기화
-            Debug.Log("[AccountMgr]: 단원 스탯 동기화중");
+            //Debug.Log("[AccountMgr]: 단원 스탯 동기화중");
         }
 
         private static void OnCanonLevelUpEvent(int level)

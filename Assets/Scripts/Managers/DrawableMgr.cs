@@ -23,15 +23,15 @@ namespace SkyDragonHunter.Managers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            Debug.Log("DrawableMgr Init");
+            //Debug.Log("DrawableMgr Init");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
+            //Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
+            //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
             s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIDamageMeter");
             s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertDialog");
             s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertArtifactInfo");
@@ -39,9 +39,9 @@ namespace SkyDragonHunter.Managers
 
         private static void OnSceneUnloaded(Scene scene)
         {
-            Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
+            //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab Á¤¸®Áß");
             s_UIDamageMeterPrefab = null;
-            Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
+            //Debug.Log($"[DrawableMgr] ¾À ¾ð·ÎµåµÊ: {scene.name}");
         }
 
         public static void Dialog(string title, string text)

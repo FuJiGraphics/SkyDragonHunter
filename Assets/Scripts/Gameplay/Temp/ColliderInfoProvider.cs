@@ -24,18 +24,18 @@ namespace SkyDragonHunter.Test {
             {
                 var circleCollider = (CircleCollider2D)collider;
                 ColliderHalfWidth = circleCollider.radius;
-                Debug.Log($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
+                //Debug.Log($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
             }
             else if (colliderType == typeof(BoxCollider2D))
             {
                 var boxCollider = (BoxCollider2D)collider;
                 ColliderHalfWidth = (boxCollider.bounds.size.x + boxCollider.bounds.size.y) * 0.25f;
-                Debug.Log($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
+                //Debug.Log($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
             }
             else
             {
                 ColliderHalfWidth = collider.bounds.size.x * 0.5f;
-                Debug.LogWarning($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
+                //Debug.LogWarning($"Type of [{gameObject.name}] : '{colliderType}', collider halfWidth = {ColliderHalfWidth}");
             }
         }
 

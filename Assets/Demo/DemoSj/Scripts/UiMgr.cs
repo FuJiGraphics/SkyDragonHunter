@@ -123,6 +123,24 @@ namespace SkyDragonHunter.Test {
             inGameWaveInfoPanel.SetActive(true);
             questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
+            if (!waveControlerScript.tutorialController.endTutorial &&
+                waveControlerScript.tutorialController.firstActive &&
+                !waveControlerScript.tutorialController.secondActive)
+            {
+                waveControlerScript.tutorialController.OnSecondActive();
+            }
+            else if (!waveControlerScript.tutorialController.endTutorial &&
+                waveControlerScript.tutorialController.thirdActive &&
+                !waveControlerScript.tutorialController.fourthActive)
+            {
+                waveControlerScript.tutorialController.OnFourthActive();
+            }
+            else if (!waveControlerScript.tutorialController.endTutorial &&
+                waveControlerScript.tutorialController.sixthActive &&
+                !waveControlerScript.tutorialController.seventhActive)
+            {
+                waveControlerScript.tutorialController.OnSeventhActive();
+            }
         }
 
         public void OnTreasureCodexPanel()
@@ -677,6 +695,8 @@ namespace SkyDragonHunter.Test {
             facilityPanelPanel.SetActive(false);
             inventoryPanel.SetActive(false);
             treasureCodexPanel.SetActive(false);
+            dungeonEntryPanel.SetActive(false);
+            isHideDungeonEntryPanel = true;
             foreach (var panel in pickPanels)
             {
                 panel.SetActive(false);
