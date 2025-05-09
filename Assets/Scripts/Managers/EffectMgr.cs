@@ -56,20 +56,22 @@ namespace SkyDragonHunter.Managers
         {
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
+
             effect.transform.position = position;
             effect.transform.localScale = scale;
+
             GameObject.Destroy(effect, duration);
             return effect;
         }
 
-        public static GameObject Play(string effectName, GameObject target, float duration)
+        public static GameObject Play(string effectName, GameObject target, Vector2 offset, Vector2 scale, float duration)
         {
             var effectGo = ResourcesMgr.Load<GameObject>(effectName);
             GameObject effect = GameObject.Instantiate(effectGo);
 
             effect.transform.SetParent(target.transform);
-            effect.transform.localPosition = new Vector3(0f, 0f, -1f);
-            effect.transform.localScale = effect.transform.localScale * 2f;
+            effect.transform.localPosition = new Vector3(offset.x, offset.y, -1f);
+            effect.transform.localScale = effect.transform.localScale * scale;
 
             GameObject.Destroy(effect, duration);
             return effect;

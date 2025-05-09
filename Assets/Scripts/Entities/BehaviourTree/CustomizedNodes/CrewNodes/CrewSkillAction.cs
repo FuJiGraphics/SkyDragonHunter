@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter
+{
 
     public class CrewSkillAction : ActionNode<NewCrewControllerBT>
     {
@@ -19,7 +20,7 @@ namespace SkyDragonHunter {
             skillType = SkillType.Undefined;
             if (skillExecutor != null)
             {
-                 skillType = skillExecutor.SkillType;
+                skillType = skillExecutor.SkillType;
             }
         }
 
@@ -31,18 +32,20 @@ namespace SkyDragonHunter {
 
         protected override NodeStatus OnUpdate()
         {
-            if(m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
+            //if(m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
+            //    return NodeStatus.Failure;
+            if (!m_Context.skillExecutor.IsAutoExecute)
                 return NodeStatus.Failure;
 
-            if(m_Context.skillExecutor != null && m_Context.skillExecutor.IsCooldownComplete)
+            if (!m_Context.skillExecutor.IsCooldownComplete)
             {
                 m_Context.animController.PlaySkillAnimation();
-                if(skillType == SkillType.Damage)
+                if (skillType == SkillType.Damage)
                     m_Context.damageTypeSpellCasted = true;
 
                 return NodeStatus.Success;
             }
-            return NodeStatus.Failure;
+            return NodeStatus.Running;
         }
         protected override void OnEnd()
         {

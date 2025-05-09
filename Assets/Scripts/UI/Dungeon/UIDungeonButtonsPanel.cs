@@ -38,10 +38,10 @@ namespace SkyDragonHunter.UI {
         private void AddListeners()
         {
             m_AcceleratorToggle.onValueChanged.AddListener(OnToggledAccelerator);
-            m_SkillButtons[0].onClick.AddListener(OnClickedSkill1);
-            m_SkillButtons[1].onClick.AddListener(OnClickedSkill2);
-            m_SkillButtons[2].onClick.AddListener(OnClickedSkill3);
-            m_SkillButtons[3].onClick.AddListener(OnClickedSkill4);
+            // m_SkillButtons[0].onClick.AddListener(OnClickedSkill1);
+            // m_SkillButtons[1].onClick.AddListener(OnClickedSkill2);
+            // m_SkillButtons[2].onClick.AddListener(OnClickedSkill3);
+            // m_SkillButtons[3].onClick.AddListener(OnClickedSkill4);
         }
 
         private void OnToggledAccelerator(bool acceleratorOn)

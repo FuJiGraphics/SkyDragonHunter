@@ -383,6 +383,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &924458979 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6567847552238039271, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
+  m_PrefabInstance: {fileID: 2111743101}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ff53f8b40521f41a7cf240157e746f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &937905267 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1274221709525616599, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
@@ -621,95 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f1c2c33f0ea2d4a9b9bbe34b22a255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1415166404
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1415166409}
-  - component: {fileID: 1415166408}
-  - component: {fileID: 1415166407}
-  - component: {fileID: 1415166406}
-  - component: {fileID: 1415166405}
-  m_Layer: 0
-  m_Name: NobleWill 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1415166405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415166404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239ce6fa7eaaede47afa7e0da201abc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MatchBoxColliderSize: 1
---- !u!114 &1415166406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415166404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d346b37d5cb9994489ac7e825f708259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1415166407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415166404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62eb8329641698a46a83faad2f1d1ebc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SkillType: 1
-  m_SkillData: {fileID: 11400000, guid: 1d1f9619fefeeed4a9507026fd9ca6f1, type: 2}
-  m_Lifetime: 5
---- !u!114 &1415166408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415166404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsSelfTargeting: 1
-  allowedTargetTags: []
---- !u!4 &1415166409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415166404}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1801.9745, y: 111.90098, z: 0.01800007}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1486000267
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,7 +1756,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1493034075851215761, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493034075851215761, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 924458979}
+    - target: {fileID: 1493034075851215761, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnAutoButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493034075851215761, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SkyDragonHunter.UI.UISkillButtons, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493034075851215761, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1525130788242011783, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4954,7 +4892,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8300873613022675574, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
       propertyPath: m_IsStartTutorial
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8300873613022675574, guid: 87d5a85a3159f5347b36cfa6761cc77b, type: 3}
       propertyPath: tutorialBlocks.Array.size
@@ -5792,4 +5730,3 @@ SceneRoots:
   - {fileID: 2111743101}
   - {fileID: 1595402300}
   - {fileID: 8157567014515397001}
-  - {fileID: 1415166409}

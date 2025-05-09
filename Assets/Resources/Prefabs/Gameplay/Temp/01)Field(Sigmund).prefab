@@ -126,8 +126,9 @@ GameObject:
   - component: {fileID: -1718771658244626982}
   - component: {fileID: -3092186332005203092}
   - component: {fileID: -5859029834034561209}
+  - component: {fileID: -5662152605141311448}
   m_Layer: 0
-  m_Name: 01)Field(Anais)
+  m_Name: 01)Field(Sigmund)
   m_TagString: Crew
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -593,6 +594,25 @@ MonoBehaviour:
   m_IsSelfTargeting: 0
   allowedTargetTags:
   - Monster
+--- !u!114 &-5662152605141311448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Skill: {fileID: 6675759261718607809, guid: b229ffb1444e80945b97b9abc8bf9357, type: 3}
+  m_TargetTags: []
+  m_SkillCooldown: 20
+  m_IsAutoExecute: 1
+  m_Distance: 35
+  m_EndTime: 0
+  m_EnemySearchProvider: {fileID: 0}
 --- !u!1001 &4907484004920437550
 PrefabInstance:
   m_ObjectHideFlags: 0

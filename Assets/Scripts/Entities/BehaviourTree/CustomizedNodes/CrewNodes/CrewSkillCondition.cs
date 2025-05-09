@@ -15,10 +15,13 @@ namespace SkyDragonHunter {
 
         protected override NodeStatus OnUpdate()
         {
-            if (m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
+            if (m_Context.skillExecutor == null)
                 return NodeStatus.Failure;
 
-            if (m_Context.skillExecutor == null)
+            if (!m_Context.skillExecutor.IsAutoExecute)
+                return NodeStatus.Failure;
+
+            if (m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
                 return NodeStatus.Failure;
 
             return m_Context.skillExecutor.IsCooldownComplete 

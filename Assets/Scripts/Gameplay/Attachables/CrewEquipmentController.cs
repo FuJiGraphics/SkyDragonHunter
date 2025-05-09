@@ -20,8 +20,6 @@ namespace SkyDragonHunter {
         [Tooltip("크기만 지정 가능하며, 실제 슬롯의 값은 null이어야 합니다.")]
         [SerializeField] private GameObject[] m_EquipSlots;
 
-        private UISkillButtons m_TargetSkillSlots;
-
         // 속성 (Properties)
         public GameObject[] EquipSlots => m_EquipSlots;
         public bool IsEquip
@@ -44,11 +42,6 @@ namespace SkyDragonHunter {
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
-        private void Start()
-        {
-            m_TargetSkillSlots = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
-        }
-
         // Public 메서드
         public void EquipSlot(int slot, GameObject crewInstance)
         {
@@ -84,7 +77,8 @@ namespace SkyDragonHunter {
                     btComp.AllocateMountSlot(m_MountableSlots[slot], slot);
 
                     // 스킬 슬롯에 등록
-                    m_TargetSkillSlots.Equip(slot, btComp.skillExecutor);
+                    var uiSkillButtons = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
+                    uiSkillButtons.Equip(slot, btComp.skillExecutor);
                 }
                 else
                 {
@@ -114,7 +108,8 @@ namespace SkyDragonHunter {
             {
                 if (m_EquipSlots[slot].TryGetComponent<NewCrewControllerBT>(out var btComp))
                 {
-                    m_TargetSkillSlots.Unequip(slot);
+                    var uiSkillButtons = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
+                    uiSkillButtons.Unequip(slot);
                     btComp.m_MountSlot.Dismounting();
                     btComp.MountAction(false);
                 }

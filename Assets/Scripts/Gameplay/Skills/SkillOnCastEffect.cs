@@ -8,7 +8,8 @@ namespace SkyDragonHunter.Gameplay {
         , ISkillEffectLifecycleHandler
     {
         // 필드 (Fields)
-        [SerializeField] private bool m_MatchBoxColliderSize = false;
+        [SerializeField] private Vector2 m_Position = Vector2.zero;
+        [SerializeField] private Vector2 m_Scale = Vector2.one;
 
         private SkillBase m_SkillBase;
         private GameObject m_CacheEffectInstance;
@@ -36,10 +37,7 @@ namespace SkyDragonHunter.Gameplay {
                 float duration = 1f;
                 if (m_SkillBase.SkillType == SkillType.Affect)
                     duration = m_SkillBase.SkillData.BuffMaxDuration;
-                if (m_MatchBoxColliderSize)
-                    m_CacheEffectInstance = EffectMgr.Play(effectName, caster, duration);
-                else
-                    m_CacheEffectInstance = EffectMgr.Play(effectName, caster.transform.position, duration);
+                m_CacheEffectInstance = EffectMgr.Play(effectName, caster, m_Position, m_Scale, duration);
             }
         }
 
