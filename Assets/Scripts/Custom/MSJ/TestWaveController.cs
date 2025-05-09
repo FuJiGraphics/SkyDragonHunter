@@ -499,7 +499,7 @@ namespace SkyDragonHunter
                     destructableEvent.destructEvent.AddListener(() =>
                     {
                         AccountMgr.Coin += stageData.MonsterGOLD;
-
+                        AccountMgr.Food += stageData.MonsterGOLD * 10000;
                         var randVal = Random.Range(0, 1f);
                         bool isGenerateDungenTicket = randVal < 0.7f;
                         if (isGenerateDungenTicket)

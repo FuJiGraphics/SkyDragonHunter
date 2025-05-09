@@ -129,7 +129,7 @@ namespace SkyDragonHunter.Managers
                 }
                 onItemCountChangedEvents?.Invoke(ItemType.Diamond);
             }
-        }
+        }               
 
         public static BigNum WaveDungeonTicket
         {
@@ -145,6 +145,23 @@ namespace SkyDragonHunter.Managers
                     s_HeldItems.Add(ItemType.WaveDungeonTicket, 0);
                 s_HeldItems[ItemType.WaveDungeonTicket] = value;
                 onItemCountChangedEvents?.Invoke(ItemType.WaveDungeonTicket);
+            }
+        }
+
+        public static BigNum Food
+        {
+            get
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Food))
+                    s_HeldItems.Add(ItemType.Food, 0);
+                return s_HeldItems[ItemType.Food];
+            }
+            set
+            {
+                if (!s_HeldItems.ContainsKey(ItemType.Food))
+                    s_HeldItems.Add(ItemType.Food, 0);
+                s_HeldItems[ItemType.Food] = value;
+                onItemCountChangedEvents?.Invoke(ItemType.Food);
             }
         }
 

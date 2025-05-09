@@ -1,9 +1,5 @@
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
-using SkyDragonHunter.UI;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
