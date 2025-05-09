@@ -752,7 +752,10 @@ namespace SkyDragonHunter.Managers
                     SyncCrewData(instance);
                     RegisterCrew(instance);                    
 
-                    instance.GetComponent<AccountStatProvider>().Init();                    
+                    // TODO: LJH
+                    //instance.GetComponent<AccountStatProvider>().Init();
+                    instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
+                    // ~TODO
                     instance.SetActive(false);
                 }
                 #endregion

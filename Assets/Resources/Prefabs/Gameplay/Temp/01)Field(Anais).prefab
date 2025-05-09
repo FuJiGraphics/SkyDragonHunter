@@ -113,7 +113,6 @@ GameObject:
   - component: {fileID: 238202621918945723}
   - component: {fileID: 7791475739281254788}
   - component: {fileID: 1329097970844600860}
-  - component: {fileID: 7829082297169091079}
   - component: {fileID: 7295901706949356332}
   - component: {fileID: 3025901778920459960}
   - component: {fileID: 7494052092526040395}
@@ -126,6 +125,7 @@ GameObject:
   - component: {fileID: -1718771658244626982}
   - component: {fileID: -3092186332005203092}
   - component: {fileID: -5859029834034561209}
+  - component: {fileID: -7813138356493456425}
   m_Layer: 0
   m_Name: 01)Field(Anais)
   m_TagString: Crew
@@ -389,18 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7829082297169091079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8323954928373851172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef08377868f5077489808ee2fb1a8130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7295901706949356332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,6 +581,18 @@ MonoBehaviour:
   m_IsSelfTargeting: 0
   allowedTargetTags:
   - Monster
+--- !u!114 &-7813138356493456425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323954928373851172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cfaf27a6eed2d4b9f8c7f6e540398b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4907484004920437550
 PrefabInstance:
   m_ObjectHideFlags: 0

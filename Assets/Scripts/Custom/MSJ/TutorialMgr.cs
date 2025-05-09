@@ -54,7 +54,7 @@ namespace SkyDragonHunter
         private void Start()
         {
             TutorialEnd = TutorialEndValue.GetTutorialEnd();
-            m_IsStartTutorial = TutorialEndValue.GetIsStartTutorial();
+            //m_IsStartTutorial = TutorialEndValue.GetIsStartTutorial();
 
            
 

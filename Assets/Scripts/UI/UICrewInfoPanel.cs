@@ -189,6 +189,7 @@ namespace SkyDragonHunter.UI {
                         SetPreview(provider.Preview);
                         SetMountedState(provider.IsEquip);
                         SetSkillInfo(provider.Skill);
+                        SetLevel(tempCrewLevelData.Level);
                         
                         m_cachedCrewID = crewID;
 
