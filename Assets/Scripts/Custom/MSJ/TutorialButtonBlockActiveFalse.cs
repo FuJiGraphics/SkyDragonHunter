@@ -113,6 +113,13 @@ namespace SkyDragonHunter
                     Destroy(this.gameObject);
                 }
             }
+            else if (this.gameObject.name == "FacilityLevelUpInfoPanelBlock")
+            {
+                if (tutorialMgr.step > 119)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
             else if (this.gameObject.name == "Dungeon1Block")
             {
                 if (tutorialMgr.step > 126)
