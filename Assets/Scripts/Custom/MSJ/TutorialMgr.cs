@@ -20,6 +20,7 @@ namespace SkyDragonHunter
         [SerializeField] private UiMgr uiMgr;
         [SerializeField] private GameObject tutorialPanel;
         [SerializeField] private GameObject[] tutorialBlocks;
+        [SerializeField] private TutorialController tutorialController;
         [Header("텍스트 위치 앵커 오브젝트")]
         [SerializeField] private GameObject leftObj;     // 왼쪽 정렬용
         [SerializeField] private GameObject midObj;      // 중앙 정렬용
@@ -39,17 +40,24 @@ namespace SkyDragonHunter
         [SerializeField] private SingleHoleMaskController holeMaskCtrl; // 마스크 처리
 
 
+
+
         [SerializeField] private TutorialClickListener listener; // 마스크 처리
         private bool oneGo = false;
 
         public GameObject allButtonsBlockPanel;
-        public bool IsStartTutorial => m_IsStartTutorial;
+        public bool IsStartTutorial { get => m_IsStartTutorial; set => IsStartTutorial = value; }
         public bool TutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
         public int step { get; private set; } = 0;             // 현재 스텝
         private int currentTargetIndex = -1; // 현재 스텝의 버튼 인덱스
 
         private void Start()
         {
+            TutorialEnd = TutorialEndValue.GetTutorialEnd();
+            m_IsStartTutorial = TutorialEndValue.GetIsStartTutorial();
+
+           
+
             if (uiMgr == null)
             {
                 uiMgr = GameMgr.FindObject<UiMgr>("InGameUI");
@@ -70,6 +78,11 @@ namespace SkyDragonHunter
 
         private void Update()
         {
+            if (TutorialEnd)
+            {
+                tutorialController.TutorialObjDestroy();
+            }
+
             if (!m_IsStartTutorial && !oneGo)
             {
                 OffBlocks();
@@ -83,6 +96,9 @@ namespace SkyDragonHunter
                 {
                     Debug.Log("튜토리얼 종료");
                     TutorialEnd = true;
+                    m_IsStartTutorial = false;
+                    TutorialEndValue.SetValueIsStartTutorial(m_IsStartTutorial);
+                    TutorialEndValue.SetValueTutorialEnd(TutorialEnd);
                     return;
                 }
 
@@ -103,11 +119,7 @@ namespace SkyDragonHunter
             {
                 allButtonsBlockPanel.SetActive(true);
             }
-            else
-            {
-                //임시 기본 튜토까지만 작동하게 하는 로직
-                TutorialEnd = true;
-            }
+            
             tutorialPanel.SetActive(false);
             uiMgr.OnInGamePanels();
 
@@ -215,7 +227,7 @@ namespace SkyDragonHunter
             if (!data.IsActive)
             {
                 OffTutorialPanel();
-                
+
                 return;
             }
 
@@ -283,6 +295,21 @@ namespace SkyDragonHunter
                 StepUp();
                 ApplyStep();
             }
+        }
+
+        public void SetTutorialEnd()
+        {
+            if (tutorialBlocks != null)
+            {
+                foreach (GameObject block in tutorialBlocks)
+                {
+                    Destroy(block);
+                }
+            }
+            TutorialEnd = true;
+            m_IsStartTutorial = false;
+            TutorialEndValue.SetValueIsStartTutorial(m_IsStartTutorial);
+            TutorialEndValue.SetValueTutorialEnd(TutorialEnd);
         }
 
         /// <summary>

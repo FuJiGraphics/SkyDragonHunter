@@ -36,6 +36,15 @@ namespace SkyDragonHunter {
         {
             tutorialRewardPanel.SetActive(false);
         }
+
+        public void Init()
+        {
+            if (TutorialEndValue.oneClear)
+            {
+                TutorialObjDestroy();
+            }
+        }
+
         private void Update()
         {
             if (!tutorialMgr.IsStartTutorial)
@@ -176,6 +185,7 @@ namespace SkyDragonHunter {
                 return;
 
             endTutorial = true;
+            tutorialMgr.IsStartTutorial = false;
         }
 
         public void OffTutorialRewardPanel()
@@ -188,6 +198,8 @@ namespace SkyDragonHunter {
 
         public void TutorialObjDestroy()
         {
+            TutorialEndValue.SetTrueOneClear();
+            tutorialMgr.SetTutorialEnd();
             Destroy(tutorialPanel);
             Destroy(tutorialRewardPanel);
             Destroy(tutorialMgr.gameObject);
