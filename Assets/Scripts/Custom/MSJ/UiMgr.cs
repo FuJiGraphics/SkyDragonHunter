@@ -24,7 +24,6 @@ namespace SkyDragonHunter.Test
         public GameObject treasureEquipmentSlot;
         public GameObject treasureFusion;
         public GameObject treasureInfo;
-        public GameObject treasureCodexButton;
         public GameObject fusionDeselectAllButton;
         public GameObject treasureSelectErro;
         public GameObject treasureFusionWarning;
@@ -201,21 +200,6 @@ namespace SkyDragonHunter.Test
             else
             {
                 treasureInfo.SetActive(true);
-            }
-        }
-
-        public void OnOffTreasureCodexButton()
-        {
-            if (treasureCodexButton.activeSelf)
-            {
-                treasureCodexButton.SetActive(false);
-                fusionDeselectAllButton.SetActive(true);
-            }
-            else
-            {
-                treasureCodexButton.SetActive(true);
-                fusionDeselectAllButton.SetActive(false);
-
             }
         }
 
@@ -734,7 +718,6 @@ namespace SkyDragonHunter.Test
             treasureEquipmentSlot.SetActive(true);
             treasureFusion.SetActive(false);
             treasureInfo.SetActive(true);
-            treasureCodexButton.SetActive(true);
             fusionDeselectAllButton.SetActive(false);
             treasureSelectErro.SetActive(false);
             treasureFusionWarning.SetActive(false);

@@ -207,6 +207,14 @@ namespace SkyDragonHunter.UI {
             RemoveDuplicateCrew(m_MountSlots[slot].crewInstance);
         }
 
+        public void UnequipAll()
+        {
+            foreach (var slot in m_MountSlots)
+            {
+                UnequipCrew(slot.crewInstance);
+            }
+        }
+
         public void EquipCrew(UIEquipmentMountSlot targetSlot, GameObject crewInstance)
         {
             if (targetSlot == null || crewInstance == null)
