@@ -57,6 +57,9 @@ namespace SkyDragonHunter.Gameplay {
                 }
                 return m_IsUnlock;
             }
+            // TODO: LJH
+            set => m_IsUnlock = value;
+            // ~TODO
         }
 
         public int MaxLevel { get; set; } = 50;

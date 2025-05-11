@@ -3,13 +3,14 @@ using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
+using System;
 using System.Collections.Generic;
 
 namespace SkyDragonHunter.SaveLoad
 {
     public class SavedItem
     {
-        public ItemData itemData;
+        public ItemType type;
         public BigNum count;
     }
 
@@ -20,19 +21,17 @@ namespace SkyDragonHunter.SaveLoad
         public void InitData()
         {
             items = new List<SavedItem>();
+            var itemTypeCount = Enum.GetValues(typeof(ItemType)).Length;
 
-            var itemTable = DataTableMgr.ItemTable;
-            var itemTableDatas = itemTable.Values;
-
-            foreach (var itemTableData in itemTableDatas)
+            for(int i = 1; i < itemTypeCount; ++i) // including None
             {
-                var savedItem = new SavedItem();
-                savedItem.itemData = itemTableData;
-                savedItem.count = 0;
-                items.Add(savedItem);
+                var newSavedItem = new SavedItem();
+                newSavedItem.type = (ItemType)i;
+                newSavedItem.count = 0;
+                items.Add(newSavedItem);
             }
 
-            RegisterEvent();
+            //RegisterEvent();
         }
 
         public void RegisterEvent()
@@ -43,27 +42,14 @@ namespace SkyDragonHunter.SaveLoad
         public void OnItemCountChangedEvent(ItemType itemType)
         {
             SaveLoadMgr.UpdateSaveData(SaveDataTypes.Item);
-            SaveLoadMgr.SaveGameData();
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
-            foreach( var item in items)
+            foreach(var item in items)
             {
-                switch (item.itemData.Type)
-                {
-                    case ItemType.None:
-                        break;
-                    case ItemType.Coin:
-                        item.count = AccountMgr.Coin;
-                        break;
-                    case ItemType.Diamond:
-                        item.count = AccountMgr.Diamond;
-                        break;
-                    case ItemType.WaveDungeonTicket:
-                        item.count = AccountMgr.WaveDungeonTicket;
-                        break;
-                }
+                var newCount = AccountMgr.ItemCount(item.type);
+                item.count = newCount;
             }
         }
 
@@ -71,20 +57,7 @@ namespace SkyDragonHunter.SaveLoad
         {
             foreach (var item in items)
             {
-                switch (item.itemData.Type)
-                {
-                    case ItemType.None:
-                        break;
-                    case ItemType.Coin:
-                        AccountMgr.Coin = item.count;
-                        break;
-                    case ItemType.Diamond:
-                        AccountMgr.Diamond = item.count;
-                        break;
-                    case ItemType.WaveDungeonTicket:
-                        AccountMgr.WaveDungeonTicket = item.count;
-                        break;
-                }
+                AccountMgr.SetItemCount(item.type, item.count);
             }
         }
     } // Scope by class SavedItemData

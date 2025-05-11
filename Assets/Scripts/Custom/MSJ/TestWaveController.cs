@@ -52,8 +52,18 @@ namespace SkyDragonHunter
         public TutorialController tutorialController;
         public Slider bossSlider;
         public Slider bossTimerSlider;
-        public int CurrentTriedZonelLevel => currentZonelLevel;
-        public int CurrentTriedMissionLevel => currentMissionLevel;
+        // TODO: LJH
+        public int CurrentTriedZonelLevel
+        {
+            get => currentZonelLevel;
+            set => currentZonelLevel = value;
+        }
+        public int CurrentTriedMissionLevel
+        {
+            get => currentMissionLevel;
+            set => currentMissionLevel = value;
+        }
+        // ~TODO
         private float oldAllSpeed;
         private float currentWaveTime;
         private float currentSpawnTime;
@@ -85,8 +95,18 @@ namespace SkyDragonHunter
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
         public bool isBossSpawn = false;
-        public int LastTriedZoneLevel => lastTriedZonelLevel;
-        public int LastTriedMissionLevel => lastTriedMissionLevel;
+        // TODO: LJH
+        public int LastTriedZoneLevel
+        {
+            get => lastTriedZonelLevel;
+            set => lastTriedZonelLevel = value;
+        }
+        public int LastTriedMissionLevel
+        {
+            get => lastTriedMissionLevel;
+            set => lastTriedMissionLevel = value;
+        }
+        // ~TODO
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System.Collections.Generic;
@@ -14,12 +15,18 @@ namespace SkyDragonHunter.Temp {
 
         private CrewTableData crewData;
         private int level;
+        private bool isUnlocked;
+        private int rank;
+        private int count;
         private BigNum accumulatedExp;
 
         private UnityEvent leveledUpEvent;
 
         public CrewTableData CrewData => crewData;
         public int Level => level;
+        public bool IsUnlocked => isUnlocked;
+        public int Rank => rank;
+        public int Count => count;
         public BigNum AccumulatedExp => accumulatedExp;
         public BigNum RequiredExp
         {
@@ -61,7 +68,7 @@ namespace SkyDragonHunter.Temp {
                 stat.ResetAll();
                 return stat;
             }
-        }
+        }        
 
         // Currently not Used
         private CommonStats HoldingEffectStat
@@ -73,6 +80,14 @@ namespace SkyDragonHunter.Temp {
             }
         }
         // ~Not Used
+
+        public void ApplySavedCrewData(SavedCrew savedCrew)
+        {
+            level = savedCrew.level;
+            isUnlocked = savedCrew.isUnlocked;
+            rank = savedCrew.rank;
+            count = savedCrew.count;            
+        }
 
         public void RegisterLeveledUpEvent(UnityAction action)
         {
@@ -155,6 +170,17 @@ namespace SkyDragonHunter.Temp {
             }
             crewData = null;
             return false;
+        }
+
+        public static bool ApplyLoadedCrewData(SavedCrew savedCrew)
+        {
+            if(!crewDataDict.ContainsKey(savedCrew.crewData.ID))
+            {
+                Debug.LogError($"No temp crew data found with key [{savedCrew.crewData.ID}]");
+                return false;
+            }
+            crewDataDict[savedCrew.crewData.ID].ApplySavedCrewData(savedCrew);
+            return true;
         }
     }
 } // namespace Root

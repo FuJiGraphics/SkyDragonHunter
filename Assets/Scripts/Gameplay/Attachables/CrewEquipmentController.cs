@@ -84,7 +84,9 @@ namespace SkyDragonHunter {
                     btComp.AllocateMountSlot(m_MountableSlots[slot], slot);
 
                     // 스킬 슬롯에 등록
-                    m_TargetSkillSlots.Equip(slot, btComp.skillExecutor);
+                    // TODO:LJH disabled skill resigter
+                    //m_TargetSkillSlots.Equip(slot, btComp.skillExecutor);
+                    // ~TODO
                 }
                 else
                 {

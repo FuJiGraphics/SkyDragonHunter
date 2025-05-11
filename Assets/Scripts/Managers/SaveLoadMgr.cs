@@ -35,7 +35,7 @@ namespace SkyDragonHunter.Managers
             "SDH_SavedGameData.json",
             "SDH_SavedLocalSettingData.json",
         };
-
+                
         private static JsonSerializerSettings jsonSettings;
 
         // Properties
@@ -72,6 +72,8 @@ namespace SkyDragonHunter.Managers
             LocalSettingData = new LocalSettingSaveDataVC();
         }
         // Public Methods
+
+        public static void ResetLoaded() => loadedOnce = false;
         public static void UpdateSaveData()
             => UpdateSaveData((SaveDataTypes[])Enum.GetValues(typeof(SaveDataTypes)));
 
@@ -113,7 +115,7 @@ namespace SkyDragonHunter.Managers
                 GameData.ApplySavedData(saveDataType);
                 // Debug.Log($"Saved Data type [{saveDataType}] applied to game successfully");
             }
-        }
+        }       
 
         public static bool SaveGameData()
         {
@@ -134,7 +136,7 @@ namespace SkyDragonHunter.Managers
             var json = JsonConvert.SerializeObject(GameData, jsonSettings);
             File.WriteAllText(path, json);
 
-            Debug.Log($"Game Data Saved");
+            Debug.LogError($"Game Data Saved");
 
             return true;
         }
@@ -144,11 +146,12 @@ namespace SkyDragonHunter.Managers
             if(loadedOnce)
             {
                 Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
+                return false;
             }
             var path = Path.Combine(SaveDirectory , SaveFileName[0]);
             if(!File.Exists(path))
             {
-                Debug.LogWarning($"Load Failed : No Game Data");
+                Debug.LogError($"Load Failed : No Game Data");
                 return false;
             }
 
@@ -162,6 +165,8 @@ namespace SkyDragonHunter.Managers
             GameData = gameData as GameSaveDataVC;
 
             ApplySavedData();
+
+            Debug.LogWarning($"LoadGameData Completed");
 
             loadedOnce = true;
             return true;
@@ -220,7 +225,10 @@ namespace SkyDragonHunter.Managers
         public static void Init()
         {
             if (initialized)
+            {
+                Debug.Log($"SaveLoadMgr Init failed : initialized once");
                 return;
+            }
 
             if (!LoadGameData())
             {
@@ -232,10 +240,19 @@ namespace SkyDragonHunter.Managers
                 InitializeLocalSettings();
             }
 
+            SceneChangeMgr.beforeSceneUnloaded += CallSaveGameData;
+            Debug.LogWarning($"SaveLoadMgr Init completed");
+
             initialized = true;
         }
 
         // Private Methods
+        public static void CallSaveGameData()
+        {
+            Debug.LogError($"called SaveGameData");
+            SaveGameData();
+        }
+
         private static void InitializeGameData()
         {
             GameData.Initialize();

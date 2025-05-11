@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace SkyDragonHunter.Managers
 {
@@ -88,7 +89,6 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-
         public static BigNum Coin
         {
             get
@@ -163,7 +163,7 @@ namespace SkyDragonHunter.Managers
                 s_HeldItems[ItemType.Food] = value;
                 onItemCountChangedEvents?.Invoke(ItemType.Food);
             }
-        }
+        }        
 
         public static CanonDummy[] HeldCanons => s_SortedCanons.ToArray();
         public static CanonDummy EquipCannonDummy { get; set; } = null;
@@ -485,7 +485,7 @@ namespace SkyDragonHunter.Managers
                         continue;
                     }
 
-                    var repairData = repair.GetData();
+                    var repairData = repair.GetData();                    
                     BigNum newRepHoldHP = new BigNum(repairData.RepHoldHP) + new BigNum(repairData.RepHoldHPup) * repair.Level;
                     BigNum newRepHoldREC = new BigNum(repairData.RepHoldREC) + new BigNum(repairData.RepHoldRECup) * repair.Level;
                     stats.SetMaxHealth(stats.MaxHealth + newRepHoldHP);
@@ -709,6 +709,7 @@ namespace SkyDragonHunter.Managers
 
                 #region 계정 크리스탈 레벨 로드
                 LoadLevel(comp.crystalLevelID);
+                // TODO: LJH LoadLevel TempUserData.s_CrystalLevelID 로 적용시 정상 동작
                 #endregion
 
                 #region 스테이지 초기화 및 웨이브 컨트롤러 UI 적용
@@ -738,7 +739,7 @@ namespace SkyDragonHunter.Managers
                             Debug.LogWarning($"Crew prefab found and set : [{crewBT.name}] Lvl({level})");
                         }
                         else
-                        {            
+                        {
                             // TODO :LJH (Need to handle logics on scene change)
                             Debug.Log($"Crew Not Set To SaveData");
                         }
@@ -765,6 +766,21 @@ namespace SkyDragonHunter.Managers
                 s_HeldCanons.Clear();
                 foreach (var canon in comp.canonDataPrefabs)
                 {
+                    // TODO: LJH
+                    var savedCannon = SaveLoadMgr.GameData.savedCannonData.GetSavedCannon(canon.Grade, canon.Type);
+                    if(savedCannon != null)
+                    {
+                        //canon.ID = savedCannon.id;
+                        canon.Count = savedCannon.count;
+                        canon.Level = savedCannon.level;
+                        canon.IsUnlock = savedCannon.isUnlocked;
+                        canon.IsEquip = savedCannon.isEquipped;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Cannot find saved cannon with keys [{canon.Grade}/{canon.Type}]");
+                    }
+                    // ~TODO
                     RegisterCanon(canon);
                 }
                 #endregion
@@ -774,28 +790,77 @@ namespace SkyDragonHunter.Managers
                 s_HeldRepairs.Clear();
                 foreach (var repair in comp.repairDatas)
                 {
+                    // TODO: LJH
+                    var savedCannon = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repair.Grade, repair.Type);
+                    if (savedCannon != null)
+                    {
+                        //repair.ID = savedCannon.id;
+                        repair.Count = savedCannon.count;
+                        repair.Level = savedCannon.level;
+                        repair.IsUnlock = savedCannon.isUnlocked;
+                        repair.IsEquip = savedCannon.isEquipped;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Cannot find saved cannon with keys [{repair.Grade}/{repair.Type}]");
+                    }
+                    // ~TODO
                     RegisterRepair(repair);
                 }
                 #endregion
 
                 #region 단원 탑승 정보 UI 적용
-                foreach (var crewEquipStorage in comp.airshipEquipSlots)
-                {
-                    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
-                    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-                    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
-                    if (crewEquipStorage.crewPrefab == null)
-                        continue;
+                // TODO: LJH
+                //foreach (var crewEquipStorage in comp.airshipEquipSlots)
+                //{
+                //    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
+                //    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
+                //    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
+                //    if (crewEquipStorage.crewPrefab == null)
+                //        continue;
+                //
+                //    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
+                //    {
+                //        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
+                //        {
+                //            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
+                //            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
+                //        }
+                //    }
+                //}
 
-                    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
+                var equipController = GameMgr.FindObject<CrewEquipmentController>("Airship");
+                var fortressPanelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
+                var assignUnitToFortressPanel = fortressPanelGo?.GetComponent<UIAssignUnitTofortressPanel>();
+                var mountedCrewIDs = SaveLoadMgr.GameData.savedAirshipData.mountedCrewIDs;
+
+                for (int i = 0; i < mountedCrewIDs.Length; ++i)
+                {
+                    if (equipController == null)
                     {
-                        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
+                        Debug.LogError($"equipController or null");
+                        break;
+                    }
+
+                    if (mountedCrewIDs[i] == 0)
+                    {
+                        continue;
+                    }
+                    foreach (var crew in s_CollectedCrews.Values)
+                    {
+                        if(!crew.TryGetComponent<NewCrewControllerBT>(out var crewBT))
                         {
-                            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
-                            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
+                            Debug.LogError($"Cannot find CrewControllerBT from collected crew [{crew.name}]");
+                            continue;
+                        }
+                        if(crewBT.ID == mountedCrewIDs[i])
+                        {
+                            equipController.EquipSlot(i, crew);
+                            assignUnitToFortressPanel?.EquipCrew(i, crew);
                         }
                     }
                 }
+                // ~TODO
                 #endregion
 
                 #region 계정 정보 UI 적용
