@@ -59,7 +59,7 @@ namespace SkyDragonHunter.Managers
         private static void OnSceneUnloaded(Scene scene)
         {
             if (scene.name != "LoadingScene" && scene.name != "StartScene")
-            {
+            { 
                 SaveLoadMgr.SaveGameData();
                 Debug.Log($"[GameMgr] Load된 Object 정리 중");
                 DataTableMgr.Release();
