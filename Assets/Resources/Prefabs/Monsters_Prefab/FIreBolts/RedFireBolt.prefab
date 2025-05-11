@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8866309441139733375}
   - component: {fileID: 3522428323146404510}
   - component: {fileID: 1435207167320400089}
+  - component: {fileID: -1744104335095814071}
   m_Layer: 0
   m_Name: RedFireBolt
   m_TagString: Untagged
@@ -120,3 +121,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
+--- !u!114 &-1744104335095814071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559156818964296017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}

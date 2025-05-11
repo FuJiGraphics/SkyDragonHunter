@@ -24,6 +24,7 @@ namespace SkyDragonHunter.Gameplay {
         public GameObject Caster { get; set; }
         public GameObject Receiver { get; set; }
         public SkillType SkillType => m_SkillType;
+        public string[] AttackTargetTags => m_AttackTargetSelector.AllowedTargetTags;
 
         // 외부 종속성 필드 (External dependencies field)
         private ISkillLifecycleHandler[] m_Handlers;
@@ -45,7 +46,6 @@ namespace SkyDragonHunter.Gameplay {
 
         private void OnEnable()
         {
-            // TODO: 임시
             Destroy(gameObject, m_Lifetime);
         }
 
@@ -89,6 +89,7 @@ namespace SkyDragonHunter.Gameplay {
 
             OnHitBefore();
             OnHitEnter(collider.gameObject);
+            OnHitEnterEffect(Caster, collider.gameObject);
         }
 
         private void OnTriggerStay2D(Collider2D collider)
@@ -97,6 +98,7 @@ namespace SkyDragonHunter.Gameplay {
                 return;
 
             OnHitStay(collider.gameObject);
+            OnHitStayEffect(Caster, collider.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collider)

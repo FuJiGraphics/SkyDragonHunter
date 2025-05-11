@@ -54,7 +54,7 @@ namespace SkyDragonHunter {
             if (m_IsAttackStart)
                 return;
 
-            if (m_AttackCoroutine == null)
+            if (m_AttackCoroutine == null && defender != null)
             {
                 m_AttackCoroutine = StartCoroutine(CoAttack(defender));
             }

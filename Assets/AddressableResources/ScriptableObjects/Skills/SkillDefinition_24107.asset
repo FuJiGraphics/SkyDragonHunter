@@ -13,17 +13,25 @@ MonoBehaviour:
   m_Name: SkillDefinition_24107
   m_EditorClassIdentifier: 
   ID: 24107
-  skillName: "\uB798\uD53C\uB4DC \uD30C\uC774\uC5B4"
-  skillType: 3
-  skillEffect: "\uB798\uD30C"
+  skillActiveName: "\uB798\uD53C\uB4DC \uD30C\uC774\uC5B4"
+  skillActiveIcon: RapidFireIcon
+  skillActiveDesc: "\uC0AC\uC815\uAC70\uB9AC \uB0B4\uC758 \uC801\uB4E4\uC5D0\uAC8C
+    150% \uB370\uBBF8\uC9C0\uB85C 10\uD68C \uACF5\uACA9\uD569\uB2C8\uB2E4. "
+  skillPassiveName: "\uC120\uC7A5\uC758 \uB9AC\uB354\uC2ED"
+  skillPassiveIcon: CaptainsLeadershipIcon
+  skillPassiveDesc: "\uC774 \uC601\uC6C5\uC774 \uBE44\uACF5\uC815\uC5D0 \uBC30\uCE58\uB418\uC5C8\uC744
+    \uACBD\uC6B0, \uC544\uAD70 \uC601\uC6C5\uB4E4\uC758 \uACF5\uACA9\uB825\uC774
+    200% \uC99D\uAC00\uD569\uB2C8\uB2E4.  "
+  skillType: 2
+  skillEffect: RapidShootEffect
   projectileName: rapidfire
-  projectileSpeed: 2.5
-  explosionEffect: rapidfireboom
+  projectileSpeed: 60
+  explosionEffect: 
   skillArea: 0
   skillMultiplier: 1.5
   skillHitCount: 10
-  skillHitDuration: 0.3
-  buffID: 0
-  buffTarget: 0
+  skillHitDuration: 0.25
+  buffID: 30003
+  buffTarget: 3
   ailmentID: 0
   ailmentDuration: 0

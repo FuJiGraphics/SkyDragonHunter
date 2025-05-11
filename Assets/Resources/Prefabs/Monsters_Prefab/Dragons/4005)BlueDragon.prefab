@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 5083979635067795009}
   - component: {fileID: -2151155994008334504}
   - component: {fileID: 3604173892875270878}
+  - component: {fileID: 5712814218127548702}
   m_Layer: 0
   m_Name: 4005)BlueDragon
   m_TagString: Monster
@@ -277,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
   allowedTargetTags:
   - Crew
   - Player
@@ -380,3 +382,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5712814218127548702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208459174989581692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}

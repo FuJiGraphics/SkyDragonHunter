@@ -92,23 +92,10 @@ namespace SkyDragonHunter.Gameplay {
             //}
 
             if (m_Skill == null)
-            {
-                Debug.LogWarning($"{gameObject.name} m_Slot Null");
                 return;
-            }
 
             if (m_EnemySearchProvider == null || m_EnemySearchProvider.Target == null)
-            {
-                if (m_EnemySearchProvider == null)
-                {
-                    Debug.LogWarning($"{gameObject.name} EnemySearchProvider Null");
-                }
-                else
-                {
-                    Debug.LogWarning($"{gameObject.name} EnemySearchProvider Target Null");
-                }
                 return;
-            }
 
             if (SkillType.Affect == SkillType)
             {

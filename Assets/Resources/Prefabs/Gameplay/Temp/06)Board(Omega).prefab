@@ -35,6 +35,7 @@ GameObject:
   - component: {fileID: 7818799083382135439}
   - component: {fileID: -2609527777067038516}
   - component: {fileID: -7589053900422843477}
+  - component: {fileID: -5282236371479375093}
   m_Layer: 0
   m_Name: 06)Board(Omega)
   m_TagString: Crew
@@ -222,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefabs:
-  - {fileID: 11400000, guid: ee0b8924f41b2824dbf5ddda47dece8d, type: 2}
+  - {fileID: 11400000, guid: b010f3c5dd2a792499ba00a218d67157, type: 2}
 --- !u!114 &4324108379954671538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +364,7 @@ MonoBehaviour:
   floater: {fileID: 0}
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
+  characterStatus: {fileID: 0}
   m_MountSlot: {fileID: 0}
   damageTypeSpellCasted: 0
 --- !u!114 &8488090794993690949
@@ -473,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}
 --- !u!114 &7077002492427325383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,6 +534,26 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   bindRumtime: 1
+--- !u!114 &-5282236371479375093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Skill: {fileID: 6311727942934268204, guid: 34b1fa64a5ae8694fab79cc1dba5726e, type: 3}
+  m_TargetTags:
+  - Monster
+  - Boss
+  m_SkillCooldown: 5
+  m_IsAutoExecute: 1
+  m_Distance: 60
+  m_EnemySearchProvider: {fileID: 0}
 --- !u!1 &4789872148619396876
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: -2013662390142407145}
   - component: {fileID: -648967711382221653}
   - component: {fileID: -2703810279737948067}
+  - component: {fileID: -8962936279596780005}
   m_Layer: 0
   m_Name: AquaLight
   m_TagString: Monster
@@ -301,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
   allowedTargetTags:
   - Crew
   - Player
@@ -365,3 +367,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c5d4ffc50c15c48bc267366db6e579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8962936279596780005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3302563491955113764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}

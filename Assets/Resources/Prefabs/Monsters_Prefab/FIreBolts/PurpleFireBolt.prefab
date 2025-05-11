@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6477709586560836274}
   - component: {fileID: 629226413191592164}
   - component: {fileID: 4256044895856425962}
+  - component: {fileID: -1232957543701755490}
   m_Layer: 0
   m_Name: PurpleFireBolt
   m_TagString: Untagged
@@ -120,3 +121,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
+--- !u!114 &-1232957543701755490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3547801311773341661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}

@@ -158,6 +158,27 @@ namespace SkyDragonHunter.Managers
             return result.ToArray();
         }
 
+        public static GameObject FindFarthestTarget(string tag, Vector2 fromPosition, float maxDistance)
+        {
+            GameObject[] targets = GameObject.FindGameObjectsWithTag(tag);
+            GameObject farthest = null;
+
+
+            float mimDistance = float.MinValue;
+
+            foreach (GameObject target in targets)
+            {
+                float distance = Vector2.Distance(fromPosition, target.transform.position);
+                if (distance > mimDistance && distance <= maxDistance)
+                {
+                    mimDistance = distance;
+                    farthest = target;
+                }
+            }
+
+            return farthest;
+        }
+
         // Private 메서드
         private static void LoadedRegisterObjects()
         {

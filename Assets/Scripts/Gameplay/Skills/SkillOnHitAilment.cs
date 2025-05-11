@@ -8,6 +8,7 @@ namespace SkyDragonHunter.Gameplay {
         , ISkillLifecycleHandler
     {
         // 필드 (Fields)
+        [SerializeField] private bool m_AllowMultiHit = false;
         public AilmentType[] ailments;
 
         private SkillBase m_SkillBase;
@@ -31,7 +32,7 @@ namespace SkyDragonHunter.Gameplay {
 
         public void OnSkillHitEnter(GameObject defender)
         {
-            if (m_IsNotFirstEnter)
+            if (!m_AllowMultiHit && m_IsNotFirstEnter)
                 return;
 
             m_IsNotFirstEnter = true;

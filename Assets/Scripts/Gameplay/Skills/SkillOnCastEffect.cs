@@ -10,11 +10,11 @@ namespace SkyDragonHunter.Gameplay {
         , ISkillEffectLifecycleHandler
     {
         // 필드 (Fields)
+        [SerializeField] private float m_EffectDuration = 1f;
         [SerializeField] private Vector2 m_Position = Vector2.zero;
         [SerializeField] private Vector2 m_Scale = Vector2.one;
 
         private SkillBase m_SkillBase;
-        private List<GameObject> m_CacheEffectInstancies;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -23,18 +23,6 @@ namespace SkyDragonHunter.Gameplay {
         private void Awake()
         {
             m_SkillBase = GetComponent<SkillBase>();
-            m_CacheEffectInstancies = new List<GameObject>();
-        }
-
-        private void OnDisable()
-        {
-            foreach (var effectInstance in m_CacheEffectInstancies)
-            {
-                if (effectInstance != null && effectInstance.activeSelf)
-                {
-                    Destroy(effectInstance);
-                }
-            }
         }
 
         // Public 메서드
@@ -42,6 +30,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             CastEffectToCaster(caster);
             CastEffectToAllCrews();
+            CastEffectToGlobal();
         }
 
         public void OnHitEnterEffect(GameObject caster, GameObject receiver) { }
@@ -56,11 +45,7 @@ namespace SkyDragonHunter.Gameplay {
             string effectName = m_SkillBase.SkillData.skillEffect;
             if (!string.IsNullOrEmpty(effectName))
             {
-                float duration = 1f;
-                if (m_SkillBase.SkillType == SkillType.Affect)
-                    duration = m_SkillBase.SkillData.BuffMaxDuration;
-                var effectInstance = EffectMgr.Play(effectName, caster, m_Position, m_Scale, duration);
-                m_CacheEffectInstancies.Add(effectInstance);
+                var effectInstance = EffectMgr.Play(effectName, caster, m_Position, m_Scale, m_EffectDuration);
             }
         }
 
@@ -79,12 +64,20 @@ namespace SkyDragonHunter.Gameplay {
                 string effectName = m_SkillBase.SkillData.skillEffect;
                 if (!string.IsNullOrEmpty(effectName))
                 {
-                    float duration = 1f;
-                    if (m_SkillBase.SkillType == SkillType.Affect)
-                        duration = m_SkillBase.SkillData.BuffMaxDuration;
-                    var effectInstance = EffectMgr.Play(effectName, crew, m_Position, m_Scale, duration);
-                    m_CacheEffectInstancies.Add(effectInstance);
+                    var effectInstance = EffectMgr.Play(effectName, crew, m_Position, m_Scale, m_EffectDuration);
                 }
+            }
+        }
+
+        private void CastEffectToGlobal()
+        {
+            if (m_SkillBase.SkillData.buffTarget != Scriptables.BuffTarget.None)
+                return;
+
+            string effectName = m_SkillBase.SkillData.skillEffect;
+            if (!string.IsNullOrEmpty(effectName))
+            {
+                var effectInstance = EffectMgr.Play(effectName, m_Position, m_Scale, m_EffectDuration);
             }
         }
 

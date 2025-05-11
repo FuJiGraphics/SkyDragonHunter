@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3174646403768279741}
   - component: {fileID: 3437878843259714209}
   - component: {fileID: 4171948070488449185}
+  - component: {fileID: -4643025716054731063}
   m_Layer: 0
   m_Name: GoldenFireBolt
   m_TagString: Untagged
@@ -120,3 +121,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
+--- !u!114 &-4643025716054731063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660683758853029236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}

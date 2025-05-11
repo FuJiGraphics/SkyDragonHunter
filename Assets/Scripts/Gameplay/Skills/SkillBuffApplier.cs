@@ -30,7 +30,10 @@ namespace SkyDragonHunter.Gameplay {
         public void OnSkillEnd(GameObject caster) { }
         public void OnSkillHitAfter(GameObject caster) { }
         public void OnSkillHitBefore(GameObject caster) { }
-        public void OnSkillHitEnter(GameObject defender) { }
+        public void OnSkillHitEnter(GameObject defender) 
+        {
+            CastToReceiver(defender);
+        }
         public void OnSkillHitExit(GameObject defender) { }
         public void OnSkillHitStay(GameObject defender) { }
 
@@ -85,6 +88,24 @@ namespace SkyDragonHunter.Gameplay {
                     Debug.LogError($"[CastToAllCrews]: 버프 시전에 실패하였습니다. Target: {crew}");
                     Debug.LogError("[CastToAllCrews]: BuffExecutor 컴포넌트를 찾을 수 없습니다.");
                 }
+            }
+        }
+
+        private void CastToReceiver(GameObject receiver)
+        {
+            if (m_SkillBase.SkillData.buffTarget != Scriptables.BuffTarget.Receiver)
+                return;
+
+            if (receiver.TryGetComponent<BuffExecutor>(out var executor))
+            {
+                foreach (var buff in m_SkillBase.SkillData.BuffData)
+                {
+                    executor.Execute(buff);
+                }
+            }
+            else
+            {
+                Debug.LogError("[CastToCaster]: BuffExecutor 컴포넌트를 찾을 수 없습니다.");
             }
         }
 

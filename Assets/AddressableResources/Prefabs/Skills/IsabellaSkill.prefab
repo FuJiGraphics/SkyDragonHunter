@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6578105375514876457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4727898564578860775}
+  - component: {fileID: 6985938020321517624}
+  - component: {fileID: 7775119900483098535}
+  - component: {fileID: 1304588759596589003}
+  - component: {fileID: 9049116258773655322}
+  - component: {fileID: -8411053203643444799}
+  m_Layer: 0
+  m_Name: IsabellaSkill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4727898564578860775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6985938020321517624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
+  allowedTargetTags:
+  - Boss
+  - Monster
+--- !u!114 &7775119900483098535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62eb8329641698a46a83faad2f1d1ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SkillType: 0
+  m_SkillData: {fileID: 11400000, guid: 7d4fb14b53d6fe543b5eb0f741016575, type: 2}
+  m_Lifetime: 5
+--- !u!114 &1304588759596589003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43daa31de7a3e4342af4373b92a87285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShootCount: 10
+  m_ShootSkillPrefab: {fileID: 3279718600742820280, guid: 77ebc20e4778c73448dc6d1ee72f605d, type: 3}
+  m_FirePositionOffset: {x: 2, y: 0}
+  m_TargetTag: Monster
+  m_Distance: 50
+  m_ShootEffectName: IsabellaSkillShootEffect
+  m_ShootEffectPositionOffset: {x: 0, y: 0}
+  m_ShootEffectScaleOffset: {x: 1, y: 1}
+  m_ShootEffectDuration: 1
+--- !u!114 &9049116258773655322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Skill: {fileID: 0}
+  m_TargetTags: []
+  m_SkillCooldown: 0
+  m_IsAutoExecute: 0
+  m_Distance: 0
+  m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &-8411053203643444799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578105375514876457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d346b37d5cb9994489ac7e825f708259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

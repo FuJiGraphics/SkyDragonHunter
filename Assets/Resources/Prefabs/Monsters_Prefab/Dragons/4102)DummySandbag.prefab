@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 1663350914692615785}
   - component: {fileID: -1657029501723380685}
   - component: {fileID: 3908696824059641132}
+  - component: {fileID: 6328773287872825225}
   m_Layer: 0
   m_Name: 4102)DummySandbag
   m_TagString: Monster
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsSelfTargeting: 0
   allowedTargetTags:
   - Crew
   - Player
@@ -314,3 +316,18 @@ MonoBehaviour:
   attackInterval: 0
   status: {fileID: 0}
   inventory: {fileID: 0}
+--- !u!114 &6328773287872825225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899349636707251207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16fe849b580db741a5351e615363d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BuffEffectAnchor: {fileID: 0}
+  m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}
