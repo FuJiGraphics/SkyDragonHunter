@@ -194,6 +194,8 @@ namespace SkyDragonHunter.Gameplay
             set => m_CommonStats.SetSkillEffectMultiplier(value);
         }
 
+        public float AttackSpeedOffset { get; set; } = 0f;
+
         public bool IsFullHealth => m_CommonStats.IsFullHealth;
         public bool IsFullShield => m_CommonStats.IsFullShield;
         public bool IsFullDamage => m_CommonStats.IsFullDamage;

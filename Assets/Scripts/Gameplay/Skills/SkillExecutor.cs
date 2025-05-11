@@ -23,21 +23,17 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private bool m_IsAutoExecute;
         [SerializeField] private float m_Distance;
 
-        [SerializeField] private float m_EndTime;
 
         private NewCrewControllerBT m_CurrentBT;
         private UISkillButtons m_SkillButtons;
+        private CharacterStatus m_Status;
+        private float m_EndTime;
+        private float m_CooldownTimer = 0f;
+        private float m_CooldownRec = 1f;
 
         // 속성 (Properties)
-        public float CooldownProgress
-        {
-            get
-            {
-                if (Time.time >= m_EndTime)
-                    return 1f;
-                return 1f - Mathf.Clamp01((m_EndTime - Time.time) / m_SkillCooldown);
-            }
-        }
+        public float CooldownProgress => Mathf.Clamp01(m_CooldownTimer / m_SkillCooldown);
+        public bool IsCooldownComplete => m_CooldownTimer >= m_SkillCooldown;
 
         public bool IsAutoExecute
         {
@@ -50,8 +46,6 @@ namespace SkyDragonHunter.Gameplay {
                 m_IsAutoExecute = value;
             }
         }
-
-        public bool IsCooldownComplete => Time.time >= m_EndTime;
 
         public SkillDefinition SkillData => m_Skill.SkillData;
         public SkillType SkillType => m_Skill != null ? m_Skill.SkillType : SkillType.Undefined;
@@ -75,6 +69,9 @@ namespace SkyDragonHunter.Gameplay {
 
         private void Update()
         {
+            if (m_CooldownTimer < m_SkillCooldown)
+                m_CooldownTimer += Time.deltaTime * m_CooldownRec;
+
             if (IsAutoExecute)
             {
                 Execute();
@@ -182,11 +179,22 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+        public void AdjustCooldownDecreaseStatus(float weight)
+        {
+            m_CooldownRec = weight;
+        }
+
+        public void RollbackCooldownDecreaseStatus()
+        {
+            m_CooldownRec = 1f;
+        }
+
         // Private 메서드
         private void Init()
         {
             m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
             m_SkillAnchor = GetComponent<SkillAnchorProvider>();
+            m_Status = GetComponent<CharacterStatus>();
             ResetEndTime();
 
             if (TryGetComponent<NewCrewControllerBT>(out var bt))
@@ -197,7 +205,7 @@ namespace SkyDragonHunter.Gameplay {
 
         private void ResetEndTime()
         {
-            m_EndTime = Time.time + m_SkillCooldown;
+            m_CooldownTimer = 0f;
         }
 
         // Others

@@ -12,6 +12,25 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Scriptables {
 
+    public enum SkillCastType
+    {
+        MeleeSingle,
+        MeleeMulti,
+        RangedSingle,
+        RangedMulti,
+        CastingSingle,
+        CastingMulti,
+        Global,
+    }
+
+    public enum BuffTarget
+    {
+        None,
+        Receiver,
+        Caster,
+        All,
+    }
+
     [CreateAssetMenu(fileName = "SkillDefinition.asset", menuName = "Skills/SkillDefinition")]
     public class SkillDefinition : ScriptableObject
     {
@@ -23,7 +42,7 @@ namespace SkyDragonHunter.Scriptables {
         public string skillPassiveName;     // 패시브 스킬의 이름
         public string skillPassiveIcon;     // 패시브 아이콘 리소스 이름
         public string skillPassiveDesc;     // 패시브 스킬 설명
-        public int skillType;               // 스킬의 타입 0 : 근거리(단일), 1 : 근거리(범위), 2 : 원거리(단일), 3 : 원거리(범위), 4 : 투사체 없는 원거리(단일), 5 : 투사체 없는 원거리(범위) 6 : 글로벌
+        public SkillCastType skillType;     // 스킬의 타입 0 : 근거리(단일), 1 : 근거리(범위), 2 : 원거리(단일), 3 : 원거리(범위), 4 : 투사체 없는 원거리(단일), 5 : 투사체 없는 원거리(범위) 6 : 글로벌
         public string skillEffect;          // 스킬 이펙트 리소스의 이름
         public string projectileName;       // 투사체 리소스 이름
         public float projectileSpeed;       // 투사체 속도
@@ -32,8 +51,8 @@ namespace SkyDragonHunter.Scriptables {
         public float skillMultiplier;       // 스킬이 적용받는 공격력의 비율
         public int skillHitCount;           // 스킬이 적용되었을 때 타격 횟수
         public float skillHitDuration;      // 스킬이 적용되는 간격의 시간
-        public string buffID;                // 효과 ID
-        public int buffTarget;              // 효과 적용 대상 (0: 효과 없음, 1: 스킬 적용 대상, 2: 시전자, 3:아군 전체)
+        public string buffID;               // 효과 ID
+        public BuffTarget buffTarget;       // 효과 적용 대상 (0: 효과 없음, 1: 스킬 적용 대상, 2: 시전자, 3:아군 전체)
         public int ailmentID;               // 상태이상의 ID
         public float ailmentDuration;       // 상태이상의 지속 시간
 

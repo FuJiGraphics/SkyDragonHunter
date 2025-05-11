@@ -34,6 +34,7 @@ GameObject:
   - component: {fileID: -6353295080118900282}
   - component: {fileID: -4161506176200955871}
   - component: {fileID: 8900286737363393027}
+  - component: {fileID: -754908602410789160}
   m_Layer: 0
   m_Name: 05)Board(Isabella)
   m_TagString: Crew
@@ -513,6 +514,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsSelfTargeting: 0
   allowedTargetTags: []
+--- !u!114 &-754908602410789160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7afd4a88219c43a19d2dcd0be9c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: Crew
+  onInitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  bindRumtime: 1
 --- !u!1 &4113192354906917118
 GameObject:
   m_ObjectHideFlags: 0

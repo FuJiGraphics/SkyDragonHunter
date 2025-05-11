@@ -15,6 +15,7 @@ namespace SkyDragonHunter.Gameplay {
         // 필드 (Fields)
         [SerializeField] private Transform m_BuffEffectAnchor;
         [SerializeField] private CharacterStatus m_Status;
+        [SerializeField] private SkillExecutor m_SkillExecutor;
 
         private Dictionary<BuffType, Dictionary<BuffStatType, Coroutine>> m_CommandList; 
         private Dictionary<BuffStatType, BigNum> m_OriginalStatCache = new();
@@ -29,6 +30,11 @@ namespace SkyDragonHunter.Gameplay {
             if (m_Status == null)
             {
                 m_Status = GetComponent<CharacterStatus>();
+            }
+
+            if (m_SkillExecutor == null)
+            {
+                m_SkillExecutor = GetComponent<SkillExecutor>();
             }
 
             if (m_CommandList == null)
@@ -81,6 +87,7 @@ namespace SkyDragonHunter.Gameplay {
             {
                 StopCoroutine(m_CommandList[target.BuffApply][target.BuffStatType]);
                 m_CommandList[target.BuffApply].Remove(target.BuffStatType);
+                Revert(target.BuffStatType);
             }
         }
 
@@ -147,7 +154,9 @@ namespace SkyDragonHunter.Gameplay {
             var statType = target.BuffStatType;
             if (!m_OriginalStatCache.ContainsKey(statType))
             {
-                if (target.BuffStatType == BuffStatType.Shield)
+                if (target.BuffStatType == BuffStatType.Shield ||
+                    target.BuffStatType == BuffStatType.CooldownResilient ||
+                    target.BuffStatType == BuffStatType.AttackSpeed)
                 {
                     m_OriginalStatCache[statType] = 0;
                 }
@@ -157,22 +166,37 @@ namespace SkyDragonHunter.Gameplay {
                 }
             }
 
-            BigNum modified;
             if (target.BuffStatType == BuffStatType.Shield)
             {
-                modified = m_OriginalStatCache[BuffStatType.Health] * target.EffectiveMultiplier;
+                SetStatValue(statType, GetStatValue(BuffStatType.Health) * target.EffectiveMultiplier);
+            }
+            else if (target.BuffStatType == BuffStatType.CooldownResilient)
+            {
+                m_SkillExecutor.AdjustCooldownDecreaseStatus(target.EffectiveMultiplier);
+            }
+            else if (target.BuffStatType == BuffStatType.AttackSpeed)
+            {
+                m_Status.AttackSpeedOffset = target.EffectiveMultiplier;
             }
             else
             {
-                modified = m_OriginalStatCache[statType] * target.EffectiveMultiplier;
+                SetStatValue(statType, m_OriginalStatCache[statType] * target.EffectiveMultiplier);
             }
-            SetStatValue(statType, modified);
         }
 
         private void Revert(BuffStatType type)
         {
             var statType = type;
-            if (m_OriginalStatCache.TryGetValue(statType, out BigNum originalValue))
+
+            if (statType == BuffStatType.CooldownResilient)
+            {
+                m_SkillExecutor.RollbackCooldownDecreaseStatus();
+            }
+            else if (statType == BuffStatType.AttackSpeed)
+            {
+                m_Status.AttackSpeedOffset = 0f;
+            }
+            else if (m_OriginalStatCache.TryGetValue(statType, out BigNum originalValue))
             {
                 SetStatValue(statType, originalValue);
                 m_OriginalStatCache.Remove(statType); // 1회성이라면 제거

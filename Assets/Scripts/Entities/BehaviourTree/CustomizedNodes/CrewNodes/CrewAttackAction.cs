@@ -1,5 +1,6 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,10 @@ namespace SkyDragonHunter {
                 return NodeStatus.Failure;
             }
 
-            if (lastAttackTime + m_Context.crewStatus.attackInterval < Time.time)
+            float attackSpeedOffset = m_Context.characterStatus.AttackSpeedOffset <= 0f ? 
+                0f : 1f - m_Context.characterStatus.AttackSpeedOffset;
+            float attackInterval = Math.Max(m_Context.crewStatus.attackInterval + attackSpeedOffset, 0.25f);
+            if (lastAttackTime + attackInterval < Time.time)
             {
                 Attack();
                 return NodeStatus.Success;

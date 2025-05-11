@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: SkillDefinition_24112
   m_EditorClassIdentifier: 
   ID: 24112
-  skillName: Forte!
+  skillActiveName: Forte!
+  skillActiveIcon: Forte
+  skillActiveDesc: "\uC9C0\uC18D\uC2DC\uAC04\uB3D9\uC548 \uC804\uCCB4 \uC544\uAD70\uC758
+    \uACF5\uACA9\uB825\uC744 200% \uC0C1\uC2B9\uC2DC\uD0B5\uB2C8\uB2E4."
+  skillPassiveName: Vivace!
+  skillPassiveIcon: Vivace
+  skillPassiveDesc: "\uBC84\uD504\uAC00 \uC9C0\uC18D\uB418\uB294 \uB3D9\uC548 \uC544\uAD70\uC758
+    \uACF5\uACA9\uC18D\uB3C4\uC640 \uCFE8\uD0C0\uC784 \uD68C\uBCF5 \uC18D\uB3C4\uAC00
+    50% \uC99D\uAC00\uD569\uB2C8\uB2E4. "
   skillType: 6
-  skillEffect: "\uBF40\uB974\uD14C"
+  skillEffect: IrisSkillEffect
   projectileName: 
   projectileSpeed: 0
   explosionEffect: 
@@ -23,7 +31,7 @@ MonoBehaviour:
   skillMultiplier: 0
   skillHitCount: 0
   skillHitDuration: 0
-  buffID: 30003
+  buffID: 41001/41002/41003
   buffTarget: 3
   ailmentID: 0
   ailmentDuration: 0

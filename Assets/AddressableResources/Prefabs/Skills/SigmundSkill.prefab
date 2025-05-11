@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7784278293458623532
+--- !u!1 &2824575515542290585
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 345442210427486456}
-  - component: {fileID: 7267429756901944215}
-  - component: {fileID: 6675759261718607809}
-  - component: {fileID: 8386560114595771445}
-  - component: {fileID: 8168433790918559316}
+  - component: {fileID: 8519961465262459148}
+  - component: {fileID: 7835546147544795250}
+  - component: {fileID: 8711637387776583221}
+  - component: {fileID: 4704183117496211676}
+  - component: {fileID: 5463581977442587485}
   m_Layer: 0
   m_Name: SigmundSkill
   m_TagString: Untagged
@@ -20,28 +20,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &345442210427486456
+--- !u!4 &8519961465262459148
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7784278293458623532}
+  m_GameObject: {fileID: 2824575515542290585}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1801.9745, y: 111.90098, z: 0.018000066}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7267429756901944215
+--- !u!114 &7835546147544795250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7784278293458623532}
+  m_GameObject: {fileID: 2824575515542290585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8734897ebb3e0e468d4dc4917c4ba5c, type: 3}
@@ -49,13 +49,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsSelfTargeting: 1
   allowedTargetTags: []
---- !u!114 &6675759261718607809
+--- !u!114 &8711637387776583221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7784278293458623532}
+  m_GameObject: {fileID: 2824575515542290585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62eb8329641698a46a83faad2f1d1ebc, type: 3}
@@ -63,26 +63,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SkillType: 1
   m_SkillData: {fileID: 11400000, guid: 265e87e25298776488893a12e0ea0dd9, type: 2}
-  m_Lifetime: 5
---- !u!114 &8386560114595771445
+  m_Lifetime: 15
+--- !u!114 &4704183117496211676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7784278293458623532}
+  m_GameObject: {fileID: 2824575515542290585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d346b37d5cb9994489ac7e825f708259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8168433790918559316
+--- !u!114 &5463581977442587485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7784278293458623532}
+  m_GameObject: {fileID: 2824575515542290585}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 239ce6fa7eaaede47afa7e0da201abc5, type: 3}

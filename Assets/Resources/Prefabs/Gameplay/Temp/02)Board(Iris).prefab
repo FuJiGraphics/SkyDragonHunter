@@ -34,6 +34,8 @@ GameObject:
   - component: {fileID: 968367522054429434}
   - component: {fileID: -2620916162664554196}
   - component: {fileID: 6185708460825326462}
+  - component: {fileID: 8704439894108480857}
+  - component: {fileID: 5071079570537247195}
   m_Layer: 0
   m_Name: 02)Board(Iris)
   m_TagString: Crew
@@ -362,6 +364,7 @@ MonoBehaviour:
   floater: {fileID: 0}
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
+  characterStatus: {fileID: 0}
   m_MountSlot: {fileID: 0}
   damageTypeSpellCasted: 0
 --- !u!114 &8488090794993690949
@@ -472,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}
 --- !u!114 &968367522054429434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,6 +517,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsSelfTargeting: 0
   allowedTargetTags: []
+--- !u!114 &8704439894108480857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Skill: {fileID: 6675759261718607809, guid: b229ffb1444e80945b97b9abc8bf9357, type: 3}
+  m_TargetTags: []
+  m_SkillCooldown: 20
+  m_IsAutoExecute: 1
+  m_Distance: 15
+  m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &5071079570537247195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7afd4a88219c43a19d2dcd0be9c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: Crew
+  onInitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  bindRumtime: 1
 --- !u!1 &4740260921299608317
 GameObject:
   m_ObjectHideFlags: 0

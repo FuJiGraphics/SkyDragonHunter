@@ -70,7 +70,7 @@ namespace SkyDragonHunter.Managers
             GameObject effect = GameObject.Instantiate(effectGo);
 
             effect.transform.SetParent(target.transform);
-            effect.transform.localPosition = new Vector3(offset.x, offset.y, -1f);
+            effect.transform.localPosition = new Vector3(offset.x, offset.y, 0f);
             effect.transform.localScale = effect.transform.localScale * scale;
 
             GameObject.Destroy(effect, duration);

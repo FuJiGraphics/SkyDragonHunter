@@ -49,6 +49,7 @@ namespace SkyDragonHunter.Entities
         public FloatingEffect floater;
         public CrewAnimationController animController;
         public SkillExecutor skillExecutor;
+        public CharacterStatus characterStatus;
 
         // TODO: ChangeName
         public MountableSlot m_MountSlot;
@@ -256,6 +257,7 @@ namespace SkyDragonHunter.Entities
             floater.enabled = false;
             animController = GetComponent<CrewAnimationController>();
             skillExecutor = GetComponent<SkillExecutor>();
+            characterStatus = GetComponent<CharacterStatus>();
             SetAggroBox();
             InitBehaviourTree();
 
