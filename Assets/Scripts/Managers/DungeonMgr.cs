@@ -48,7 +48,7 @@ namespace SkyDragonHunter.Managers
         {
             s_DungeonType = dungeonType;
             s_StageIndex = stageIndex;
-            SceneManager.LoadScene((int)SceneIds.DungeonScene);
+            SceneChangeMgr.LoadScene((int)SceneIds.DungeonScene);
         }
 
         public static bool TryGetStageData(out DungeonType dungeonType, out int stageIndex)
@@ -70,6 +70,11 @@ namespace SkyDragonHunter.Managers
         public static int GetClearedStage(DungeonType dungeonType)
         {
             return s_ClearedStageIndex[(int)dungeonType];
+        }
+
+        public static void SetClearedStage(DungeonType dungeonType, int clearedStage)
+        {
+            s_ClearedStageIndex[(int)dungeonType] = clearedStage;
         }
 
         public static void RegisterCrew(int index, int id)

@@ -29,11 +29,11 @@ namespace SkyDragonHunter.UI {
         // Unity Methods
         private void Start()
         {
-            Init();
+            Initiate();
         }
 
         // Private Methods
-        private void Init()
+        private void Initiate()
         {
             AddListeners();
             OnClickDungoenType(0);

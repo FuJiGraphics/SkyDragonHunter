@@ -1,16 +1,9 @@
-using JetBrains.Annotations;
 using SkyDragonHunter.Entities;
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
 using SkyDragonHunter.UI;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SkyDragonHunter.Gameplay {
 

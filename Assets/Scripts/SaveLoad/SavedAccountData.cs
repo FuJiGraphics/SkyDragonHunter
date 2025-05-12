@@ -42,16 +42,16 @@ namespace SkyDragonHunter.SaveLoad
             critDmgLevel = 0;
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
-            userNickName = TempUserData.s_Nickname;
-            crystalLevel = TempUserData.s_CrystalLevelID;
+            userNickName = AccountMgr.Nickname;
+            crystalLevel = AccountMgr.Crystal.CurrentLevel;
             lastOnlineTime = DateTime.UtcNow;
         }
 
         public void ApplySavedData()
         {
-            TempUserData.s_Nickname = userNickName;
+            AccountMgr.Nickname = userNickName;
             TempUserData.s_CrystalLevelID = crystalLevel;            
         }
 

@@ -50,9 +50,9 @@ namespace SkyDragonHunter.Managers
                 AccountMgr.Init();
                 GameMgr.LoadedRegisterObjects();
                 AccountMgr.LateInit();
-                AccountMgr.LoadUserData(scene.name);
                 SaveLoadMgr.Init();
                 SaveLoadMgr.LoadGameData();
+                AccountMgr.LoadUserData(scene.name);
             }
         }
 
@@ -60,7 +60,7 @@ namespace SkyDragonHunter.Managers
         {
             if (scene.name != "LoadingScene" && scene.name != "StartScene")
             { 
-                SaveLoadMgr.SaveGameData();
+                //SaveLoadMgr.SaveGameData();
                 Debug.Log($"[GameMgr] Load된 Object 정리 중");
                 DataTableMgr.Release();
                 AccountMgr.Release();

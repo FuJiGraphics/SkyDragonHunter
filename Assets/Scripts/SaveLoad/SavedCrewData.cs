@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Temp;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,8 +18,6 @@ namespace SkyDragonHunter.SaveLoad
         public BigNum accumulatedExp;
         public int rank; // 별 개수
         public int count; // 승급 위한 보유 개수
-
-        public int killCount;
     }
 
     public class SavedCrewData
@@ -69,34 +68,42 @@ namespace SkyDragonHunter.SaveLoad
                 savedCrew.rank = 0;
                 savedCrew.count = 0;
 
-                savedCrew.killCount = 0;
+                bool contains = false;
+                foreach(var crew in crews)
+                {
+                    if (crew.crewData.ID == crewData.ID)
+                        contains = true;
+                }
 
-                crews.Add(savedCrew);
+                if (!contains)
+                    crews.Add(savedCrew);
+                else
+                    Debug.LogError($"Trying to add duplicated crew ID [{crewData.ID}]");
             }
-
-            //for (int i = 0; i < crewTable.Count; ++i)
-            //{
-            //    var savedCrew = new SavedCrew();
-            //    savedCrew.isUnlocked = false;
-            //    savedCrew.level = 1;
-            //    savedCrew.accumulatedExp = 0;
-            //    savedCrew.rank = 0;
-            //    savedCrew.count = 0;
-            //
-            //    savedCrew.killCount = 0;
-            //
-            //    crews.Add(savedCrew);
-            //}            
-
         }
 
-        public void UpdateData()
+        public void UpdateSavedData()
         {
-
+            foreach(var crew in crews)
+            {
+                if(!TempCrewLevelExpContainer.TryGetTempCrewData(crew.crewData.ID, out var tempCrewData))
+                {
+                    Debug.LogError($"No Temp Crew Data Found with key [{crew.crewData.ID}]");
+                    continue;
+                }
+                crew.level = tempCrewData.Level;
+                crew.isUnlocked = tempCrewData.IsUnlocked;
+                crew.rank = tempCrewData.Rank;
+                crew.count = tempCrewData.Count;
+            }
         }
+
         public void ApplySavedData()
         {
-
+            foreach(var crew in crews)
+            {
+                TempCrewLevelExpContainer.ApplyLoadedCrewData(crew);
+            }
         }
     } // Scope by class SavedCrewData
 

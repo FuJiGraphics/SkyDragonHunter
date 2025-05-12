@@ -1,6 +1,8 @@
+using SkyDragonHunter.Entities;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Scriptables;
+using SkyDragonHunter.Temp;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +33,13 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_UiCrewHealth;
         [SerializeField] private string m_UiCrewDefenseFormat;
         [SerializeField] private TextMeshProUGUI m_UiCrewDefense;
+
+
+        // TODO: LJH - level up related
+        private int m_cachedCrewID;
+        [SerializeField] private string m_UiCrewLevelFormat;
+        [SerializeField] private UiCrewLevelUpPanel m_UiCrewLevelUpPanel;
+        // ~TODO
 
         [Header("Crew Details Status Settings")]
         [SerializeField] private GameObject m_UiCrewDetailsStatus;
@@ -95,6 +104,9 @@ namespace SkyDragonHunter.UI {
         public void SetPreview(Sprite sprite)
             => m_UiCrewPreviewInfo.sprite = sprite;
 
+        public void SetLevel(int level)
+            => m_UiCrewLevel.text = m_UiCrewLevelFormat + level.ToString();
+
         public void SetMountedState(bool isMounted)
         {
             if (isMounted)
@@ -134,6 +146,24 @@ namespace SkyDragonHunter.UI {
 
             if (crew.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
+                // TODO: LJH
+                var crewBT = crew.GetComponent<NewCrewControllerBT>();
+                if (crewBT == null)
+                {
+                    Debug.LogWarning($"[UICrewInfoPanel]: Cannot find crewBT of '{gameObject.name}'");
+                }
+                int crewID = crewBT.ID;
+                if(!TempCrewLevelExpContainer.TryGetTempCrewData(crewID, out var tempCrewLevelData))
+                {
+                    Debug.LogWarning($"[UICrewInfoPanel]: Cannot find crew Level data of '{gameObject.name}', id: {crewID} ");
+                }
+                var crewData = tempCrewLevelData.CrewData;
+                if(crewData == null)
+                {
+                    Debug.LogWarning($"[UICrewInfoPanel]: Cannot find crew data of '{gameObject.name}', id: {crewID} ");
+                }
+                // ~TODO
+
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewListNodePrefab);
                 m_CrewListNodeObjects.Add(new CrewNode{ crewNode = nodeGo, crewInstance = crew });
                 if (nodeGo.TryGetComponent<Image>(out var nodeIcon))
@@ -143,13 +173,29 @@ namespace SkyDragonHunter.UI {
                 if (nodeGo.TryGetComponent<Button>(out var nodeButton))
                 {
                     nodeButton.onClick.AddListener(() => {
-                        SetName(provider.Name);
+                        // TODO: LJH
+                        //SetName(provider.Name);
+                        //SetDamage(provider.Damage);
+                        //SetHealth(provider.Health);
+                        //SetDefense(provider.Defense);
+                        //SetPreview(provider.Preview);
+                        //SetMountedState(provider.IsEquip);
+                        //SetSkillInfo(provider.Skill);
+
+                        SetName(crewData.UnitName);
                         SetDamage(provider.Damage);
                         SetHealth(provider.Health);
                         SetDefense(provider.Defense);
                         SetPreview(provider.Preview);
                         SetMountedState(provider.IsEquip);
                         SetSkillInfo(provider.Skill);
+                        SetLevel(tempCrewLevelData.Level);
+                        
+                        m_cachedCrewID = crewID;
+
+                        if (m_UiCrewLevelUpPanel.gameObject.activeSelf)
+                            m_UiCrewLevelUpPanel.SetPanel(m_cachedCrewID);
+                        // ~TODO
                         m_PrevClickButton = nodeButton;
                     });
                 }
@@ -190,6 +236,19 @@ namespace SkyDragonHunter.UI {
                 }
             }
         }
+
+        // TODO: LJH LevelUP Panel
+        public void OnClickLevelUpButton()
+        {
+            m_UiCrewLevelUpPanel.gameObject.SetActive(true);
+            m_UiCrewLevelUpPanel.SetPanel(m_cachedCrewID);
+        }
+
+        public void OnLevelUp()
+        {
+            m_PrevClickButton.onClick.Invoke();
+        }
+        // ~TODO
         
         // Private 메서드
         // Others

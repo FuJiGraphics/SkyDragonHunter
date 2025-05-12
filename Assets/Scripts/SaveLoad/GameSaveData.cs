@@ -70,28 +70,28 @@ namespace SkyDragonHunter.SaveLoad
             switch (saveDataType)
             {
                 case SaveDataTypes.Account:
-                    savedAccountData.UpdateData();
+                    savedAccountData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Stage:
-                    savedStageData.UpdateData();
+                    savedStageData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Airship:
-                    savedAirshipData.UpdateData();
+                    savedAirshipData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Cannon:
-
+                    savedCannonData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Repairer:
-
+                    savedRepairerData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Item:
-                    savedItemData.UpdateData();
+                    savedItemData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Crew:
-
+                    savedCrewData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Dungeon:
-
+                    savedDungeonData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Artifact:
 
@@ -119,19 +119,19 @@ namespace SkyDragonHunter.SaveLoad
                     savedAirshipData.ApplySavedData();
                     break;
                 case SaveDataTypes.Cannon:
-
+                    savedCannonData.ApplySavedData();
                     break;
                 case SaveDataTypes.Repairer:
-
+                    savedRepairerData.ApplySavedData();
                     break;
                 case SaveDataTypes.Item:
                     savedItemData.ApplySavedData();
                     break;
                 case SaveDataTypes.Crew:
-
+                    savedCrewData.ApplySavedData();
                     break;
                 case SaveDataTypes.Dungeon:
-
+                    savedDungeonData.ApplySavedData();
                     break;
                 case SaveDataTypes.Artifact:
 
