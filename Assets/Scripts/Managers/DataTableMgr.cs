@@ -53,6 +53,9 @@ namespace SkyDragonHunter.Managers
                 case "DungeonScene":
                     InitForDungeonScene();
                     break;
+                case "GameSceneMsj":
+                    InitForGameScene();
+                    break;
             }
         }
 
@@ -111,6 +114,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<ArtifactTable>(DataTableIds.Artifact);
             LoadTable<AdditionalStatTable>(DataTableIds.AdditionalStat);
             LoadTable<BuffTable>(DataTableIds.Buff);
+            LoadTable<TutorialTable>(DataTableIds.Tutorial);
             LoadTable<CrewLevelTable>(DataTableIds.CrewLevel);
         }
 
