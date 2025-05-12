@@ -41,8 +41,6 @@ namespace SkyDragonHunter.Gameplay {
         // Private 메서드
         private void EnterHitEffectToLocalPosition()
         {
-            if (m_SkillBase.SkillData.buffTarget != Scriptables.BuffTarget.Receiver)
-                return;
             string effectName = "";
             if (!string.IsNullOrEmpty(m_EffectName))
                 effectName = m_EffectName;

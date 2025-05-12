@@ -68,7 +68,7 @@ namespace SkyDragonHunter.UI {
     {
         // 필드 (Fields)
         [SerializeField] private SkillButtonSlot[] m_ButtonSlots;
-        [SerializeField] private bool m_IsAllAutoExecute = true;
+        [SerializeField] private bool m_IsAllAutoExecute = false;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)

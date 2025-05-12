@@ -24,10 +24,6 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private float m_Distance;
 
 
-        private NewCrewControllerBT m_CurrentBT;
-        private UISkillButtons m_SkillButtons;
-        private CharacterStatus m_Status;
-        private float m_EndTime;
         private float m_CooldownTimer = 0f;
         private float m_CooldownRec = 1f;
 
@@ -60,11 +56,6 @@ namespace SkyDragonHunter.Gameplay {
         private void Awake()
         {
             Init();
-        }
-
-        private void Start()
-        {
-            m_SkillButtons = GameMgr.FindObject<UISkillButtons>("UISkillButtons");
         }
 
         private void Update()
@@ -181,13 +172,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             m_EnemySearchProvider = GetComponent<EnemySearchProvider>();
             m_SkillAnchor = GetComponent<SkillAnchorProvider>();
-            m_Status = GetComponent<CharacterStatus>();
             ResetEndTime();
-
-            if (TryGetComponent<NewCrewControllerBT>(out var bt))
-            {
-                m_CurrentBT = bt;
-            }
         }
 
         private void ResetEndTime()

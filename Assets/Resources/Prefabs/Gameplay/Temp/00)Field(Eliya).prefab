@@ -455,6 +455,7 @@ MonoBehaviour:
   floater: {fileID: 0}
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
+  characterStatus: {fileID: 0}
   m_MountSlot: {fileID: 0}
   damageTypeSpellCasted: 0
 --- !u!114 &4554868606220688470
@@ -539,9 +540,8 @@ MonoBehaviour:
   m_Skill: {fileID: 8938616387491736917, guid: 7eec4ef8132368941850c7ebe8d88a40, type: 3}
   m_TargetTags: []
   m_SkillCooldown: 10
-  m_IsAutoExecute: 1
+  m_IsAutoExecute: 0
   m_Distance: 20
-  m_EndTime: 0
   m_EnemySearchProvider: {fileID: 0}
 --- !u!114 &5755830658889481583
 MonoBehaviour:
@@ -557,6 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BuffEffectAnchor: {fileID: 5261577503925332203}
   m_Status: {fileID: 8942155294151944295}
+  m_SkillExecutor: {fileID: 0}
 --- !u!114 &2167245600760130281
 MonoBehaviour:
   m_ObjectHideFlags: 0
