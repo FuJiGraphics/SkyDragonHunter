@@ -54,12 +54,26 @@ namespace SkyDragonHunter.SaveLoad
                 Debug.LogError($"Apply Stage Data Failed, WaveController Null");
                 return;
             }
+            AccountMgr.CurrentStageLevel = currentStage;
+            AccountMgr.CurrentStageZoneLevel = currentZone;
             waveController.CurrentTriedMissionLevel = currentStage;
             waveController.CurrentTriedZonelLevel = currentZone;
             GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
             waveController.LastTriedMissionLevel = newTriedMission;
             waveController.LastTriedZoneLevel = newTriedZone;
         }
+
+        public int GetTriedMission()
+        {
+            GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
+            return newTriedMission;
+        }
+
+        public int GetTriedZone()
+        {
+            GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
+            return newTriedZone;
+        }        
 
         private bool GetClearedLevels(int triedMission, int triedZone, out int clearedMission, out int clearedZone)
         {

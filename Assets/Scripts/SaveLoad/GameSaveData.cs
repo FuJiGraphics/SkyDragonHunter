@@ -30,6 +30,7 @@ namespace SkyDragonHunter.SaveLoad
         public SavedUpgradeCounts savedUpgradeCounts;
         public SavedTutorialData savedTutorialData;
 
+
         // Temp SaveDatas
         public SavedQuestProgresses savedQuestProgresses;
 

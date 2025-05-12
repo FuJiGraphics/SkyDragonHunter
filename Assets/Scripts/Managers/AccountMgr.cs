@@ -717,9 +717,13 @@ namespace SkyDragonHunter.Managers
                 var waveController = stageGo?.GetComponent<TestWaveController>();
                 if (waveController != null)
                 {
-                    CurrentStageLevel = comp.stageLevel;
-                    CurrentStageZoneLevel = comp.stageZoneLevel;
+                    // TODO: LJH
+                    //CurrentStageLevel = comp.stageLevel;
+                    //CurrentStageZoneLevel = comp.stageZoneLevel;
+                    CurrentStageLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
+                    CurrentStageZoneLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
                     waveController.Init();
+                    // ~TODO
                 }
                 #endregion
 
@@ -937,13 +941,13 @@ namespace SkyDragonHunter.Managers
                 #endregion
 
                 #region 스테이지 정보 저장 (임시)
-                GameObject stageGo = GameMgr.FindObject("WaveController");
-                var waveController = stageGo?.GetComponent<TestWaveController>();
-                if (waveController != null)
-                {
-                    comp.stageLevel = waveController.CurrentTriedMissionLevel;
-                    comp.stageZoneLevel = waveController.CurrentTriedZonelLevel;
-                }
+                //GameObject stageGo = GameMgr.FindObject("WaveController");
+                //var waveController = stageGo?.GetComponent<TestWaveController>();
+                //if (waveController != null)
+                //{
+                //    comp.stageLevel = waveController.CurrentTriedMissionLevel;
+                //    comp.stageZoneLevel = waveController.CurrentTriedZonelLevel;
+                //}
                 #endregion
 
                 #region 계정 정보 저장
