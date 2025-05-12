@@ -1,5 +1,6 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 namespace SkyDragonHunter.UI {
 
     public class UIHealthBar : MonoBehaviour
+        , IStateResetHandler
     {
         // 필드 (Fields)
         public BigNum maxValue;
@@ -75,6 +77,11 @@ namespace SkyDragonHunter.UI {
             m_Slider.maxValue = 1f;
 
             m_Slider.value = BigNum.GetPercentage(currentValue, maxValue);
+        }
+
+        public void ResetState()
+        {
+            ResetValue();
         }
 
         // Private 메서드

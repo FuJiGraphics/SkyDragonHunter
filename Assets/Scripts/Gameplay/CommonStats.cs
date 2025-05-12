@@ -57,11 +57,11 @@ namespace SkyDragonHunter.Gameplay
             SkillEffectMultiplier = c_DefaultSkillEffectMultiplier;
         }
 
-        public void ResetDamage() => Damage = MaxDamage;
-        public void ResetHealth() => Health = MaxHealth;
-        public void ResetShield() => Shield = MaxShield;
-        public void ResetArmor() => Armor = MaxArmor;
-        public void ResetResilient() => Resilient = MaxResilient;
+        public void ResetDamage() => SetDamage(MaxDamage);
+        public void ResetHealth() => SetHealth(MaxHealth);
+        public void ResetShield() => SetShield(MaxShield);
+        public void ResetArmor() => SetArmor(MaxArmor);
+        public void ResetResilient() => SetResilient(MaxResilient);
         public void ResetAll()
         {
             ResetDamage();

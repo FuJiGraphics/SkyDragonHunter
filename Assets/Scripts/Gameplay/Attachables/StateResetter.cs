@@ -31,10 +31,6 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
-        [ContextMenu("테스트 리셋")]
-        public void ResetAllStateTest()
-            => ResetAllState();
-
         // Private 메서드
         // Others
 
