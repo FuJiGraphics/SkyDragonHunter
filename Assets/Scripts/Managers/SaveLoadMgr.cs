@@ -25,6 +25,7 @@ namespace SkyDragonHunter.Managers
         QuestProgress,
         EquipmentUI,
         Tutorial,
+        ShopItem,
     }
 
     public class SaveLoadMgr

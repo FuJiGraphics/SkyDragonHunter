@@ -1,5 +1,6 @@
 public enum ShopType
 {
     Diamond,
-    Gold
+    Gold,
+    Reroll
 }
