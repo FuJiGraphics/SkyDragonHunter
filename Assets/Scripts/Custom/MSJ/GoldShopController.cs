@@ -50,11 +50,13 @@ namespace SkyDragonHunter.UI
         [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
 
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
+        
+        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트                
+        private Dictionary<GoldShopCategory, List<ShopSlotState>> categoryItems = new();
+        
 
-        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
-        private static Dictionary<GoldShopCategory, List<ShopSlotState>> categoryItems = new();
 
-        // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
+                // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
         private Dictionary<GoldShopCategory, Coroutine> resetRoutines = new();
 
         [Header("탭별 자동 갱신 시간 (초 단위)")]
@@ -135,6 +137,15 @@ namespace SkyDragonHunter.UI
 
             ApplyItemsToSlots(categoryItems[category]);
             ResetScrollPosition();
+        }
+
+        // TODO: LJH
+        public ShopSlotHandler GetShopSlotHandler(GoldShopCategory category, int index)
+        {
+            
+
+
+            return null;
         }
 
         // Private 메서드
