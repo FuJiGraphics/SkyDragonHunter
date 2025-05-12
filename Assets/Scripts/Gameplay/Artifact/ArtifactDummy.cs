@@ -1,9 +1,12 @@
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.UI;
 using SkyDraonHunter.Utility;
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
@@ -193,6 +196,8 @@ namespace SkyDragonHunter.Gameplay {
         private List<AdditionalStat> m_CacheAdditionalStats;
 
         // 속성 (Properties)
+        public string UUID { get; private set; }
+        public int ID => m_ArtifactData.ID;
         public string Name => m_ArtifactData.Name;
         public string Desc => m_ArtifactData.Desc;
         public Sprite Icon => m_ArtifactData.Icon;
@@ -217,6 +222,8 @@ namespace SkyDragonHunter.Gameplay {
                 return result;
             }
         }
+        public bool IsEquip { get; set; } = false;
+        public int CurrentSlot { get; set; } = -1;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -224,6 +231,7 @@ namespace SkyDragonHunter.Gameplay {
         // Public 메서드
         public ArtifactDummy(ArtifactGrade grade)
         {
+            UUID = System.Guid.NewGuid().ToString();
             m_ArtifactData = DataTableMgr.ArtifactTable.Random(grade);
             if (m_ArtifactData == null)
             {
@@ -239,6 +247,47 @@ namespace SkyDragonHunter.Gameplay {
                 (m_PickRandomMaxCount, 0.25f));
             m_AdditionalStats = GetRandomAdditionalStats(randCount, grade);
             m_CacheAdditionalStats = GetAdditionalStats();
+        }
+
+        public ArtifactDummy(SavedArtifact saveData)
+        {
+            UUID = saveData.uuid;
+            m_ArtifactData = DataTableMgr.ArtifactTable.Get(saveData.id);
+            if (m_ArtifactData == null)
+            {
+                Debug.LogError("[ArtifactDummy]: Error! ArtifactData를 찾을 수 없습니다.");
+            }
+            m_CacheConstantStat = new ConstantStat(saveData.constantStatValue, saveData.constantStatType);
+
+            List<AdditionalStatData> dataList = new();
+            foreach (var addids in saveData.additionalStatIds)
+            {
+                var addData = DataTableMgr.AdditionalStatTable.Get(addids);
+                dataList.Add(addData);
+            }
+            m_AdditionalStats = dataList.ToArray();
+            m_CacheAdditionalStats = GetAdditionalStats();
+            IsEquip = saveData.isEquip;
+            CurrentSlot = saveData.equipSlot;
+        }
+
+        public SavedArtifact GenerateSaveData()
+        {
+            SavedArtifact newSaveData = new SavedArtifact();
+            newSaveData.uuid = UUID;
+            newSaveData.id = ID;
+            newSaveData.artifactGrade = Grade;
+            newSaveData.constantStatValue = m_CacheConstantStat.StatValue;
+            newSaveData.constantStatType = m_CacheConstantStat.StatType;
+            List<int> ids = new();
+            foreach (var add in m_AdditionalStats)
+            {
+                ids.Add(add.ID);
+            }
+            newSaveData.additionalStatIds = ids.ToArray();
+            newSaveData.isEquip = IsEquip;
+            newSaveData.equipSlot = CurrentSlot;
+            return newSaveData;
         }
 
         public void RerollAdditionalStats()

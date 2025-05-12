@@ -1,5 +1,6 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,8 @@ namespace SkyDragonHunter.UI {
             if (slot == null)
                 return;
 
+            Value.IsEquip = false;
+            Value.CurrentSlot = -1;
             UITreasureEquipmentSlotPanel.EquipList.Remove(Value);
             slot.SetClickedIcon(false);
             AccountMgr.RemoveArtifactSlot(Value);

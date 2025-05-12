@@ -560,6 +560,8 @@ namespace SkyDragonHunter
                 isBossCleared = true;
                 bossSlider.value = 0;
                 AccountMgr.Diamond += 200;
+                AccountMgr.AddArtifact(new ArtifactDummy(ArtifactGrade.Rare));
+
             });
             currentEnemy.Add(spawned.gameObject);
             currentSpawnMonsters++;

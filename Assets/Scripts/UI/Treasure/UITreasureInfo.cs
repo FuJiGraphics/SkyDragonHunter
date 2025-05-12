@@ -41,7 +41,6 @@ namespace SkyDragonHunter.UI {
 
         private void OnDisable()
         {
-            m_TargetEquipSlotPanel.Unequip(m_CurrentTarget);
             m_TargetEquipSlotPanel.ClickedDummy = null;
             m_CurrentTarget = null;
             m_Icon.sprite = null;

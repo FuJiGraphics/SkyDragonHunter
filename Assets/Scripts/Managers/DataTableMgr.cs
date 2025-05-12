@@ -118,6 +118,9 @@ namespace SkyDragonHunter.Managers
         // Public 메서드
         public static T Get<T>(string id) where T : DataTable
         {
+            if (!Application.isPlaying)
+                return null;
+
             if(!Tables.ContainsKey(id))
             {
                 Debug.LogError($"Table id {id} does not exist");

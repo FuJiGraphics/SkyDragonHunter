@@ -16,6 +16,7 @@ namespace SkyDragonHunter.UI {
         // 속성 (Properties)
         public static List<ArtifactDummy> EquipList { get; private set; } = new();
         public ArtifactDummy ClickedDummy { get; set; }
+        public UITreasureEquipmentSlot[] Slots => m_Slots;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -39,6 +40,8 @@ namespace SkyDragonHunter.UI {
                     m_Slots[i].Clear();
                     AccountMgr.RemoveArtifactSlot(artifact);
                     UITreasureEquipmentSlotPanel.EquipList.Remove(artifact);
+                    artifact.IsEquip = false;
+                    artifact.CurrentSlot = -1;
                     break;
                 }
             }
@@ -58,6 +61,8 @@ namespace SkyDragonHunter.UI {
                     m_Slots[i].SetSlot(artifact);
                     AccountMgr.SetArtifactSlot(artifact, i);
                     UITreasureEquipmentSlotPanel.EquipList.Add(artifact);
+                    artifact.IsEquip = true;
+                    artifact.CurrentSlot = i;
                     break;
                 }
             }

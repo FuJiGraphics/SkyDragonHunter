@@ -186,12 +186,12 @@ namespace SkyDragonHunter.Managers
             foreach (RegisterObject comp in components)
             {
                 RegisterObject(comp.id, comp.gameObject);
-                Debug.Log($"게임 매니저에 등록됨: {comp.id}");
+                // Debug.Log($"게임 매니저에 등록됨: {comp.id}");
             }
             foreach (RegisterObject comp in components)
             {
                 comp.onInitEvents.Invoke();
-                Debug.Log($"초기화 이벤트 호출: {comp.id}");
+                // Debug.Log($"초기화 이벤트 호출: {comp.id}");
             }
         }
 
