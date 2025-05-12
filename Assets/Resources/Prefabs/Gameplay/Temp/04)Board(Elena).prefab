@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 3901750775849072033}
   - component: {fileID: 5086825586612427944}
   - component: {fileID: 7220983247515983003}
-  - component: {fileID: 6045266142848355535}
   - component: {fileID: 5584067668590662277}
   - component: {fileID: 523848715014122482}
   - component: {fileID: -5846870160307235085}
@@ -36,6 +35,7 @@ GameObject:
   - component: {fileID: 7801278534081460037}
   - component: {fileID: 4389738471416677928}
   - component: {fileID: -6240420464492288053}
+  - component: {fileID: 4868943546017827912}
   m_Layer: 0
   m_Name: 04)Board(Elena)
   m_TagString: Crew
@@ -299,18 +299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6045266142848355535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1554245367007407822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef08377868f5077489808ee2fb1a8130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5584067668590662277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +542,18 @@ MonoBehaviour:
   m_IsAutoExecute: 0
   m_Distance: 50
   m_EnemySearchProvider: {fileID: 0}
+--- !u!114 &4868943546017827912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cfaf27a6eed2d4b9f8c7f6e540398b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2833702163455001388
 GameObject:
   m_ObjectHideFlags: 0

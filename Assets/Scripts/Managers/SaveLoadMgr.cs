@@ -24,6 +24,7 @@ namespace SkyDragonHunter.Managers
         UpgradeCount,
         QuestProgress,
         EquipmentUI,
+        Tutorial,
     }
 
     public class SaveLoadMgr
@@ -32,8 +33,8 @@ namespace SkyDragonHunter.Managers
         private static string SaveDirectory = $"{Application.persistentDataPath}/Save";
         private static readonly string[] SaveFileName =
         {
-            "SDH_SavedGameData.json",
-            "SDH_SavedLocalSettingData.json",
+            "SDH_SavedGameData2.json",
+            "SDH_SavedLocalSettingData2.json",
         };
                 
         private static JsonSerializerSettings jsonSettings;

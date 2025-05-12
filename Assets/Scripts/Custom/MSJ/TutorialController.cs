@@ -39,7 +39,7 @@ namespace SkyDragonHunter {
 
         public void Init()
         {
-            if (TutorialEndValue.oneClear)
+            if (TutorialEndValue.OneClear)
             {
                 TutorialObjDestroy();
             }

@@ -113,7 +113,6 @@ GameObject:
   - component: {fileID: 6909325670884476085}
   - component: {fileID: 3645447506270493888}
   - component: {fileID: 280715104068094723}
-  - component: {fileID: 6220945683715676981}
   - component: {fileID: 393132806465076042}
   - component: {fileID: 2424248939532535906}
   - component: {fileID: 8899741910801334762}
@@ -128,6 +127,7 @@ GameObject:
   - component: {fileID: -4155735740137728613}
   - component: {fileID: 4440403298505445246}
   - component: {fileID: 9033704899000824246}
+  - component: {fileID: 3967234494875988845}
   m_Layer: 0
   m_Name: 03)Board(Bella)
   m_TagString: Crew
@@ -391,18 +391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1262dd8ad1a4914796dc38898a28974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6220945683715676981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8967289640035744741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef08377868f5077489808ee2fb1a8130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &393132806465076042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +444,7 @@ MonoBehaviour:
   floater: {fileID: 0}
   animController: {fileID: 0}
   skillExecutor: {fileID: 0}
+  characterStatus: {fileID: 0}
   m_MountSlot: {fileID: 0}
   damageTypeSpellCasted: 0
 --- !u!114 &-3300403590417210570
@@ -566,6 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
+  m_SkillExecutor: {fileID: 0}
 --- !u!114 &5655683887028899938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +614,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   bindRumtime: 1
+--- !u!114 &3967234494875988845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8967289640035744741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cfaf27a6eed2d4b9f8c7f6e540398b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5428840327788410652
 PrefabInstance:
   m_ObjectHideFlags: 0

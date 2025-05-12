@@ -2,9 +2,11 @@ using Org.BouncyCastle.Asn1.X509;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter
@@ -39,15 +41,25 @@ namespace SkyDragonHunter
         [Header("구멍 마스크 컨트롤러")]
         [SerializeField] private SingleHoleMaskController holeMaskCtrl; // 마스크 처리
 
-
-
-
         [SerializeField] private TutorialClickListener listener; // 마스크 처리
+        [SerializeField] private UnityEvent m_TutorialEvents;
         private bool oneGo = false;
+        private bool m_TutorialEnd = false;
 
         public GameObject allButtonsBlockPanel;
         public bool IsStartTutorial { get => m_IsStartTutorial; set => IsStartTutorial = value; }
-        public bool TutorialEnd { get; private set; } = false; // 튜토리얼 종료 여부
+        public bool TutorialEnd
+        {
+            get => m_TutorialEnd;
+            set
+            {
+                m_TutorialEnd = value;
+                if (m_TutorialEnd)
+                {
+                   m_TutorialEvents?.Invoke();
+                }
+            }
+        } // 튜토리얼 종료 여부
         public int step { get; private set; } = 0;             // 현재 스텝
         private int currentTargetIndex = -1; // 현재 스텝의 버튼 인덱스
 
@@ -56,7 +68,6 @@ namespace SkyDragonHunter
             TutorialEnd = TutorialEndValue.GetTutorialEnd();
             //m_IsStartTutorial = TutorialEndValue.GetIsStartTutorial();
 
-           
 
             if (uiMgr == null)
             {
@@ -306,10 +317,9 @@ namespace SkyDragonHunter
                     Destroy(block);
                 }
             }
-            TutorialEnd = true;
+            // TutorialEnd = true;
             m_IsStartTutorial = false;
-            TutorialEndValue.SetValueIsStartTutorial(m_IsStartTutorial);
-            TutorialEndValue.SetValueTutorialEnd(TutorialEnd);
+            TutorialEndValue.SetValueIsStartTutorial(false);
         }
 
         /// <summary>

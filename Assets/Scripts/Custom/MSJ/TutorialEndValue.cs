@@ -6,9 +6,9 @@ using UnityEngine;
 public static class TutorialEndValue
 {
     // 필드 (Fields)
-    public static bool oneClear { get; private set; } = false;
-    private static bool IsStartTutorial = true;
-    private static bool tutorialEnd = false;
+    public static bool OneClear { get; set; } = false;
+    public static bool IsStartTutorial { get; set; } = true;
+    public static bool TutorialEnd { get; set; } = false;
     // 속성 (Properties)
     // 외부 종속성 필드 (External dependencies field)
     // 이벤트 (Events)
@@ -21,13 +21,12 @@ public static class TutorialEndValue
 
     public static void SetValueTutorialEnd(bool end)
     {
-        tutorialEnd = end;
-
+        TutorialEnd = end;
     }
 
     public static void SetTrueOneClear()
     {
-        oneClear = true;
+        OneClear = true;
     }
 
     public static bool GetIsStartTutorial()
@@ -37,7 +36,7 @@ public static class TutorialEndValue
 
     public static bool GetTutorialEnd()
     {
-        return tutorialEnd;
+        return TutorialEnd;
     }
     // Private 메서드
     // Others
