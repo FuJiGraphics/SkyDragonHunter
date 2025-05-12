@@ -53,9 +53,6 @@ namespace SkyDragonHunter.Managers
                 case "DungeonScene":
                     InitForDungeonScene();
                     break;
-                case "GameSceneMsj":
-                    InitForGameScene();
-                    break;
             }
         }
 

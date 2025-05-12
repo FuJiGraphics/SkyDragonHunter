@@ -10,7 +10,6 @@ namespace SkyDragonHunter.Utility {
         LoadingScene,
         GameScene,
         DungeonScene,
-        GameSceneMsj,
     } // Scope by class SceneIds
 
 } // namespace Root
