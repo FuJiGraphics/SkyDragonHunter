@@ -383,6 +383,7 @@ namespace SkyDragonHunter
                     OnChangeBackGround(currentMissionLevel - 1);
                     // TODO: 데이터 세이브
                     AccountMgr.SaveUserData();
+                    SaveLoadMgr.CallSaveGameData();
                 }
             }
         }

@@ -6,19 +6,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.SaveLoad {
-    
-    public enum ShopRefreshType
-    {
-        Common,
-        Daily,
-        Weekly,
-        Monthly
-    }
-
+namespace SkyDragonHunter.SaveLoad {    
+   
     public class SavedShopItemList
     {
         public DateTime refreshedTime;
+        public ShopType shopType;
+        public ShopRefreshType refreshType;
         public List<SavedShopItem> itemList;        
     }
 
@@ -48,56 +42,28 @@ namespace SkyDragonHunter.SaveLoad {
         public void InitData()
         {
             shopItemDict = new ();
-            foreach(ShopType category in Enum.GetValues(typeof(ShopType)))
+            foreach(ShopType shopType in Enum.GetValues(typeof(ShopType)))
             {
-                if (!shopItemDict.ContainsKey(category))
-                    shopItemDict.Add(category, new());
+                if (!shopItemDict.ContainsKey(shopType))
+                    shopItemDict.Add(shopType, new());
                 foreach(ShopRefreshType refreshType in Enum.GetValues(typeof(ShopRefreshType)))
                 {
-                    if (!shopItemDict[category].ContainsKey(refreshType))
-                        shopItemDict[category].Add(refreshType, new ());
-                    shopItemDict[category][refreshType].refreshedTime = DateTime.MinValue;
+                    if (shopType != ShopType.Reroll)
+                    {
+                        if (!shopItemDict[shopType].ContainsKey(refreshType))
+                        {
+                            shopItemDict[shopType].Add(refreshType, new());
+                            shopItemDict[shopType][refreshType].refreshedTime = DateTime.MinValue;
+                            shopItemDict[shopType][refreshType].shopType = shopType;
+                            shopItemDict[shopType][refreshType].refreshType = refreshType;
+                        }
+                    }
                 }
             }
-
-            //shopItemDict = new ();
-            //refreshedTimeDict = new ();
-            //
-            //for (int i = 0; i < Enum.GetValues(typeof(ShopCategory)).Length; ++i)
-            //{
-            //    for (int j = 0; j < Enum.GetValues(typeof(ShopRefreshType)).Length; ++j)
-            //    {
-            //        DateTime tempDateTime = default;
-            //        refreshedTime.Add (tempDateTime);
-            //        if (!refreshedTimeDict.ContainsKey((ShopCategory)i))
-            //            refreshedTimeDict.Add((ShopCategory)i, new());
-            //        if (!refreshedTimeDict[(ShopCategory)i].ContainsKey((ShopRefreshType)j))
-            //            refreshedTimeDict[(ShopCategory)i].Add((ShopRefreshType)j, tempDateTime);
-            //
-            //        for(int k = 0; k < itemsCount[i]; ++k)
-            //        {
-            //            var newSavedShopItem = new SavedShopItem();
-            //            newSavedShopItem.category = (ShopCategory)i;
-            //            newSavedShopItem.refreshType = (ShopRefreshType)j;
-            //            newSavedShopItem.listIndex = k;
-            //            newSavedShopItem.itemType = ItemType.Coin;
-            //            newSavedShopItem.currentCount = 1;
-            //            newSavedShopItem.maxCount = 1;
-            //            newSavedShopItem.currencyType = CurrencyType.Coin;
-            //            newSavedShopItem.price = 0;
-            //            newSavedShopItem.isLocked = false;
-            //            newSavedShopItem.isPurchased = false;
-            //
-            //            shopItems.Add(newSavedShopItem);
-            //            if (!shopItemDict.ContainsKey((ShopCategory)i))
-            //                shopItemDict.Add((ShopCategory)i, new());
-            //            if (!shopItemDict[(ShopCategory)i].ContainsKey((ShopRefreshType)j))
-            //                shopItemDict[(ShopCategory)i].Add((ShopRefreshType)j, new());
-            //            if (!shopItemDict[(ShopCategory)i][(ShopRefreshType)j].ContainsKey(k))
-            //                shopItemDict[(ShopCategory)i][(ShopRefreshType)j].Add(k, newSavedShopItem);
-            //        }
-            //    }
-            //}
+            shopItemDict[ShopType.Reroll].Add(ShopRefreshType.Common, new());
+            shopItemDict[ShopType.Reroll][ShopRefreshType.Common].refreshedTime = DateTime.MinValue;
+            shopItemDict[ShopType.Reroll][ShopRefreshType.Common].shopType = ShopType.Reroll;
+            shopItemDict[ShopType.Reroll][ShopRefreshType.Common].refreshType = ShopRefreshType.Common;
         } 
 
         public void UpdateSavedData()

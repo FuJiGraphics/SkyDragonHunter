@@ -30,6 +30,7 @@ namespace SkyDragonHunter.SaveLoad
         public SavedUpgradeCounts savedUpgradeCounts;
         public SavedTutorialData savedTutorialData;
         public SavedMasteryData savedMasteryData;
+        public SavedShopItemsData savedShopItemData;
 
         // Temp SaveDatas
         public SavedQuestProgresses savedQuestProgresses;
@@ -50,6 +51,7 @@ namespace SkyDragonHunter.SaveLoad
             savedQuestProgresses = new SavedQuestProgresses();
             savedTutorialData = new SavedTutorialData();
             savedMasteryData = new SavedMasteryData();
+            savedShopItemData = new SavedShopItemsData();
 
             savedAccountData.InitData();
             savedStageData.InitData();
@@ -64,6 +66,7 @@ namespace SkyDragonHunter.SaveLoad
             savedQuestProgresses.InitData();
             savedTutorialData.InitData();
             savedMasteryData.InitData();
+            savedShopItemData.InitData();
         }
 
         public override void Initialize()
@@ -114,6 +117,9 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Mastery:
                     savedMasteryData.UpdateSavedData();
                     break;
+                case SaveDataTypes.ShopItem:
+                    savedShopItemData.UpdateSavedData();
+                    break;
             }
         }
 
@@ -159,6 +165,9 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.Mastery:
                     savedMasteryData.ApplySavedData();
+                    break;
+                case SaveDataTypes.ShopItem:
+                    savedShopItemData.ApplySavedData();
                     break;
             }
         }

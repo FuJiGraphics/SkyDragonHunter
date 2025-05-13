@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using SkyDragonHunter;
 using SkyDragonHunter.SaveLoad;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace SkyDragonHunter.Managers
         EquipmentUI,
         Tutorial,
         Mastery,
+        ShopItem,
     }
 
     public class SaveLoadMgr

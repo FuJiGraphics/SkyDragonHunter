@@ -23,18 +23,18 @@ namespace SkyDragonHunter.UI
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private List<ItemSlotData> diamondShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
 
-        [SerializeField] private ShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
+        [SerializeField] private ShopRefreshType currentCategory;         // 현재 활성화된 상점 탭 종류
 
         [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
 
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
         // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
-        private Dictionary<ShopCategory, List<ShopSlotState>> categoryItems = new();
+        private Dictionary<ShopRefreshType, List<ShopSlotState>> categoryItems = new();
 
 
         // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
-        private Dictionary<ShopCategory, Coroutine> resetRoutines = new();
+        private Dictionary<ShopRefreshType, Coroutine> resetRoutines = new();
 
         [Header("탭별 자동 갱신 시간 (초 단위)")]
         [SerializeField] private float dailyResetTime = 86400f;        // 일일: 24시간
@@ -83,7 +83,7 @@ namespace SkyDragonHunter.UI
             }
 
             // 각 카테고리에 대해 빈 리스트 초기화
-            foreach (ShopCategory cat in System.Enum.GetValues(typeof(ShopCategory)))
+            foreach (ShopRefreshType cat in System.Enum.GetValues(typeof(ShopRefreshType)))
                 categoryItems[cat] = new List<ShopSlotState>();
         }
 
@@ -92,11 +92,11 @@ namespace SkyDragonHunter.UI
         // 외부 탭 버튼에서 호출되는 메서드
         public void OnClickTab(int categoryIndex)
         {
-            RefreshCategory((ShopCategory)categoryIndex);
+            RefreshCategory((ShopRefreshType)categoryIndex);
         }
 
         // 주어진 카테고리로 아이템을 갱신
-        public void RefreshCategory(ShopCategory category)
+        public void RefreshCategory(ShopRefreshType category)
         {
             currentCategory = category;
 
@@ -128,7 +128,7 @@ namespace SkyDragonHunter.UI
         }
 
         // 카테고리에 대해 출현 확률 기반으로 아이템을 선택하고 저장
-        private void GenerateRandomItemsFor(ShopCategory category)
+        private void GenerateRandomItemsFor(ShopRefreshType category)
         {
             List<ShopSlotState> result = new();
 
@@ -141,7 +141,7 @@ namespace SkyDragonHunter.UI
             categoryItems[category] = result;
 
             // [수정 포인트] 일반(Common) 탭은 리셋 코루틴을 실행하지 않음
-            if (category == ShopCategory.Common)
+            if (category == ShopRefreshType.Common)
                 return;
 
             // 기존 리셋 코루틴 정리
@@ -177,19 +177,19 @@ namespace SkyDragonHunter.UI
         }
 
         // 각 카테고리에 대해 설정된 갱신 시간 반환
-        private float GetDelay(ShopCategory category)
+        private float GetDelay(ShopRefreshType category)
         {
             return category switch
             {
-                ShopCategory.Daily => dailyResetTime,
-                ShopCategory.Weekly => weeklyResetTime,
-                ShopCategory.Monthly => monthlyResetTime,
+                ShopRefreshType.Daily => dailyResetTime,
+                ShopRefreshType.Weekly => weeklyResetTime,
+                ShopRefreshType.Monthly => monthlyResetTime,
                 _ => 0f
             };
         }
 
         // 일정 시간이 지나면 해당 카테고리의 아이템 초기화
-        private IEnumerator ResetCategoryAfterDelay(ShopCategory category, float delay)
+        private IEnumerator ResetCategoryAfterDelay(ShopRefreshType category, float delay)
         {
             yield return new WaitForSeconds(delay);
             categoryItems[category].Clear();
