@@ -16,24 +16,35 @@ public class UIShopItemSlot : MonoBehaviour
     [SerializeField] private Image currencyImage;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private Button buyButton;
+    [SerializeField] private Button lockButton;
+    [SerializeField] private Image lockedImage;
 
-    [SerializeField] private Sprite goldIcon;
-    [SerializeField] private Sprite diamondIcon;
+    [SerializeField] private Sprite lockedSprite;
+    [SerializeField] private Sprite unlockedSprite;
 
     public void Start()
     {
         buyButton.onClick.AddListener(UpdateSlotInfo);
+        lockButton.onClick.AddListener(UpdateSlotInfo);
     }
 
     public void SetSlot(ItemSlotData data)
     {
+        lockButton.interactable = false;
         slotData = data;
         nameText.text = slotData.ItemName;
-        itemImage.sprite = slotData.ItemIcon;
+        itemImage.sprite = slotData.ItemIcon;        
         if (slotData.shopType != ShopType.Reroll && slotData.refreshType == ShopRefreshType.Common)
             countText.text = string.Empty;
-        else
+        else if (slotData.shopType != ShopType.Reroll)
             countText.text = string.Format(itemCountFormat, slotData.currCount, slotData.maxCount);
+        else
+        {
+            lockButton.interactable = true;
+            lockedImage.color = Color.white;
+            countText.text = slotData.maxCount.ToString();
+            lockedImage.sprite = slotData.locked ? lockedSprite : unlockedSprite;
+        }
         currencyImage.sprite = slotData.CurrencyIcon;
         priceText.text = slotData.Price.ToUnit();
         buyButton.interactable = slotData.Purchasable;
@@ -44,12 +55,21 @@ public class UIShopItemSlot : MonoBehaviour
         buyButton.onClick.AddListener(action);
     }
 
+    public void AddLockButtonListener(UnityAction action)
+    {
+        lockButton.onClick.AddListener(action);
+    }
+
     private void UpdateSlotInfo()
     {
         if (slotData.shopType != ShopType.Reroll && slotData.refreshType == ShopRefreshType.Common)
             countText.text = string.Empty;
-        else
+        else if (slotData.shopType != ShopType.Reroll)
             countText.text = string.Format(itemCountFormat, slotData.currCount, slotData.maxCount);
+        else
+        {
+            lockedImage.sprite = slotData.locked ? lockedSprite : unlockedSprite;
+        }
         buyButton.interactable = slotData.Purchasable;
     }
 }

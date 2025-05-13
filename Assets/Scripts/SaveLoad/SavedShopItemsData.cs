@@ -18,18 +18,19 @@ namespace SkyDragonHunter.SaveLoad {
 
     public class SavedShopItem
     {
+        public int id;
         public ItemType itemType;
         public int currentCount;
         public int maxCount;
         public CurrencyType currencyType;
         public BigNum price;
         public bool isLocked;
-        public bool isPurchased;
     }
 
     public class SavedShopItemsData
     {
         //public List<>
+        public int favorabilityLevel;
         public Dictionary<ShopType, Dictionary<ShopRefreshType, SavedShopItemList>> shopItemDict;
 
         //private Dictionary<ShopCategory, Dictionary<ShopRefreshType, Dictionary<int, SavedShopItem>>> shopItemDict;
@@ -41,6 +42,7 @@ namespace SkyDragonHunter.SaveLoad {
 
         public void InitData()
         {
+            favorabilityLevel = 1;
             shopItemDict = new ();
             foreach(ShopType shopType in Enum.GetValues(typeof(ShopType)))
             {
@@ -64,7 +66,7 @@ namespace SkyDragonHunter.SaveLoad {
             shopItemDict[ShopType.Reroll][ShopRefreshType.Common].refreshedTime = DateTime.MinValue;
             shopItemDict[ShopType.Reroll][ShopRefreshType.Common].shopType = ShopType.Reroll;
             shopItemDict[ShopType.Reroll][ShopRefreshType.Common].refreshType = ShopRefreshType.Common;
-        } 
+        }
 
         public void UpdateSavedData()
         {

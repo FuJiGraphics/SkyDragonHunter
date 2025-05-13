@@ -39,10 +39,10 @@ namespace SkyDragonHunter {
 
         public void Init()
         {
-            if (TutorialEndValue.OneClear)
-            {
-                TutorialObjDestroy();
-            }
+            //if (TutorialEndValue.OneClear)
+            //{
+            //    TutorialObjDestroy();
+            //}
         }
 
         private void Update()
