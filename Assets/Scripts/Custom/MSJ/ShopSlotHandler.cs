@@ -55,13 +55,6 @@ namespace SkyDragonHunter
 
         // Public 메서드
 
-        // TODO: LJH
-        public void AddListener(UnityAction action)
-        {
-            buyButton.onClick.AddListener(action);
-        }
-        // ~TODO
-
         public void UpdateDiscountedPrice(float discountRate)
         {
             currentPrice = slotState.item.Price * (1f - discountRate);

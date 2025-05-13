@@ -20,20 +20,30 @@ namespace SkyDragonHunter.UI
     }
 
     [System.Serializable]
-    public struct ItemSlotData
+    public class ItemSlotData
     {
         // TODO: LJH
         public int id;
         public int index;
         public ShopRefreshType refreshType;
         // ~TODO
-        [SerializeField] public ShopType type;
+        [SerializeField] public ShopType shopType;
         [SerializeField] public ItemType itemType;
         [SerializeField] public float pullRate;
         [SerializeField] public int currCount;
         [SerializeField] public int maxCount;
         [SerializeField] public CurrencyType currencyType;
 
+        public bool Purchasable
+        {
+            get
+            {
+                if (shopType != ShopType.Reroll && refreshType == ShopRefreshType.Common)
+                    return true;
+
+                return currCount > 0;
+            }
+        }
         public BigNum Price { get; set; }
         public string ItemName => GetData().Name;
         public Sprite ItemIcon => GetData().Icon;
@@ -58,11 +68,12 @@ namespace SkyDragonHunter.UI
 
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
-        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트                
+        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
         private Dictionary<ShopRefreshType, List<ShopSlotState>> categoryItems = new();
 
         // TODO: LJH
-        [SerializeField] private ShopSlotHandler prefab;
+        [SerializeField] private UIShopItemSlot prefab;
+        [SerializeField] private List<GameObject> slotList = new();
         public DateTime?[] resetTime;
         private static readonly int[] resetTimeHourlyCriteria =
         {
@@ -71,8 +82,8 @@ namespace SkyDragonHunter.UI
             168,
             720
         };
-        private Dictionary<ShopRefreshType, List<ItemSlotData>> itemDataDict = new();
-        private const int maxItemCount = 8;
+        private Dictionary<ShopRefreshType, List<ItemSlotData>> itemDataListDict = new();
+        private const int maxItemCount = 16;
         // ~TODO
 
                 // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
@@ -94,13 +105,13 @@ namespace SkyDragonHunter.UI
         private void OnEnable()
         {
             // TODO: LJH
-            RefreshCategory(currentCategory);
+            //RefreshCategory(currentCategory);
             // ~TODO
         }
 
         // TODO: LJH
         private void Start()
-        {
+        {            
             resetTime = new DateTime?[Enum.GetValues(typeof(ShopRefreshType)).Length];
             for (int i = 0; i < resetTime.Length; ++i)
             {
@@ -173,8 +184,8 @@ namespace SkyDragonHunter.UI
         public void OnClickTab(int categoryIndex)
         {
             // TODO: LJH
-            RefreshCategory((ShopRefreshType)categoryIndex);
-            //SetSlotForCategory((ShopRefreshType)categoryIndex);
+            //RefreshCategory((ShopRefreshType)categoryIndex);
+            SetSlotForCategory((ShopRefreshType)categoryIndex);
             // ~TODO
         }
 
@@ -205,11 +216,71 @@ namespace SkyDragonHunter.UI
         }
 
         // TODO: LJH
+        private void SetSlotForCategory(ShopRefreshType refreshType)
+        {
+            foreach(var slotGO in slotList)
+            {
+                Destroy(slotGO);
+            }
+            slotList.Clear();
+
+            for(int i = 0; i < itemDataListDict[refreshType].Count; ++i)
+            {
+                var slot = Instantiate(prefab, contentParent);
+                slot.SetSlot(itemDataListDict[refreshType][i]);
+
+                var capturedType = refreshType;
+                var capturedIndex = i;
+
+                slot.AddListener(() =>
+                {
+                    var item = itemDataListDict[capturedType][capturedIndex];
+                    if (capturedType == ShopRefreshType.Common)
+                    {
+                        if (AccountMgr.Coin >= item.Price)
+                        {
+                            var itemCount = AccountMgr.ItemCount(item.itemType);
+                            itemCount += 1;
+                            AccountMgr.SetItemCount(item.itemType, itemCount);
+                            AccountMgr.Coin -= item.Price;
+                            DrawableMgr.Dialog("안내", $"{item.ItemName} 구매 성공");
+                        }
+                        else
+                        {
+                            DrawableMgr.Dialog("안내", "골드가 부족합니다");
+                        }
+                    }
+                    else
+                    {
+                        if (AccountMgr.Coin >= item.Price && item.currCount > 0)
+                        {
+                            var itemCount = AccountMgr.ItemCount(item.itemType);
+                            itemCount += 1;
+                            item.currCount -= 1;
+                            AccountMgr.SetItemCount(item.itemType, itemCount);
+                            AccountMgr.Coin -= item.Price;
+                            DrawableMgr.Dialog("안내", $"{item.ItemName} 구매 성공");
+                        }
+                        else if (!(item.currCount > 0))
+                        {
+                            DrawableMgr.Dialog("안내", "아이템 재고가 없습니다");
+                        }
+                        else if (AccountMgr.Coin < item.Price)
+                        {
+                            DrawableMgr.Dialog("안내", "골드가 부족합니다");
+                        }
+                    }
+                });
+                slotList.Add(slot.gameObject);
+            }
+        }
+
         private void SetSlotDataOfRefreshType(ShopRefreshType refreshType)
         {
-            if (!itemDataDict.ContainsKey(refreshType))
-                itemDataDict.Add(refreshType, new());
-
+            if (itemDataListDict.ContainsKey(refreshType))
+                itemDataListDict[refreshType].Clear();
+            else
+                itemDataListDict.Add(refreshType, new());
 
             if (refreshType == ShopRefreshType.Common)
             {
@@ -224,7 +295,7 @@ namespace SkyDragonHunter.UI
                 ItemSlotData slotData = new ItemSlotData();
                 slotData.id = randId;
                 slotData.index = i;
-                slotData.type = ShopType.Gold;
+                slotData.shopType = ShopType.Gold;
                 slotData.refreshType = refreshType;
 
                 slotData.itemType = goldShopData.GetItemType();
@@ -232,20 +303,36 @@ namespace SkyDragonHunter.UI
                 slotData.currCount = slotData.maxCount;
                 slotData.currencyType = CurrencyType.Coin;
                 slotData.Price = goldShopData.Price;
-                itemDataDict[refreshType].Add(slotData);
+                itemDataListDict[refreshType].Add(slotData);
             }
-        }
 
-        private void SetSlotForCategory(ShopRefreshType refreshType)
-        {
-
+            resetTime[(int)refreshType] = DateTime.UtcNow;
         }
 
         private void SetCommonShopSlotData()
         {
             // List of Items in common shop stay same
+            var commonItems = DataTableMgr.GoldShopTable.GetCategorizedItemList(ShopRefreshType.Common);
 
+            int index = 0;
+            foreach (var goldShopData in commonItems)
+            {
+                ItemSlotData slotData = new ItemSlotData();
+                slotData.id = goldShopData.ID;
+                slotData.index = index;
+                slotData.shopType = ShopType.Gold;
+                slotData.refreshType = ShopRefreshType.Common;
 
+                slotData.itemType = goldShopData.GetItemType();
+                slotData.maxCount = goldShopData.ItemBuyLimit;
+                slotData.currCount = slotData.maxCount;
+                slotData.currencyType = CurrencyType.Coin;
+                slotData.Price = goldShopData.Price;
+                itemDataListDict[ShopRefreshType.Common].Add(slotData);
+                index++;
+            }
+
+            resetTime[(int)ShopRefreshType.Common] = DateTime.UtcNow;
         }
         // ~TODO
 
