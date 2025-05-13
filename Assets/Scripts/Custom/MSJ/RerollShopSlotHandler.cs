@@ -78,7 +78,7 @@ namespace SkyDragonHunter
             var tableData = item.GetData();
             itemNameText.text = tableData.Name;
             itemImage.sprite = tableData.Icon;
-            currencyImage.sprite = item.CurrenyIcon;
+            currencyImage.sprite = item.CurrencyIcon;
             currencyType = item.currencyType;
             priceText.text = currentPrice.ToString();
 

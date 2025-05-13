@@ -65,7 +65,8 @@ namespace SkyDragonHunter
 
         private void Start()
         {
-            TutorialEnd = TutorialEndValue.GetTutorialEnd();
+            //TutorialEnd = TutorialEndValue.GetTutorialEnd();
+            m_IsStartTutorial = !SaveLoadMgr.GameData.savedTutorialData.tutorialCleared;
             //m_IsStartTutorial = TutorialEndValue.GetIsStartTutorial();
 
 
@@ -73,7 +74,6 @@ namespace SkyDragonHunter
             {
                 uiMgr = GameMgr.FindObject<UiMgr>("InGameUI");
             }
-
 
             if (m_IsStartTutorial)
             {
@@ -108,8 +108,10 @@ namespace SkyDragonHunter
                     Debug.Log("튜토리얼 종료");
                     TutorialEnd = true;
                     m_IsStartTutorial = false;
-                    TutorialEndValue.SetValueIsStartTutorial(m_IsStartTutorial);
-                    TutorialEndValue.SetValueTutorialEnd(TutorialEnd);
+                    //SaveLoadMgr.GameData.savedTutorialData.tutorialCleared = true;
+                    //SaveLoadMgr.CallSaveGameData();
+                    //TutorialEndValue.SetValueIsStartTutorial(m_IsStartTutorial);
+                    //TutorialEndValue.SetValueTutorialEnd(TutorialEnd);
                     return;
                 }
 
@@ -319,7 +321,7 @@ namespace SkyDragonHunter
             }
             // TutorialEnd = true;
             m_IsStartTutorial = false;
-            TutorialEndValue.SetValueIsStartTutorial(false);
+            //TutorialEndValue.SetValueIsStartTutorial(false);
         }
 
         /// <summary>

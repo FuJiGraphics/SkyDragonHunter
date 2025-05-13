@@ -198,6 +198,8 @@ namespace SkyDragonHunter {
 
         public void TutorialObjDestroy()
         {
+            SaveLoadMgr.GameData.savedTutorialData.tutorialCleared = true;
+            SaveLoadMgr.CallSaveGameData();
             TutorialEndValue.SetTrueOneClear();
             tutorialMgr.SetTutorialEnd();
             Destroy(tutorialPanel);

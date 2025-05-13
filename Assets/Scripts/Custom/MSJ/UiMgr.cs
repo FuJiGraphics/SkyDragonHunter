@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 namespace SkyDragonHunter.Test
 {
-
     public class UiMgr : MonoBehaviour
     {
         // 필드 (Fields)
@@ -55,6 +54,9 @@ namespace SkyDragonHunter.Test
         public GameObject[] fortressPickPanels;
         public GameObject[] rewardSlots;
         public GameObject[] ShopPanels;
+        // TODO: LJH
+        //private 
+        // ~TODO
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
         private Coroutine moveCoroutine;

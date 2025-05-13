@@ -1,6 +1,8 @@
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using UnityEngine.UI;
 namespace SkyDragonHunter.UI
 {
     // 상점 종류를 나타내는 열거형 정의 (일반 / 일일 / 주간 / 월간)
-    public enum GoldShopCategory { Common, Daily, Weekly, Monthly }
+    public enum ShopCategory { Common, Daily, Weekly, Monthly }
 
     // 골드 상점, 다이아 상점 중 어디 화폐인지 체크
     public enum CurrencyType
@@ -21,6 +23,9 @@ namespace SkyDragonHunter.UI
     [System.Serializable]
     public struct ItemSlotData
     {
+        // TODO: LJH
+        public int id;
+        // ~TODO
         [SerializeField] public ItemType itemType;
         [SerializeField] public float pullRate;
         [SerializeField] public int currCount;
@@ -30,7 +35,7 @@ namespace SkyDragonHunter.UI
         public BigNum Price { get; set; }
         public string ItemName => GetData().Name;
         public Sprite ItemIcon => GetData().Icon;
-        public Sprite CurrenyIcon => currencyType == CurrencyType.Coin ?
+        public Sprite CurrencyIcon => currencyType == CurrencyType.Coin ?
             DataTableMgr.ItemTable.Get(ItemType.Coin).Icon : DataTableMgr.ItemTable.Get(ItemType.Diamond).Icon;
 
         public ItemData GetData() => DataTableMgr.ItemTable.Get(itemType);
@@ -45,17 +50,31 @@ namespace SkyDragonHunter.UI
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private List<ItemSlotData> goldShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
 
-        [SerializeField] private GoldShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
+        [SerializeField] private ShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
 
         [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
 
         private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
 
-        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트
-        private Dictionary<GoldShopCategory, List<ShopSlotState>> categoryItems = new();
+        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트                
+        private Dictionary<ShopCategory, List<ShopSlotState>> categoryItems = new();
 
-        // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
-        private Dictionary<GoldShopCategory, Coroutine> resetRoutines = new();
+        // TODO: LJH
+        [SerializeField] private ShopSlotHandler prefab;
+        public DateTime?[] resetTime;
+        private static readonly int[] resetTimeHourlyCriteria =
+        {
+            int.MaxValue,
+            24,
+            168,
+            720
+        };
+        private Dictionary<ShopCategory, List<ItemSlotData>> categoryItemDataDict = new();
+        private const int maxItemCount = 8;
+        // ~TODO
+
+                // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
+        private Dictionary<ShopCategory, Coroutine> resetRoutines = new();
 
         [Header("탭별 자동 갱신 시간 (초 단위)")]
         [SerializeField] private float dailyResetTime = 86400f;        // 일일: 24시간
@@ -69,12 +88,65 @@ namespace SkyDragonHunter.UI
 
         // 시작 시 슬롯 핸들러 수집 및 카테고리 초기화
         // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
+                
         private void OnEnable()
         {
+            // TODO: LJH
             RefreshCategory(currentCategory);
+            // ~TODO
         }
+
+        // TODO: LJH
+        private void Start()
+        {
+            resetTime = new DateTime?[Enum.GetValues(typeof(ShopCategory)).Length];
+            for (int i = 0; i < resetTime.Length; ++i)
+            {
+                resetTime[i] = SaveLoadMgr.GameData.savedShopItemData.GetRefreshedTime(ShopType.Gold, (ShopRefreshType)i);
+            }
+            foreach (ShopCategory category in Enum.GetValues(typeof(ShopCategory)))
+            {
+                if(resetTime[(int)category] == null)
+                {
+                    Debug.LogError($"!");
+                    continue;
+                }
+
+                if (resetTime[(int)category] == DateTime.MinValue)
+                {
+                    SetCategorySlotData(category);
+                }
+                else if (resetTime[(int)category].Value.Hour + resetTimeHourlyCriteria[(int)category] > DateTime.UtcNow.Hour)
+                {
+                    SetCategorySlotData(category);
+                }
+                else
+                {
+            
+                }
+            }
+        }
+        // ~TODO
+
         // Public 메서드
         public void Init()
+        {
+            InitGoldShopItemPool();            
+
+            // Content 하위의 자식 오브젝트에서 슬롯 핸들러 수집
+            for (int i = 0; i < contentParent.childCount; i++)
+            {
+                var handler = contentParent.GetChild(i).GetComponent<ShopSlotHandler>();
+                if (handler != null)
+                    slotHandlers.Add(handler);
+            }
+
+            // 각 카테고리에 대해 빈 리스트 초기화
+            foreach (ShopCategory cat in System.Enum.GetValues(typeof(ShopCategory)))
+                categoryItems[cat] = new List<ShopSlotState>();
+        }
+
+        private void InitGoldShopItemPool()
         {
             if (goldShopItemPool != null && goldShopItemPool.Count > 0)
                 return;
@@ -88,34 +160,22 @@ namespace SkyDragonHunter.UI
                 ItemSlotData slot = new ItemSlotData();
                 slot.itemType = data.GetItemType();
                 slot.currCount = data.ItemAmount;
-                slot.maxCount = data.ItemBuyLimitCount;
+                slot.maxCount = data.ItemBuyLimit;
                 slot.currencyType = CurrencyType.Coin;
                 slot.pullRate = data.GenWeight;
                 slot.Price = data.Price;
                 goldShopItemPool.Add(slot);
             }
-
-            // Content 하위의 자식 오브젝트에서 슬롯 핸들러 수집
-            for (int i = 0; i < contentParent.childCount; i++)
-            {
-                var handler = contentParent.GetChild(i).GetComponent<ShopSlotHandler>();
-                if (handler != null)
-                    slotHandlers.Add(handler);
-            }
-
-            // 각 카테고리에 대해 빈 리스트 초기화
-            foreach (GoldShopCategory cat in System.Enum.GetValues(typeof(GoldShopCategory)))
-                categoryItems[cat] = new List<ShopSlotState>();
         }
 
         // 외부 탭 버튼에서 호출되는 메서드
         public void OnClickTab(int categoryIndex)
         {
-            RefreshCategory((GoldShopCategory)categoryIndex);
+            RefreshCategory((ShopCategory)categoryIndex);
         }
 
         // 주어진 카테고리로 아이템을 갱신
-        public void RefreshCategory(GoldShopCategory category)
+        public void RefreshCategory(ShopCategory category)
         {
             currentCategory = category;
 
@@ -130,15 +190,52 @@ namespace SkyDragonHunter.UI
             else
             {
                 Debug.Log($"[{category}] 기존 아이템 재사용");
-            }
+            }            
 
             ApplyItemsToSlots(categoryItems[category]);
-
             ResetScrollPosition();
+
+            // TODO: LJH
+            resetTime[(int)category] = DateTime.UtcNow;
+            // ~TODO
         }
 
-        // Private 메서드
+        // TODO: LJH
+        private void SetCategorySlotData(ShopCategory category)
+        {
+            if (!categoryItemDataDict.ContainsKey(category))
+                categoryItemDataDict.Add(category, new());
 
+
+            if (category == ShopCategory.Common)
+            {
+                SetCommonShopSlotData();
+                return;
+            }
+
+            for (int i = 0; i < maxItemCount; ++i)
+            {
+                var randId = DataTableMgr.GoldShopTable.GetWeightedRandomItemID(category);
+                var goldShopData = DataTableMgr.GoldShopTable.Get(randId);
+                ItemSlotData slotData = new ItemSlotData();
+                slotData.id = randId;
+                slotData.itemType = goldShopData.GetItemType();
+                slotData.pullRate = goldShopData.GenWeight;
+                slotData.maxCount = goldShopData.ItemBuyLimit;
+                slotData.currCount = slotData.maxCount;
+                slotData.currencyType = CurrencyType.Coin;
+                
+            }
+
+        }
+
+        private void SetCommonShopSlotData()
+        {
+
+        }
+        // ~TODO
+
+        // Private 메서드
         private void ResetScrollPosition()
         {
             // 캔버스 강제 갱신 후 최상단으로 이동
@@ -146,9 +243,8 @@ namespace SkyDragonHunter.UI
             scrollRect.verticalNormalizedPosition = 1f;
         }
 
-
         // 카테고리에 대해 출현 확률 기반으로 아이템을 선택하고 저장
-        private void GenerateRandomItemsFor(GoldShopCategory category)
+        private void GenerateRandomItemsFor(ShopCategory category)
         {
             List<ShopSlotState> result = new();
 
@@ -161,7 +257,7 @@ namespace SkyDragonHunter.UI
             categoryItems[category] = result;
 
             // [수정 포인트] 일반(Common) 탭은 리셋 코루틴을 실행하지 않음
-            if (category == GoldShopCategory.Common)
+            if (category == ShopCategory.Common)
                 return;
 
             // 기존 리셋 코루틴 정리
@@ -183,7 +279,7 @@ namespace SkyDragonHunter.UI
             }
 
             float totalWeight = valid.Sum(item => item.pullRate); // 전체 가중치 합
-            float rand = Random.Range(0f, totalWeight);            // 랜덤 값 선택
+            float rand = UnityEngine.Random.Range(0f, totalWeight);            // 랜덤 값 선택
             float cumulative = 0f;
 
             foreach (var item in valid)
@@ -197,19 +293,19 @@ namespace SkyDragonHunter.UI
         }
 
         // 각 카테고리에 대해 설정된 갱신 시간 반환
-        private float GetDelay(GoldShopCategory category)
+        private float GetDelay(ShopCategory category)
         {
             return category switch
             {
-                GoldShopCategory.Daily => dailyResetTime,
-                GoldShopCategory.Weekly => weeklyResetTime,
-                GoldShopCategory.Monthly => monthlyResetTime,
+                ShopCategory.Daily => dailyResetTime,
+                ShopCategory.Weekly => weeklyResetTime,
+                ShopCategory.Monthly => monthlyResetTime,
                 _ => 0f
             };
         }
 
         // 일정 시간이 지나면 해당 카테고리의 아이템 초기화
-        private IEnumerator ResetCategoryAfterDelay(GoldShopCategory category, float delay)
+        private IEnumerator ResetCategoryAfterDelay(ShopCategory category, float delay)
         {
             yield return new WaitForSeconds(delay);
             categoryItems[category].Clear();

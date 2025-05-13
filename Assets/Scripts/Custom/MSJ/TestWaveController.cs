@@ -118,6 +118,13 @@ namespace SkyDragonHunter
             {
                 tutorialController.tutorialPanel.gameObject.SetActive(true);
             }
+            // TODO: LJH
+            currentMissionLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
+            currentZonelLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
+
+            lastTriedMissionLevel = SaveLoadMgr.GameData.savedStageData.GetTriedMission();
+            lastTriedZonelLevel = SaveLoadMgr.GameData.savedStageData.GetTriedZone();            
+            // ~TODO
         }
 
         private void Update()
@@ -187,8 +194,12 @@ namespace SkyDragonHunter
 
         public void Init()
         {
-            stageInfo.missionLevel = 1;
-            stageInfo.zoneLevel = 1;
+            // TODO: LJH
+            //stageInfo.missionLevel = 1;
+            //stageInfo.zoneLevel = 1;
+            stageInfo.missionLevel = AccountMgr.CurrentStageLevel;
+            stageInfo.zoneLevel = AccountMgr.CurrentStageZoneLevel;
+            // ~TODO
             maxWaveTime = 10f;
             currentWaveTime = 0f;
             waveSlider.maxValue = maxWaveTime;
@@ -518,7 +529,9 @@ namespace SkyDragonHunter
                     destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
                     destructableEvent.destructEvent.AddListener(() =>
                     {
-                        AccountMgr.Coin += stageData.MonsterGOLD;
+                        // TODO: LJH
+                        AccountMgr.Coin += stageData.MonsterGOLD * 1000000;
+                        // ~TODO
                         AccountMgr.Food += stageData.MonsterGOLD * 10000;
                         var randVal = Random.Range(0, 1f);
                         bool isGenerateDungenTicket = randVal < 0.7f;

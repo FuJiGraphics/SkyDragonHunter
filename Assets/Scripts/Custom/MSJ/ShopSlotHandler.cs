@@ -51,6 +51,7 @@ namespace SkyDragonHunter
             buyButton.onClick.RemoveAllListeners();
             buyButton.onClick.AddListener(TryBuy);
         }
+
         // Public 메서드
         public void UpdateDiscountedPrice(float discountRate)
         {

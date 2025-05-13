@@ -29,6 +29,7 @@ namespace SkyDragonHunter.Managers
         Tutorial,
         Mastery,
         Growth,
+        ShopItem,
     }
 
     public class SaveLoadMgr
@@ -125,7 +126,7 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        [MenuItem("SkyDragonHunter/SaveLoad/¼¼ÀÌµå µ¥ÀÌÅÍ ÀúÀå #s")]
+        [MenuItem("SkyDragonHunter/SaveLoad/ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ #s")]
         public static bool SaveGameData()
         {
             if (!Application.isPlaying)
@@ -148,11 +149,11 @@ namespace SkyDragonHunter.Managers
             var json = JsonConvert.SerializeObject(GameData, jsonSettings);
             File.WriteAllText(path, json);
 
-            Debug.Log($"[SaveLoadMgr]: ¼¼ÀÌºê µ¥ÀÌÅÍ ÀúÀå ¿Ï·á {path}");
+            Debug.Log($"[SaveLoadMgr]: ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ {path}");
             return true;
         }
 
-        [MenuItem("SkyDragonHunter/SaveLoad/¼¼ÀÌµå µ¥ÀÌÅÍ ºÒ·¯¿À±â")]
+        [MenuItem("SkyDragonHunter/SaveLoad/ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½")]
         public static bool LoadGameData()
         {
             if (!Application.isPlaying)
@@ -185,12 +186,12 @@ namespace SkyDragonHunter.Managers
 
             loadedOnce = true;
 
-            Debug.Log($"[SaveLoadMgr]: ¼¼ÀÌºê µ¥ÀÌÅÍ ºÒ·¯¿À±â ¼º°ø {path}");
+            Debug.Log($"[SaveLoadMgr]: ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ {path}");
             return true;
         }
 
-        [ContextMenu("¼¼ÀÌºê µ¥ÀÌÅÍ ÃÊ±âÈ­")]
-        [MenuItem("SkyDragonHunter/SaveLoad/¼¼ÀÌµå µ¥ÀÌÅÍ ÃÊ±âÈ­")]
+        [ContextMenu("ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­")]
+        [MenuItem("SkyDragonHunter/SaveLoad/ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­")]
         public static void RemoveSaveData()
         {
             string[] saveFilePaths = Directory.GetFiles(SaveDirectory, "*", SearchOption.TopDirectoryOnly);
@@ -202,12 +203,12 @@ namespace SkyDragonHunter.Managers
                 string fileName = Path.GetFileName(saveFilePath);
                 if (fileName.StartsWith("SDH_SavedGameData"))
                 {
-                    Debug.Log($"[SaveLoadMgr]: ¼¼ÀÌºê µ¥ÀÌÅÍ »èÁ¦: {fileName}" );
+                    Debug.Log($"[SaveLoadMgr]: ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {fileName}" );
                     File.Delete(saveFilePath);
                 }
             }
 
-            Debug.Log("[SaveLoadMgr]: ¼¼ÀÌºê µ¥ÀÌÅÍ »èÁ¦ ¿Ï·á");
+            Debug.Log("[SaveLoadMgr]: ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
         }
 
         public static bool LoadGameData(Scene scene)
