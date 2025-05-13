@@ -46,7 +46,7 @@ public class UIShopItemSlot : MonoBehaviour
             lockedImage.sprite = slotData.locked ? lockedSprite : unlockedSprite;
         }
         currencyImage.sprite = slotData.CurrencyIcon;
-        priceText.text = slotData.Price.ToUnit();
+        priceText.text = slotData.price.ToUnit();
         buyButton.interactable = slotData.Purchasable;
     }
 

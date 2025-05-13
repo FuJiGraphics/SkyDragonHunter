@@ -42,7 +42,7 @@ namespace SkyDragonHunter
         // 외부에서 할인율 변경 시 가격 반영
         public void UpdateDiscountedPrice(float discountRate)
         {
-            currentPrice = itemData.Price * (1f - discountRate);
+            currentPrice = itemData.price * (1f - discountRate);
             priceText.text = currentPrice.ToUnit();
         }
 

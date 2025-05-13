@@ -46,6 +46,9 @@ namespace SkyDragonHunter.Managers
 
         // Properties
         public static int SaveDataMajorVersion { get; private set; } = 0;
+        public static bool gameDataSaveNeeded = false;
+        public static bool localDataSaveNeeded = false;
+
         private static bool initialized = false;
 
         // TODO: LJH TEMP
@@ -250,7 +253,7 @@ namespace SkyDragonHunter.Managers
             }
 
             var json = File.ReadAllText(path);
-            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveDataVC>(json);
+            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveDataVC>(json, jsonSettings);
 
             while (localSettingsData.MajorVersion < SaveDataMajorVersion)
             {
@@ -272,11 +275,13 @@ namespace SkyDragonHunter.Managers
             if (!LoadGameData())
             {
                 InitializeGameData();
+                gameDataSaveNeeded = true;
             }
 
             if(!LoadLocalSettings())
             {
                 InitializeLocalSettings();
+                localDataSaveNeeded = true;
             }
 
             SceneChangeMgr.beforeSceneUnloaded += CallSaveGameData;

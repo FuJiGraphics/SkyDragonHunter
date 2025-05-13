@@ -57,7 +57,7 @@ namespace SkyDragonHunter
 
         public void UpdateDiscountedPrice(float discountRate)
         {
-            currentPrice = slotState.item.Price * (1f - discountRate);
+            currentPrice = slotState.item.price * (1f - discountRate);
             priceText.text = currentPrice.ToUnit();
         }
 
@@ -70,7 +70,7 @@ namespace SkyDragonHunter
 
             // 할인율 계산
             float discountRate = favorabilityMgr.GetDiscountRate();
-            currentPrice = slotState.item.Price * (1f - discountRate); // 할인된 가격 저장
+            currentPrice = slotState.item.price * (1f - discountRate); // 할인된 가격 저장
 
             var item = state.item.GetData();
 

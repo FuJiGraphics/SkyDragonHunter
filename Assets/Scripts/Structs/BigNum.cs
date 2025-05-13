@@ -82,7 +82,7 @@ namespace SkyDragonHunter.Structs
         }
 
         public string ToUnit()
-        {
+        {            
             StringBuilder sb = new StringBuilder();
             sb.Append(m_Significance);
             foreach (var c in m_Units)
