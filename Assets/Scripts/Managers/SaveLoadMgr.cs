@@ -200,7 +200,7 @@ namespace SkyDragonHunter.Managers
             foreach (string saveFilePath in saveFilePaths)
             {
                 string fileName = Path.GetFileName(saveFilePath);
-                if (fileName.StartsWith(SaveFileName.First()))
+                if (fileName.StartsWith("SDH_SavedGameData"))
                 {
                     Debug.Log($"[SaveLoadMgr]: 세이브 데이터 삭제: {fileName}" );
                     File.Delete(saveFilePath);
