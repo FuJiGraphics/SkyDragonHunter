@@ -30,7 +30,7 @@ namespace SkyDragonHunter
 
         public static void LoadScene(string sceneName, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            Debug.LogError($"LoadedScene Called with string [{sceneName}], currentScene : [{m_currentScene.name}]");
+            // Debug.LogError($"LoadedScene Called with string [{sceneName}], currentScene : [{m_currentScene.name}]");
             if (m_currentScene.name == "GameScene" || m_currentScene.name == "DungeonScene")
             {
                 beforeSceneUnloaded?.Invoke();
@@ -41,7 +41,7 @@ namespace SkyDragonHunter
 
         public static void LoadScene(int sceneBuildIndex, LoadSceneMode mode = LoadSceneMode.Single)
         {
-            Debug.LogError($"LoadedScene Called with buildIndex [{sceneBuildIndex}/{(SceneIds)sceneBuildIndex}], currentScene : [{m_currentScene.name}]");
+            // Debug.LogError($"LoadedScene Called with buildIndex [{sceneBuildIndex}/{(SceneIds)sceneBuildIndex}], currentScene : [{m_currentScene.name}]");
             if (m_currentScene.name == "GameScene" || m_currentScene.name == "DungeonScene")
             {
                 beforeSceneUnloaded?.Invoke();

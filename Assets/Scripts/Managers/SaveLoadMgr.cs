@@ -28,6 +28,7 @@ namespace SkyDragonHunter.Managers
         EquipmentUI,
         Tutorial,
         Mastery,
+        Growth,
     }
 
     public class SaveLoadMgr

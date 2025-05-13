@@ -28,12 +28,12 @@ namespace SkyDragonHunter {
             var airshipGo = GameMgr.FindObject($"Airship");            
             if (airshipGo == null)
             {
-                Debug.LogError($"Apply AirshipData Failed, cannot find airship GameObject");
+                // Debug.LogError($"Apply AirshipData Failed, cannot find airship GameObject");
                 return;
             }            
             if (!airshipGo.TryGetComponent<CrewEquipmentController>(out var equipController))
             {
-                Debug.LogError($"Apply AirshipData Failed, cannot find crewEquipController");
+                // Debug.LogError($"Apply AirshipData Failed, cannot find crewEquipController");
                 return;
             }
             var equipSlots = equipController.EquipSlots;
@@ -42,7 +42,7 @@ namespace SkyDragonHunter {
             {
                 if (equipSlots[i] == null)
                 {
-                    Debug.LogWarning($"[SavedAirshipData] crew null in mounted slot index[{i}]");
+                    // Debug.LogWarning($"[SavedAirshipData] crew null in mounted slot index[{i}]");
                     mountedCrewIDs[i] = 0;
                     continue;
                 }
@@ -50,7 +50,7 @@ namespace SkyDragonHunter {
                 var equipCrewBT = equipSlots[i].GetComponent<NewCrewControllerBT>();
                 if(equipCrewBT == null)
                 {
-                    Debug.LogError($"[SavedAirshipData] Cannot find CrewControllerBT in mounted slot index[{i}]");
+                    // Debug.LogError($"[SavedAirshipData] Cannot find CrewControllerBT in mounted slot index[{i}]");
                     continue;
                 }
                 mountedCrewIDs[i] = equipCrewBT.ID;

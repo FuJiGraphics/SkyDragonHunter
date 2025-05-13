@@ -14,14 +14,6 @@ namespace SkyDragonHunter.SaveLoad
         public DateTime accountCreatedTime;
 
         public int crystalLevel;
-
-        public int atkLevel;
-        public int hpLevel;
-        public int defLevel;
-        public int regLevel;
-        public int critRateLevel;
-        public int critDmgLevel;
-
         public DateTime lastOnlineTime;
 
         public void InitData()
@@ -33,13 +25,6 @@ namespace SkyDragonHunter.SaveLoad
             accountCreatedTime = DateTime.UtcNow;
 
             crystalLevel = 1;
-
-            atkLevel = 0;
-            hpLevel = 0;
-            defLevel = 0;
-            regLevel = 0;
-            critRateLevel = 0;
-            critDmgLevel = 0;
         }
 
         public void UpdateSavedData()

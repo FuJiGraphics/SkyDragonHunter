@@ -46,6 +46,7 @@ namespace SkyDragonHunter.UI{
         private BigNum m_NextStat;
         private BigNum m_NeedCoin;
 
+        public int ID => growthTableId;
         public GrowthStatType StatType { get; set; }
         public int MaxLevel { get; set; } = 10;
         public bool IsMaxLevel => Level >= MaxLevel;
@@ -171,20 +172,12 @@ namespace SkyDragonHunter.UI{
 
         public void SetNextStatInfo(int nextIncreaseLevel)
         {
-            NextStat = 0;
-            for (int i = 0; i < nextIncreaseLevel; ++i)
-            {
-                NextStat += CalculateNextStat(Level + i);
-            }
+            NextStat = SumStats(Level, nextIncreaseLevel, BasicStat, StatIncrease);
         }
 
         public void SetNeedCoin(int nextIncreaseLevel)
         {
-            NeedCoin = 0;
-            for (int i = 0; i < nextIncreaseLevel; ++i)
-            {
-                NeedCoin += CalculateNeedCoin(Level + i);
-            }
+            NeedCoin = SumStats(Level, nextIncreaseLevel, BasicCost, CostIncrease);
         }
 
         public void LevelUp(int increase)
@@ -247,42 +240,29 @@ namespace SkyDragonHunter.UI{
             }
         }
 
-        private BigNum CalculateNextStat(int currLevel)
+        private BigNum SumStats(int startLevel, int increaseCount, BigNum baseValue, BigNum increment)
         {
-            int level = Mathf.Min(currLevel - 1, MaxLevel);
-            BigNum total = BasicStat;
-
-            int fullSections = level / 100;
-            int remainder = level % 100;
-
-            for (int i = 0; i < fullSections; i++)
+            BigNum sum = 0;
+            for (int i = 0; i < increaseCount; ++i)
             {
-                int weight = i + 1;
-                total += StatIncrease * weight * 100;
+                int currLevel = startLevel + i;
+                sum += CalculateValue(currLevel, baseValue, increment);
             }
-
-            int currentWeight = fullSections + 1;
-            total += StatIncrease * currentWeight * remainder;
-
-            return total;
+            return sum;
         }
 
-        private BigNum CalculateNeedCoin(int currLevel)
+        private BigNum CalculateValue(int currLevel, BigNum baseValue, BigNum increment)
         {
             int level = Mathf.Min(currLevel - 1, MaxLevel);
-            BigNum total = BasicCost;
+            BigNum total = baseValue;
 
             int fullSections = level / 100;
             int remainder = level % 100;
 
-            for (int i = 0; i < fullSections; i++)
-            {
-                int weight = i + 1; 
-                total += CostIncrease * weight * 100;
-            }
+            total += increment * 100 * fullSections * (fullSections + 1) / 2;
 
             int currentWeight = fullSections + 1;
-            total += CostIncrease * currentWeight * remainder;
+            total += increment * currentWeight * remainder;
 
             return total;
         }

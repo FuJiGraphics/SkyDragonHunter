@@ -23,7 +23,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_AttackInfoText;
         [SerializeField] private Image m_HealthInfoIcon;
         [SerializeField] private TextMeshProUGUI m_HealthInfoText;
-        [SerializeField] private UIGrowthNode[] growthNodes;
+        [SerializeField] private UIGrowthNode[] m_GrowthNodes;
 
         [Header("Level Up Panel")]
         [SerializeField] private Button m_LevelUpButton;
@@ -33,14 +33,16 @@ namespace SkyDragonHunter.UI {
         private CharacterStatus m_AirshipStats;
 
         // 속성 (Properties)
+        public UIGrowthNode[] GrowthNodes => m_GrowthNodes;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         private void OnEnable()
         {
-            if (growthNodes != null)
+            if (m_GrowthNodes != null)
             {
-                foreach (var node in growthNodes)
+                foreach (var node in m_GrowthNodes)
                 {
                     node.UpdateLevelUpArrowState();
                 }
@@ -58,7 +60,7 @@ namespace SkyDragonHunter.UI {
         // Public 메서드
         public void Init()
         {
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 UIGrowthNode currNode = node;
                 node.Init();
@@ -82,6 +84,20 @@ namespace SkyDragonHunter.UI {
             m_AirshipStats.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
             m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedAirshipMaxDamage);
             m_AirshipStats.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedAirshipMaxHealth);
+        }
+
+        public UIGrowthNode FindNode(int tableId)
+        {
+            UIGrowthNode result = null;
+            foreach (var node in m_GrowthNodes)
+            {
+                if (node.ID == tableId)
+                {
+                    result = node;
+                    break;
+                }
+            }
+            return result;
         }
 
         public void OnChangedAccountNickname(string nickname)
@@ -144,7 +160,7 @@ namespace SkyDragonHunter.UI {
                 case GrowthStatType.CriticalMultiplier:
                     // TODO: AlphaUnit Convert
                     //AccountMgr.DefaultGrowthStats.SetCriticalMultiplier((float)node.CurrentStat.Value);
-                    AccountMgr.DefaultGrowthStats.SetCriticalMultiplier(2.5f);
+                    AccountMgr.DefaultGrowthStats.SetCriticalMultiplier((float)node.CurrentStat);
                     // ~TODO
                     break;
             }
@@ -154,10 +170,13 @@ namespace SkyDragonHunter.UI {
 
         public void LevelUp1()
         {
+            if (m_LevelUpInc == 1)
+                return;
+
             m_LevelUpInc = 1;
             ClearAllClickableIcons();
             m_ClickableIcons[0].SetActive(true);
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
@@ -167,10 +186,13 @@ namespace SkyDragonHunter.UI {
         }
         public void LevelUp10()
         {
+            if (m_LevelUpInc == 10)
+                return;
+
             m_LevelUpInc = 10;
             ClearAllClickableIcons();
             m_ClickableIcons[1].SetActive(true);
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
@@ -180,10 +202,13 @@ namespace SkyDragonHunter.UI {
         }
         public void LevelUp100()
         {
+            if (m_LevelUpInc == 100)
+                return;
+
             m_LevelUpInc = 100;
             ClearAllClickableIcons();
             m_ClickableIcons[2].SetActive(true);
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
@@ -193,10 +218,13 @@ namespace SkyDragonHunter.UI {
         }
         public void LevelUp1000()
         {
+            if (m_LevelUpInc == 1000)
+                return;
+
             m_LevelUpInc = 1000;
             ClearAllClickableIcons();
             m_ClickableIcons[3].SetActive(true);
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.SetNextStatInfo(m_LevelUpInc);
                 node.SetNeedCoin(m_LevelUpInc);
@@ -207,10 +235,10 @@ namespace SkyDragonHunter.UI {
 
         public void OnCrystalLevelUp()
         {
-            if (growthNodes == null)
+            if (m_GrowthNodes == null)
                 return;
 
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.DirtyUI();
             }
@@ -218,10 +246,10 @@ namespace SkyDragonHunter.UI {
         
         public void OnClearAllNodes()
         {
-            if (growthNodes == null)
+            if (m_GrowthNodes == null)
                 return;
 
-            foreach (var node in growthNodes)
+            foreach (var node in m_GrowthNodes)
             {
                 node.Clear();
             }
@@ -248,9 +276,9 @@ namespace SkyDragonHunter.UI {
 
         private void UpdateNodeLevelUpArrowState()
         {
-            if (growthNodes != null)
+            if (m_GrowthNodes != null)
             {
-                foreach (var node in growthNodes)
+                foreach (var node in m_GrowthNodes)
                 {
                     node.UpdateLevelUpArrowState();
                 }
