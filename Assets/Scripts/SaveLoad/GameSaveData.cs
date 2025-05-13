@@ -29,7 +29,7 @@ namespace SkyDragonHunter.SaveLoad
         public SavedArtifactsData savedArtifactData;
         public SavedUpgradeCounts savedUpgradeCounts;
         public SavedTutorialData savedTutorialData;
-        public SavedShopItemsData savedShopItemData;
+        public SavedMasteryData savedMasteryData;
 
         // Temp SaveDatas
         public SavedQuestProgresses savedQuestProgresses;
@@ -48,8 +48,8 @@ namespace SkyDragonHunter.SaveLoad
             savedArtifactData = new SavedArtifactsData();
             savedUpgradeCounts = new SavedUpgradeCounts();
             savedQuestProgresses = new SavedQuestProgresses();
-            savedTutorialData = new();
-            savedShopItemData = new();
+            savedTutorialData = new SavedTutorialData();
+            savedMasteryData = new SavedMasteryData();
 
             savedAccountData.InitData();
             savedStageData.InitData();
@@ -63,7 +63,7 @@ namespace SkyDragonHunter.SaveLoad
             savedUpgradeCounts.InitData();
             savedQuestProgresses.InitData();
             savedTutorialData.InitData();
-            savedShopItemData.InitData();
+            savedMasteryData.InitData();
         }
 
         public override void Initialize()
@@ -100,7 +100,7 @@ namespace SkyDragonHunter.SaveLoad
                     savedDungeonData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Artifact:
-
+                    savedArtifactData.UpdateSavedData();
                     break;
                 case SaveDataTypes.UpgradeCount:
                     savedUpgradeCounts.UpdateData();
@@ -111,8 +111,8 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Tutorial:
                     savedTutorialData.UpdateSavedData();
                     break;
-                case SaveDataTypes.ShopItem:
-                    savedShopItemData.UpdateSavedData();
+                case SaveDataTypes.Mastery:
+                    savedMasteryData.UpdateSavedData();
                     break;
             }
         }
@@ -146,7 +146,7 @@ namespace SkyDragonHunter.SaveLoad
                     savedDungeonData.ApplySavedData();
                     break;
                 case SaveDataTypes.Artifact:
-
+                    savedArtifactData.ApplySavedData();
                     break;
                 case SaveDataTypes.UpgradeCount:
                     savedUpgradeCounts.ApplySavedData();
@@ -157,8 +157,8 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Tutorial:
                     savedTutorialData.ApplySavedData();
                     break;
-                case SaveDataTypes.ShopItem:
-                    savedShopItemData.ApplySavedData();
+                case SaveDataTypes.Mastery:
+                    savedMasteryData.ApplySavedData();
                     break;
             }
         }

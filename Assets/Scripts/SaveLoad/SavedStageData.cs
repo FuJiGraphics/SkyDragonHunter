@@ -26,12 +26,12 @@ namespace SkyDragonHunter.SaveLoad
             var waveControllerGo = GameMgr.FindObject("WaveController");
             if(waveControllerGo == null)
             {
-                Debug.LogError($"Update Stage Data Failed, WaveController GO Null");
+                // Debug.LogError($"Update Stage Data Failed, WaveController GO Null");
                 return;
             }
             if(!waveControllerGo.TryGetComponent<TestWaveController>(out var waveController))
             {
-                Debug.LogError($"Update Stage Data Failed, WaveController Null");
+                // Debug.LogError($"Update Stage Data Failed, WaveController Null");
                 return;
             }
             currentStage = waveController.CurrentTriedMissionLevel;
@@ -46,12 +46,12 @@ namespace SkyDragonHunter.SaveLoad
             var waveControllerGo = GameMgr.FindObject("WaveController");
             if (waveControllerGo == null)
             {
-                Debug.LogError($"Apply Stage Data Failed, WaveController GO Null");
+                // Debug.LogError($"Apply Stage Data Failed, WaveController GO Null");
                 return;
             }
             if (!waveControllerGo.TryGetComponent<TestWaveController>(out var waveController))
             {
-                Debug.LogError($"Apply Stage Data Failed, WaveController Null");
+                // Debug.LogError($"Apply Stage Data Failed, WaveController Null");
                 return;
             }
             AccountMgr.CurrentStageLevel = currentStage;

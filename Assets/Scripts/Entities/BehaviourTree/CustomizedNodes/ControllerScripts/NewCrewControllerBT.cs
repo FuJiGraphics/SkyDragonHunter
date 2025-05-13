@@ -32,7 +32,6 @@ namespace SkyDragonHunter.Entities
         [SerializeField] private Transform m_Target;
         private BehaviourTree<NewCrewControllerBT> m_BehaviourTree;
         private float slowMultiplier;
-        private float skillTimer;
         private float exhaustionTime = 10f;
         private Vector2 airshipPos;
         [SerializeField] private bool isMounted;
@@ -92,7 +91,7 @@ namespace SkyDragonHunter.Entities
                 }
                 else
                 {
-                    Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {m_Target.name}");
+                   //  Debug.LogWarning($"[{gameObject.name}] Could not find ColliderInfo from target {m_Target.name}");
                 }
 
                 return distance - halfWidth;
@@ -176,11 +175,11 @@ namespace SkyDragonHunter.Entities
             if (crewData.SkillPrefabName != "0")
             {
                 loadedSkillGo = ResourcesMgr.Load<GameObject>(crewData.SkillPrefabName);
-                Debug.LogWarning($"[{gameObject.name}] skill [{crewData.SkillPrefabName}] allocated.");
+                // Debug.LogWarning($"[{gameObject.name}] skill [{crewData.SkillPrefabName}] allocated.");
             }
             else
             {
-                Debug.LogWarning($"[{gameObject.name}] skill not set, skill prefab name '0'");
+                // Debug.LogWarning($"[{gameObject.name}] skill not set, skill prefab name '0'");
             }
             SkillBase loadedSkill = null;
             if (loadedSkillGo != null)
@@ -219,7 +218,7 @@ namespace SkyDragonHunter.Entities
 
         public void SetDataFromTableWithExistingIDTemp(int level)
         {
-            Debug.LogWarning($"Starting Crew SetData ID/LVL[{ID}/{level}]");
+            // Debug.LogWarning($"Starting Crew SetData ID/LVL[{ID}/{level}]");
             var lvlBonus = Mathf.Min(0, level - 1);
 
             var crewData = DataTableMgr.CrewTable.Get(ID);
@@ -260,17 +259,13 @@ namespace SkyDragonHunter.Entities
             characterStatus = GetComponent<CharacterStatus>();
             SetAggroBox();
             InitBehaviourTree();
-
-            // TODO: LJH Temp Skill Timer
-            skillTimer = 1f;            
-            // ~TODO
         }
 
         private void SetAggroBox()
         {
             var airshipGO = GameMgr.FindObject("Airship");
-            if (airshipGO != null)
-                Debug.Log($"Found Airship");
+            // if (airshipGO != null)
+                // Debug.Log($"Found Airship");
             var airshipPosX = airshipGO.transform.position.x;
 
             aggroBox = new Vector2(Mathf.Abs(airshipPosX) + 10, 300f);
@@ -370,7 +365,7 @@ namespace SkyDragonHunter.Entities
             }
             else
             {
-                Debug.Log($"crew target None");
+                // Debug.Log($"crew target None");
             }
         }
 
@@ -398,7 +393,7 @@ namespace SkyDragonHunter.Entities
             }
             else
             {
-                Debug.Log($"crew target None");
+                // Debug.Log($"crew target None");
             }
         }
 

@@ -135,6 +135,36 @@ namespace SkyDragonHunter.UI {
             }
         }
 
+        public void SetNodeLevel(int id, int level)
+        {
+            UIMasteryNode findNode = GetNode(id);
+            if (findNode != null)
+            {
+                for (int i = findNode.CurrentLevel; i < level; ++i)
+                {
+                    findNode.SocketLevelUp();
+                }
+            }
+            DirtyMastery();
+        }
+
+        public UIMasteryNode GetNode(int id)
+        {
+            UIMasteryNode result = null;
+            foreach (var nodeList in m_GenNodeMap)
+            {
+                foreach (var node in nodeList.Value)
+                {
+                    if (node.ID == id)
+                    {
+                        result = node;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+
         // Private 메서드
         private void SetMaxLevel(int maxLevel)
         {

@@ -3,6 +3,8 @@ using SkyDragonHunter.SaveLoad;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GameSaveDataVC = SkyDragonHunter.SaveLoad.GameSaveDataV0;
@@ -25,7 +27,7 @@ namespace SkyDragonHunter.Managers
         QuestProgress,
         EquipmentUI,
         Tutorial,
-        ShopItem,
+        Mastery,
     }
 
     public class SaveLoadMgr
@@ -34,8 +36,8 @@ namespace SkyDragonHunter.Managers
         private static string SaveDirectory = $"{Application.persistentDataPath}/Save";
         private static readonly string[] SaveFileName =
         {
-            "SDH_SavedGameData2.json",
-            "SDH_SavedLocalSettingData2.json",
+            "SDH_SavedGameData.json",
+            "SDH_SavedLocalSettingData.json",
         };
                 
         private static JsonSerializerSettings jsonSettings;
@@ -55,6 +57,9 @@ namespace SkyDragonHunter.Managers
 
         static SaveLoadMgr()
         {
+            if (!Application.isPlaying)
+                return;
+
             jsonSettings = new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented,
@@ -83,7 +88,7 @@ namespace SkyDragonHunter.Managers
         {
             if (saveDataTypes == null ||  saveDataTypes.Length == 0)
             {
-                Debug.LogError($"Update SaveFile Failed : SaveDataType unavailable");
+                // Debug.LogError($"Update SaveFile Failed : SaveDataType unavailable");
                 return;
             }
 
@@ -104,7 +109,7 @@ namespace SkyDragonHunter.Managers
         {
             if (saveDataTypes == null || saveDataTypes.Length == 0)
             {
-                Debug.LogError($"Apply Saved File Failed : SaveDataType unavailable");
+                // Debug.LogError($"Apply Saved File Failed : SaveDataType unavailable");
                 return;
             }
 
@@ -117,13 +122,17 @@ namespace SkyDragonHunter.Managers
                 GameData.ApplySavedData(saveDataType);
                 // Debug.Log($"Saved Data type [{saveDataType}] applied to game successfully");
             }
-        }       
+        }
 
+        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 저장 #s")]
         public static bool SaveGameData()
         {
-            if(GameData == null)
+            if (!Application.isPlaying)
+                return false;
+
+            if (GameData == null)
             {
-                Debug.LogError($"Save Failed : GameData Null");
+                // Debug.LogError($"Save Failed : GameData Null");
                 return false;
             }
             if(!Directory.Exists(SaveDirectory))
@@ -138,22 +147,25 @@ namespace SkyDragonHunter.Managers
             var json = JsonConvert.SerializeObject(GameData, jsonSettings);
             File.WriteAllText(path, json);
 
-            Debug.LogError($"Game Data Saved");
-
+            Debug.Log($"[SaveLoadMgr]: 세이브 데이터 저장 완료 {path}");
             return true;
         }
 
+        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 불러오기")]
         public static bool LoadGameData()
         {
+            if (!Application.isPlaying)
+                return false;
+
             if(loadedOnce)
             {
-                Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
+                // Debug.LogWarning($"[TEMP] Already Loaded Once, Cancel repeated loading");
                 return false;
             }
             var path = Path.Combine(SaveDirectory , SaveFileName[0]);
             if(!File.Exists(path))
             {
-                Debug.LogError($"Load Failed : No Game Data");
+                // Debug.LogError($"Load Failed : No Game Data");
                 return false;
             }
 
@@ -168,15 +180,38 @@ namespace SkyDragonHunter.Managers
 
             ApplySavedData();
 
-            Debug.LogWarning($"LoadGameData Completed");
+            // Debug.LogWarning($"LoadGameData Completed");
 
             loadedOnce = true;
+
+            Debug.Log($"[SaveLoadMgr]: 세이브 데이터 불러오기 성공 {path}");
             return true;
+        }
+
+        [ContextMenu("세이브 데이터 초기화")]
+        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 초기화")]
+        public static void RemoveSaveData()
+        {
+            string[] saveFilePaths = Directory.GetFiles(SaveDirectory, "*", SearchOption.TopDirectoryOnly);
+            if (saveFilePaths == null || saveFilePaths.Length <= 0)
+                return;
+
+            foreach (string saveFilePath in saveFilePaths)
+            {
+                string fileName = Path.GetFileName(saveFilePath);
+                if (fileName.StartsWith(SaveFileName.First()))
+                {
+                    Debug.Log($"[SaveLoadMgr]: 세이브 데이터 삭제: {fileName}" );
+                    File.Delete(saveFilePath);
+                }
+            }
+
+            Debug.Log("[SaveLoadMgr]: 세이브 데이터 삭제 완료");
         }
 
         public static bool LoadGameData(Scene scene)
         {
-            Debug.LogError($"using scene argument to Load Game Data Currently not supported");
+            // Debug.LogError($"using scene argument to Load Game Data Currently not supported");
             LoadGameData();
 
             return false;
@@ -186,7 +221,7 @@ namespace SkyDragonHunter.Managers
         {
             if (LocalSettingData == null)
             {
-                Debug.LogError($"Save Failed : Local Save Data Null");
+                // Debug.LogError($"Save Failed : Local Save Data Null");
                 return false;
             }
             if (!Directory.Exists(SaveDirectory))
@@ -198,7 +233,7 @@ namespace SkyDragonHunter.Managers
             var json = JsonConvert.SerializeObject(LocalSettingData, jsonSettings);
             File.WriteAllText(path, json);
 
-            Debug.Log($"Local Setting Data Saved");
+            // Debug.Log($"Local Setting Data Saved");
 
             return true;
         }
@@ -208,7 +243,7 @@ namespace SkyDragonHunter.Managers
             var path = Path.Combine(SaveDirectory, SaveFileName[1]);
             if (!File.Exists(path))
             {
-                Debug.LogWarning($"Load Failed : No Local Settings Data");
+                // Debug.LogWarning($"Load Failed : No Local Settings Data");
                 return false;
             }
 
@@ -228,7 +263,7 @@ namespace SkyDragonHunter.Managers
         {
             if (initialized)
             {
-                Debug.Log($"SaveLoadMgr Init failed : initialized once");
+                // Debug.Log($"SaveLoadMgr Init failed : initialized once");
                 return;
             }
 
@@ -243,7 +278,7 @@ namespace SkyDragonHunter.Managers
             }
 
             SceneChangeMgr.beforeSceneUnloaded += CallSaveGameData;
-            Debug.LogWarning($"SaveLoadMgr Init completed");
+            // Debug.LogWarning($"SaveLoadMgr Init completed");
 
             initialized = true;
         }
@@ -251,7 +286,7 @@ namespace SkyDragonHunter.Managers
         // Private Methods
         public static void CallSaveGameData()
         {
-            Debug.LogError($"called SaveGameData");
+            // Debug.LogError($"called SaveGameData");
             SaveGameData();
         }
 
