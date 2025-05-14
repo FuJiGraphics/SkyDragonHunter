@@ -136,7 +136,9 @@ namespace SkyDragonHunter
             currentZonelLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
 
             lastTriedMissionLevel = SaveLoadMgr.GameData.savedStageData.GetTriedMission();
-            lastTriedZonelLevel = SaveLoadMgr.GameData.savedStageData.GetTriedZone();            
+            lastTriedZonelLevel = SaveLoadMgr.GameData.savedStageData.GetTriedZone();
+
+            Init();
             // ~TODO
         }
 
@@ -180,7 +182,7 @@ namespace SkyDragonHunter
         // Public 메서드
         public void UpdateTutorialState()
         {
-            if (!m_TutorialMgr.IsStartTutorial)
+            if (!m_TutorialMgr.IsStartTutorial)            
                 return;
 
             if (isStopped && checkDistance)
@@ -210,8 +212,8 @@ namespace SkyDragonHunter
             // TODO: LJH
             //stageInfo.missionLevel = 1;
             //stageInfo.zoneLevel = 1;
-            stageInfo.missionLevel = AccountMgr.CurrentStageLevel;
-            stageInfo.zoneLevel = AccountMgr.CurrentStageZoneLevel;
+            stageInfo.missionLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
+            stageInfo.zoneLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
             // ~TODO
             maxWaveTime = 10f;
             currentWaveTime = 0f;
@@ -224,8 +226,8 @@ namespace SkyDragonHunter
             isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
-            currentMissionLevel = AccountMgr.CurrentStageLevel;
-            currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
+            //currentMissionLevel = AccountMgr.CurrentStageLevel;
+            //currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
             isSuccessChangeBackGround = true;
             SetStageText(currentMissionLevel, currentZonelLevel);
             //OnSaveLastClearWave();
@@ -268,6 +270,7 @@ namespace SkyDragonHunter
             {
                 currentZonelLevel = zone;
             }
+            SaveLoadMgr.CallSaveGameData();
             OnGoSelectCurrentWave();
         }
 
@@ -295,6 +298,7 @@ namespace SkyDragonHunter
 
         public void OnTestWaveFailedActive()
         {
+            Debug.LogError($"!");
             feildPanel.SetActive(true);
             isInfiniteMode = true;
             OnSetCurrentWave();
@@ -305,17 +309,17 @@ namespace SkyDragonHunter
             feildPanel.SetActive(false);
         }
 
-        public void ReStartAll()
-        {
-            Debug.Log("리스타트.");
-            OnDisableClearPanel();
-            currentZonelLevel = 1;
-            currentMissionLevel = 1;
-            currentWaveTime = 0f;
-            backGroundIndex = 0;
-            OnSetCurrentWave();
-            OnTestWaveFailedUnActive();
-        }
+        //public void ReStartAll()
+        //{
+        //    Debug.Log("리스타트.");
+        //    OnDisableClearPanel();
+        //    currentZonelLevel = 1;
+        //    currentMissionLevel = 1;
+        //    currentWaveTime = 0f;
+        //    backGroundIndex = 0;
+        //    OnSetCurrentWave();
+        //    OnTestWaveFailedUnActive();
+        //}
 
         // Private 메서드
         private void OnClearMonster()
@@ -379,7 +383,6 @@ namespace SkyDragonHunter
                     {
                         currentZonelLevel = 1;
                         currentMissionLevel++;
-
                     }
 
                     SetStageText(currentMissionLevel, currentZonelLevel);
@@ -393,6 +396,8 @@ namespace SkyDragonHunter
                     waveDuration = stageData.WaveLength;
                     waveSlider.maxValue = waveDuration;
                     OnChangeBackGround(currentMissionLevel - 1);
+
+                    SaveLoadMgr.CallSaveGameData();
                 }
             }
         }
@@ -456,7 +461,7 @@ namespace SkyDragonHunter
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentMissionLevel - 1);
         }
-
+        
         private void OnGoToLoadCurrentWave()
         {
             OnClearMonster();
@@ -645,8 +650,8 @@ namespace SkyDragonHunter
         {
             GameMgr.FindObject<UiMgr>("UiMgr").OnInGamePanels();
             waveSelectButton.gameObject.SetActive(true);
-            bossSlider.gameObject.SetActive(true);
-            bossTimerSlider.gameObject.SetActive(true);
+            bossSlider.gameObject.SetActive(false);
+            bossTimerSlider.gameObject.SetActive(false);
             clearPanel.SetActive(false);
             currentOpenPanel = 5f;
         }
@@ -940,8 +945,9 @@ namespace SkyDragonHunter
         // TODO: LJH
         private void UpdateBossSliders()
         {
-            if (!bossSlider.gameObject.activeSelf || isBossCleared)
-                return;
+            if (!bossSlider.gameObject.activeSelf || isBossCleared)            
+                return; 
+            
             bossTimer -= Time.deltaTime;
             if (bossTimer < 0)
             {

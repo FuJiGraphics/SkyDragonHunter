@@ -50,16 +50,17 @@ namespace SkyDragonHunter.SaveLoad
                 return;
             }
 
-            AccountMgr.CurrentStageLevel = currentStage;
-            AccountMgr.CurrentStageZoneLevel = currentZone;
+           
             if (waveControllerGo.TryGetComponent<TestWaveController>(out var waveController))
             {
+                AccountMgr.CurrentStageLevel = currentStage;
+                AccountMgr.CurrentStageZoneLevel = currentZone;
                 waveController.CurrentTriedMissionLevel = currentStage;
                 waveController.CurrentTriedZonelLevel = currentZone;
                 GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
                 waveController.LastTriedMissionLevel = newTriedMission;
                 waveController.LastTriedZoneLevel = newTriedZone;
-                waveController.Init();
+                //waveController.Init();
             }
         }
 
