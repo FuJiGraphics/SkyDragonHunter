@@ -33,6 +33,7 @@ namespace SkyDragonHunter.Tables {
         public static readonly string Buff = "BuffTable";
         public static readonly string Tutorial = "TutorialTable";
         public static readonly string CrewLevel = "CrewLevelTable";
+        public static readonly string Facility = "FacilityTable";
 
 
     } // Scope by class DataTableIds

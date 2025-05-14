@@ -31,6 +31,7 @@ namespace SkyDragonHunter.Managers
         public static BuffTable BuffTable => Get<BuffTable>(DataTableIds.Buff);
         public static TutorialTable TutorialTable => Get<TutorialTable>(DataTableIds.Tutorial);
         public static CrewLevelTable CrewLevelTable => Get<CrewLevelTable>(DataTableIds.CrewLevel);
+        public static FacilityTable FacilityTable => Get<FacilityTable>(DataTableIds.Facility);
 
         // Static Constructor
         static DataTableMgr()
@@ -85,6 +86,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<BuffTable>(DataTableIds.Buff);
             LoadTable<TutorialTable>(DataTableIds.Tutorial);
             LoadTable<CrewLevelTable>(DataTableIds.CrewLevel);
+            LoadTable<FacilityTable>(DataTableIds.Facility);
         }
 
         private static void InitForDungeonScene()
@@ -113,6 +115,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<BuffTable>(DataTableIds.Buff);
             LoadTable<TutorialTable>(DataTableIds.Tutorial);
             LoadTable<CrewLevelTable>(DataTableIds.CrewLevel);
+            LoadTable<FacilityTable>(DataTableIds.Facility);
         }
 
         // Public 메서드

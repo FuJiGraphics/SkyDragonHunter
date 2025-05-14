@@ -1,7 +1,6 @@
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.Tables {
@@ -20,7 +19,17 @@ namespace SkyDragonHunter.Tables {
         public int UpgradeTime { get; set; }
         public int UpgradeFacilityID { get; set; }
 
-        public bool Upgradable => UpgradeFacilityID != 0;
+
+        public bool IsMaxLevel => UpgradeFacilityID != 0;
+
+        public ItemType ProductType
+        {
+            get
+            {
+                return DataTableMgr.ItemTable.Get(ItemID).Type;
+            }
+        }
+
         public FacilityType Type
         {
             get
@@ -47,7 +56,23 @@ namespace SkyDragonHunter.Tables {
 
     public class FacilityTable : DataTable<FacilityTableData>
     {
-        
+        private const int defaultID = 310000000;
+        private const int typeAddant = 10000000;
+
+        public FacilityTableData GetFacilityData(FacilityType type, int level)
+        {
+            int tempId = defaultID + typeAddant * (int)type + level;
+            foreach(var data in m_dict.Values)
+            {
+                if (data.ID == tempId)
+                {
+                    return data;
+                }
+            }
+
+            Debug.LogError($"Could not find Facility Data with type/level : [{type}/{level}], id [{tempId}]");
+            return null;
+        }
     } // Scope by class FacilityTable
 
 } // namespace Root

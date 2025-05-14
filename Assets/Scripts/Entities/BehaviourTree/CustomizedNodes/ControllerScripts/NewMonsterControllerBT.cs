@@ -244,7 +244,7 @@ namespace SkyDragonHunter.Entities
             monsterStatus.speed = data.Speed;
             monsterStatus.chaseSpeed = data.ChaseSpeed;
             monsterStatus.status.ResetAll();            
-            Debug.Log($"Monster '{name}' Data Set. HP: ({monsterStatus.status.Health}/{monsterStatus.status.MaxHealth}), ATK: ({monsterStatus.status.MaxDamage})");
+            //Debug.Log($"Monster '{name}' Data Set. HP: ({monsterStatus.status.Health}/{monsterStatus.status.MaxHealth}), ATK: ({monsterStatus.status.MaxDamage})");
         }
 
         private void InitBehaviourTree()

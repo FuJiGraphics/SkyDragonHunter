@@ -1,3 +1,6 @@
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using SkyDragonHunter.test;
 using SkyDragonHunter.UI;
 using System;
@@ -12,13 +15,13 @@ namespace SkyDragonHunter.UI {
         [Serializable]
         public class FacilityData
         {
-            public FacilityType type;                 // 시설 종류 (금/다이아/나무 등)
-            public int level = 1;                     // 시설 레벨
+            //public FacilityType type;                 // 시설 종류 (금/다이아/나무 등)
+            //public int level = 1;                     // 시설 레벨
             public int currentExp = 0;                // 현재 누적 경험치
             public int expToLevelUp = 100;            // 레벨업 필요 경험치
             public int itemCount = 0;                 // 현재 생성된 아이템 수
             public float timer = 0f;                  // 아이템 생성용 타이머 누적값
-            public float generateInterval = 10f;      // 아이템 생성 주기 (초)
+            //public float generateInterval = 10f;      // 아이템 생성 주기 (초)
             public float levelUpCooldown = 0f; // 남은 레벨업 대기 시간
             public float levelUpInterval => level * 10f; // 레벨업에 필요한 시간
             public bool isInLevelUpCooldown => levelUpCooldown > 0f;
@@ -31,10 +34,42 @@ namespace SkyDragonHunter.UI {
             // 현재 레벨에 따른 생성 단위량 (ex: Lv1 → 5, Lv2 → 10 ...)
             public int perGenerate => level * 5;
 
-            // TODO: LJH
+            // TODO: LJH            
+            public FacilityType type;
+            public int level = 1;
+            public ItemType productItemType;
+            public float generateInterval = 10f;
+            public int singleProduceAmount;
+            public int capacity;
+            public bool isUpgrading = false;
             public DateTime upgradeStartedTime = DateTime.MinValue;
             public DateTime lastAccquiredTime = DateTime.MinValue;
 
+            public TimeSpan UpgradeRemainingTimeSpan => DateTime.UtcNow - upgradeStartedTime;
+            public float AccumulatedProduceTime => (float)(DateTime.UtcNow - lastAccquiredTime).TotalSeconds;
+            public int ProducedCounts
+            {
+                get
+                {
+                    int count = 0;
+                    var cachedAccumTime = AccumulatedProduceTime;
+                    while(cachedAccumTime >= generateInterval)
+                    {
+                        cachedAccumTime -= generateInterval;
+                        count++;
+                    }
+                    return count;
+                }
+            }
+            public int TotalProducts
+            {
+                get
+                {
+                    return 0;
+                }
+            }
+            public bool IsUpgradeComplete => UpgradeRemainingTimeSpan.Seconds <= 0;
+            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;
             
             // ~TODO
         }
