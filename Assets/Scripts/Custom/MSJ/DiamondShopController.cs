@@ -29,7 +29,7 @@ namespace SkyDragonHunter.UI
         private const int maxItemCount = 16;
         private static readonly int[] resetTimeHourlyCriteria =
         {
-            int.MaxValue,
+            99999999,
             24,
             168,
             720

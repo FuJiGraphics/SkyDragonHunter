@@ -25,13 +25,15 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI levelUpTimerText;           // 레벨업 타이머 텍스트
 
         private FacilitySystemMgr.FacilityData data;
-        // 속성 (Properties)
 
+        // 속성 (Properties)
         public bool isLevelUpCompleteReady { get; private set; } = false;
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
+
+
         private void Start()
         {
             // acquireButton에 붙은 이미지 컴포넌트 캐싱

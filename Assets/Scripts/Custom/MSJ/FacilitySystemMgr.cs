@@ -30,6 +30,13 @@ namespace SkyDragonHunter.UI {
 
             // 현재 레벨에 따른 생성 단위량 (ex: Lv1 → 5, Lv2 → 10 ...)
             public int perGenerate => level * 5;
+
+            // TODO: LJH
+            public DateTime upgradeStartedTime = DateTime.MinValue;
+            public DateTime lastAccquiredTime = DateTime.MinValue;
+
+            
+            // ~TODO
         }
         // 필드 (Fields)
         // [유니티 인스펙터에서 할당] 각 시설 슬롯의 상태 리스트
