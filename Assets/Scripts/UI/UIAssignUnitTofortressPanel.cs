@@ -26,9 +26,7 @@ namespace SkyDragonHunter.UI {
         public TextMeshProUGUI crewName;
         public Image activeSkillIcon;
         public Image passiveSkillIcon;
-        public Image damageIcon;
         public TextMeshProUGUI damageText;
-        public Image armorIcon;
         public TextMeshProUGUI armorText;
         public GameObject detailsAndUnequipGo;
         public Button details;
@@ -36,14 +34,12 @@ namespace SkyDragonHunter.UI {
 
         public void ResetSlot()
         {
-            crewIcon.sprite = null;
+            crewIcon.sprite = ResourcesMgr.Load<Sprite>("TransparentImage");
             title.text = "빈 슬롯";
             crewName.text = "빈 슬롯";
             activeSkillIcon.sprite = null;
             passiveSkillIcon.sprite = null;
-            damageIcon.sprite = null;
             damageText.text = "0";
-            armorIcon.sprite = null;
             armorText.text = "0";
             crewInstance = null;
         }

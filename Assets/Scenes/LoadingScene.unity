@@ -303,6 +303,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textUI: {fileID: 1865385576}
   progressBar: {fileID: 1089389837}
+  fontLabel: Fonts
+  prefabLabel: Prefabs
+  soLabel: ScriptableObjects
+  textureLabel: Textures
+  soundLabel: Sounds
+  animLabel: Animations
+  matLabel: Materials
+  shaderLabel: Shaders
+  sanctumLabel: sanctum_pixel
 --- !u!4 &976087390
 Transform:
   m_ObjectHideFlags: 0
@@ -472,7 +481,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 218718627}
   m_FillRect: {fileID: 608683711}
   m_HandleRect: {fileID: 218718626}

@@ -107,7 +107,7 @@ namespace SkyDragonHunter.SaveLoad {
             var rerollShopPanelGO = GameMgr.FindObject($"RerollShopPanel");
             if(goldShopPanelGO == null || diamondShopPanelGO == null || rerollShopPanelGO == null)
             {
-                Debug.LogError($"ShopItemData Update Failed, panelGO null");
+                // Debug.LogError($"ShopItemData Update Failed, panelGO null");
                 return;
             }
             var goldShopController = goldShopPanelGO.GetComponent<GoldShopController>();
@@ -115,7 +115,7 @@ namespace SkyDragonHunter.SaveLoad {
             var rerollShopController = rerollShopPanelGO.GetComponent<RerollShopController>();
             if(goldShopController == null || diamondShopController == null || rerollShopController == null)
             {
-                Debug.LogError($"ShopItemData Update Failed, shop controller null");
+                // Debug.LogError($"ShopItemData Update Failed, shop controller null");
                 return;
             }
 
@@ -129,7 +129,7 @@ namespace SkyDragonHunter.SaveLoad {
             var rerollShopPanelGO = GameMgr.FindObject($"RerollShopPanel");
             if (goldShopPanelGO == null || diamondShopPanelGO == null || rerollShopPanelGO == null)
             {
-                Debug.LogError($"ShopItemData Apply Failed, panelGO null");
+                // Debug.LogError($"ShopItemData Apply Failed, panelGO null");
                 return;
             }
             var goldShopController = goldShopPanelGO.GetComponent<GoldShopController>();
@@ -137,7 +137,7 @@ namespace SkyDragonHunter.SaveLoad {
             var rerollShopController = rerollShopPanelGO.GetComponent<RerollShopController>();
             if (goldShopController == null || diamondShopController == null || rerollShopController == null)
             {
-                Debug.LogError($"ShopItemData Apply Failed, shop controller null");
+                // Debug.LogError($"ShopItemData Apply Failed, shop controller null");
                 return;
             }
         }
@@ -146,12 +146,12 @@ namespace SkyDragonHunter.SaveLoad {
         {
             if(!shopItemDict.ContainsKey(category))
             {
-                Debug.LogError($"No data found with shop category {category}");
+                // Debug.LogError($"No data found with shop category {category}");
                 return null;
             }
             if (!shopItemDict[category].ContainsKey(refreshType))
             {
-                Debug.LogError($"No data found with refresh type {refreshType} in shop category {category}");
+                // Debug.LogError($"No data found with refresh type {refreshType} in shop category {category}");
                 return null;
             }
 

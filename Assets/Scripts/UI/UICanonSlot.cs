@@ -53,6 +53,15 @@ namespace SkyDragonHunter.UI {
             }
             else
             {
+                var tutorialMgr = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+                if (tutorialMgr != null)
+                {
+                    if (tutorialMgr.TutorialEnd)
+                        GetComponent<Button>().interactable = true;
+                    else
+                        GetComponent<Button>().interactable = false;
+                }
+
                 canonLockIcon.gameObject.SetActive(true);
                 GetComponent<Image>().color = Color.gray;
             }

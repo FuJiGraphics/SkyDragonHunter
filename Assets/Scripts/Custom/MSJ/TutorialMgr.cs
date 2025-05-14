@@ -2,6 +2,7 @@ using Org.BouncyCastle.Asn1.X509;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
+using SkyDragonHunter.UI;
 using System;
 using System.Collections;
 using TMPro;
@@ -47,7 +48,7 @@ namespace SkyDragonHunter
         private bool m_TutorialEnd = false;
 
         public GameObject allButtonsBlockPanel;
-        public bool IsStartTutorial { get => m_IsStartTutorial; set => IsStartTutorial = value; }
+        public bool IsStartTutorial { get => m_IsStartTutorial; set => m_IsStartTutorial = value; }
         public bool TutorialEnd
         {
             get => m_TutorialEnd;
@@ -91,7 +92,10 @@ namespace SkyDragonHunter
         {
             if (TutorialEnd)
             {
-                tutorialController.TutorialObjDestroy();
+                // tutorialController.TutorialObjDestroy();
+                var delController = GameMgr.FindObject<TutorialDeleteController>("TutorialDeleteController");
+                delController.Delete();
+                delController.Disable();
             }
 
             if (!m_IsStartTutorial && !oneGo)
@@ -122,7 +126,7 @@ namespace SkyDragonHunter
         public void OnTutorialPanel()
         {
             tutorialPanel.SetActive(true);
-            allButtonsBlockPanel.SetActive(false);
+            allButtonsBlockPanel?.SetActive(false);
         }
 
         public void OffTutorialPanel()
@@ -153,24 +157,24 @@ namespace SkyDragonHunter
             if (data.ButtonIndex >= 0 && data.ButtonIndex < targetRects.Length)
             {
                 var expected = targetRects[data.ButtonIndex];
-                Debug.Log($"[튜토리얼] 클릭: {clicked.name}, 기대값: {expected.name}");
+                // Debug.Log($"[튜토리얼] 클릭: {clicked.name}, 기대값: {expected.name}");
 
                 if (clicked == expected.gameObject || clicked.transform.IsChildOf(expected))
                 {
-                    Debug.Log("[튜토리얼] 클릭 일치 → 스텝 증가");
+                    // Debug.Log("[튜토리얼] 클릭 일치 → 스텝 증가");
                     StepUp();
                     ApplyStep();
                 }
                 else
                 {
-                    Debug.LogWarning("[튜토리얼] 클릭 대상 불일치");
+                    // Debug.LogWarning("[튜토리얼] 클릭 대상 불일치");
                 }
             }
         }
 
         public void OnTutorialMaskClicked()
         {
-            Debug.Log($"[튜토리얼] 마스크 클릭 감지 → 현재 스텝: {step}");
+            // Debug.Log($"[튜토리얼] 마스크 클릭 감지 → 현재 스텝: {step}");
 
             // 버튼 없는 상태에서만 처리
             var data = DataTableMgr.TutorialTable.Get(step);
@@ -388,7 +392,7 @@ namespace SkyDragonHunter
         {
             foreach (GameObject block in tutorialBlocks)
             {
-                block.SetActive(false);
+                block?.SetActive(false);
             }
             oneGo = true;
         }

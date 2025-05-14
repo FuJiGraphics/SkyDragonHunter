@@ -55,7 +55,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (target == null)
             {
-                Debug.LogWarning("[CanonBase]: 공격할 타겟을 찾을 수 없습니다.");
+                // Debug.LogWarning("[CanonBase]: 공격할 타겟을 찾을 수 없습니다.");
                 return;
             }
             if (m_CanonDefinition == null)

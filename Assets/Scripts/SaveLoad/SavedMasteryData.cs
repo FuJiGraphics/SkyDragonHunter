@@ -26,6 +26,7 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateSavedData()
         {
+            savedMasterySocketList.Clear();
             var masteryPanel = GameMgr.FindObject<UIMasteryPanel>("UIMasteryPanel");
             if (masteryPanel != null)
             {

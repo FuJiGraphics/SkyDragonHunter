@@ -118,13 +118,14 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Tutorial:
                     savedTutorialData.UpdateSavedData();
                     break;
-                case SaveDataTypes.ShopItem:
-                    savedShopItemData.UpdateSavedData();
                 case SaveDataTypes.Mastery:
                     savedMasteryData.UpdateSavedData();
                     break;
                 case SaveDataTypes.Growth:
                     savedGrowthData.UpdateSavedData();
+                    break;
+                case SaveDataTypes.ShopItem:
+                    savedShopItemData.UpdateSavedData();
                     break;
             }
         }
@@ -174,6 +175,7 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.Growth:
                     savedGrowthData.ApplySavedData();
+                    break;
                 case SaveDataTypes.ShopItem:
                     savedShopItemData.ApplySavedData();
                     break;
