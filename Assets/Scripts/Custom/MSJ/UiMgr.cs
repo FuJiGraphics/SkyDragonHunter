@@ -126,6 +126,9 @@ namespace SkyDragonHunter.Test
             //questPanel.SetActive(true);
             panelBackGroundImage.SetActive(false);
 
+            if (waveControlerScript == null)
+                return;
+
             if (waveControlerScript.tutorialController == null)
             {
                 return;

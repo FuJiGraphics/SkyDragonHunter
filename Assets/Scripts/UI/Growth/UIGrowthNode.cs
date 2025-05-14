@@ -1,5 +1,7 @@
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
 using System;
 using TMPro;
 using UnityEngine;
@@ -144,7 +146,7 @@ namespace SkyDragonHunter.UI{
             StatName = tableData.StatName;
             CurrentStat = new BigNum(0);
             BasicStat = new BigNum(tableData.BasicStat);
-            NextStat = new BigNum(tableData.BasicStat);
+            NextStat = new BigNum(tableData.StatIncrease);
             StatIncrease = new BigNum(tableData.StatIncrease);
             BasicCost = new BigNum(tableData.BasicCost);
             NeedCoin = new BigNum(tableData.BasicCost);
@@ -172,12 +174,46 @@ namespace SkyDragonHunter.UI{
 
         public void SetNextStatInfo(int nextIncreaseLevel)
         {
-            NextStat = SumStats(Level, nextIncreaseLevel, BasicStat, StatIncrease);
+            BigNum increaseSum = 0;
+            for (int i = 0; i < nextIncreaseLevel; ++i)
+            {
+                int targetLevel = Level + i;
+                increaseSum += StatCalculateValue(targetLevel, StatIncrease);
+            }
+
+            NextStat = increaseSum;
         }
 
         public void SetNeedCoin(int nextIncreaseLevel)
         {
-            NeedCoin = SumStats(Level, nextIncreaseLevel, BasicCost, CostIncrease);
+            NeedCoin = CoinSumStats(Level, nextIncreaseLevel, BasicCost, CostIncrease);
+        }
+
+        public void LoadData(ref SavedGrowth saveData)
+        {
+            Level = saveData.level;
+            CurrentStat = saveData.stat;
+            NextStat = saveData.next;
+            NeedCoin = saveData.needCoin;
+            BasicStat = saveData.basicStat;
+            BasicCost = saveData.basicCost;
+            StatIncrease = saveData.statIncrease;
+            CostIncrease = saveData.costIncrease;
+            DirtyUI();
+            UpdateLevelUpArrowState();
+        }
+
+        public void SaveData(SavedGrowth dstSaveData)
+        {
+            dstSaveData.id = ID;
+            dstSaveData.level = Level;
+            dstSaveData.stat = CurrentStat;
+            dstSaveData.next = NextStat;
+            dstSaveData.needCoin = NeedCoin;
+            dstSaveData.basicStat = BasicStat;
+            dstSaveData.basicCost = BasicCost;
+            dstSaveData.statIncrease = StatIncrease;
+            dstSaveData.costIncrease = CostIncrease;
         }
 
         public void LevelUp(int increase)
@@ -190,8 +226,8 @@ namespace SkyDragonHunter.UI{
                 return;
 
             Level = Mathf.Min(Level + increase, MaxLevel);
-            CurrentStat += NextStat;
             AccountMgr.Coin = Math2DHelper.Max((AccountMgr.Coin - NeedCoin), 0);
+            CurrentStat += NextStat;
 
             if (levelUpType == GrowthLevelUpType.Table)
             {
@@ -240,18 +276,40 @@ namespace SkyDragonHunter.UI{
             }
         }
 
-        private BigNum SumStats(int startLevel, int increaseCount, BigNum baseValue, BigNum increment)
+        private BigNum StatSumStats(int startLevel, int increaseCount, BigNum baseValue, BigNum increment)
+        {
+            BigNum sum = 0;
+            for (int i = 0; i < increaseCount; ++i)
+            {
+                int currentLevel = startLevel + i;
+                sum += StatCalculateValue(currentLevel, increment);
+            }
+
+            return baseValue + sum;
+        }
+
+        private BigNum StatCalculateValue(int level, BigNum increment)
+        {
+            // 1 ~ 99: +3
+            // 100+: +6
+            if (level < 100)
+                return increment;
+            else
+                return increment * 2;
+        }
+
+        private BigNum CoinSumStats(int startLevel, int increaseCount, BigNum baseValue, BigNum increment)
         {
             BigNum sum = 0;
             for (int i = 0; i < increaseCount; ++i)
             {
                 int currLevel = startLevel + i;
-                sum += CalculateValue(currLevel, baseValue, increment);
+                sum += CalculateCoinValue(currLevel, baseValue, increment);
             }
             return sum;
         }
 
-        private BigNum CalculateValue(int currLevel, BigNum baseValue, BigNum increment)
+        private BigNum CalculateCoinValue(int currLevel, BigNum baseValue, BigNum increment)
         {
             int level = Mathf.Min(currLevel - 1, MaxLevel);
             BigNum total = baseValue;

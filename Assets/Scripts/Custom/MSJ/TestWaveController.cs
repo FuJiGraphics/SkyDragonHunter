@@ -950,6 +950,9 @@ namespace SkyDragonHunter
             }
             bossTimerSlider.value = bossTimer / c_InitialBossTimer;
 
+            if (currentEnemy == null || currentEnemy.Count <= 0)
+                return;
+
             var bossGo = currentEnemy.Last();
             if (bossGo == null)
             {

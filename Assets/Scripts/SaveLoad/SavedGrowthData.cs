@@ -13,9 +13,15 @@ namespace SkyDragonHunter.SaveLoad
     public class SavedGrowth
     {
         public int id = -1;
-        public int incLevel = 0;
+        public int level = 0;
         public GrowthStatType type;
         public BigNum stat;
+        public BigNum next;
+        public BigNum needCoin;
+        public BigNum basicStat;
+        public BigNum basicCost;
+        public BigNum statIncrease;
+        public BigNum costIncrease;
     }
 
     public class SavedGrowthData
@@ -39,10 +45,7 @@ namespace SkyDragonHunter.SaveLoad
                     {
                         savedGrowthMap.Add(node.ID, new SavedGrowth());
                     }
-                    savedGrowthMap[node.ID].id = node.ID;
-                    savedGrowthMap[node.ID].incLevel = node.Level - 1;
-                    savedGrowthMap[node.ID].type = node.StatType;
-                    savedGrowthMap[node.ID].stat = node.CurrentStat;
+                    node.SaveData(savedGrowthMap[node.ID]);
                 }
             }
         }
@@ -52,12 +55,13 @@ namespace SkyDragonHunter.SaveLoad
             UIGrowthPanel growthPanel = GameMgr.FindObject<UIGrowthPanel>("GrowthPanel");
             if (growthPanel != null)
             {
-                foreach (var saveData in savedGrowthMap)
+                foreach (var targetNode in savedGrowthMap)
                 {
-                    if (saveData.Value.id != -1 && saveData.Value.incLevel > 0)
+                    if (targetNode.Value.id != -1 && targetNode.Value.level > 0)
                     {
-                        var node = growthPanel.FindNode(saveData.Value.id);
-                        node?.LevelUp(saveData.Value.incLevel);
+                        var node = growthPanel.FindNode(targetNode.Value.id);
+                        SavedGrowth saveData = targetNode.Value;
+                        node?.LoadData(ref saveData);
                     }
                 }
             }
@@ -65,7 +69,7 @@ namespace SkyDragonHunter.SaveLoad
             {
                 foreach (var saveData in savedGrowthMap)
                 {
-                    if (saveData.Value.id != -1 && saveData.Value.incLevel > 0)
+                    if (saveData.Value.id != -1 && saveData.Value.level > 0)
                     {
                         SetAirshipDefaultGrowthStats(saveData.Value.type, saveData.Value.stat);
                     }
