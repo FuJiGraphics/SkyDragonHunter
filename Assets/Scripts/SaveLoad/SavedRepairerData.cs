@@ -1,8 +1,11 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Tables;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.SaveLoad
 {
@@ -47,8 +50,10 @@ namespace SkyDragonHunter.SaveLoad
                         repairerDict[(RepairGrade)i].Add((RepairType)j, Repairer);
                 }
             }
-            repairerDict[RepairGrade.Normal][RepairType.Normal].count = 5;
-            repairerDict[RepairGrade.Normal][RepairType.Elite].count = 1;
+            // repairerDict[RepairGrade.Normal][RepairType.Normal].count = 5;
+            // repairerDict[RepairGrade.Normal][RepairType.Elite].count = 1;
+
+            repairerDict[RepairGrade.Normal][RepairType.Normal].count = 1;
         }
 
         public void UpdateSavedData()
@@ -79,6 +84,28 @@ namespace SkyDragonHunter.SaveLoad
                     repairerDict.Add(repairer.RepairerGrade, new());
                 if (!repairerDict[repairer.RepairerGrade].ContainsKey(repairer.RepairerType))
                     repairerDict[repairer.RepairerGrade].Add(repairer.RepairerType, repairer);
+            }
+
+            AccountMgr.ClearRegisterRepairs();
+            RepairDummy[] repairDummys = RepairTableTemplate.GetAllRepairDummyTypes();
+            foreach (var repair in repairDummys)
+            {
+                // TODO: LJH
+                var savedCannon = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repair.Grade, repair.Type);
+                if (savedCannon != null)
+                {
+                    //repair.ID = savedCannon.id;
+                    repair.Count = savedCannon.count;
+                    repair.Level = savedCannon.level;
+                    repair.IsUnlock = savedCannon.isUnlocked;
+                    repair.IsEquip = savedCannon.isEquipped;
+                }
+                else
+                {
+                    Debug.LogError($"Cannot find saved cannon with keys [{repair.Grade}/{repair.Type}]");
+                }
+                // ~TODO
+                AccountMgr.RegisterRepair(repair);
             }
         }
 

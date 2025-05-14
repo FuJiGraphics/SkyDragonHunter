@@ -1,8 +1,12 @@
 using Newtonsoft.Json;
+using SkyDragonHunter.Entities;
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Temp;
+using SkyDragonHunter.Test;
+using SkyDragonHunter.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,51 +20,19 @@ namespace SkyDragonHunter.SaveLoad
         public bool isUnlocked;
         public int level;
         public BigNum accumulatedExp;
-        public int rank; // 별 개수
         public int count; // 승급 위한 보유 개수
+        public int slotIndex;
+        public bool isEquip = false;
     }
 
     public class SavedCrewData
     {
         public List<SavedCrew> crews;
-        
-        public int GetCrewLevel(int id)
-        {
-            int level = 0;
-            if (crews == null || crews.Count == 0)
-            {
-                // Debug.LogWarning($"Saved Crews Null, returning 0");
-                level = 0;
-            }
-            else
-            {
-                foreach (var crew in crews)
-                {
-                    if (crew == null)
-                        continue;
-
-                    if (crew.crewData == null)
-                    {
-                        // Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
-                        level = 0;
-                        continue;
-                    }
-                    if (crew.crewData.ID == id)
-                    {
-                        level = crew.level;
-                        break;
-                    }
-                }
-            }
-            // Debug.LogWarning($"Cannot find Crew, returning 0");
-            return level;
-        }
 
         public bool GetCrewLevel(int id, out int level)
         {
             if (crews == null || crews.Count == 0)
             {
-                // Debug.LogWarning($"Saved Crews Null, returning 0");
                 level = 0;
                 return false;
             }
@@ -69,7 +41,6 @@ namespace SkyDragonHunter.SaveLoad
             {
                 if(crew.crewData == null)
                 {
-                    // Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
                     level = 0;
                     return false;
                 }
@@ -80,7 +51,6 @@ namespace SkyDragonHunter.SaveLoad
                     return true;
                 }
             }
-            // Debug.LogWarning($"Cannot find Crew, returning 0");
             level = 0;
             return false;
         }
@@ -97,8 +67,8 @@ namespace SkyDragonHunter.SaveLoad
                 savedCrew.isUnlocked = false;
                 savedCrew.level = 1;
                 savedCrew.accumulatedExp = 0;
-                savedCrew.rank = 0;
                 savedCrew.count = 0;
+                savedCrew.isEquip = false;
 
                 bool contains = false;
                 foreach(var crew in crews)
@@ -118,25 +88,120 @@ namespace SkyDragonHunter.SaveLoad
         {
             foreach(var crew in crews)
             {
-                if(!TempCrewLevelExpContainer.TryGetTempCrewData(crew.crewData.ID, out var tempCrewData))
+                if (crew == null)
+                    DataTableMgr.CrewTable.Get(crew.crewData.ID);
+                if (!TempCrewLevelExpContainer.TryGetTempCrewData(crew.crewData.ID, out var tempCrewData))
                 {
                     Debug.LogError($"No Temp Crew Data Found with key [{crew.crewData.ID}]");
                     continue;
                 }
                 crew.level = tempCrewData.Level;
                 crew.isUnlocked = tempCrewData.IsUnlocked;
-                crew.rank = tempCrewData.Rank;
                 crew.count = tempCrewData.Count;
+                SaveEquipInfo(crew);
             }
         }
 
         public void ApplySavedData()
         {
-            foreach(var crew in crews)
+            foreach (var crew in crews)
             {
+                if (crew == null)
+                {
+                    Debug.LogWarning($"[ApplySavedData]: SavedCrew is null");
+                    continue;
+                }
+
+                GameObject crewPrefab = crew.crewData.GetPrefab();
+                if (crewPrefab == null)
+                {
+                    Debug.LogWarning($"[ApplySavedData]: crewPrefab is null");
+                    continue;
+                }
+
                 TempCrewLevelExpContainer.ApplyLoadedCrewData(crew);
+                var instance = GameObject.Instantiate(crewPrefab);
+                if (instance != null)
+                {
+                    if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))
+                    {
+                        btComp.SetDataFromTableWithExistingIDTemp(crew.level);
+                    }
+                    AccountMgr.RegisterCrew(instance);
+                    instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
+                    instance.SetActive(false);
+                }
+
+                if (crew.isEquip)
+                {
+                    EquipCrew(crew.crewData.ID, crew.slotIndex, instance);
+                }
             }
         }
+
+        public void SaveEquipInfo(SavedCrew saveData)
+        {
+            GameObject airshipInstance = GameMgr.FindObject("Airship");
+            if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
+            {
+                var equipSlots = equipController.EquipSlots;
+                for (int i = 0; i < equipSlots.Length; ++i)
+                {
+                    saveData.isEquip = false;
+                    saveData.slotIndex = 0;
+
+                    if (equipSlots[i] == null)
+                        continue;
+
+                    var equipCrewInfo = equipSlots[i].GetComponent<CrewInfoProvider>();
+                    if (equipCrewInfo.ID == saveData.crewData.ID)
+                    {
+                        saveData.slotIndex = i;
+                        saveData.isEquip = true;
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        private void EquipCrew(int id, int slot, GameObject crewInstance)
+        {
+            var equipPanel = GameMgr.FindObject<UIAssignUnitTofortressPanel>("AssignUnitTofortressPanel");
+            if (equipPanel != null)
+            {
+                if (!IsEquipCrew(id))
+                {
+                    equipPanel.EquipCrew(slot, crewInstance);
+                }
+            }
+            else  // 던전 씬
+            {
+                GameObject airshipInstance = GameMgr.FindObject("Airship");
+                if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
+                {
+                    if (!equipController.HasEquipCrew(id))
+                    {
+                        equipController.EquipSlot(slot, crewInstance);
+                    }
+                }
+            }
+        }
+
+        private bool IsEquipCrew(int id)
+        {
+            bool result = false;
+            GameObject airshipInstance = GameMgr.FindObject("Airship");
+            if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
+            {
+                if (equipController.HasEquipCrew(id))
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
     } // Scope by class SavedCrewData
 
 } // namespace Root

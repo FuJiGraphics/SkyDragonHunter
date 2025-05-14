@@ -168,9 +168,6 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedRepairInfo.Clear();
-
-            // 세이브
-            AccountMgr.SaveUserData();
         }
 
         public void OnUnequip()
@@ -197,9 +194,6 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedRepairInfo.Clear();
-
-            // 세이브
-            AccountMgr.SaveUserData();
         }
 
         public void OnClickedOtherPanel()

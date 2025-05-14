@@ -1,4 +1,5 @@
 using SkyDragonHunter.Database;
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using System;
 using System.Collections;
@@ -48,9 +49,9 @@ namespace SkyDragonHunter.SaveLoad
                         cannonDict[(CanonGrade)i].Add((CanonType)j, cannon);
                 }
             }
-            cannonDict[CanonGrade.Normal][CanonType.Normal].count = 5;
-            cannonDict[CanonGrade.Normal][CanonType.Repeater].count = 1;
-
+            // cannonDict[CanonGrade.Normal][CanonType.Normal].count = 5;
+            // cannonDict[CanonGrade.Normal][CanonType.Repeater].count = 1;
+            cannonDict[CanonGrade.Normal][CanonType.Normal].count = 1;
         }
 
         public void UpdateSavedData()
@@ -75,12 +76,31 @@ namespace SkyDragonHunter.SaveLoad
         public void ApplySavedData()
         {
             cannonDict = new Dictionary<CanonGrade, Dictionary<CanonType, SavedCannon>>();
-            foreach(var cannon in cannons)
+            foreach (var cannon in cannons)
             {
                 if (!cannonDict.ContainsKey(cannon.cannonGrade))
                     cannonDict.Add(cannon.cannonGrade, new());
                 if (!cannonDict[cannon.cannonGrade].ContainsKey(cannon.cannonType))
                     cannonDict[cannon.cannonGrade].Add(cannon.cannonType, cannon);
+            }
+
+            AccountMgr.ClearResgisterCanons();
+            CanonDummy[] canonDummys = CanonTable.GetAllCanonDummyTypes();
+            foreach (var canonDummy in canonDummys)
+            {
+                var savedCannon = SaveLoadMgr.GameData.savedCannonData.GetSavedCannon(canonDummy.Grade, canonDummy.Type);
+                if (savedCannon != null)
+                {
+                    canonDummy.Count = savedCannon.count;
+                    canonDummy.Level = savedCannon.level;
+                    canonDummy.IsUnlock = savedCannon.isUnlocked;
+                    canonDummy.IsEquip = savedCannon.isEquipped;
+                }
+                else
+                {
+                    Debug.LogError($"Cannot find saved cannon with keys [{canonDummy.Grade}/{canonDummy.Type}]");
+                }
+                AccountMgr.RegisterCanon(canonDummy);
             }
         }
 

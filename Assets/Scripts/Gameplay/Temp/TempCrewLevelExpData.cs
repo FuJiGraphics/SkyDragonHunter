@@ -85,7 +85,6 @@ namespace SkyDragonHunter.Temp {
         {
             level = savedCrew.level;
             isUnlocked = savedCrew.isUnlocked;
-            rank = savedCrew.rank;
             count = savedCrew.count;            
         }
 

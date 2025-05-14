@@ -268,7 +268,6 @@ namespace SkyDragonHunter
             {
                 currentZonelLevel = zone;
             }
-            AccountMgr.SaveUserData();
             OnGoSelectCurrentWave();
         }
 
@@ -394,8 +393,6 @@ namespace SkyDragonHunter
                     waveDuration = stageData.WaveLength;
                     waveSlider.maxValue = waveDuration;
                     OnChangeBackGround(currentMissionLevel - 1);
-                    // TODO: 데이터 세이브
-                    AccountMgr.SaveUserData();
                 }
             }
         }

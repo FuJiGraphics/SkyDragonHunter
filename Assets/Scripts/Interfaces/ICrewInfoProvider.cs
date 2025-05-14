@@ -7,7 +7,7 @@ namespace SkyDragonHunter.Interfaces
     public interface ICrewInfoProvider
     {
         string Title { get; }
-        string Name { get; }
+        string Level { get; }
         string Damage { get; }
         string Health { get; }
         string Defense { get; }

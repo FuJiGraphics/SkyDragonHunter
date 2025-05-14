@@ -90,7 +90,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             if (m_Instance == null)
             {
-                GameObject prefab = CanonTable.Get(Type, Grade);
+                GameObject prefab = CanonTable.GetPrefab(Type, Grade);
                 if (prefab != null)
                 {
                     m_Instance = GameObject.Instantiate(prefab);

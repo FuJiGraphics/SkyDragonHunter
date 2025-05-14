@@ -1,5 +1,8 @@
 using SkyDragonHunter.Entities;
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Tables.Generic;
+using System.Collections.Generic;
+using System;
 using System.Text;
 
 namespace SkyDragonHunter.Tables
@@ -29,6 +32,28 @@ namespace SkyDragonHunter.Tables
     public class RepairTableTemplate : DataTable<RepairTableData>
     {
 
+        public static RepairDummy[] GetAllRepairDummyTypes()
+        {
+            var allRepairDummys = new List<RepairDummy>();
+
+            foreach (RepairGrade grade in Enum.GetValues(typeof(RepairGrade)))
+            {
+                foreach (RepairType type in Enum.GetValues(typeof(RepairType)))
+                {
+                    RepairDummy dummy = new RepairDummy
+                    {
+                        Grade = grade,
+                        Type = type,
+                        Count = 0,
+                        Level = 1
+                    };
+
+                    allRepairDummys.Add(dummy);
+                }
+            }
+
+            return allRepairDummys.ToArray();
+        }
     }
 
 } // namespace Root
