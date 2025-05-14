@@ -39,8 +39,8 @@ namespace SkyDragonHunter.Gameplay {
         public void SetEquipState(bool isEquip)
             => m_EquipState = isEquip;
 
-        public string Title => m_CrewTitle;
-        public string Name => m_CrewName;
+        public string Title => gameObject.name;
+        public string Name => "Lv: " + SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(m_Controller.ID).ToString();
         public string Damage => m_Status.Damage.ToUnit();
         public string Health => m_Status.Health.ToUnit();
         public string Defense => m_Status.Armor.ToUnit();

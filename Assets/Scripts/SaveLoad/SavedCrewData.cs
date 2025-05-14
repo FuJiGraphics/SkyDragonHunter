@@ -24,11 +24,43 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedCrew> crews;
         
+        public int GetCrewLevel(int id)
+        {
+            int level = 0;
+            if (crews == null || crews.Count == 0)
+            {
+                // Debug.LogWarning($"Saved Crews Null, returning 0");
+                level = 0;
+            }
+            else
+            {
+                foreach (var crew in crews)
+                {
+                    if (crew == null)
+                        continue;
+
+                    if (crew.crewData == null)
+                    {
+                        // Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
+                        level = 0;
+                        continue;
+                    }
+                    if (crew.crewData.ID == id)
+                    {
+                        level = crew.level;
+                        break;
+                    }
+                }
+            }
+            // Debug.LogWarning($"Cannot find Crew, returning 0");
+            return level;
+        }
+
         public bool GetCrewLevel(int id, out int level)
         {
             if (crews == null || crews.Count == 0)
             {
-                Debug.LogWarning($"Saved Crews Null, returning 0");
+                // Debug.LogWarning($"Saved Crews Null, returning 0");
                 level = 0;
                 return false;
             }
@@ -37,7 +69,7 @@ namespace SkyDragonHunter.SaveLoad
             {
                 if(crew.crewData == null)
                 {
-                    Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
+                    // Debug.LogWarning($"Saved Crew ID [{id}] Null, returning 0");
                     level = 0;
                     return false;
                 }
@@ -48,7 +80,7 @@ namespace SkyDragonHunter.SaveLoad
                     return true;
                 }
             }
-            Debug.LogWarning($"Cannot find Crew, returning 0");
+            // Debug.LogWarning($"Cannot find Crew, returning 0");
             level = 0;
             return false;
         }
