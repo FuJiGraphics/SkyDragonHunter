@@ -45,34 +45,50 @@ namespace SkyDragonHunter.UI {
             currentSlot = slot;
             var data = slot.GetFacilityData();
 
-            facilityNameText.text = data.type.ToString();
-            currentLevelText.text = $"Lv. {data.level}";
-            nextLevelText.text = $"Lv. {data.level + 1}";
+            // TODO: LJH
+            //facilityNameText.text = data.type.ToString();
+            //currentLevelText.text = $"Lv. {data.level}";
+            //nextLevelText.text = $"Lv. {data.level + 1}";
+            //
+            //currentProduceAmountText.text = $"{data.perGenerate}";
+            //currentMaxAmountText.text = $"{data.level * 20}";
+            //TimeSpan currentInterval = TimeSpan.FromSeconds(data.generateInterval);
+            //currentIntervalText.text = currentInterval.ToString(@"mm\:ss");
+            //
+            //nextProduceAmountText.text = $"{(data.level + 1) * 5}";
+            //nextMaxAmountText.text = $"{(data.level + 1) * 20}";
+            //TimeSpan nextInterval = TimeSpan.FromSeconds(data.generateInterval * 0.9f);
+            //nextIntervalText.text = nextInterval.ToString(@"mm\:ss");
+            //
+            //levelUpCost.text = GetLevelUpCost(data.level).ToString();
+            //TimeSpan levelUpInterval = TimeSpan.FromSeconds(data.levelUpInterval);
+            //levelUpIntervalTimeText.text = levelUpInterval.ToString(@"mm\:ss");
 
-            currentProduceAmountText.text = $"{data.perGenerate}";
-            currentMaxAmountText.text = $"{data.level * 20}";
-            TimeSpan currentInterval = TimeSpan.FromSeconds(data.generateInterval);
-            currentIntervalText.text = currentInterval.ToString(@"mm\:ss");
 
-            nextProduceAmountText.text = $"{(data.level + 1) * 5}";
-            nextMaxAmountText.text = $"{(data.level + 1) * 20}";
-            TimeSpan nextInterval = TimeSpan.FromSeconds(data.generateInterval * 0.9f);
-            nextIntervalText.text = nextInterval.ToString(@"mm\:ss");
 
-            levelUpCost.text = GetLevelUpCost(data.level).ToString();
-            TimeSpan levelUpInterval = TimeSpan.FromSeconds(data.levelUpInterval);
-            levelUpIntervalTimeText.text = levelUpInterval.ToString(@"mm\:ss");
+
+
+            // ~TODO
         }
 
 
         // 레벨업 버튼 클릭 시 처리
         public void OnClickLevelUp()
         {
-            if (currentSlot != null)
+            // TODO: LJH
+            //if (currentSlot != null)
+            //{
+            //    currentSlot.TryStartLevelUp(currentLevelUpCost);
+            //    gameObject.SetActive(false);
+            //}
+
+            if(currentSlot != null)
             {
-                currentSlot.TryStartLevelUp(currentLevelUpCost);
+                currentSlot.TryLevelUp();
                 gameObject.SetActive(false);
             }
+
+            // ~TODO
         }
         // Private 메서드
 

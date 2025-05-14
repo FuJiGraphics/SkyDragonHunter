@@ -37,16 +37,20 @@ namespace SkyDragonHunter.UI {
             // TODO: LJH            
             public FacilityType type;
             public int level = 1;
-            public ItemType productItemType;
+            public ItemType ProductItemType => FacilityTableData.ProductType;
             public float generateInterval = 10f;
             public int singleProduceAmount;
             public int capacity;
             public bool isUpgrading = false;
             public DateTime upgradeStartedTime = DateTime.MinValue;
             public DateTime lastAccquiredTime = DateTime.MinValue;
-
             public TimeSpan UpgradeRemainingTimeSpan => DateTime.UtcNow - upgradeStartedTime;
-            public float AccumulatedProduceTime => (float)(DateTime.UtcNow - lastAccquiredTime).TotalSeconds;
+            public TimeSpan AccumulatedProduceTimeSpan => DateTime.UtcNow - lastAccquiredTime;
+            public TimeSpan RemainingTimeSpanUntilNextProduct => (IsReachedCapacity || isUpgrading) ? TimeSpan.Zero :
+                AccumulatedProduceTimeSpan - TimeSpan.FromSeconds(ProducedCounts * FacilityTableData.ItemMadeTime);
+            public float AccumulatedProduceTime => (float)AccumulatedProduceTimeSpan.TotalSeconds;
+            public float RemainingTimeUntilNextProduct => (float)RemainingTimeSpanUntilNextProduct.TotalSeconds;
+            public FacilityTableData FacilityTableData => DataTableMgr.FacilityTable.GetFacilityData(type, level);
             public int ProducedCounts
             {
                 get
@@ -65,12 +69,14 @@ namespace SkyDragonHunter.UI {
             {
                 get
                 {
-                    return 0;
+                    int count = ProducedCounts * FacilityTableData.ItemYield;
+                    count = Mathf.Min(count, FacilityTableData.KeepItemAmount);
+                    return count;
                 }
             }
+            public bool IsReachedCapacity => TotalProducts >= FacilityTableData.KeepItemAmount;            
             public bool IsUpgradeComplete => UpgradeRemainingTimeSpan.Seconds <= 0;
-            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;
-            
+            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;            
             // ~TODO
         }
         // 필드 (Fields)

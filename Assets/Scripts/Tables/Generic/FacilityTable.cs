@@ -19,7 +19,6 @@ namespace SkyDragonHunter.Tables {
         public int UpgradeTime { get; set; }
         public int UpgradeFacilityID { get; set; }
 
-
         public bool IsMaxLevel => UpgradeFacilityID != 0;
 
         public ItemType ProductType
@@ -52,6 +51,19 @@ namespace SkyDragonHunter.Tables {
                 }
             }
         }
+
+        public ItemType[] RequiredItemTypes
+        {
+            get
+            {
+                ItemType[] result = new ItemType[UpgradeItemID.Length];
+                for (int i = 0; i < UpgradeItemID.Length; ++i)
+                {
+                    result[i] = DataTableMgr.ItemTable.Get(UpgradeItemID[i]).Type;
+                }
+                return result;
+            }
+        }
     }
 
     public class FacilityTable : DataTable<FacilityTableData>
@@ -62,12 +74,10 @@ namespace SkyDragonHunter.Tables {
         public FacilityTableData GetFacilityData(FacilityType type, int level)
         {
             int tempId = defaultID + typeAddant * (int)type + level;
-            foreach(var data in m_dict.Values)
+
+            if(m_dict.ContainsKey(tempId))
             {
-                if (data.ID == tempId)
-                {
-                    return data;
-                }
+                return m_dict[tempId];
             }
 
             Debug.LogError($"Could not find Facility Data with type/level : [{type}/{level}], id [{tempId}]");
