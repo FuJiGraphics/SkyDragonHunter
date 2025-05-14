@@ -12,6 +12,7 @@ namespace SkyDragonHunter {
         // 필드 (Fields)
         [SerializeField] private UiMgr uiMgr;
         [SerializeField] private GameObject tutorialRewardPanel;
+        [SerializeField] private GameObject tutorialMessage;
         public GameObject tutorialPanel;
         public TutorialMgr tutorialMgr;
         public bool firstActive     { get; private set; } = false;
@@ -201,6 +202,7 @@ namespace SkyDragonHunter {
             TutorialEndValue.SetTrueOneClear();
             tutorialMgr.SetTutorialEnd();
             Destroy(tutorialPanel);
+            Destroy(tutorialMessage);
             Destroy(tutorialRewardPanel);
             Destroy(tutorialMgr.gameObject);
             Destroy(tutorialMgr.allButtonsBlockPanel);
