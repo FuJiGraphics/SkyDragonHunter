@@ -302,28 +302,34 @@ namespace SkyDragonHunter.UI {
             if (data.IsMaxLevel || data.isUpgrading)
                 return;
 
-            Debug.LogWarning($"Trying Facility Level Up without ResourceCheck");
-            //if(AccountMgr.Coin < tableData.UpgradeGold)
-            //{
-            //    Debug.Log($"Facility Level Up failed : insufficient coin");
-            //    return;
-            //}
-            //for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
-            //{
-            //    if (AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) < tableData.UpgradeItemCount[i])
-            //    {
-            //        Debug.Log($"Facility Level Up failed : insufficient [{tableData.RequiredItemTypes[i]}]");
-            //        return;
-            //    }
-            //}
-            //
-            //// Resource count reset
-            //AccountMgr.Coin -= tableData.UpgradeGold;
-            //for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
-            //{
-            //    var newCount = AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) - tableData.UpgradeItemCount[i];
-            //    AccountMgr.SetItemCount(tableData.RequiredItemTypes[i], newCount);
-            //}
+            bool resourceInsufficient = false;
+
+            if(AccountMgr.Coin < tableData.UpgradeGold)
+            {
+                Debug.Log($"Facility Level Up failed : insufficient coin");
+                resourceInsufficient = true;
+            }
+            for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
+            {
+                if (AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) < tableData.UpgradeItemCount[i])
+                {
+                    Debug.Log($"Facility Level Up failed : insufficient [{tableData.RequiredItemTypes[i]}]");
+                    resourceInsufficient = true;
+                }
+            }
+            if (resourceInsufficient)
+            {
+                DrawableMgr.Dialog($"안내", $"재화가 부족합니다");
+                return;
+            }
+            
+            // Resource count reset
+            AccountMgr.Coin -= tableData.UpgradeGold;
+            for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
+            {
+                var newCount = AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) - tableData.UpgradeItemCount[i];
+                AccountMgr.SetItemCount(tableData.RequiredItemTypes[i], newCount);
+            }
 
             // Acquires products before upgrade if there are any
             OnClickAcquire();
