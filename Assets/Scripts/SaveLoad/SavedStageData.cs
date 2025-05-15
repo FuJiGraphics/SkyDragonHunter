@@ -49,18 +49,19 @@ namespace SkyDragonHunter.SaveLoad
                 // Debug.LogError($"Apply Stage Data Failed, WaveController GO Null");
                 return;
             }
-            if (!waveControllerGo.TryGetComponent<TestWaveController>(out var waveController))
+
+           
+            if (waveControllerGo.TryGetComponent<TestWaveController>(out var waveController))
             {
-                // Debug.LogError($"Apply Stage Data Failed, WaveController Null");
-                return;
+                AccountMgr.CurrentStageLevel = currentStage;
+                AccountMgr.CurrentStageZoneLevel = currentZone;
+                waveController.CurrentTriedMissionLevel = currentStage;
+                waveController.CurrentTriedZonelLevel = currentZone;
+                GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
+                waveController.LastTriedMissionLevel = newTriedMission;
+                waveController.LastTriedZoneLevel = newTriedZone;
+                //waveController.Init();
             }
-            AccountMgr.CurrentStageLevel = currentStage;
-            AccountMgr.CurrentStageZoneLevel = currentZone;
-            waveController.CurrentTriedMissionLevel = currentStage;
-            waveController.CurrentTriedZonelLevel = currentZone;
-            GetLastTriedLevels(clearedStage, clearedZone, out int newTriedMission, out int newTriedZone);
-            waveController.LastTriedMissionLevel = newTriedMission;
-            waveController.LastTriedZoneLevel = newTriedZone;
         }
 
         public int GetTriedMission()

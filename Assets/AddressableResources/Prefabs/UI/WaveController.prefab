@@ -87,13 +87,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6166978204130585107}
   - component: {fileID: 1183766505872213282}
+  - component: {fileID: 1949216609477418934}
   m_Layer: 0
   m_Name: TutorialController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6166978204130585107
 Transform:
   m_ObjectHideFlags: 0
@@ -125,6 +126,23 @@ MonoBehaviour:
   tutorialRewardPanel: {fileID: 0}
   tutorialPanel: {fileID: 0}
   tutorialMgr: {fileID: 0}
+--- !u!114 &1949216609477418934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460814089921492022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb7afd4a88219c43a19d2dcd0be9c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: TutorialController
+  onInitEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  bindRumtime: 0
 --- !u!1 &8991951754933951724
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +194,7 @@ MonoBehaviour:
   onInitEvents:
     m_PersistentCalls:
       m_Calls: []
+  bindRumtime: 0
 --- !u!114 &504886660034442510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,4 +257,5 @@ MonoBehaviour:
   tutorialController: {fileID: 1183766505872213282}
   bossSlider: {fileID: 0}
   bossTimerSlider: {fileID: 0}
+  waveSelectButton: {fileID: 0}
   isBossSpawn: 0

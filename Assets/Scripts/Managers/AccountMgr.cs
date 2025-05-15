@@ -408,8 +408,6 @@ namespace SkyDragonHunter.Managers
                 handler.OnCrystalLevelUp();
             }
             #endregion
-
-            SaveUserData();
         }
 
         public static CommonStats GetSocketStat()
@@ -626,9 +624,9 @@ namespace SkyDragonHunter.Managers
         {
             if (crewInstance.TryGetComponent<ICrewInfoProvider>(out var provider))
             {
-                if (!s_CollectedCrews.ContainsKey(provider.Name))
+                if (!s_CollectedCrews.ContainsKey(provider.Title))
                 {
-                    s_CollectedCrews.Add(provider.Name, crewInstance);
+                    s_CollectedCrews.Add(provider.Title, crewInstance);
                     AddUICrewListNode(crewInstance);
                     AddCrewUIAssignUnitToFortressPanel(crewInstance);
                     //Debug.Log($"[AccountMgr]: Crew 정보 등록 완료 {provider.Name}");
@@ -660,6 +658,12 @@ namespace SkyDragonHunter.Managers
             canonDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
         }
 
+        public static void ClearResgisterCanons()
+        {
+            s_HeldCanons.Clear();
+            s_SortedCanons.Clear();
+        }
+
         public static void RegisterRepair(RepairDummy repairDummy)
         {
             if (!s_HeldRepairs.ContainsKey(repairDummy.Type))
@@ -673,6 +677,12 @@ namespace SkyDragonHunter.Managers
             s_HeldRepairs[repairDummy.Type][repairDummy.Grade].Count = repairDummy.Count;
             s_SortedRepairs.Add(repairDummy);
             repairDummy.AddLevelChangedEvent(OnCanonLevelUpEvent);
+        }
+
+        public static void ClearRegisterRepairs()
+        {
+            s_SortedRepairs.Clear();
+            s_HeldRepairs.Clear();
         }
 
         public static void RegisterMasterySocket(UIMasterySocket masterySocketInstance)
@@ -707,7 +717,7 @@ namespace SkyDragonHunter.Managers
             }
             else
             {
-                Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
+                // Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
             }
         }
 
@@ -722,274 +732,6 @@ namespace SkyDragonHunter.Managers
             else
             {
                 Debug.LogWarning("[CrewInfoProvider]: Crew Info Panel Node 등록 실패");
-            }
-        }
-
-        public static void LoadUserData(string sceneName)
-        {
-            Debug.Log("[AccountMgr]: 계정 데이터 로드");
-            var tempUserData = GameMgr.FindObject("TempUserData");
-            if (tempUserData.TryGetComponent<TempUserData>(out var comp))
-            {
-                comp.LoadStaticData();
-
-                #region 계정 크리스탈 레벨 로드
-                LoadLevel(comp.crystalLevelID);
-                // TODO: LJH LoadLevel TempUserData.s_CrystalLevelID 로 적용시 정상 동작
-                #endregion
-
-                #region 스테이지 초기화 및 웨이브 컨트롤러 UI 적용
-                GameObject stageGo = GameMgr.FindObject("WaveController");
-                var waveController = stageGo?.GetComponent<TestWaveController>();
-                if (waveController != null)
-                {
-                    // TODO: LJH
-                    //CurrentStageLevel = comp.stageLevel;
-                    //CurrentStageZoneLevel = comp.stageZoneLevel;
-                    CurrentStageLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
-                    CurrentStageZoneLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
-                    waveController.Init();
-                    // ~TODO
-                }
-                #endregion
-
-                #region 단원 인스턴스화 및 저장
-                foreach (var crew in comp.crewDataPrefabs)
-                {
-                    GameObject instance = GameObject.Instantiate<GameObject>(crew);
-
-                    // TODO: LJH
-                    if (instance != null)
-                    {
-                        var crewBT = instance.GetComponent<NewCrewControllerBT>();
-
-                        if (SaveLoadMgr.GameData.savedCrewData.GetCrewLevel(crewBT.ID, out var level))
-                        {
-                            crewBT.SetDataFromTableWithExistingIDTemp(level);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError($"Crew Prefab Null");
-                    }
-                    // ~TODO
-
-                    SyncCrewData(instance);
-                    RegisterCrew(instance);                    
-
-                    // TODO: LJH
-                    //instance.GetComponent<AccountStatProvider>().Init();
-                    instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
-                    // ~TODO
-                    instance.SetActive(false);
-                }
-                #endregion
-
-                #region 대포 정보 불러오기
-                s_SortedCanons.Clear();
-                s_HeldCanons.Clear();
-                foreach (var canon in comp.canonDataPrefabs)
-                {
-                    // TODO: LJH
-                    var savedCannon = SaveLoadMgr.GameData.savedCannonData.GetSavedCannon(canon.Grade, canon.Type);
-                    if(savedCannon != null)
-                    {
-                        //canon.ID = savedCannon.id;
-                        canon.Count = savedCannon.count;
-                        canon.Level = savedCannon.level;
-                        canon.IsUnlock = savedCannon.isUnlocked;
-                        canon.IsEquip = savedCannon.isEquipped;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Cannot find saved cannon with keys [{canon.Grade}/{canon.Type}]");
-                    }
-                    // ~TODO
-                    RegisterCanon(canon);
-                }
-                #endregion
-
-                #region 수리공 정보 불러오기
-                s_SortedRepairs.Clear();
-                s_HeldRepairs.Clear();
-                foreach (var repair in comp.repairDatas)
-                {
-                    // TODO: LJH
-                    var savedCannon = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repair.Grade, repair.Type);
-                    if (savedCannon != null)
-                    {
-                        //repair.ID = savedCannon.id;
-                        repair.Count = savedCannon.count;
-                        repair.Level = savedCannon.level;
-                        repair.IsUnlock = savedCannon.isUnlocked;
-                        repair.IsEquip = savedCannon.isEquipped;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Cannot find saved cannon with keys [{repair.Grade}/{repair.Type}]");
-                    }
-                    // ~TODO
-                    RegisterRepair(repair);
-                }
-                #endregion
-
-                #region 단원 탑승 정보 UI 적용
-                // TODO: LJH
-                //foreach (var crewEquipStorage in comp.airshipEquipSlots)
-                //{
-                //    var equipment = GameMgr.FindObject<CrewEquipmentController>("Airship");
-                //    var panelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-                //    UIAssignUnitTofortressPanel assignUnitTofortressPanel = panelGo?.GetComponent<UIAssignUnitTofortressPanel>();
-                //    if (crewEquipStorage.crewPrefab == null)
-                //        continue;
-                //
-                //    if (crewEquipStorage.crewPrefab.TryGetComponent<ICrewInfoProvider>(out var provider))
-                //    {
-                //        if (s_CollectedCrews.TryGetValue(provider.Name, out var instance))
-                //        {
-                //            equipment.EquipSlot(crewEquipStorage.slotIndex, instance);
-                //            assignUnitTofortressPanel?.EquipCrew(crewEquipStorage.slotIndex, instance);
-                //        }
-                //    }
-                //}
-
-                var equipController = GameMgr.FindObject<CrewEquipmentController>("Airship");
-                var fortressPanelGo = GameMgr.FindObject("AssignUnitTofortressPanel");
-                var assignUnitToFortressPanel = fortressPanelGo?.GetComponent<UIAssignUnitTofortressPanel>();
-                var mountedCrewIDs = SaveLoadMgr.GameData.savedAirshipData.mountedCrewIDs;
-
-                for (int i = 0; i < mountedCrewIDs.Length; ++i)
-                {
-                    if (equipController == null)
-                    {
-                        Debug.LogError($"equipController or null");
-                        break;
-                    }
-
-                    if (mountedCrewIDs[i] == 0)
-                    {
-                        continue;
-                    }
-                    foreach (var crew in s_CollectedCrews.Values)
-                    {
-                        if(!crew.TryGetComponent<NewCrewControllerBT>(out var crewBT))
-                        {
-                            Debug.LogError($"Cannot find CrewControllerBT from collected crew [{crew.name}]");
-                            continue;
-                        }
-                        if(crewBT.ID == mountedCrewIDs[i])
-                        {
-                            equipController.EquipSlot(i, crew);
-                            assignUnitToFortressPanel?.EquipCrew(i, crew);
-                        }
-                    }
-                }
-                // ~TODO
-                #endregion
-
-                #region 계정 정보 UI 적용
-                AccountMgr.Nickname = comp.nickname;
-                var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
-                if (inGameMainFramePanelGo != null && 
-                    inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
-                {
-                    inGameMainFramePanel.Nickname = comp.nickname;
-                    inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
-                    inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
-                    inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
-                }
-                #endregion
-
-                #region 아이템 로드
-                #endregion
-
-                // 아티팩트 등록
-                foreach (var handler in m_SaveLoadHandlers)
-                {
-                    handler.OnLoad(comp);
-                }
-            }
-            Debug.Log("[AccountMgr]: 계정 데이터 로드 완료");
-        }
-
-        public static void SaveUserData()
-        {
-            Debug.Log("[AccountMgr]: 유저 데이터 세이브");
-            var tempUserData = GameMgr.FindObject("TempUserData");
-
-            if (tempUserData.TryGetComponent<TempUserData>(out var comp))
-            {
-                #region 비공정 탑승 정보 저장
-                GameObject airshipInstance = GameMgr.FindObject("Airship");
-                if (airshipInstance.TryGetComponent<CrewEquipmentController>(out var equipController))
-                {
-                    var equipSlots = equipController.EquipSlots;
-                    comp.airshipEquipSlots = new List<SaveEquipStorage>();
-                    for (int i = 0; i < equipSlots.Length; ++i)
-                    {
-                        int slotIndex = i;
-                        GameObject crewPrefab = null;
-                        // 크루 프리팹 찾기
-                        foreach (var findGo in comp.crewDataPrefabs)
-                        {
-                            if (equipSlots[i] == null)
-                                continue;
-
-                            var equipCrewInfo = equipSlots[i].GetComponent<CrewInfoProvider>();
-                            var findCrewInfo = findGo.GetComponent<CrewInfoProvider>();
-                            if (equipCrewInfo.Name == findCrewInfo.Name)
-                            {
-                                crewPrefab = findGo;
-                                break;
-                            }
-                        }
-
-                        SaveEquipStorage saveData = new SaveEquipStorage();
-                        saveData.slotIndex = slotIndex;
-                        saveData.crewPrefab = crewPrefab;
-                        comp.airshipEquipSlots.Add(saveData);
-                    }
-                }
-                #endregion
-
-                #region 크리스탈 레벨 저장
-                comp.crystalLevelID = Crystal.CurrLevelId;
-                #endregion
-
-                #region 스테이지 정보 저장 (임시)
-                //GameObject stageGo = GameMgr.FindObject("WaveController");
-                //var waveController = stageGo?.GetComponent<TestWaveController>();
-                //if (waveController != null)
-                //{
-                //    comp.stageLevel = waveController.CurrentTriedMissionLevel;
-                //    comp.stageZoneLevel = waveController.CurrentTriedZonelLevel;
-                //}
-                #endregion
-
-                #region 계정 정보 저장
-                comp.nickname = AccountMgr.Nickname;
-                #endregion
-
-                #region 아이템 정보 저장
-                #endregion
-
-                #region 대포 정보 저장
-                List<CanonDummy> newCanonSaveDummys = new List<CanonDummy>(HeldCanons);
-                comp.canonDataPrefabs = newCanonSaveDummys.ToArray();
-                #endregion
-
-                #region 수리공 정보 저장
-                List<RepairDummy> newRepairSaveDummys = new List<RepairDummy>(HeldRepairs);
-                comp.repairDatas = newRepairSaveDummys.ToArray();
-                #endregion
-
-                foreach (var handler in m_SaveLoadHandlers)
-                {
-                    handler.OnSave(comp);
-                }
-                // 스테이지 정보 최신화
-                comp.DirtyStaticData();
-                Debug.Log("[AccountMgr]: 유저 데이터 세이브 완료");
             }
         }
 
@@ -1043,17 +785,6 @@ namespace SkyDragonHunter.Managers
             AccountStats.ResetDamage();
             AccountStats.SetMaxHealth(AccountStats.MaxHealth + Crystal.IncreaseHealth);
             AccountStats.ResetHealth();
-        }
-
-        private static void SyncCrewData(GameObject crewInstance)
-        {
-            if (crewInstance == null)
-            {
-                Debug.LogError("[AccountMgr]: crewInstance가 null입니다.");
-            }
-
-            // TODO: 크루 스탯 정보 등 서버와 동기화
-            //Debug.Log("[AccountMgr]: 단원 스탯 동기화중");
         }
 
         private static void OnCanonLevelUpEvent(int level)

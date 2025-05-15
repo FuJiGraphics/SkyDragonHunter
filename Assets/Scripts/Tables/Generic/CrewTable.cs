@@ -4,7 +4,9 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables.Generic;
+using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {
@@ -19,6 +21,18 @@ namespace SkyDragonHunter.Tables
     [JsonConverter(typeof(CrewTableDataConverter))]
     public class CrewTableData : DataTableData
     {
+        private static readonly Dictionary<int, GameObject> s_PrefabStringTable = new()
+        {
+            { 14101, ResourcesMgr.Load<GameObject>("Eliya") },
+            { 14102, ResourcesMgr.Load<GameObject>("Sigmund") },
+            { 14202, ResourcesMgr.Load<GameObject>("Isabella") },
+            { 14203, ResourcesMgr.Load<GameObject>("Omega") },
+            { 14204, ResourcesMgr.Load<GameObject>("Elena") },
+            { 14302, ResourcesMgr.Load<GameObject>("Iris") },
+            // 다른 ID와 프리팹 추가 가능
+        };
+
+
         public string                       UnitName { get; set; }
         public CrewGrade                    UnitGrade { get; set; }
         public string                       UnitType { get; set; }
@@ -55,6 +69,12 @@ namespace SkyDragonHunter.Tables
                 $"\nActive: {ActiveSkillID}({ActiveSkillNormalcooltime},{ActiveSkillStartingcooltime})"+
                 $"\nPassive: {PassiveSkillID}({PassiveSkillNormalcooltime})");
             return sb.ToString();
+        }
+
+        public GameObject GetPrefab()
+        {
+            int id = base.ID;
+            return s_PrefabStringTable.TryGetValue(id, out var prefab) ? prefab : null;
         }
     }
 

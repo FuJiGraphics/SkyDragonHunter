@@ -29,8 +29,9 @@ namespace SkyDragonHunter.SaveLoad
         public SavedArtifactsData savedArtifactData;
         public SavedUpgradeCounts savedUpgradeCounts;
         public SavedTutorialData savedTutorialData;
-        public SavedMasteryData savedMasteryData;
         public SavedShopItemsData savedShopItemData;
+        public SavedMasteryData savedMasteryData;
+        public SavedGrowthData savedGrowthData;
         public SavedFacilityData savedFacilityData;
 
         // Temp SaveDatas
@@ -52,6 +53,8 @@ namespace SkyDragonHunter.SaveLoad
             savedQuestProgresses = new SavedQuestProgresses();
             savedTutorialData = new SavedTutorialData();
             savedMasteryData = new SavedMasteryData();
+            savedGrowthData = new SavedGrowthData();
+            savedTutorialData = new();
             savedShopItemData = new SavedShopItemsData();
             savedFacilityData = new SavedFacilityData();
 
@@ -68,6 +71,7 @@ namespace SkyDragonHunter.SaveLoad
             savedQuestProgresses.InitData();
             savedTutorialData.InitData();
             savedMasteryData.InitData();
+            savedGrowthData.InitData();
             savedShopItemData.InitData();
             savedFacilityData.InitData();
         }
@@ -120,6 +124,9 @@ namespace SkyDragonHunter.SaveLoad
                 case SaveDataTypes.Mastery:
                     savedMasteryData.UpdateSavedData();
                     break;
+                case SaveDataTypes.Growth:
+                    savedGrowthData.UpdateSavedData();
+                    break;
                 case SaveDataTypes.ShopItem:
                     savedShopItemData.UpdateSavedData();
                     break;
@@ -171,6 +178,9 @@ namespace SkyDragonHunter.SaveLoad
                     break;
                 case SaveDataTypes.Mastery:
                     savedMasteryData.ApplySavedData();
+                    break;
+                case SaveDataTypes.Growth:
+                    savedGrowthData.ApplySavedData();
                     break;
                 case SaveDataTypes.ShopItem:
                     savedShopItemData.ApplySavedData();

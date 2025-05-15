@@ -5,11 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GameSaveDataVC = SkyDragonHunter.SaveLoad.GameSaveDataV0;
 using LocalSettingSaveDataVC = SkyDragonHunter.SaveLoad.LocalSettingSaveDataV0;
+
+#if UNITY_EDITOR
+    using UnityEditor;
+#endif
 
 namespace SkyDragonHunter.Managers 
 {
@@ -29,6 +32,7 @@ namespace SkyDragonHunter.Managers
         EquipmentUI,
         Tutorial,
         Mastery,
+        Growth,
         ShopItem,
         Facility,
     }
@@ -47,9 +51,7 @@ namespace SkyDragonHunter.Managers
 
         // Properties
         public static int SaveDataMajorVersion { get; private set; } = 0;
-        public static bool gameDataSaveNeeded = false;
-        public static bool localDataSaveNeeded = false;
-
+        
         private static bool initialized = false;
 
         // TODO: LJH TEMP
@@ -130,7 +132,9 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 저장 #s")]
+#if UNITY_EDITOR
+        [MenuItem("SkyDragonHunter/SaveLoad/Save User Data #s")]
+#endif
         public static bool SaveGameData()
         {
             if (!Application.isPlaying)
@@ -153,11 +157,13 @@ namespace SkyDragonHunter.Managers
             var json = JsonConvert.SerializeObject(GameData, jsonSettings);
             File.WriteAllText(path, json);
 
-            Debug.Log($"[SaveLoadMgr]: 세이브 데이터 저장 완료 {path}");
+            Debug.Log($"[SaveLoadMgr]: User Data Save {path}");
             return true;
         }
 
-        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 불러오기")]
+#if UNITY_EDITOR
+        [MenuItem("SkyDragonHunter/SaveLoad/Load User Data")]
+#endif
         public static bool LoadGameData()
         {
             if (!Application.isPlaying)
@@ -190,12 +196,14 @@ namespace SkyDragonHunter.Managers
 
             loadedOnce = true;
 
-            Debug.Log($"[SaveLoadMgr]: 세이브 데이터 불러오기 성공 {path}");
+            Debug.Log($"[SaveLoadMgr]: User Data Load Done. {path}");
             return true;
         }
 
-        [ContextMenu("세이브 데이터 초기화")]
-        [MenuItem("SkyDragonHunter/SaveLoad/세이드 데이터 초기화")]
+#if UNITY_EDITOR
+        [ContextMenu("Remove User Data")]
+        [MenuItem("SkyDragonHunter/SaveLoad/Remove User Data")]
+#endif
         public static void RemoveSaveData()
         {
             string[] saveFilePaths = Directory.GetFiles(SaveDirectory, "*", SearchOption.TopDirectoryOnly);
@@ -205,14 +213,14 @@ namespace SkyDragonHunter.Managers
             foreach (string saveFilePath in saveFilePaths)
             {
                 string fileName = Path.GetFileName(saveFilePath);
-                if (fileName.StartsWith(SaveFileName.First()))
+                if (fileName.StartsWith("SDH_SavedGameData"))
                 {
-                    Debug.Log($"[SaveLoadMgr]: 세이브 데이터 삭제: {fileName}" );
+                    Debug.Log($"[SaveLoadMgr]: Deleted Save File: {fileName}" );
                     File.Delete(saveFilePath);
                 }
             }
 
-            Debug.Log("[SaveLoadMgr]: 세이브 데이터 삭제 완료");
+            Debug.Log("[SaveLoadMgr]: Successed remove user uata");
         }
 
         public static bool LoadGameData(Scene scene)
@@ -275,14 +283,12 @@ namespace SkyDragonHunter.Managers
 
             if (!LoadGameData())
             {
-                InitializeGameData();
-                gameDataSaveNeeded = true;
+                InitializeGameData();                
             }
 
             if(!LoadLocalSettings())
             {
                 InitializeLocalSettings();
-                localDataSaveNeeded = true;
             }
 
             SceneChangeMgr.beforeSceneUnloaded += CallSaveGameData;

@@ -26,9 +26,7 @@ namespace SkyDragonHunter.UI {
         public TextMeshProUGUI crewName;
         public Image activeSkillIcon;
         public Image passiveSkillIcon;
-        public Image damageIcon;
         public TextMeshProUGUI damageText;
-        public Image armorIcon;
         public TextMeshProUGUI armorText;
         public GameObject detailsAndUnequipGo;
         public Button details;
@@ -36,14 +34,12 @@ namespace SkyDragonHunter.UI {
 
         public void ResetSlot()
         {
-            crewIcon.sprite = null;
+            crewIcon.sprite = ResourcesMgr.Load<Sprite>("TransparentImage");
             title.text = "빈 슬롯";
             crewName.text = "빈 슬롯";
             activeSkillIcon.sprite = null;
             passiveSkillIcon.sprite = null;
-            damageIcon.sprite = null;
             damageText.text = "0";
-            armorIcon.sprite = null;
             armorText.text = "0";
             crewInstance = null;
         }
@@ -55,7 +51,7 @@ namespace SkyDragonHunter.UI {
                 crewIcon.sprite = provider.Icon;
                 crewIcon.color = Color.white;
                 title.text = provider.Title;
-                crewName.text = provider.Name;
+                crewName.text = provider.Level;
 
                 if (crewGo.TryGetComponent<CharacterStatus>(out var stat))
                 {
@@ -151,7 +147,7 @@ namespace SkyDragonHunter.UI {
             {
                 GameObject nodeGo = Instantiate<GameObject>(m_UiCrewPickNodePrefab);
                 m_CrewPickNodeObjects.Add(nodeGo);
-                nodeGo.name = provider.Name + "(Slot)";
+                nodeGo.name = provider.Level + "(Slot)";
 
                 m_CrewListNodeObjects.Add(new CrewNode { crewNode = nodeGo, crewInstance = crewInstance });
                 if (nodeGo.TryGetComponent<UICrewInfoNode>(out var crewInfoNode))
@@ -230,9 +226,9 @@ namespace SkyDragonHunter.UI {
                 outInstance = targetSlot.crewInstance;
                 m_AirshipEquipController.UnequipSlot(targetSlot.crewInstance);
             }
-            m_AirshipEquipController.EquipSlot(targetSlot.slotNumber, m_PrevClickedCrew);
+            m_AirshipEquipController.EquipSlot(targetSlot.slotNumber, crewInstance);
             targetSlot.ResetSlot();
-            targetSlot.SetSlot(m_PrevClickedCrew);
+            targetSlot.SetSlot(crewInstance);
             m_EquipmentPanel.mountSlotIcons[targetSlot.slotNumber].sprite = targetSlot.crewIcon.sprite;
 
             if (inSlot != null && outInstance != null)
@@ -245,25 +241,7 @@ namespace SkyDragonHunter.UI {
         }
 
         public void EquipCrew(int slot, GameObject crewInstance)
-        {
-            string findName = crewInstance.GetComponent<ICrewInfoProvider>().Name + "(Slot)";
-            GameObject targetButton = null;
-            foreach (var nodeGo in m_CrewPickNodeObjects)
-            {
-                if (nodeGo.name == findName)
-                {
-                    targetButton = nodeGo;
-                    break;
-                }
-            }
-            if (targetButton == null)
-            {
-                Debug.LogError($"[UIAssignUnitTofortressPanel]: 장착 실패. crewInstance를 찾을 수 없습니다. / {crewInstance.name}");
-                return;
-            }
-            targetButton?.GetComponent<Button>().onClick?.Invoke();
-            m_MountSlots[slot].mountSlotButton.onClick.Invoke();
-        }
+            => EquipCrew(m_MountSlots[slot], crewInstance);
 
         // Private 메서드
         private void AdjustCallbackFuntionToMountSlot()

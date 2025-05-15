@@ -5,6 +5,8 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Test;
+using SkyDragonHunter.UI;
+using SkyDraonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +54,7 @@ namespace SkyDragonHunter
         public TutorialController tutorialController;
         public Slider bossSlider;
         public Slider bossTimerSlider;
+        public Button waveSelectButton;
         // TODO: LJH
         public int CurrentTriedZonelLevel
         {
@@ -92,6 +95,16 @@ namespace SkyDragonHunter
         private bool checkDistance;
         private TutorialMgr m_TutorialMgr;
 
+        // TODO: CCJ
+        private List<RewardItem> m_StageRewards = new();
+        private BigNum m_RewardCoinCount = 0;
+        private BigNum m_RewardFoodCount = 0;
+        private BigNum m_RewardWaveDungeonTicketCount = 0;
+        private BigNum m_RewardGrindingStoneCount = 0;
+        private BigNum m_RewardRepairExpCount = 0;
+        private BigNum m_RewardExpCount = 0;
+        // ~TODO
+
         // 속성 (Properties)
         public bool isInfiniteMode { get; private set; } = false;
         public bool isBossSpawn = false;
@@ -123,7 +136,9 @@ namespace SkyDragonHunter
             currentZonelLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
 
             lastTriedMissionLevel = SaveLoadMgr.GameData.savedStageData.GetTriedMission();
-            lastTriedZonelLevel = SaveLoadMgr.GameData.savedStageData.GetTriedZone();            
+            lastTriedZonelLevel = SaveLoadMgr.GameData.savedStageData.GetTriedZone();
+
+            Init();
             // ~TODO
         }
 
@@ -167,7 +182,7 @@ namespace SkyDragonHunter
         // Public 메서드
         public void UpdateTutorialState()
         {
-            if (!m_TutorialMgr.IsStartTutorial)
+            if (!m_TutorialMgr.IsStartTutorial)            
                 return;
 
             if (isStopped && checkDistance)
@@ -197,8 +212,8 @@ namespace SkyDragonHunter
             // TODO: LJH
             //stageInfo.missionLevel = 1;
             //stageInfo.zoneLevel = 1;
-            stageInfo.missionLevel = AccountMgr.CurrentStageLevel;
-            stageInfo.zoneLevel = AccountMgr.CurrentStageZoneLevel;
+            stageInfo.missionLevel = SaveLoadMgr.GameData.savedStageData.currentStage;
+            stageInfo.zoneLevel = SaveLoadMgr.GameData.savedStageData.currentZone;
             // ~TODO
             maxWaveTime = 10f;
             currentWaveTime = 0f;
@@ -211,8 +226,8 @@ namespace SkyDragonHunter
             isCanSpawn = true;
             isStopped = false;
             currentEnemy = new List<GameObject>();
-            currentMissionLevel = AccountMgr.CurrentStageLevel;
-            currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
+            //currentMissionLevel = AccountMgr.CurrentStageLevel;
+            //currentZonelLevel = AccountMgr.CurrentStageZoneLevel;
             isSuccessChangeBackGround = true;
             SetStageText(currentMissionLevel, currentZonelLevel);
             //OnSaveLastClearWave();
@@ -255,7 +270,7 @@ namespace SkyDragonHunter
             {
                 currentZonelLevel = zone;
             }
-            AccountMgr.SaveUserData();
+            SaveLoadMgr.CallSaveGameData();
             OnGoSelectCurrentWave();
         }
 
@@ -283,6 +298,7 @@ namespace SkyDragonHunter
 
         public void OnTestWaveFailedActive()
         {
+            Debug.LogError($"!");
             feildPanel.SetActive(true);
             isInfiniteMode = true;
             OnSetCurrentWave();
@@ -293,17 +309,17 @@ namespace SkyDragonHunter
             feildPanel.SetActive(false);
         }
 
-        public void ReStartAll()
-        {
-            Debug.Log("리스타트.");
-            clearPanel.SetActive(false);
-            currentZonelLevel = 1;
-            currentMissionLevel = 1;
-            currentWaveTime = 0f;
-            backGroundIndex = 0;
-            OnSetCurrentWave();
-            OnTestWaveFailedUnActive();
-        }
+        //public void ReStartAll()
+        //{
+        //    Debug.Log("리스타트.");
+        //    OnDisableClearPanel();
+        //    currentZonelLevel = 1;
+        //    currentMissionLevel = 1;
+        //    currentWaveTime = 0f;
+        //    backGroundIndex = 0;
+        //    OnSetCurrentWave();
+        //    OnTestWaveFailedUnActive();
+        //}
 
         // Private 메서드
         private void OnClearMonster()
@@ -359,7 +375,7 @@ namespace SkyDragonHunter
                 OnActiveClearPanel(); // 클리어 패널 활성화
                 OnSaveLastClearWave();
                 currentOpenPanel += Time.deltaTime;
-                if (currentOpenPanel > 2f)
+                if (currentOpenPanel > 5f)
                 {
                     OnUnActiveClearPanel(); // 클리어 패널 종료
                     currentZonelLevel++;
@@ -367,7 +383,6 @@ namespace SkyDragonHunter
                     {
                         currentZonelLevel = 1;
                         currentMissionLevel++;
-
                     }
 
                     SetStageText(currentMissionLevel, currentZonelLevel);
@@ -381,8 +396,7 @@ namespace SkyDragonHunter
                     waveDuration = stageData.WaveLength;
                     waveSlider.maxValue = waveDuration;
                     OnChangeBackGround(currentMissionLevel - 1);
-                    // TODO: 데이터 세이브
-                    AccountMgr.SaveUserData();
+
                     SaveLoadMgr.CallSaveGameData();
                 }
             }
@@ -447,7 +461,7 @@ namespace SkyDragonHunter
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentMissionLevel - 1);
         }
-
+        
         private void OnGoToLoadCurrentWave()
         {
             OnClearMonster();
@@ -528,18 +542,42 @@ namespace SkyDragonHunter
 
                     var destructableEvent = spawned.AddComponent<DestructableEvent>();
                     destructableEvent.destructEvent = new UnityEngine.Events.UnityEvent();
+
+
                     destructableEvent.destructEvent.AddListener(() =>
                     {
-                        // TODO: LJH
+                        #region CCJ
+                        m_RewardCoinCount += stageData.MonsterGOLD * 1000000;
+                        m_RewardFoodCount += stageData.MonsterGOLD * 10000;
+                        m_RewardGrindingStoneCount += Random.Range(1, 5);
+                        m_RewardRepairExpCount += Random.Range(1, 5);
+                        AccountMgr.AddItemCount(ItemType.GrindingStone, m_RewardGrindingStoneCount);
+                        AccountMgr.AddItemCount(ItemType.RepairExp, m_RewardRepairExpCount);
                         AccountMgr.Coin += stageData.MonsterGOLD * 1000000;
-                        // ~TODO
                         AccountMgr.Food += stageData.MonsterGOLD * 10000;
-                        var randVal = Random.Range(0, 1f);
-                        bool isGenerateDungenTicket = randVal < 0.7f;
+
+                        float randVal = RandomMgr.RandomWithWeights((0f, 0.7f), (1f, 0.3f));
+                        bool isGenerateDungenTicket = randVal >= 1f;
                         if (isGenerateDungenTicket)
                         {
+                            m_RewardWaveDungeonTicketCount += 1;
                             AccountMgr.WaveDungeonTicket += 1;
                         }
+                        m_RewardExpCount += stageData.MonsterEXP;
+                        AccountMgr.CurrentExp += stageData.MonsterEXP;
+                        #endregion
+
+                        #region LJH
+                        // AccountMgr.Coin += stageData.MonsterGOLD * 1000000;
+                        // AccountMgr.Food += stageData.MonsterGOLD * 10000;
+                        // var randVal = Random.Range(0, 1f);
+                        // bool isGenerateDungenTicket = randVal < 0.7f;
+                        // if (isGenerateDungenTicket)
+                        // {
+                        //     AccountMgr.WaveDungeonTicket += 1;
+                        // }
+                        // AccountMgr.CurrentExp += stageData.MonsterEXP;
+                        #endregion
                     });
 
                     currentEnemy.Add(spawned.gameObject);
@@ -608,14 +646,51 @@ namespace SkyDragonHunter
             //isCanSpawn = false;
         }
 
+        public void OnDisableClearPanel()
+        {
+            GameMgr.FindObject<UiMgr>("UiMgr").OnInGamePanels();
+            waveSelectButton.gameObject.SetActive(true);
+            bossSlider.gameObject.SetActive(false);
+            bossTimerSlider.gameObject.SetActive(false);
+            clearPanel.SetActive(false);
+            currentOpenPanel = 5f;
+        }
+
         private void OnActiveClearPanel()
         {
+            if (clearPanel.activeSelf)
+                return;
+            if (!GameMgr.FindObject<UiMgr>("UiMgr").inGameWaveInfoPanel.activeSelf)
+                return;
+
+            GameMgr.FindObject<UiMgr>("UiMgr").AllPanelsOff();
+            GameMgr.FindObject<UiMgr>("UiMgr").inGameWaveInfoPanel.gameObject.SetActive(true);
+            waveSelectButton.gameObject.SetActive(false);
+            bossSlider.gameObject.SetActive(false);
+            bossTimerSlider.gameObject.SetActive(false);
             clearPanel.SetActive(true);
+
+            var clearPanelComp = clearPanel.GetComponent<UIClearPanel>();
+
+            m_StageRewards.Add(new(ItemType.Coin, m_RewardCoinCount));
+            m_StageRewards.Add(new(ItemType.Food, m_RewardFoodCount));
+            m_StageRewards.Add(new(ItemType.GrindingStone, m_RewardGrindingStoneCount));
+            m_StageRewards.Add(new(ItemType.RepairExp, m_RewardRepairExpCount));
+            if (m_RewardWaveDungeonTicketCount >= 1)
+                m_StageRewards.Add(new(ItemType.WaveDungeonTicket, m_RewardWaveDungeonTicketCount));
+            clearPanelComp.ShowResult(waveLevelText.text, "스테이지", m_StageRewards.ToArray());
+
+            m_StageRewards.Clear();
+            m_RewardCoinCount = 0;
+            m_RewardFoodCount = 0;
+            m_RewardWaveDungeonTicketCount = 0;
+            m_RewardGrindingStoneCount = 0;
+            m_RewardRepairExpCount = 0;
         }
 
         private void OnUnActiveClearPanel()
         {
-            clearPanel.SetActive(false);
+            OnDisableClearPanel();
             isBossSpawn = false;
             currentSpawnTime = 0;
             // ItemMgr.Reset();
@@ -653,7 +728,7 @@ namespace SkyDragonHunter
             {
                 backGroundIndex = 9;
             }
-            clearPanel.SetActive(false);
+            OnDisableClearPanel();
             foreach (Transform child in backGround.transform)
             {
                 SpriteRenderer ctrl = child.GetComponent<SpriteRenderer>();
@@ -870,8 +945,9 @@ namespace SkyDragonHunter
         // TODO: LJH
         private void UpdateBossSliders()
         {
-            if (!bossSlider.gameObject.activeSelf || isBossCleared)
-                return;
+            if (!bossSlider.gameObject.activeSelf || isBossCleared)            
+                return; 
+            
             bossTimer -= Time.deltaTime;
             if (bossTimer < 0)
             {
@@ -879,6 +955,9 @@ namespace SkyDragonHunter
                 OnTestWaveFailedActive();
             }
             bossTimerSlider.value = bossTimer / c_InitialBossTimer;
+
+            if (currentEnemy == null || currentEnemy.Count <= 0)
+                return;
 
             var bossGo = currentEnemy.Last();
             if (bossGo == null)

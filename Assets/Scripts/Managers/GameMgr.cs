@@ -52,7 +52,6 @@ namespace SkyDragonHunter.Managers
                 AccountMgr.LateInit();
                 SaveLoadMgr.Init();
                 SaveLoadMgr.LoadGameData();
-                AccountMgr.LoadUserData(scene.name);
             }
         }
 

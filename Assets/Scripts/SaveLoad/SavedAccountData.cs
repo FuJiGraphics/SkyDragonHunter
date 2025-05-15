@@ -1,7 +1,9 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Test;
+using SkyDragonHunter.UI;
 using System;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace SkyDragonHunter.SaveLoad 
 {
@@ -14,14 +16,7 @@ namespace SkyDragonHunter.SaveLoad
         public DateTime accountCreatedTime;
 
         public int crystalLevel;
-
-        public int atkLevel;
-        public int hpLevel;
-        public int defLevel;
-        public int regLevel;
-        public int critRateLevel;
-        public int critDmgLevel;
-
+        public int crystalLevelId;
         public DateTime lastOnlineTime;
 
         public void InitData()
@@ -33,26 +28,30 @@ namespace SkyDragonHunter.SaveLoad
             accountCreatedTime = DateTime.UtcNow;
 
             crystalLevel = 1;
-
-            atkLevel = 0;
-            hpLevel = 0;
-            defLevel = 0;
-            regLevel = 0;
-            critRateLevel = 0;
-            critDmgLevel = 0;
         }
 
         public void UpdateSavedData()
         {
             userNickName = AccountMgr.Nickname;
             crystalLevel = AccountMgr.Crystal.CurrentLevel;
+            crystalLevelId = AccountMgr.Crystal.CurrLevelId;
             lastOnlineTime = DateTime.UtcNow;
         }
 
         public void ApplySavedData()
         {
             AccountMgr.Nickname = userNickName;
-            TempUserData.s_CrystalLevelID = crystalLevel;            
+            AccountMgr.LoadLevel(crystalLevelId);
+            var inGameMainFramePanelGo = GameMgr.FindObject("InGameMainFramePanel");
+            if (inGameMainFramePanelGo != null &&
+                inGameMainFramePanelGo.TryGetComponent<UIInGameMainFramePanel>(out var inGameMainFramePanel))
+            {
+                inGameMainFramePanel.Nickname = userNickName;
+                inGameMainFramePanel.Level = AccountMgr.Crystal.CurrentLevel.ToString();
+                inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
+                inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
+            }
+
         }
 
     } // Scope by class SavedAccountData

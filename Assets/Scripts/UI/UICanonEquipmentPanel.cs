@@ -172,8 +172,6 @@ namespace SkyDragonHunter.UI {
 
             m_ClickedCanonInfo.Clear();
 
-            // 세이브
-            AccountMgr.SaveUserData();
         }
 
         public void OnUnequip()
@@ -200,9 +198,6 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedCanonInfo.Clear();
-
-            // 세이브
-            AccountMgr.SaveUserData();
         }
 
         public void OnClickedOtherPanel()
