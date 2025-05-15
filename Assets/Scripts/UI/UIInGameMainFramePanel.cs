@@ -37,19 +37,10 @@ namespace SkyDragonHunter.UI {
         public Image HpIcon { get => m_HpIcon; set => m_HpIcon = value; }
         public string HpText { get => m_HpText.text; set => m_HpText.text = value; }
 
-        public string CoinText { get => m_CoinText.text; set => m_CoinText.text = value; }
-        public string DiamondText { get => m_DiamondText.text; set => m_DiamondText.text = value; }
-        public string SpoilsText { get => m_SpoilsText.text; set => m_SpoilsText.text = value; }
-
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         // 유니티 (MonoBehaviour 기본 메서드)
         // Public 메서드
-        public void OnChanedItemCount(ItemType type)
-        {
-
-        }
-
         // Private 메서드
         // Others
 

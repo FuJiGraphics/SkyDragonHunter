@@ -104,10 +104,6 @@ namespace SkyDragonHunter.Managers
                 if (!s_HeldItems.ContainsKey(ItemType.Coin))
                     s_HeldItems.Add(ItemType.Coin, 0);
                 s_HeldItems[ItemType.Coin] = value;
-                if (s_InGameMainFramePanel != null)
-                {
-                    s_InGameMainFramePanel.CoinText = s_HeldItems[ItemType.Coin].ToUnit();
-                }
                 onItemCountChangedEvents?.Invoke(ItemType.Coin);
             }
         }
@@ -125,10 +121,6 @@ namespace SkyDragonHunter.Managers
                 if (!s_HeldItems.ContainsKey(ItemType.Diamond))
                     s_HeldItems.Add(ItemType.Diamond, 0);
                 s_HeldItems[ItemType.Diamond] = value;
-                if (s_InGameMainFramePanel != null)
-                {
-                    s_InGameMainFramePanel.DiamondText = s_HeldItems[ItemType.Diamond].ToString();
-                }
                 onItemCountChangedEvents?.Invoke(ItemType.Diamond);
             }
         }               

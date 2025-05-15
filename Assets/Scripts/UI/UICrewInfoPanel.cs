@@ -75,7 +75,7 @@ namespace SkyDragonHunter.UI {
         {
             if (m_PrevClickButton == null)
             {
-                if (m_CrewListNodeObjects != null)
+                if (m_CrewListNodeObjects != null && m_CrewListNodeObjects.Count > 0)
                 {
                     Button button = m_CrewListNodeObjects.First().crewNode.GetComponent<Button>();
                     button.onClick.Invoke();
@@ -83,7 +83,7 @@ namespace SkyDragonHunter.UI {
             }
             else
             {
-                m_PrevClickButton.onClick.Invoke();
+                m_PrevClickButton?.onClick?.Invoke();
             }
             SortedEquipCrewNode();
         }
