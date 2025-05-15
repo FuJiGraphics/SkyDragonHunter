@@ -41,6 +41,8 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Image nextSingleProductionCountImage;
         [SerializeField] private Image currentMaxCapacityImage;
         [SerializeField] private Image nextMaxCapacityImage;
+
+        [SerializeField] private Button closeButton;
         // ~TODO
 
         public int currentLevelUpCost;
@@ -54,6 +56,8 @@ namespace SkyDragonHunter.UI {
         {
             materialsList = new List<GameObject>();
             AddPointerDownEvent(levelUpButton, (BaseEventData _) => OnClickLevelUp());
+            AddListeners();
+
         }
         // Public 메서드
         // 외부에서 슬롯 전달 시 호출
@@ -165,7 +169,17 @@ namespace SkyDragonHunter.UI {
             #endregion
             // ~TODO
         }
+
+        public void OnClickCloseButton()
+        {
+            gameObject.SetActive(false);
+        }
         // Private 메서드
+        private void AddListeners()
+        {
+            closeButton.onClick.AddListener(OnClickCloseButton);
+            levelUpButtonOnlyForInteractableManaging.onClick.AddListener(OnClickLevelUp);
+        }
 
         // PointerDown 이벤트 등록 함수
         // 포인터 다운 이벤트 추가 메서드

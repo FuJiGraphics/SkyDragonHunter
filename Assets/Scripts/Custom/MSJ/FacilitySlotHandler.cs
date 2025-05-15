@@ -78,7 +78,7 @@ namespace SkyDragonHunter.UI {
                     timerText.text = "--:--:--";
                     itemAcquireCountText.text = "--";
 
-                    itemCountText.text = $"{data.TotalProducts} / {data.FacilityTableData.KeepItemAmount}";
+                    itemCountText.text = $"0 / {data.FacilityTableData.KeepItemAmount}";
                     levelText.text = $"Lv. {data.level}";
                 }
                 else
@@ -96,7 +96,7 @@ namespace SkyDragonHunter.UI {
                     timerText.text = "--:--:--";
                     itemAcquireCountText.text = "--";
 
-                    itemCountText.text = $"{data.TotalProducts} / {data.FacilityTableData.KeepItemAmount}";
+                    itemCountText.text = $"0 / {data.FacilityTableData.KeepItemAmount}";
                     levelText.text = $"Lv. {data.level}";
                 }
             }
