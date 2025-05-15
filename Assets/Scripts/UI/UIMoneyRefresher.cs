@@ -1,3 +1,5 @@
+using NPOI.SS.Formula.UDF;
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
@@ -16,6 +18,12 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_CoinText;
         [SerializeField] private TextMeshProUGUI m_DiamondText;
         [SerializeField] private TextMeshProUGUI m_MasteryRewardText;
+        [SerializeField] private TextMeshProUGUI m_RepairerLevelUpText;
+
+        [Header("Stat Panel")]
+        [SerializeField] private TextMeshProUGUI m_Damage;
+        [SerializeField] private TextMeshProUGUI m_Armor;
+        [SerializeField] private TextMeshProUGUI m_Health;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -25,6 +33,31 @@ namespace SkyDragonHunter.UI {
         {
             AccountMgr.RemoveItemCountChangedEvent(OnChangedItem);
             AccountMgr.AddItemCountChangedEvent(OnChangedItem);
+
+            var status = GameMgr.FindObject<CharacterStatus>("Airship");
+            if (status != null)
+            {
+                if (m_Damage != null)
+                {
+                    m_Damage.text = status.MaxDamage.ToUnit();
+                    status.RemoveChangedEvent(StatusChangedEventType.MaxDamage, OnChangedDamage);
+                    status.AddChangedEvent(StatusChangedEventType.MaxDamage, OnChangedDamage);
+                }
+
+                if (m_Health != null)
+                {
+                    m_Health.text = status.MaxHealth.ToUnit();
+                    status.RemoveChangedEvent(StatusChangedEventType.MaxHealth, OnChangedHealth);
+                    status.AddChangedEvent(StatusChangedEventType.MaxHealth, OnChangedHealth);
+                }
+
+                if (m_Armor != null)
+                {
+                    m_Armor.text = status.MaxArmor.ToUnit();
+                    status.RemoveChangedEvent(StatusChangedEventType.MaxArmor, OnChangedArmor);
+                    status.AddChangedEvent(StatusChangedEventType.MaxArmor, OnChangedArmor);
+                }
+            }
         }
 
         private void OnEnable()
@@ -33,6 +66,30 @@ namespace SkyDragonHunter.UI {
         }
 
         // Public 메서드
+        public void OnChangedDamage(BigNum stat)
+        {
+            if (m_Damage == null)
+                return;
+
+            m_Damage.text = stat.ToUnit();
+        }
+
+        public void OnChangedHealth(BigNum stat)
+        {
+            if (m_Health == null)
+                return;
+
+            m_Health.text = stat.ToUnit();
+        }
+
+        public void OnChangedArmor(BigNum stat)
+        {
+            if (m_Armor == null)
+                return;
+
+            m_Armor.text = stat.ToUnit();
+        }
+
         public void OnChangedItem(ItemType type)
         {
             switch (type)
@@ -60,6 +117,8 @@ namespace SkyDragonHunter.UI {
                 case ItemType.Gear:
                     break;
                 case ItemType.RepairExp:
+                    if (m_RepairerLevelUpText != null)
+                        m_RepairerLevelUpText.text = AccountMgr.ItemCount(ItemType.RepairExp).ToString();
                     break;
                 case ItemType.WaveDungeonTicket:
                     break;

@@ -173,7 +173,6 @@ namespace SkyDragonHunter.UI {
                 {
                     infoUiPanel.SetCanonIcon(0, provider.Icon);
                     infoUiPanel.SetCanonIconColor(0, provider.Color);
-                    infoUiPanel.SetCanonText(0, provider.Name);
                 }
             }
             else
@@ -204,7 +203,6 @@ namespace SkyDragonHunter.UI {
 
                 var infoUiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
                 infoUiPanel?.ResetCanonIcon(0);
-                infoUiPanel?.ResetCanonText(0);
             }
             else
             {

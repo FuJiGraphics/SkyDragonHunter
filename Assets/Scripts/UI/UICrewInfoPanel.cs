@@ -64,7 +64,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private GameObject m_UiCrewListContent;
         [SerializeField] private GameObject m_UiCrewListNodePrefab;
 
-        private List<CrewNode> m_CrewListNodeObjects;
+        private List<CrewNode> m_CrewListNodeObjects = new();
         private Button m_PrevClickButton = null;
 
         // 속성 (Properties)

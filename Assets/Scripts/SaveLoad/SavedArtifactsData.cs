@@ -50,6 +50,7 @@ namespace SkyDragonHunter.SaveLoad
             foreach (var artifact in savedArtifactMap)
             {
                 var equipPanel = GameMgr.FindObject<UITreasureEquipmentPanel>("TreasureEquipmentPanel");
+                var infoPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
                 var saveData = artifact.Value;
                 if (AccountMgr.TryGetArtifact(saveData.uuid, out var target))
                 {

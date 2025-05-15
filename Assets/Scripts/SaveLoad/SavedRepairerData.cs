@@ -1,7 +1,9 @@
 using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,14 +93,23 @@ namespace SkyDragonHunter.SaveLoad
             foreach (var repair in repairDummys)
             {
                 // TODO: LJH
-                var savedCannon = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repair.Grade, repair.Type);
-                if (savedCannon != null)
+                var savedRepairer = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repair.Grade, repair.Type);
+                if (savedRepairer != null)
                 {
                     //repair.ID = savedCannon.id;
-                    repair.Count = savedCannon.count;
-                    repair.Level = savedCannon.level;
-                    repair.IsUnlock = savedCannon.isUnlocked;
-                    repair.IsEquip = savedCannon.isEquipped;
+                    repair.Count = savedRepairer.count;
+                    repair.Level = savedRepairer.level;
+                    repair.IsUnlock = savedRepairer.isUnlocked;
+                    repair.IsEquip = savedRepairer.isEquipped;
+                    if (savedRepairer.isEquipped)
+                    {
+                        var infoUiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                        if (infoUiPanel != null)
+                        {
+                            infoUiPanel.SetRepairIcon(0, repair.Icon);
+                            infoUiPanel.SetRepairIconColor(0, repair.Color);
+                        }
+                    }
                 }
                 else
                 {

@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
@@ -230,6 +231,25 @@ namespace SkyDragonHunter.UI {
             m_EffectDescLeft.text = (RepairData.RepHpMultiplier * 100).ToString() + "%";
             m_EffectNameRight.text = "회복력 배율";
             m_EffectDescRight.text = (RepairData.RepRecMultiplier * 100).ToString() + "%";
+
+            switch (RepairDummy.Type)
+            {
+                case RepairType.Normal:
+                    m_EffectDetails.text = "없음";
+                    break;
+                case RepairType.Elite:
+                    m_EffectDetails.text = "비공정을 조금 더 회복시킵니다.";
+                    break;
+                case RepairType.Shield:
+                    m_EffectDetails.text = "비공정에 방어막을 부여합니다.";
+                    break;
+                case RepairType.Healer:
+                    m_EffectDetails.text = "비공정을 크게 회복시킵니다.";
+                    break;
+                case RepairType.Divine:
+                    m_EffectDetails.text = "비공정에 무적 상태를 부여합니다.";
+                    break;
+            }
         }
 
         private void DirtyCannonLevelUpNeedCost(RepairDummy RepairDummy)

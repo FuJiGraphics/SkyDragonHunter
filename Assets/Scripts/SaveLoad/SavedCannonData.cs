@@ -106,7 +106,6 @@ namespace SkyDragonHunter.SaveLoad
                         {
                             infoUiPanel.SetCanonIcon(0, provider.Icon);
                             infoUiPanel.SetCanonIconColor(0, provider.Color);
-                            infoUiPanel.SetCanonText(0, provider.Name);
                         }
                     }
                 }

@@ -1,3 +1,4 @@
+using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
@@ -235,9 +236,16 @@ namespace SkyDragonHunter.UI {
             CanonBase canonBase = canonInstance.GetComponent<CanonBase>();
             CanonDefinition canonData = canonBase.CanonData;
             m_EffectNameLeft.text = "공격력 배율";
-            m_EffectDescLeft.text = canonData.canATKMultiplier.ToString() + "%";
+            m_EffectDescLeft.text = (canonData.canATKMultiplier * 100f).ToString() + "%";
             m_EffectNameRight.text = "공격 속도";
             m_EffectDescRight.text = (1.0 / canonData.canCooldown).ToString("F1") + "/s";
+
+            if (CanonType.Normal == canonDummy.Type)
+                m_EffectDetails.text = "없음";
+            else if (CanonType.Repeater == canonDummy.Type)
+                m_EffectDetails.text = "포탄을 빠른 속도로 연사합니다. ";
+            else
+                m_EffectDetails.text = "포탄에 맞은 적에게 " + canonBase.AilmentString + " 상태를 부여합니다.";
         }
 
         private void DirtyCannonLevelUpNeedCost(CanonDummy canonDummy)

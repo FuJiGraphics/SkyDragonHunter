@@ -9,6 +9,7 @@ namespace SkyDragonHunter.UI {
     public class UITreasureEquipmentSlot : MonoBehaviour
     {
         // 필드 (Fields)
+        [SerializeField] private int m_SlotIndex;
         [SerializeField] private Image m_Icon;
         [SerializeField] private Button m_Button;
 
@@ -29,6 +30,8 @@ namespace SkyDragonHunter.UI {
                 DrawableMgr.Dialog("Error", $"장착하려는 아티팩트가 null입니다.");
                 return;
             }
+            var infoPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+            infoPanel?.SetArtifactIcon(m_SlotIndex, artifact.Icon);
             m_BackUpBasicIcon = m_Icon.sprite;
             m_Icon.sprite = artifact.Icon;
             Value = artifact;
@@ -47,6 +50,9 @@ namespace SkyDragonHunter.UI {
             AccountMgr.RemoveArtifactSlot(Value);
             Value = null;
             m_Icon.sprite = m_BackUpBasicIcon;
+
+            var infoPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+            infoPanel?.ResetArtifactIcon(m_SlotIndex);
         }
 
         // Private 메서드

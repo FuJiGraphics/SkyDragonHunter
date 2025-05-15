@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
 
-    public class CanonBase : MonoBehaviour 
+    public class CanonBase : MonoBehaviour
     {
         // 필드 (Fields)
         [SerializeField] private CanonDefinition m_CanonDefinition;
@@ -18,6 +18,19 @@ namespace SkyDragonHunter.Gameplay {
         // 속성 (Properties)
         public CanonDefinition CanonData => m_CanonDefinition;
         public GameObject CanonDummy => m_CanonDummy;
+
+        public string AilmentString
+            => m_CurrentAilmentType switch
+            {
+                AilmentType.Stun => "기절",
+                AilmentType.Exposed => "약화",
+                AilmentType.Taunt => "도발",
+                AilmentType.Burn => "화상",
+                AilmentType.Slow => "둔화",
+                AilmentType.Freeze => "빙결",
+                AilmentType.Max => "",
+                _ => "",
+            };
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
