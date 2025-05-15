@@ -298,7 +298,7 @@ namespace SkyDragonHunter
 
         public void OnTestWaveFailedActive()
         {
-            Debug.LogError($"!");
+            Debug.LogError($"OnTestWaveFailedActive");
             feildPanel.SetActive(true);
             isInfiniteMode = true;
             OnSetCurrentWave();

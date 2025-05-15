@@ -42,6 +42,10 @@ namespace SkyDragonHunter.UI {
                     UITreasureEquipmentSlotPanel.EquipList.Remove(artifact);
                     artifact.IsEquip = false;
                     artifact.CurrentSlot = -1;
+
+                    var uiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                    uiPanel?.ResetArtifactIcon(i);
+
                     break;
                 }
             }
@@ -63,6 +67,10 @@ namespace SkyDragonHunter.UI {
                     UITreasureEquipmentSlotPanel.EquipList.Add(artifact);
                     artifact.IsEquip = true;
                     artifact.CurrentSlot = i;
+
+                    var uiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                    uiPanel?.SetArtifactIcon(i, artifact.Icon);
+
                     break;
                 }
             }

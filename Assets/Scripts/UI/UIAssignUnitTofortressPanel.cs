@@ -92,7 +92,7 @@ namespace SkyDragonHunter.UI {
         private List<GameObject> m_CrewPickNodeObjects;
         private GameObject m_PrevClickedCrew;
         private CrewEquipmentController m_AirshipEquipController;
-        private List<CrewNode> m_CrewListNodeObjects;
+        private List<CrewNode> m_CrewListNodeObjects = new();
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -229,14 +229,14 @@ namespace SkyDragonHunter.UI {
             m_AirshipEquipController.EquipSlot(targetSlot.slotNumber, crewInstance);
             targetSlot.ResetSlot();
             targetSlot.SetSlot(crewInstance);
-            m_EquipmentPanel.mountSlotIcons[targetSlot.slotNumber].sprite = targetSlot.crewIcon.sprite;
+            m_EquipmentPanel.MountSlotIcons[targetSlot.slotNumber].sprite = targetSlot.crewIcon.sprite;
 
             if (inSlot != null && outInstance != null)
             {
                 m_AirshipEquipController.EquipSlot(inSlot.slotNumber, outInstance);
                 inSlot.ResetSlot();
                 inSlot.SetSlot(outInstance);
-                m_EquipmentPanel.mountSlotIcons[inSlot.slotNumber].sprite = inSlot.crewIcon.sprite;
+                m_EquipmentPanel.MountSlotIcons[inSlot.slotNumber].sprite = inSlot.crewIcon.sprite;
             }
         }
 
@@ -320,7 +320,7 @@ namespace SkyDragonHunter.UI {
                 {
                     m_AirshipEquipController.UnequipSlot(crewInstance);
                     m_MountSlots[i].ResetSlot();
-                    m_EquipmentPanel.mountSlotIcons[i].sprite = null;
+                    m_EquipmentPanel.MountSlotIcons[i].sprite = null;
                     break;
                 }
             }

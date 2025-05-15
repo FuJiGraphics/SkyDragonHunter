@@ -13,6 +13,7 @@ namespace SkyDragonHunter.Managers {
 
         // 속성 (Properties)
         public static bool AddressableMode { get; set; } = true;
+        public static Sprite EmptySprite => Load<Sprite>("TransparentImage");
 
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

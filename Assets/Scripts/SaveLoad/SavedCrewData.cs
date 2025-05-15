@@ -120,21 +120,24 @@ namespace SkyDragonHunter.SaveLoad
                 }
 
                 TempCrewLevelExpContainer.ApplyLoadedCrewData(crew);
-                var instance = GameObject.Instantiate(crewPrefab);
-                if (instance != null)
+                if (crew.isUnlocked)
                 {
-                    if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))
+                    var instance = GameObject.Instantiate(crewPrefab);
+                    if (instance != null)
                     {
-                        btComp.SetDataFromTableWithExistingIDTemp(crew.level);
+                        if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))
+                        {
+                            btComp.SetDataFromTableWithExistingIDTemp(crew.level);
+                        }
+                        AccountMgr.RegisterCrew(instance);
+                        instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
+                        instance.SetActive(false);
                     }
-                    AccountMgr.RegisterCrew(instance);
-                    instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
-                    instance.SetActive(false);
-                }
 
-                if (crew.isEquip)
-                {
-                    EquipCrew(crew.crewData.ID, crew.slotIndex, instance);
+                    if (crew.isEquip)
+                    {
+                        EquipCrew(crew.crewData.ID, crew.slotIndex, instance);
+                    }
                 }
             }
         }

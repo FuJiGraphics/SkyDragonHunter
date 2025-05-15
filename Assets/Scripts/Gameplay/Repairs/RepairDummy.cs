@@ -123,6 +123,17 @@ namespace SkyDragonHunter.Gameplay {
             }
         }
 
+        public Color Color => Grade switch
+        {
+            RepairGrade.Normal => Color.green,
+            RepairGrade.Rare => Color.blue,
+            RepairGrade.Unique => Color.cyan,
+            RepairGrade.Legend => Color.yellow,
+            _ => throw new NotImplementedException(),
+        };
+
+        public string Name => GetData().RepName;
+
         public int MaxLevel { get; set; } = 50;
 
         public RepairType Type

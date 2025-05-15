@@ -1,6 +1,8 @@
 using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Interfaces;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -95,6 +97,18 @@ namespace SkyDragonHunter.SaveLoad
                     canonDummy.Level = savedCannon.level;
                     canonDummy.IsUnlock = savedCannon.isUnlocked;
                     canonDummy.IsEquip = savedCannon.isEquipped;
+                    if (canonDummy.IsEquip)
+                    {
+                        var infoUiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                        var canonInstance = canonDummy.GetCanonInstance();
+                        if (infoUiPanel != null &&
+                            canonInstance.TryGetComponent<ICanonInfoProvider>(out var provider))
+                        {
+                            infoUiPanel.SetCanonIcon(0, provider.Icon);
+                            infoUiPanel.SetCanonIconColor(0, provider.Color);
+                            infoUiPanel.SetCanonText(0, provider.Name);
+                        }
+                    }
                 }
                 else
                 {

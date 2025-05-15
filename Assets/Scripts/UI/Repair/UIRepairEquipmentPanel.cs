@@ -161,6 +161,14 @@ namespace SkyDragonHunter.UI {
                     image.color = Color.white;
                 }
                 m_ClickedRepairInfo.prevClickedRepairDummy.IsEquip = true;
+
+                var infoUiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                if (infoUiPanel != null)
+                {
+                    infoUiPanel.SetCanonIcon(0, m_ClickedRepairInfo.prevClickedRepairDummy.Icon);
+                    infoUiPanel.SetCanonIconColor(0, m_ClickedRepairInfo.prevClickedRepairDummy.Color);
+                    infoUiPanel.SetCanonText(0, m_ClickedRepairInfo.prevClickedRepairDummy.Name);
+                }
             }
             else
             {
@@ -187,6 +195,13 @@ namespace SkyDragonHunter.UI {
                     image.color = Color.white;
                 }
                 m_ClickedRepairInfo.prevClickedRepairDummy.IsEquip = false;
+
+                var infoUiPanel = GameMgr.FindObject<UIFortressEquipmentPanel>("UIFortressEquipmentPanel");
+                if (infoUiPanel != null)
+                {
+                    infoUiPanel.ResetRepairIcon(0);
+                    infoUiPanel.ResetRepairText(0);
+                }
             }
             else
             {
