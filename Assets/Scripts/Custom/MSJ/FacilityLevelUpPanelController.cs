@@ -149,7 +149,6 @@ namespace SkyDragonHunter.UI {
             // ~TODO
         }
 
-
         // 레벨업 버튼 클릭 시 처리
         public void OnClickLevelUp()
         {

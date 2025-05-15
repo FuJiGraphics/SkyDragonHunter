@@ -197,7 +197,7 @@ namespace SkyDragonHunter.UI {
             AccountMgr.AddItemCount(data.ProductItemType, data.TotalProducts);
             data.lastAccquiredTime = DateTime.UtcNow;
             UpdateUI();
-
+            SaveLoadMgr.UpdateSaveData(SaveDataTypes.Facility);
             #region MSJ
             //if (data.itemCount > 0)
             //{
@@ -231,7 +231,7 @@ namespace SkyDragonHunter.UI {
             data.upgradeStartedTime = DateTime.UtcNow;
             data.isUpgrading = false;
             UpdateUI();
-
+            SaveLoadMgr.CallSaveGameData();
 
             #region MSJ
             //if (!data.isInLevelUpCooldown && !isLevelUpCompleteReady)
@@ -275,7 +275,7 @@ namespace SkyDragonHunter.UI {
 
             favorailityMgr.testGold -= cost;
             data.levelUpCooldown = data.level * 10f;
-            UpdateUI();
+            UpdateUI();            
         }
 
         public FacilityType GetFacilityType() => type;
@@ -336,6 +336,7 @@ namespace SkyDragonHunter.UI {
             // Apply to data
             data.isUpgrading = true;
             data.upgradeStartedTime = DateTime.UtcNow;
+            SaveLoadMgr.CallSaveGameData();
         }
 
         // ~TODO

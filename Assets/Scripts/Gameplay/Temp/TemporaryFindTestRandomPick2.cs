@@ -14,7 +14,6 @@ public class TemporaryFindTestRandomPick2 : MonoBehaviour
         testRandomPick = GameObject.Find("TestRandomPick").gameObject.GetComponent<TestRandomPick>();
         gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
         gameObject.GetComponent<Button>().onClick.AddListener(testRandomPick.RandomTenPick);
-
     }
 
     // Update is called once per frame
