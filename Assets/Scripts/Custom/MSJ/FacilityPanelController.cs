@@ -1,3 +1,5 @@
+using SkyDragonHunter.Managers;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +23,7 @@ namespace SkyDragonHunter.UI {
 
         private void Update()
         {
-            systemMgr.UpdateTimers(Time.deltaTime);
+            //systemMgr.UpdateTimers(Time.deltaTime);
             foreach (var slot in slotHandlers)
                 slot.UpdateUI();
         }
@@ -32,6 +34,18 @@ namespace SkyDragonHunter.UI {
             foreach (var slot in slotHandlers)
             {
                 var data = systemMgr.GetFacility(slot.GetFacilityType());
+                var saved = SaveLoadMgr.GameData.savedFacilityData.GetSavedFacility(data.type);
+                data.level = saved.level;
+                data.isUpgrading = saved.isUpgrading;
+                if(data.isUpgrading)
+                {
+                    data.upgradeStartedTime = saved.upgradeStartTime;
+                }
+                else
+                {
+                    data.upgradeStartedTime = DateTime.UtcNow;
+                }
+                data.lastAccquiredTime = saved.lastAcquiredTime == DateTime.MinValue ? DateTime.UtcNow : saved.lastAcquiredTime;
                 slot.Initialize(data);
             }
         }

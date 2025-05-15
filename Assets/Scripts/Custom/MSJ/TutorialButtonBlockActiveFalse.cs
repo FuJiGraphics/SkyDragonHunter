@@ -1,3 +1,4 @@
+using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,11 @@ namespace SkyDragonHunter
 
         private void Update()
         {
+            if(tutorialMgr == null)
+            {
+                tutorialMgr = GameMgr.FindObject($"TutorialMgr").GetComponent<TutorialMgr>();
+            }
+
             if (!tutorialMgr.IsStartTutorial)
                 return;
             

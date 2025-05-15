@@ -28,6 +28,31 @@ namespace SkyDragonHunter.SaveLoad
     public class SavedCrewData
     {
         public List<SavedCrew> crews;
+        private Dictionary<int, SavedCrew> crewDict;
+
+        public SavedCrew GetCrewData(int crewId)
+        {
+            if(crewDict == null)
+            {
+                //Debug.LogError($"crewDict Null");
+                
+                foreach (var crew in crews)
+                {
+                    if(crew.crewData.ID == crewId)
+                    {
+                        return crew;
+                    }
+                }
+            }
+
+            if (!crewDict.ContainsKey(crewId))
+            {
+                Debug.LogError($"no crew found with key {crewId}");
+                return null;
+            }
+
+            return crewDict[crewId];
+        }
 
         public bool GetCrewLevel(int id, out int level)
         {
@@ -53,11 +78,12 @@ namespace SkyDragonHunter.SaveLoad
             }
             level = 0;
             return false;
-        }
+        }        
 
         public void InitData()
         {
             crews = new List<SavedCrew>();
+            crewDict = new Dictionary<int, SavedCrew>();
             var crewTable = DataTableMgr.CrewTable;
 
             foreach(var crewData in crewTable.Values)
@@ -78,7 +104,10 @@ namespace SkyDragonHunter.SaveLoad
                 }
 
                 if (!contains)
+                {
                     crews.Add(savedCrew);
+                    crewDict.Add(savedCrew.crewData.ID, savedCrew);
+                }
                 else
                     Debug.LogError($"Trying to add duplicated crew ID [{crewData.ID}]");
             }
@@ -204,7 +233,7 @@ namespace SkyDragonHunter.SaveLoad
             }
             return result;
         }
-
+                
     } // Scope by class SavedCrewData
 
 } // namespace Root

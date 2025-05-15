@@ -1,182 +1,235 @@
 using SkyDragonHunter.Managers;
-using SkyDragonHunter.UI;
+using SkyDragonHunter.SaveLoad;
+using SkyDragonHunter.Structs;
+using SkyDragonHunter.Tables;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace SkyDragonHunter.UI {
-
-    [System.Serializable]
-    public class RerollShopSlotState
-    {
-        public ItemSlotData item;
-        public bool isLocked;
-        public bool isPurchased;
-
-        public RerollShopSlotState(ItemSlotData item, bool isLocked = false, bool isPurchased = false)
-        {
-            this.item = item;
-            this.isLocked = isLocked;
-            this.isPurchased = isPurchased;
-        }
-    }
-
+namespace SkyDragonHunter.UI
+{
     public class RerollShopController : MonoBehaviour
     {
-        // 필드 (Fields)
+        // Fields
+        private bool initiated = false;
+        private int currentFavorabilityLevel;
+
         [Header("UI 참조")]
-        [SerializeField] private FavorabilityUIController favorabilityUIController;
-        [SerializeField] private FavorailityMgr favorailityMgr;               
-        [SerializeField] private Transform contentParent;               // 6개의 슬롯이 배치된 Content 오브젝트
-        [SerializeField] private float rerollInterval = 10800f;         // 자동 리롤 시간 (초 단위, 기본 3시간)
-        [SerializeField] private List<ItemSlotData> shopItemPool;        // 전체 리롤 상점 아이템 풀
-        [SerializeField] private RerollShopLockConfirmPanel lockConfirmPanel;
+        [SerializeField] private FavorailityMgr favorailityMgr;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
+        [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
 
-        private List<RerollShopSlotHandler> slotHandlers = new();      // 슬롯 핸들러 리스트
-        private List<RerollShopSlotState> currentSlotStates = new(); // 현재 상태 저장용
-        private Coroutine autoRerollRoutine;                            // 자동 리롤 코루틴 참조
+        [SerializeField] private UIShopItemSlot prefab;
+        [SerializeField] private List<GameObject> slotList = new();
+        [SerializeField] private Button rerollButton;
 
-        // 속성 (Properties)
-        // 외부 종속성 필드 (External dependencies field)
-        // 이벤트 (Events)
-        // 유니티 (MonoBehaviour 기본 메서드)
-        private void OnEnable()
+        public DateTime resetTime;
+        private const int maxItemCount = 6;
+        private static readonly int resetTimeHourlyCriterion = 1;
+        
+        private List<ItemSlotData> itemDataList = new();
+
+        [SerializeField] private Button closeButton;
+
+        // Unity Methods
+        private void Awake()
         {
-            if (currentSlotStates.Count == slotHandlers.Count)
+            currentFavorabilityLevel = 1;
+        }
+
+        private void Start()
+        {
+            closeButton.onClick.AddListener(OnClickCloseButton);
+            currentFavorabilityLevel = SaveLoadMgr.GameData.savedShopItemData.favorabilityLevel;
+            resetTime = SaveLoadMgr.GameData.savedShopItemData.GetRefreshedTime(ShopType.Reroll, ShopRefreshType.Common).Value;
+            if(resetTime == DateTime.MinValue)
             {
-                // 기존 상태 복원
-                for (int i = 0; i < slotHandlers.Count; i++)
-                {
-                    slotHandlers[i].InitializeWithState(currentSlotStates[i], this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
-                }
+                SetSlotData(currentFavorabilityLevel);
+            }
+            else if (GetElapsedTime() > TimeSpan.FromHours(resetTimeHourlyCriterion))
+            {
+                SetSlotData(currentFavorabilityLevel);
             }
             else
             {
-                // 신규 진입 시 리롤
-                ManualReroll();
+                LoadSlotData();
             }
 
-            autoRerollRoutine = StartCoroutine(AutoRerollTimer());
+            rerollButton.onClick.AddListener(OnClickRerollButton);
+
+            initiated = true;
+            SetSlot();
         }
 
-        private void OnDisable()
+        private void OnEnable()
         {
-            // 꺼질 때 자동 리롤 코루틴 정지
-            if (autoRerollRoutine != null)
-                StopCoroutine(autoRerollRoutine);
+            if (initiated)
+                SetSlot();
         }
 
-        // Public 메서드
-        public void Init()
+        // Public Methods
+        public List<ItemSlotData> GetItemSlotDataList(ShopRefreshType refreshType)
         {
-            if (shopItemPool != null && shopItemPool.Count > 0)
-                return;
+            return itemDataList;
+        }
 
-            if (shopItemPool == null)
-                shopItemPool = new();
-
-            var tableData = DataTableMgr.RerollShopTable.ToArray();
-            foreach (var data in tableData)
+        public List<SavedShopItem> GetSavedShopItemList()
+        {
+            var result = new List<SavedShopItem>();
+            foreach (var slot in itemDataList)
             {
-                ItemSlotData slot = new ItemSlotData();
-                slot.itemType = data.GetItemType();
-                slot.currCount = data.ItemAmount;
-                slot.maxCount = data.ItemAmount;
-                slot.currencyType = CurrencyType.Coin;
-                slot.pullRate = data.RerollRate;
-                slot.Price = data.Price;
-                shopItemPool.Add(slot);
+                var newSavedItem = new SavedShopItem();
+                newSavedItem.id = slot.id;
+                newSavedItem.isLocked = slot.locked;
+                newSavedItem.itemType = slot.itemType;
+                newSavedItem.currentCount = slot.currCount;
+                newSavedItem.maxCount = slot.maxCount;
+                newSavedItem.price = slot.price;
+                newSavedItem.currencyType = slot.currencyType;
+                result.Add(newSavedItem);
             }
-
-            // Content 아래에 있는 슬롯에 붙어있는 핸들러 수집
-            for (int i = 0; i < contentParent.childCount; i++)
-            {
-                var handler = contentParent.GetChild(i).GetComponent<RerollShopSlotHandler>();
-                if (handler != null)
-                    slotHandlers.Add(handler);
-            }
+            return result;
+        }
+        public DateTime? GetRefreshedTime()
+        {
+            return resetTime;
+        }
+        public TimeSpan GetElapsedTime()
+        {
+            var elapsed = DateTime.UtcNow - resetTime;
+           
+            return elapsed;
         }
 
-        /// <summary>
-        /// 외부 버튼에서 호출되는 수동 리롤
-        /// </summary>
-        public void ManualReroll()
+        // Private Methods
+        private void OnClickCloseButton()
         {
-            currentSlotStates.Clear();
-
-            foreach (var slot in slotHandlers)
+            gameObject.SetActive(false);
+        }
+        private void SetSlot()
+        {
+            foreach (var slotGO in slotList)
             {
-                if (!slot.IsLocked())
+                Destroy(slotGO);
+            }
+            slotList.Clear();
+
+            for (int i = 0; i < itemDataList.Count; ++i)
+            {
+                var slot = Instantiate(prefab, contentParent);
+                slot.SetSlot(itemDataList[i]);
+
+                var capturedIndex = i;
+                var item = itemDataList[capturedIndex];
+
+                slot.AddListener(() =>
                 {
-                    var item = GetWeightedRandomItem(shopItemPool);
-                    slot.Initialize((ItemSlotData)item, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
+                    if (AccountMgr.Diamond >= item.price)
+                    {
+                        var itemCount = AccountMgr.ItemCount(item.itemType);
+                        itemCount += item.maxCount;
+                        AccountMgr.SetItemCount(item.itemType, itemCount);
+                        item.currCount = 0;
+                        AccountMgr.Diamond -= item.price;
+                        item.locked = false;
+                        DrawableMgr.Dialog("안내", $"{item.ItemName} {item.maxCount}개 구매 성공");
+                    }
+                    else
+                    {
+                        DrawableMgr.Dialog("안내", "다이아가 부족합니다");
+                    }                                     
+                });
+                slot.AddLockButtonListener(() =>
+                {
+                    if (item.currCount > 0)
+                    {
+                        item.locked = !item.locked;
+                    }
+                    else
+                    {
+                        item.locked = false;
+                    }
+                });
+                slotList.Add(slot.gameObject);
+            }
+        }
+
+        private void SetSlotData(int favorabilityLv)
+        {
+            ItemSlotData[] lockedSlots = new ItemSlotData[maxItemCount];
+            
+            for (int i = 0; i < itemDataList.Count; ++i)
+            {
+                lockedSlots[i] = null;
+                if (itemDataList[i].locked)
+                {
+                    lockedSlots[i] = new ItemSlotData();
+                    lockedSlots[i].id = itemDataList[i].id;
+                    lockedSlots[i].index = itemDataList[i].index;
+                    lockedSlots[i].refreshType = itemDataList[i].refreshType;
+                    lockedSlots[i].locked = true;
+                    lockedSlots[i].shopType = itemDataList[i].shopType;
+                    lockedSlots[i].itemType = itemDataList[i].itemType;
+                    lockedSlots[i].pullRate = itemDataList[i].pullRate;
+                    lockedSlots[i].currCount = itemDataList[i].currCount;
+                    lockedSlots[i].maxCount = itemDataList[i].maxCount;
+                    lockedSlots[i].currencyType = itemDataList[i].currencyType;
                 }
-
-                currentSlotStates.Add(slot.GetSlotState());
             }
+
+            itemDataList.Clear();
+
+            for (int i = 0; i < maxItemCount; ++i)
+            {
+                if (lockedSlots[i] == null)
+                {
+                    var randId = DataTableMgr.RerollShopTable.GetWeightedRandomItemID(favorabilityLv);
+                    var rerollShopData = DataTableMgr.RerollShopTable.Get(randId);
+                    ItemSlotData slotData = new ItemSlotData();
+                    slotData.id = randId;
+                    slotData.index = i;
+                    slotData.shopType = ShopType.Reroll;
+                    slotData.refreshType = ShopRefreshType.Common;
+                    slotData.locked = false;
+                    slotData.itemType = rerollShopData.GetItemType();
+                    slotData.maxCount = rerollShopData.ItemAmount;
+                    slotData.currCount = 1;
+                    slotData.currencyType = CurrencyType.Diamond;
+                    slotData.price = rerollShopData.Price;
+                    itemDataList.Add(slotData);
+                }
+                else
+                {
+                    ItemSlotData slotData = new ItemSlotData();
+                    slotData.id = lockedSlots[i].id;
+                    slotData.index = i;
+                    slotData.shopType = ShopType.Reroll;
+                    slotData.refreshType = ShopRefreshType.Common;
+                    slotData.locked = true;
+                    slotData.itemType = lockedSlots[i].itemType;
+                    slotData.maxCount = lockedSlots[i].maxCount;
+                    slotData.currCount = lockedSlots[i].currCount;
+                    slotData.currencyType = CurrencyType.Diamond;
+                    slotData.price = lockedSlots[i].price;
+                    itemDataList.Add(slotData);
+                }
+            }
+            resetTime = DateTime.UtcNow;
+            SaveLoadMgr.CallSaveGameData();
         }
 
-        public void SaveAllSlotStates()
+        private void LoadSlotData()
         {
-            currentSlotStates.Clear();
-            foreach (var slot in slotHandlers)
-            {
-                currentSlotStates.Add(slot.GetSlotState());
-            }
+            itemDataList = SaveLoadMgr.GameData.savedShopItemData.GetItemSlotDataList(ShopType.Reroll);
         }
 
-        // Private 메서드
-
-        private void RestoreSlotStates()
+        private void OnClickRerollButton()
         {
-            for (int i = 0; i < slotHandlers.Count; i++)
-            {
-                var state = currentSlotStates[i];
-                slotHandlers[i].InitializeWithState(state, this, favorailityMgr, favorabilityUIController, lockConfirmPanel);
-            }
+            SetSlotData(currentFavorabilityLevel);
+            SetSlot();
         }
-        /// <summary>
-        /// 주기적으로 자동 리롤 수행
-        /// </summary>
-        private IEnumerator AutoRerollTimer()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(rerollInterval);
-                ManualReroll();
-            }
-        }
-
-        /// <summary>
-        /// 출현 확률(PullRate)에 따라 아이템을 무작위 선택 (중복 허용)
-        /// </summary>
-        private ItemSlotData? GetWeightedRandomItem(List<ItemSlotData> pool)
-        {
-            var valid = pool.ToList();
-            if (valid.Count == 0)
-            {
-                Debug.LogError("리롤 상점에 사용할 유효한 아이템이 없습니다.");
-                return null;
-            }
-
-            float totalWeight = valid.Sum(item => item.pullRate);
-            float rand = Random.Range(0, totalWeight);
-            float cumulative = 0f;
-
-            foreach (var item in valid)
-            {
-                cumulative += item.pullRate;
-                if (rand <= cumulative)
-                    return item;
-            }
-
-            // 예외 상황 대비: 마지막 항목 반환
-            return valid.Last();
-        }
-        // Others
-
-    } // Scope by class RerollShopController
+    } // Scope by class DiamondShopController
 
 } // namespace Root

@@ -3,16 +3,14 @@ using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter.UI
 {
     // 상점 종류를 나타내는 열거형 정의 (일반 / 일일 / 주간 / 월간)
-    public enum ShopCategory { Common, Daily, Weekly, Monthly }
+    public enum ShopRefreshType { Common, Daily, Weekly, Monthly }
 
     // 골드 상점, 다이아 상점 중 어디 화폐인지 체크
     public enum CurrencyType
@@ -21,18 +19,49 @@ namespace SkyDragonHunter.UI
     }
 
     [System.Serializable]
-    public struct ItemSlotData
+    public class ItemSlotData
     {
-        // TODO: LJH
+        
         public int id;
-        // ~TODO
-        [SerializeField] public ItemType itemType;
-        [SerializeField] public float pullRate;
-        [SerializeField] public int currCount;
-        [SerializeField] public int maxCount;
-        [SerializeField] public CurrencyType currencyType;
+        public int index;
+        public bool locked;
+        
+        public ShopRefreshType refreshType;
+        public ShopType shopType;
+        public ItemType itemType;
+        public float pullRate;
+        public int currCount;
+        public int maxCount;
+        public CurrencyType currencyType;
+        public BigNum price = 0;
 
-        public BigNum Price { get; set; }
+        public ItemSlotData Clone()
+        {
+            return new ItemSlotData
+            {
+                id = this.id,
+                index = this.index,
+                locked = this.locked,
+                refreshType = this.refreshType,
+                shopType = this.shopType,
+                itemType = this.itemType,
+                currCount = this.currCount,
+                maxCount = this.maxCount,
+                currencyType = this.currencyType,
+                price = this.price,
+            };
+        }
+
+        public bool Purchasable
+        {
+            get
+            {
+                if (shopType != ShopType.Reroll && refreshType == ShopRefreshType.Common)
+                    return true;
+
+                return currCount > 0;
+            }
+        }
         public string ItemName => GetData().Name;
         public Sprite ItemIcon => GetData().Icon;
         public Sprite CurrencyIcon => currencyType == CurrencyType.Coin ?
@@ -43,171 +72,208 @@ namespace SkyDragonHunter.UI
 
     public class GoldShopController : MonoBehaviour
     {
-        public ShopType shopType;
+        // Fields
+        private bool initiated = false;
 
         [Header("UI 참조")]
         [SerializeField] private FavorailityMgr favorailityMgr;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
         [SerializeField] private Transform contentParent;              // 16개의 아이템 슬롯이 배치된 Content 오브젝트
-        [SerializeField] private List<ItemSlotData> goldShopItemPool;       // 전체 아이템 풀 (출현 확률 포함)
+       
+        [SerializeField] private ShopRefreshType currentRefreshType;         // 현재 활성화된 상점 탭 종류
 
-        [SerializeField] private ShopCategory currentCategory;         // 현재 활성화된 상점 탭 종류
-
-        [SerializeField] private ScrollRect scrollRect; // (추가) 스크롤뷰
-
-        private List<ShopSlotHandler> slotHandlers = new();            // UI 슬롯 핸들러 리스트
-
-        // 각 카테고리별로 아이템 상태(아이템 + 현재 수량)를 저장하는 리스트                
-        private Dictionary<ShopCategory, List<ShopSlotState>> categoryItems = new();
-
-        // TODO: LJH
-        [SerializeField] private ShopSlotHandler prefab;
+        [SerializeField] private UIShopItemSlot prefab;
+        [SerializeField] private List<GameObject> slotList = new();
         public DateTime?[] resetTime;
         private static readonly int[] resetTimeHourlyCriteria =
         {
-            int.MaxValue,
+            99999999,
             24,
             168,
             720
         };
-        private Dictionary<ShopCategory, List<ItemSlotData>> categoryItemDataDict = new();
-        private const int maxItemCount = 8;
-        // ~TODO
+        private Dictionary<ShopRefreshType, List<ItemSlotData>> itemDataListDict = new();
+        private const int maxItemCount = 16;
 
-                // 각 카테고리별 자동 갱신을 위한 코루틴 추적용
-        private Dictionary<ShopCategory, Coroutine> resetRoutines = new();
-
-        [Header("탭별 자동 갱신 시간 (초 단위)")]
-        [SerializeField] private float dailyResetTime = 86400f;        // 일일: 24시간
-        [SerializeField] private float weeklyResetTime = 604800f;      // 주간: 7일
-        [SerializeField] private float monthlyResetTime = 2592000f;    // 월간: 30일
-
-        // 속성 (Properties)
-        // 외부 종속성 필드 (External dependencies field)
-        // 이벤트 (Events)
-        // 유니티 (MonoBehaviour 기본 메서드)
-
-        // 시작 시 슬롯 핸들러 수집 및 카테고리 초기화
-        // 상점 창이 켜질 때 현재 카테고리 기준으로 아이템 표시
-                
+        [SerializeField] private Button closeButton;
+        
+        // Unity Methods
         private void OnEnable()
         {
-            // TODO: LJH
-            RefreshCategory(currentCategory);
-            // ~TODO
+            if(initiated)
+                SetSlotForCategory(currentRefreshType);
         }
 
-        // TODO: LJH
         private void Start()
         {
-            resetTime = new DateTime?[Enum.GetValues(typeof(ShopCategory)).Length];
+            closeButton.onClick.AddListener(OnClickCloseButton);
+            currentRefreshType = ShopRefreshType.Common;
+            resetTime = new DateTime?[Enum.GetValues(typeof(ShopRefreshType)).Length];
             for (int i = 0; i < resetTime.Length; ++i)
             {
                 resetTime[i] = SaveLoadMgr.GameData.savedShopItemData.GetRefreshedTime(ShopType.Gold, (ShopRefreshType)i);
             }
-            foreach (ShopCategory category in Enum.GetValues(typeof(ShopCategory)))
+            foreach (ShopRefreshType refreshType in Enum.GetValues(typeof(ShopRefreshType)))
             {
-                if(resetTime[(int)category] == null)
+                if(resetTime[(int)refreshType] == null)
                 {
-                    Debug.LogError($"!");
-                    continue;
+                    SetItemSlotData(refreshType);
+                    Debug.LogError($"previous reset time was null");
                 }
-
-                if (resetTime[(int)category] == DateTime.MinValue)
+                else if (resetTime[(int)refreshType] == DateTime.MinValue)
                 {
-                    SetCategorySlotData(category);
+                    SetItemSlotData(refreshType);
                 }
-                else if (resetTime[(int)category].Value.Hour + resetTimeHourlyCriteria[(int)category] > DateTime.UtcNow.Hour)
+                else if (GetElapsedTime(refreshType) > TimeSpan.FromHours(resetTimeHourlyCriteria[(int)refreshType]))
                 {
-                    SetCategorySlotData(category);
+                    SetItemSlotData(refreshType);
                 }
                 else
                 {
-            
+                    LoadSlotData(refreshType);
                 }
             }
+            initiated = true;
+            SetSlotForCategory(currentRefreshType);
         }
-        // ~TODO
-
-        // Public 메서드
-        public void Init()
+        
+        // Public Methods
+        public List<ItemSlotData> GetItemSlotDataList(ShopRefreshType refreshType)
         {
-            InitGoldShopItemPool();            
-
-            // Content 하위의 자식 오브젝트에서 슬롯 핸들러 수집
-            for (int i = 0; i < contentParent.childCount; i++)
-            {
-                var handler = contentParent.GetChild(i).GetComponent<ShopSlotHandler>();
-                if (handler != null)
-                    slotHandlers.Add(handler);
-            }
-
-            // 각 카테고리에 대해 빈 리스트 초기화
-            foreach (ShopCategory cat in System.Enum.GetValues(typeof(ShopCategory)))
-                categoryItems[cat] = new List<ShopSlotState>();
+            return itemDataListDict[refreshType];
         }
 
-        private void InitGoldShopItemPool()
+        public List<SavedShopItem> GetSavedShopItemList(ShopRefreshType refreshType)
         {
-            if (goldShopItemPool != null && goldShopItemPool.Count > 0)
-                return;
-
-            if (goldShopItemPool == null)
-                goldShopItemPool = new();
-
-            var tableData = DataTableMgr.GoldShopTable.ToArray();
-            foreach (var data in tableData)
+            if(!itemDataListDict.ContainsKey(refreshType))
             {
-                ItemSlotData slot = new ItemSlotData();
-                slot.itemType = data.GetItemType();
-                slot.currCount = data.ItemAmount;
-                slot.maxCount = data.ItemBuyLimit;
-                slot.currencyType = CurrencyType.Coin;
-                slot.pullRate = data.GenWeight;
-                slot.Price = data.Price;
-                goldShopItemPool.Add(slot);
+                itemDataListDict.Add(refreshType, new());
             }
+            var result = new List<SavedShopItem>();
+            foreach (var slot in itemDataListDict[refreshType])
+            {
+                var newSavedItem = new SavedShopItem();
+                newSavedItem.id = slot.id;
+                newSavedItem.isLocked = slot.locked;
+                newSavedItem.itemType = slot.itemType;
+                newSavedItem.currentCount = slot.currCount;
+                newSavedItem.maxCount = slot.maxCount;
+                newSavedItem.price = slot.price;
+                newSavedItem.currencyType = slot.currencyType;
+                result.Add(newSavedItem);
+            }
+            return result;
+        }
+
+        public DateTime? GetRefreshedTime(ShopRefreshType refreshType)
+        {
+            if(resetTime == null)
+            {
+                return null;
+            }
+
+            return resetTime[(int)refreshType];
+        }
+        
+        public TimeSpan GetElapsedTime(ShopRefreshType refreshType)
+        {
+            var elapsed = DateTime.UtcNow - resetTime[(int)refreshType];
+            if(elapsed == null)
+            {
+                return TimeSpan.MaxValue;
+            }
+            return elapsed.Value;
         }
 
         // 외부 탭 버튼에서 호출되는 메서드
         public void OnClickTab(int categoryIndex)
         {
-            RefreshCategory((ShopCategory)categoryIndex);
+            SetSlotForCategory((ShopRefreshType)categoryIndex);
         }
 
-        // 주어진 카테고리로 아이템을 갱신
-        public void RefreshCategory(ShopCategory category)
+        // Private Methods
+        private void OnClickCloseButton()
         {
-            currentCategory = category;
-
-            // [수정된 조건] 일반(Common)은 최초 1회만 랜덤 배치
-            bool needGenerate = categoryItems[category].Count == 0;
-
-            if (needGenerate)
+            gameObject.SetActive(false);
+        }
+        private void SetSlotForCategory(ShopRefreshType refreshType)
+        {
+            foreach(var slotGO in slotList)
             {
-                Debug.Log($"[{category}] 새로 랜덤 배치됨");
-                GenerateRandomItemsFor(category);
+                Destroy(slotGO);
             }
-            else
+            slotList.Clear();
+
+            for(int i = 0; i < itemDataListDict[refreshType].Count; ++i)
             {
-                Debug.Log($"[{category}] 기존 아이템 재사용");
-            }            
+                var slot = Instantiate(prefab, contentParent);
+                slot.SetSlot(itemDataListDict[refreshType][i]);
 
-            ApplyItemsToSlots(categoryItems[category]);
-            ResetScrollPosition();
+                var capturedType = refreshType;
+                var capturedIndex = i;
 
-            // TODO: LJH
-            resetTime[(int)category] = DateTime.UtcNow;
-            // ~TODO
+                slot.AddListener(() =>
+                {
+                    var item = itemDataListDict[capturedType][capturedIndex];
+                    if (capturedType == ShopRefreshType.Common)
+                    {
+                        if (AccountMgr.Coin >= item.price)
+                        {
+                            var itemCount = AccountMgr.ItemCount(item.itemType);
+                            itemCount += 1;
+                            AccountMgr.SetItemCount(item.itemType, itemCount);
+                            AccountMgr.Coin -= item.price;
+                            DrawableMgr.Dialog("안내", $"{item.ItemName} 구매 성공");
+                        }
+                        else
+                        {
+                            DrawableMgr.Dialog("안내", "골드가 부족합니다");
+                        }
+                    }
+                    else
+                    {
+                        if (AccountMgr.Coin >= item.price && item.currCount > 0)
+                        {
+                            var itemCount = AccountMgr.ItemCount(item.itemType);
+                            itemCount += 1;
+                            item.currCount -= 1;
+                            AccountMgr.SetItemCount(item.itemType, itemCount);
+                            AccountMgr.Coin -= item.price;
+                            DrawableMgr.Dialog("안내", $"{item.ItemName} 구매 성공");
+                        }
+                        else if (!(item.currCount > 0))
+                        {
+                            DrawableMgr.Dialog("안내", "아이템 재고가 없습니다");
+                        }
+                        else if (AccountMgr.Coin < item.price)
+                        {
+                            DrawableMgr.Dialog("안내", "골드가 부족합니다");
+                        }
+                    }
+                });
+                slotList.Add(slot.gameObject);
+            }
+
+            currentRefreshType = refreshType;
         }
 
-        // TODO: LJH
-        private void SetCategorySlotData(ShopCategory category)
+        private void LoadSlotData(ShopRefreshType refreshType)
         {
-            if (!categoryItemDataDict.ContainsKey(category))
-                categoryItemDataDict.Add(category, new());
+            if (itemDataListDict.ContainsKey(refreshType))
+                itemDataListDict[refreshType].Clear();
+            else
+                itemDataListDict.Add(refreshType, new());
 
+            itemDataListDict[refreshType] = SaveLoadMgr.GameData.savedShopItemData.GetItemSlotDataList(ShopType.Gold, refreshType);
+        }
 
-            if (category == ShopCategory.Common)
+        private void SetItemSlotData(ShopRefreshType refreshType)
+        {
+            if (itemDataListDict.ContainsKey(refreshType))
+                itemDataListDict[refreshType].Clear();
+            else
+                itemDataListDict.Add(refreshType, new());
+
+            if (refreshType == ShopRefreshType.Common)
             {
                 SetCommonShopSlotData();
                 return;
@@ -215,112 +281,52 @@ namespace SkyDragonHunter.UI
 
             for (int i = 0; i < maxItemCount; ++i)
             {
-                var randId = DataTableMgr.GoldShopTable.GetWeightedRandomItemID(category);
+                var randId = DataTableMgr.GoldShopTable.GetWeightedRandomItemID(refreshType);
                 var goldShopData = DataTableMgr.GoldShopTable.Get(randId);
                 ItemSlotData slotData = new ItemSlotData();
                 slotData.id = randId;
+                slotData.index = i;
+                slotData.shopType = ShopType.Gold;
+                slotData.refreshType = refreshType;
+
                 slotData.itemType = goldShopData.GetItemType();
-                slotData.pullRate = goldShopData.GenWeight;
                 slotData.maxCount = goldShopData.ItemBuyLimit;
                 slotData.currCount = slotData.maxCount;
                 slotData.currencyType = CurrencyType.Coin;
-                
+                slotData.price = goldShopData.Price;
+                itemDataListDict[refreshType].Add(slotData);
             }
 
+            resetTime[(int)refreshType] = DateTime.UtcNow;
+            SaveLoadMgr.CallSaveGameData();
         }
 
         private void SetCommonShopSlotData()
         {
+            // List of Items in common shop stay same
+            var commonItems = DataTableMgr.GoldShopTable.GetCategorizedItemList(ShopRefreshType.Common);
 
-        }
-        // ~TODO
-
-        // Private 메서드
-        private void ResetScrollPosition()
-        {
-            // 캔버스 강제 갱신 후 최상단으로 이동
-            Canvas.ForceUpdateCanvases();
-            scrollRect.verticalNormalizedPosition = 1f;
-        }
-
-        // 카테고리에 대해 출현 확률 기반으로 아이템을 선택하고 저장
-        private void GenerateRandomItemsFor(ShopCategory category)
-        {
-            List<ShopSlotState> result = new();
-
-            for (int i = 0; i < slotHandlers.Count; i++)
+            int index = 0;
+            foreach (var goldShopData in commonItems)
             {
-                var selectedItem = GetWeightedRandomItem(goldShopItemPool);
-                result.Add(new ShopSlotState((ItemSlotData)selectedItem));
+                ItemSlotData slotData = new ItemSlotData();
+                slotData.id = goldShopData.ID;
+                slotData.index = index;
+                slotData.shopType = ShopType.Gold;
+                slotData.refreshType = ShopRefreshType.Common;
+
+                slotData.itemType = goldShopData.GetItemType();
+                slotData.maxCount = goldShopData.ItemBuyLimit;
+                slotData.currCount = slotData.maxCount;
+                slotData.currencyType = CurrencyType.Coin;
+                slotData.price = goldShopData.Price;
+                itemDataListDict[ShopRefreshType.Common].Add(slotData);
+                index++;
             }
 
-            categoryItems[category] = result;
-
-            // [수정 포인트] 일반(Common) 탭은 리셋 코루틴을 실행하지 않음
-            if (category == ShopCategory.Common)
-                return;
-
-            // 기존 리셋 코루틴 정리
-            if (resetRoutines.ContainsKey(category))
-                StopCoroutine(resetRoutines[category]);
-
-            // 리셋 타이머 실행
-            resetRoutines[category] = StartCoroutine(ResetCategoryAfterDelay(category, GetDelay(category)));
+            resetTime[(int)ShopRefreshType.Common] = DateTime.UtcNow;
+            SaveLoadMgr.CallSaveGameData();
         }
-
-        // 출현 확률(pullRate)을 기반으로 하나의 아이템을 선택
-        private ItemSlotData? GetWeightedRandomItem(List<ItemSlotData> pool)
-        {
-            var valid = pool.ToList();
-            if (valid.Count == 0)
-            {
-                Debug.LogError("GetWeightedRandomItem: 유효한 아이템이 없습니다.");
-                return null;
-            }
-
-            float totalWeight = valid.Sum(item => item.pullRate); // 전체 가중치 합
-            float rand = UnityEngine.Random.Range(0f, totalWeight);            // 랜덤 값 선택
-            float cumulative = 0f;
-
-            foreach (var item in valid)
-            {
-                cumulative += item.pullRate;
-                if (rand <= cumulative)
-                    return item;
-            }
-
-            return valid.Last(); // fallback
-        }
-
-        // 각 카테고리에 대해 설정된 갱신 시간 반환
-        private float GetDelay(ShopCategory category)
-        {
-            return category switch
-            {
-                ShopCategory.Daily => dailyResetTime,
-                ShopCategory.Weekly => weeklyResetTime,
-                ShopCategory.Monthly => monthlyResetTime,
-                _ => 0f
-            };
-        }
-
-        // 일정 시간이 지나면 해당 카테고리의 아이템 초기화
-        private IEnumerator ResetCategoryAfterDelay(ShopCategory category, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            categoryItems[category].Clear();
-        }
-
-        // 슬롯 UI에 저장된 아이템 상태 리스트를 순서대로 반영
-        private void ApplyItemsToSlots(List<ShopSlotState> items)
-        {
-            for (int i = 0; i < slotHandlers.Count; i++)
-            {
-                slotHandlers[i].Initialize(items[i], favorailityMgr, shopType);
-            }
-        }
-
-
         // Others
 
     } // Scope by class DiamondShopController

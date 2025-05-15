@@ -297,8 +297,7 @@ namespace SkyDragonHunter
         }
 
         public void OnTestWaveFailedActive()
-        {
-            Debug.LogError($"OnTestWaveFailedActive");
+        {            
             feildPanel.SetActive(true);
             isInfiniteMode = true;
             OnSetCurrentWave();
@@ -547,22 +546,12 @@ namespace SkyDragonHunter
                     destructableEvent.destructEvent.AddListener(() =>
                     {
                         #region CCJ
-                        m_RewardCoinCount += stageData.MonsterGOLD * 1000000;
-                        m_RewardFoodCount += stageData.MonsterGOLD * 10000;
+                        m_RewardCoinCount += stageData.MonsterGOLD;
                         m_RewardGrindingStoneCount += Random.Range(1, 5);
                         m_RewardRepairExpCount += Random.Range(1, 5);
                         AccountMgr.AddItemCount(ItemType.GrindingStone, m_RewardGrindingStoneCount);
                         AccountMgr.AddItemCount(ItemType.RepairExp, m_RewardRepairExpCount);
-                        AccountMgr.Coin += stageData.MonsterGOLD * 1000000;
-                        AccountMgr.Food += stageData.MonsterGOLD * 10000;
-
-                        float randVal = RandomMgr.RandomWithWeights((0f, 0.7f), (1f, 0.3f));
-                        bool isGenerateDungenTicket = randVal >= 1f;
-                        if (isGenerateDungenTicket)
-                        {
-                            m_RewardWaveDungeonTicketCount += 1;
-                            AccountMgr.WaveDungeonTicket += 1;
-                        }
+                        AccountMgr.Coin += stageData.MonsterGOLD;
                         m_RewardExpCount += stageData.MonsterEXP;
                         AccountMgr.CurrentExp += stageData.MonsterEXP;
                         #endregion

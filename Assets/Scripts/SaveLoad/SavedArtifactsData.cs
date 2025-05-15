@@ -46,7 +46,7 @@ namespace SkyDragonHunter.SaveLoad
 
         public void ApplySavedData()
         {
-            UITreasureEquipmentSlotPanel.EquipList?.Clear();
+            UITreasureEquipmentSlotPanel.EquipList?.Clear();            
             foreach (var artifact in savedArtifactMap)
             {
                 var equipPanel = GameMgr.FindObject<UITreasureEquipmentPanel>("TreasureEquipmentPanel");

@@ -1,24 +1,23 @@
-using SkyDragonHunter.test;
-using SkyDragonHunter.UI;
+using SkyDragonHunter.Managers;
+using SkyDragonHunter.Tables;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.UI {
-
+    
     public class FacilitySystemMgr : MonoBehaviour
     {
         [Serializable]
         public class FacilityData
         {
-            public FacilityType type;                 // 시설 종류 (금/다이아/나무 등)
-            public int level = 1;                     // 시설 레벨
+            //public FacilityType type;                 // 시설 종류 (금/다이아/나무 등)
+            //public int level = 1;                     // 시설 레벨
             public int currentExp = 0;                // 현재 누적 경험치
             public int expToLevelUp = 100;            // 레벨업 필요 경험치
             public int itemCount = 0;                 // 현재 생성된 아이템 수
             public float timer = 0f;                  // 아이템 생성용 타이머 누적값
-            public float generateInterval = 10f;      // 아이템 생성 주기 (초)
+            //public float generateInterval = 10f;      // 아이템 생성 주기 (초)
             public float levelUpCooldown = 0f; // 남은 레벨업 대기 시간
             public float levelUpInterval => level * 10f; // 레벨업에 필요한 시간
             public bool isInLevelUpCooldown => levelUpCooldown > 0f;
@@ -30,6 +29,69 @@ namespace SkyDragonHunter.UI {
 
             // 현재 레벨에 따른 생성 단위량 (ex: Lv1 → 5, Lv2 → 10 ...)
             public int perGenerate => level * 5;
+
+            // TODO: LJH            
+            public FacilityType type;
+            public int level = 1;
+            public ItemType ProductItemType => FacilityTableData.ProductType;
+            //public float generateInterval = 10f;
+            //public int singleProduceAmount;
+            //public int capacity;
+            public bool isUpgrading = false;
+            public DateTime upgradeStartedTime = DateTime.UtcNow;
+            public DateTime lastAccquiredTime = DateTime.UtcNow;
+            public TimeSpan UpgradeRemainingTimeSpan => TimeSpan.FromSeconds(FacilityTableData.UpgradeTime) - (DateTime.UtcNow - upgradeStartedTime);
+            public TimeSpan AccumulatedProduceTimeSpan => DateTime.UtcNow - lastAccquiredTime;
+            public TimeSpan RemainingTimeSpanUntilNextProduct 
+            {
+                get 
+                {
+                    if (IsReachedCapacity || isUpgrading)
+                        return TimeSpan.Zero;
+
+                    TimeSpan result = TimeSpan.FromSeconds(FacilityTableData.ItemMadeTime);
+                    result -= AccumulatedProduceTimeSpan;
+                    result += TimeSpan.FromSeconds(ProducedCounts * FacilityTableData.ItemMadeTime);
+
+                    return result;
+                }
+            }
+            public float AccumulatedProduceTime => (float)AccumulatedProduceTimeSpan.TotalSeconds;
+            public float RemainingTimeUntilNextProduct => (float)RemainingTimeSpanUntilNextProduct.TotalSeconds;
+            public FacilityTableData FacilityTableData => DataTableMgr.FacilityTable.GetFacilityData(type, level);
+            public int ProducedCounts
+            {
+                get
+                {
+                    int count = 0;
+                    var cachedAccumTime = AccumulatedProduceTime;
+                    while(cachedAccumTime >= FacilityTableData.ItemMadeTime)
+                    {
+                        cachedAccumTime -= FacilityTableData.ItemMadeTime;
+                        count++;
+                    }
+                    return count;
+                }
+            }
+            public int TotalProducts
+            {
+                get
+                {
+                    int count = ProducedCounts * FacilityTableData.ItemYield;
+                    count = Mathf.Min(count, FacilityTableData.KeepItemAmount);
+                    return count;
+                }
+            }
+            public bool IsReachedCapacity => TotalProducts >= FacilityTableData.KeepItemAmount;            
+            public bool IsUpgradeComplete => UpgradeRemainingTimeSpan.Seconds <= 0;
+            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;   
+            
+            public FacilityData()
+            {
+                upgradeStartedTime = DateTime.UtcNow;
+                lastAccquiredTime = DateTime.UtcNow;
+            }
+            // ~TODO
         }
         // 필드 (Fields)
         // [유니티 인스펙터에서 할당] 각 시설 슬롯의 상태 리스트
@@ -59,30 +121,30 @@ namespace SkyDragonHunter.UI {
         /// </summary>
         public void UpdateTimers(float deltaTime)
         {
-            foreach (var data in facilityList)
-            {
-                if (data.levelUpCooldown > 0f)
-                {
-                    data.levelUpCooldown -= deltaTime;
-                    if (data.levelUpCooldown < 0f) data.levelUpCooldown = 0f;
-                    continue; // 레벨업 대기 중에는 생산 금지
-                }
-                // 최대 개수 도달 시 생성 중단
-                if (data.itemCount >= data.maxCount)
-                    continue;
-
-                data.timer += deltaTime;
-
-                // 생성 간격 이상 시간이 지나면 아이템 생성
-                if (data.timer >= data.generateInterval)
-                {
-                    // perGenerate 만큼 생성하되, maxCount를 초과하지 않게 제한
-                    data.itemCount = Mathf.Min(data.itemCount + data.perGenerate, data.maxCount);
-
-                    // 생성 이후 타이머 리셋
-                    data.timer = 0f;
-                }
-            }
+            //foreach (var data in facilityList)
+            //{
+            //    if (data.levelUpCooldown > 0f)
+            //    {
+            //        data.levelUpCooldown -= deltaTime;
+            //        if (data.levelUpCooldown < 0f) data.levelUpCooldown = 0f;
+            //        continue; // 레벨업 대기 중에는 생산 금지
+            //    }
+            //    // 최대 개수 도달 시 생성 중단
+            //    if (data.itemCount >= data.maxCount)
+            //        continue;
+            //
+            //    data.timer += deltaTime;
+            //
+            //    // 생성 간격 이상 시간이 지나면 아이템 생성
+            //    if (data.timer >= data.generateInterval)
+            //    {
+            //        // perGenerate 만큼 생성하되, maxCount를 초과하지 않게 제한
+            //        data.itemCount = Mathf.Min(data.itemCount + data.perGenerate, data.maxCount);
+            //
+            //        // 생성 이후 타이머 리셋
+            //        data.timer = 0f;
+            //    }
+            //}
         }
         // Private 메서드
         /// <summary>

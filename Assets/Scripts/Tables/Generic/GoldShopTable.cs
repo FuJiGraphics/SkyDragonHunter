@@ -13,7 +13,7 @@ namespace SkyDragonHunter.Tables {
         public int ItemID { get; set; }                     // 아이템 데이터 아이디
         public int ItemAmount { get; set; }                 // 아이템 수량
         public BigNum Price { get; set; }                   // 아이템 가격
-        public ShopCategory BuyLimitType { get; set; }  // 아이템 구매 수량
+        public ShopRefreshType BuyLimitType { get; set; }  // 아이템 구매 수량
         public int ItemBuyLimit { get; set; }          // 아이템 구매 제한 수량
         public float GenWeight { get; set; }
 
@@ -23,7 +23,7 @@ namespace SkyDragonHunter.Tables {
 
     public class GoldShopTable : DataTable<GoldShopData>
     {
-        public List<GoldShopData> GetCategorizedItemList(ShopCategory category)
+        public List<GoldShopData> GetCategorizedItemList(ShopRefreshType category)
         {
             List<GoldShopData> result = new();
             foreach(var goldShopData in m_dict.Values)
@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Tables {
             return result;
         }
 
-        public int GetWeightedRandomItemID(ShopCategory category)
+        public int GetWeightedRandomItemID(ShopRefreshType category)
         {
             var list = GetCategorizedItemList(category);
             if(list == null || list.Count == 0)

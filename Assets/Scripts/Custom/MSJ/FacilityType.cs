@@ -1,7 +1,7 @@
 public enum FacilityType
 {
-    Gold,
-    Diamond,
-    Wood,
-    Iron
+    Kitchen,
+    GearFactory,
+    ToolFactory,
+    MagicWorkshop
 }

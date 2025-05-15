@@ -89,6 +89,8 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private GameObject m_UiCrewPickNodePrefab;
         [SerializeField] private GameObject m_UiAllEquipArrows;
 
+        [SerializeField] private Button closeButton;
+
         private List<GameObject> m_CrewPickNodeObjects;
         private GameObject m_PrevClickedCrew;
         private CrewEquipmentController m_AirshipEquipController;

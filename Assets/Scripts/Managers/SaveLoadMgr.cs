@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using SkyDragonHunter;
 using SkyDragonHunter.SaveLoad;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace SkyDragonHunter.Managers
         Mastery,
         Growth,
         ShopItem,
+        Facility,
     }
 
     public class SaveLoadMgr
@@ -49,6 +51,7 @@ namespace SkyDragonHunter.Managers
 
         // Properties
         public static int SaveDataMajorVersion { get; private set; } = 0;
+        
         private static bool initialized = false;
 
         // TODO: LJH TEMP
@@ -259,7 +262,7 @@ namespace SkyDragonHunter.Managers
             }
 
             var json = File.ReadAllText(path);
-            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveDataVC>(json);
+            var localSettingsData = JsonConvert.DeserializeObject<LocalSettingSaveDataVC>(json, jsonSettings);
 
             while (localSettingsData.MajorVersion < SaveDataMajorVersion)
             {
@@ -280,7 +283,7 @@ namespace SkyDragonHunter.Managers
 
             if (!LoadGameData())
             {
-                InitializeGameData();
+                InitializeGameData();                
             }
 
             if(!LoadLocalSettings())

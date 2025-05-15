@@ -30,7 +30,7 @@ namespace SkyDragonHunter {
             {
                 // Debug.LogError($"Apply AirshipData Failed, cannot find airship GameObject");
                 return;
-            }            
+            }
             if (!airshipGo.TryGetComponent<CrewEquipmentController>(out var equipController))
             {
                 // Debug.LogError($"Apply AirshipData Failed, cannot find crewEquipController");
