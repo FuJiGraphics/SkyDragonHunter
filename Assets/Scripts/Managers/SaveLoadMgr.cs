@@ -30,6 +30,7 @@ namespace SkyDragonHunter.Managers
         Tutorial,
         Mastery,
         ShopItem,
+        Facility,
     }
 
     public class SaveLoadMgr

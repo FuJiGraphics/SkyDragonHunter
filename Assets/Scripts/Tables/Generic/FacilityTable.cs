@@ -19,7 +19,7 @@ namespace SkyDragonHunter.Tables {
         public int UpgradeTime { get; set; }
         public int UpgradeFacilityID { get; set; }
 
-        public bool IsMaxLevel => UpgradeFacilityID != 0;
+        public bool IsMaxLevel => UpgradeFacilityID == 0;
 
         public ItemType ProductType
         {
@@ -84,5 +84,4 @@ namespace SkyDragonHunter.Tables {
             return null;
         }
     } // Scope by class FacilityTable
-
 } // namespace Root

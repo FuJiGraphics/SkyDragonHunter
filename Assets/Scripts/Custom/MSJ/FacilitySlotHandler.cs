@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SkyDragonHunter.Managers;
+using SkyDragonHunter.Tables;
 
 namespace SkyDragonHunter.UI {
 
@@ -60,7 +61,6 @@ namespace SkyDragonHunter.UI {
         public void UpdateUI()
         {
             // TODO: LJH
-            // 레벨업 대기 시간 중일 때
             if (data.isUpgrading)
             {
                 if(data.IsUpgradeComplete)
@@ -110,7 +110,6 @@ namespace SkyDragonHunter.UI {
                 itemAcquireCountText.text = $"{data.FacilityTableData.ItemYield}";
                 timerText.text = data.RemainingTimeSpanUntilNextProduct.ToString(@"hh\:mm\:ss");
             }
-
             #region MSJ
             //if (data.isInLevelUpCooldown)
             //{
@@ -195,8 +194,9 @@ namespace SkyDragonHunter.UI {
             if (data.ProducedCounts == 0)
                 return;
 
+            Debug.LogWarning($"{data.ProductItemType} acquired {data.TotalProducts}");
             AccountMgr.AddItemCount(data.ProductItemType, data.TotalProducts);
-            data.upgradeStartedTime = DateTime.UtcNow;
+            data.lastAccquiredTime = DateTime.UtcNow;
             UpdateUI();
 
             #region MSJ
@@ -224,19 +224,26 @@ namespace SkyDragonHunter.UI {
         public void TryCompleteLevelUp()
         {
             // TODO: LJH
+            if(!data.IsUpgradeComplete)
+                return;
 
+            data.level++;
+            data.lastAccquiredTime = DateTime.UtcNow;
+            data.upgradeStartedTime = DateTime.UtcNow;
+            data.isUpgrading = false;
+            UpdateUI();
 
 
             #region MSJ
-            if (!data.isInLevelUpCooldown && !isLevelUpCompleteReady)
-            {
-                data.level++;
-                data.currentExp = 0;
-                data.timer = 0f; // 생산 시간 초기화
-                Debug.Log("레벨업 완료!");
-                isLevelUpCompleteReady = true;
-                UpdateUI();
-            }
+            //if (!data.isInLevelUpCooldown && !isLevelUpCompleteReady)
+            //{
+            //    data.level++;
+            //    data.currentExp = 0;
+            //    data.timer = 0f; // 생산 시간 초기화
+            //    Debug.Log("레벨업 완료!");
+            //    isLevelUpCompleteReady = true;
+            //    UpdateUI();
+            //}
             #endregion
             // ~TODO
         }
@@ -244,6 +251,8 @@ namespace SkyDragonHunter.UI {
         // 슬롯 클릭 시 레벨업 패널 열기
         public void OnSandDataToLevelUpPanel()
         {
+            if (data.isUpgrading)
+                return;
             levelUpPanel.Open(this);
         }
 
@@ -284,34 +293,38 @@ namespace SkyDragonHunter.UI {
             trigger.triggers.Add(entry);
         }
         // Others
-
+                
         // TODO: LJH
         public void TryLevelUp()
         {            
+            
             // Check resource availabilities
             var tableData = data.FacilityTableData;
-            //tableData.
-            if(AccountMgr.Coin < tableData.UpgradeGold)
-            {
-                Debug.Log($"Facility Level Up failed : insufficient coin");
+            if (data.IsMaxLevel || data.isUpgrading)
                 return;
-            }
-            for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
-            {
-                if (AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) < tableData.UpgradeItemCount[i])
-                {
-                    Debug.Log($"Facility Level Up failed : insufficient [{tableData.RequiredItemTypes[i]}]");
-                    return;
-                }
-            }
-            
-            // Resource count reset
-            AccountMgr.Coin -= tableData.UpgradeGold;
-            for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
-            {
-                var newCount = AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) - tableData.UpgradeItemCount[i];
-                AccountMgr.SetItemCount(tableData.RequiredItemTypes[i], newCount);
-            }
+
+            Debug.LogWarning($"Trying Facility Level Up without ResourceCheck");
+            //if(AccountMgr.Coin < tableData.UpgradeGold)
+            //{
+            //    Debug.Log($"Facility Level Up failed : insufficient coin");
+            //    return;
+            //}
+            //for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
+            //{
+            //    if (AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) < tableData.UpgradeItemCount[i])
+            //    {
+            //        Debug.Log($"Facility Level Up failed : insufficient [{tableData.RequiredItemTypes[i]}]");
+            //        return;
+            //    }
+            //}
+            //
+            //// Resource count reset
+            //AccountMgr.Coin -= tableData.UpgradeGold;
+            //for (int i = 0; i < tableData.UpgradeItemID.Length; ++i)
+            //{
+            //    var newCount = AccountMgr.ItemCount(tableData.RequiredItemTypes[i]) - tableData.UpgradeItemCount[i];
+            //    AccountMgr.SetItemCount(tableData.RequiredItemTypes[i], newCount);
+            //}
 
             // Acquires products before upgrade if there are any
             OnClickAcquire();

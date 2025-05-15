@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.UI {
-
+    
     public class FacilitySystemMgr : MonoBehaviour
     {
         [Serializable]
@@ -38,16 +38,28 @@ namespace SkyDragonHunter.UI {
             public FacilityType type;
             public int level = 1;
             public ItemType ProductItemType => FacilityTableData.ProductType;
-            public float generateInterval = 10f;
-            public int singleProduceAmount;
-            public int capacity;
+            //public float generateInterval = 10f;
+            //public int singleProduceAmount;
+            //public int capacity;
             public bool isUpgrading = false;
-            public DateTime upgradeStartedTime = DateTime.MinValue;
-            public DateTime lastAccquiredTime = DateTime.MinValue;
-            public TimeSpan UpgradeRemainingTimeSpan => DateTime.UtcNow - upgradeStartedTime;
+            public DateTime upgradeStartedTime = DateTime.UtcNow;
+            public DateTime lastAccquiredTime = DateTime.UtcNow;
+            public TimeSpan UpgradeRemainingTimeSpan => TimeSpan.FromSeconds(FacilityTableData.UpgradeTime) - (DateTime.UtcNow - upgradeStartedTime);
             public TimeSpan AccumulatedProduceTimeSpan => DateTime.UtcNow - lastAccquiredTime;
-            public TimeSpan RemainingTimeSpanUntilNextProduct => (IsReachedCapacity || isUpgrading) ? TimeSpan.Zero :
-                AccumulatedProduceTimeSpan - TimeSpan.FromSeconds(ProducedCounts * FacilityTableData.ItemMadeTime);
+            public TimeSpan RemainingTimeSpanUntilNextProduct 
+            {
+                get 
+                {
+                    if (IsReachedCapacity || isUpgrading)
+                        return TimeSpan.Zero;
+
+                    TimeSpan result = TimeSpan.FromSeconds(FacilityTableData.ItemMadeTime);
+                    result -= AccumulatedProduceTimeSpan;
+                    result += TimeSpan.FromSeconds(ProducedCounts * FacilityTableData.ItemMadeTime);
+
+                    return result;
+                }
+            }
             public float AccumulatedProduceTime => (float)AccumulatedProduceTimeSpan.TotalSeconds;
             public float RemainingTimeUntilNextProduct => (float)RemainingTimeSpanUntilNextProduct.TotalSeconds;
             public FacilityTableData FacilityTableData => DataTableMgr.FacilityTable.GetFacilityData(type, level);
@@ -57,9 +69,9 @@ namespace SkyDragonHunter.UI {
                 {
                     int count = 0;
                     var cachedAccumTime = AccumulatedProduceTime;
-                    while(cachedAccumTime >= generateInterval)
+                    while(cachedAccumTime >= FacilityTableData.ItemMadeTime)
                     {
-                        cachedAccumTime -= generateInterval;
+                        cachedAccumTime -= FacilityTableData.ItemMadeTime;
                         count++;
                     }
                     return count;
@@ -76,7 +88,13 @@ namespace SkyDragonHunter.UI {
             }
             public bool IsReachedCapacity => TotalProducts >= FacilityTableData.KeepItemAmount;            
             public bool IsUpgradeComplete => UpgradeRemainingTimeSpan.Seconds <= 0;
-            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;            
+            public bool IsMaxLevel => DataTableMgr.FacilityTable.GetFacilityData(type, level).IsMaxLevel;   
+            
+            public FacilityData()
+            {
+                upgradeStartedTime = DateTime.UtcNow;
+                lastAccquiredTime = DateTime.UtcNow;
+            }
             // ~TODO
         }
         // 필드 (Fields)
@@ -107,30 +125,30 @@ namespace SkyDragonHunter.UI {
         /// </summary>
         public void UpdateTimers(float deltaTime)
         {
-            foreach (var data in facilityList)
-            {
-                if (data.levelUpCooldown > 0f)
-                {
-                    data.levelUpCooldown -= deltaTime;
-                    if (data.levelUpCooldown < 0f) data.levelUpCooldown = 0f;
-                    continue; // 레벨업 대기 중에는 생산 금지
-                }
-                // 최대 개수 도달 시 생성 중단
-                if (data.itemCount >= data.maxCount)
-                    continue;
-
-                data.timer += deltaTime;
-
-                // 생성 간격 이상 시간이 지나면 아이템 생성
-                if (data.timer >= data.generateInterval)
-                {
-                    // perGenerate 만큼 생성하되, maxCount를 초과하지 않게 제한
-                    data.itemCount = Mathf.Min(data.itemCount + data.perGenerate, data.maxCount);
-
-                    // 생성 이후 타이머 리셋
-                    data.timer = 0f;
-                }
-            }
+            //foreach (var data in facilityList)
+            //{
+            //    if (data.levelUpCooldown > 0f)
+            //    {
+            //        data.levelUpCooldown -= deltaTime;
+            //        if (data.levelUpCooldown < 0f) data.levelUpCooldown = 0f;
+            //        continue; // 레벨업 대기 중에는 생산 금지
+            //    }
+            //    // 최대 개수 도달 시 생성 중단
+            //    if (data.itemCount >= data.maxCount)
+            //        continue;
+            //
+            //    data.timer += deltaTime;
+            //
+            //    // 생성 간격 이상 시간이 지나면 아이템 생성
+            //    if (data.timer >= data.generateInterval)
+            //    {
+            //        // perGenerate 만큼 생성하되, maxCount를 초과하지 않게 제한
+            //        data.itemCount = Mathf.Min(data.itemCount + data.perGenerate, data.maxCount);
+            //
+            //        // 생성 이후 타이머 리셋
+            //        data.timer = 0f;
+            //    }
+            //}
         }
         // Private 메서드
         /// <summary>
