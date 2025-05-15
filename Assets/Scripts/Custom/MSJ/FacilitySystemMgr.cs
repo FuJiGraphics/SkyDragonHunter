@@ -1,10 +1,6 @@
 using SkyDragonHunter.Managers;
-using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
-using SkyDragonHunter.test;
-using SkyDragonHunter.UI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

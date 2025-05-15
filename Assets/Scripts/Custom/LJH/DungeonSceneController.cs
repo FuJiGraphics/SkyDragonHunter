@@ -243,13 +243,13 @@ namespace SkyDragonHunter.UI {
 
             BigNum health = bossData.HP;
             BigNum atk = bossData.ATK;
-            BigNum rewardedCoin = 10000;
+            BigNum rewardedCoin = 1000;
 
             for(int i = 1; i < m_StageIndex; ++i)
             {
                 health *= 12;
                 atk *= 12;
-                rewardedCoin *= 100;
+                rewardedCoin *= 2;
             }
             m_CachedBoss.MaxHP = health;
             m_CachedBoss.MaxATK = atk;

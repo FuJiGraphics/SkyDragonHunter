@@ -31,6 +31,8 @@ namespace SkyDragonHunter.UI
         
         private List<ItemSlotData> itemDataList = new();
 
+        [SerializeField] private Button closeButton;
+
         // Unity Methods
         private void Awake()
         {
@@ -39,6 +41,7 @@ namespace SkyDragonHunter.UI
 
         private void Start()
         {
+            closeButton.onClick.AddListener(OnClickCloseButton);
             currentFavorabilityLevel = SaveLoadMgr.GameData.savedShopItemData.favorabilityLevel;
             resetTime = SaveLoadMgr.GameData.savedShopItemData.GetRefreshedTime(ShopType.Reroll, ShopRefreshType.Common).Value;
             if(resetTime == DateTime.MinValue)
@@ -101,7 +104,10 @@ namespace SkyDragonHunter.UI
         }
 
         // Private Methods
-
+        private void OnClickCloseButton()
+        {
+            gameObject.SetActive(false);
+        }
         private void SetSlot()
         {
             foreach (var slotGO in slotList)
