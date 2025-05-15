@@ -94,7 +94,6 @@ namespace SkyDragonHunter.UI
         private Dictionary<ShopRefreshType, List<ItemSlotData>> itemDataListDict = new();
         private const int maxItemCount = 16;
 
-        [SerializeField] private Button closeButton;
         
         // Unity Methods
         private void OnEnable()
@@ -105,7 +104,6 @@ namespace SkyDragonHunter.UI
 
         private void Start()
         {
-            closeButton.onClick.AddListener(OnClickCloseButton);
             currentRefreshType = ShopRefreshType.Common;
             resetTime = new DateTime?[Enum.GetValues(typeof(ShopRefreshType)).Length];
             for (int i = 0; i < resetTime.Length; ++i)
@@ -191,10 +189,6 @@ namespace SkyDragonHunter.UI
         }
 
         // Private Methods
-        private void OnClickCloseButton()
-        {
-            gameObject.SetActive(false);
-        }
         private void SetSlotForCategory(ShopRefreshType refreshType)
         {
             foreach(var slotGO in slotList)

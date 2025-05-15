@@ -57,7 +57,6 @@ namespace SkyDragonHunter.UI {
             materialsList = new List<GameObject>();
             AddPointerDownEvent(levelUpButton, (BaseEventData _) => OnClickLevelUp());
             AddListeners();
-
         }
         // Public 메서드
         // 외부에서 슬롯 전달 시 호출

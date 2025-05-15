@@ -2067,8 +2067,8 @@ RectTransform:
   m_GameObject: {fileID: 3730204380553762755}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.31875, y: 1.31875, z: 1.31875}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3503268459095489726}
   - {fileID: 5028375782409590144}
@@ -2077,8 +2077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1266, y: 585}
-  m_SizeDelta: {x: 1920, y: 887.2038}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2456865556345519355
 CanvasRenderer:
@@ -2161,6 +2161,7 @@ MonoBehaviour:
   currentRefreshType: 0
   prefab: {fileID: 204099820024569733, guid: e6780455c1a703c4b8e782e11eccdbe3, type: 3}
   slotList: []
+  closeButton: {fileID: 0}
 --- !u!114 &6245831881513709939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2176,6 +2177,10 @@ MonoBehaviour:
   m_CoinText: {fileID: 8294071732387297269}
   m_DiamondText: {fileID: 5167191075993159176}
   m_MasteryRewardText: {fileID: 0}
+  m_RepairerLevelUpText: {fileID: 0}
+  m_Damage: {fileID: 0}
+  m_Armor: {fileID: 0}
+  m_Health: {fileID: 0}
 --- !u!114 &7648370624129412832
 MonoBehaviour:
   m_ObjectHideFlags: 0

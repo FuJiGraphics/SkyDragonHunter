@@ -1,6 +1,9 @@
+using SkyDragonHunter.Entities;
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Tables;
+using SkyDragonHunter.Temp;
 using SkyDragonHunter.Test;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,7 +45,7 @@ namespace SkyDragonHunter.test
             }
 
             crewIds = new int[DataTableMgr.CrewTable.Keys.Count];
-            Debug.LogError($"Crew Ids pool created with Length [{crewIds.Length}]");
+            //Debug.LogError($"Crew Ids pool created with Length [{crewIds.Length}]");
             int index = 0;
             foreach(var crewId in DataTableMgr.CrewTable.Keys)
             {
@@ -51,6 +54,41 @@ namespace SkyDragonHunter.test
         }
 
         // Public 메서드
+        public void ApplyPickCrew(int crewId)
+        {
+            var savedCrew = SaveLoadMgr.GameData.savedCrewData.GetCrewData(crewId);
+            ApplyPickCrew(savedCrew);
+        }
+
+        public void ApplyPickCrew(SavedCrew crew)
+        {
+            GameObject prefab = crew.crewData.GetPrefab();
+            if (prefab == null)
+            {
+                Debug.LogWarning($"단원 삽입 실패 : {crew.crewData.UnitName}");
+                return;
+            }
+
+            var instance = GameObject.Instantiate(prefab);
+            if (instance != null)
+            {
+                if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))
+                {
+                    btComp.SetDataFromTableWithExistingIDTemp(crew.level);
+                }                
+                crew.isUnlocked = true;
+                AccountMgr.RegisterCrew(instance);
+                instance.GetComponent<CrewAccountStatProvider>().ApplyNewStatus();
+                instance.SetActive(false);
+            }
+            if (!TempCrewLevelExpContainer.TryGetTempCrewData(crew.crewData.ID, out var tempCrewData))
+            {
+                Debug.LogError($"No Temp Crew Data Found with key [{crew.crewData.ID}]");
+                
+            }
+            tempCrewData.IsUnlocked = true;
+        }
+
         public void RandomPick()
         {
             if (AccountMgr.ItemCount(ItemType.CrewTicket) < 1)
@@ -75,7 +113,8 @@ namespace SkyDragonHunter.test
             }
             else
             {
-                Debug.LogWarning($"Random Pick selected Crew [ID] [{selectedCrew}]");
+                Debug.Log($"Random Pick selected Crew [ID] [{selectedCrew}]");
+                ApplyPickCrew(selectedCrew);
                 SaveLoadMgr.GameData.savedCrewData.GetCrewData(selectedCrew).isUnlocked = true;
                 CreatePickInfo(selectedCrew, 1);
             }
@@ -86,9 +125,28 @@ namespace SkyDragonHunter.test
             uiMgr.OnOffRandomCrewPickUpInfo();
         }
 
+        private void GiveFirstPickReward()
+        {
+            SaveLoadMgr.GameData.savedShopItemData.isFirstPickGiven = true;
+
+            int selectedCrew = 14101;
+            Debug.Log($"Random Pick selected Crew [ID] [{selectedCrew}]");
+            ApplyPickCrew(selectedCrew);
+            SaveLoadMgr.GameData.savedCrewData.GetCrewData(selectedCrew).isUnlocked = true;
+            CreatePickInfo(selectedCrew, 1);
+            SaveLoadMgr.CallSaveGameData();
+            uiMgr.OnOffRandomCrewPickUpInfo();
+        }
+
         public void RandomTenPick()
         {
-            if(AccountMgr.ItemCount(ItemType.CrewTicket) < 10)
+            if(!SaveLoadMgr.GameData.savedShopItemData.isFirstPickGiven)
+            {
+                GiveFirstPickReward();
+                return;                
+            }
+
+            if (AccountMgr.ItemCount(ItemType.CrewTicket) < 10)
             {
                 DrawableMgr.Dialog($"안내", $"단원 소환 티켓이 부족합니다");
                 return;
@@ -108,13 +166,13 @@ namespace SkyDragonHunter.test
             {
                 var randIndex = Random.Range(0, crewIds.Length);
                 int selected = crewIds[randIndex];
-                Debug.LogWarning($"Random Pick selected Crew [index/ID] [{selected}/{randIndex}]");
+                Debug.Log($"Random Pick selected Crew [index/ID] [{selected}/{randIndex}]");
 
                 // 이미 등장한 숫자면 +1, 아니면 1로 시작
                 if (pickUpCounts.ContainsKey(selected))
                 {
                     existingCount++;
-                    Debug.LogError($"key [{selected}] exists already, increasing existingCount : {existingCount}");
+                    Debug.Log($"key [{selected}] exists already, increasing existingCount : {existingCount}");
                 }
                 else
                 {
@@ -130,14 +188,16 @@ namespace SkyDragonHunter.test
                 if (crewData.isUnlocked)
                 {
                     existingCount++;
-                    Debug.LogError($"Crew Id [{kvp.Key}] unlocked already, increasing existingCount : {existingCount}");
+                    Debug.Log($"Crew Id [{kvp.Key}] unlocked already, increasing existingCount : {existingCount}");
                 }
                 else
                 {
+                    ApplyPickCrew(crewData);
                     crewData.isUnlocked = true;
                     CreatePickInfo(DataTableMgr.CrewTable.Get(kvp.Key).UnitName, 1);
                 }
             }
+
             if (existingCount > 0)
             {
                 CreateMateryResourcePickInfo(existingCount);                

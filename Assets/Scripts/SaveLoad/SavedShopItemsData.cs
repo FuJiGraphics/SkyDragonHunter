@@ -43,12 +43,15 @@ namespace SkyDragonHunter.SaveLoad {
 
     public class SavedShopItemsData
     {
-        //public List<>
+        // TODO: LJH
+        public bool isFirstPickGiven;
+        // ~TODO
         public int favorabilityLevel;
         public Dictionary<ShopType, Dictionary<ShopRefreshType, SavedShopItemList>> shopItemDict;
         
         public void InitData()
         {
+            isFirstPickGiven = false;
             favorabilityLevel = 1;
             shopItemDict = new ();
             foreach(ShopType shopType in Enum.GetValues(typeof(ShopType)))
@@ -185,6 +188,7 @@ namespace SkyDragonHunter.SaveLoad {
                 newSlotData.currCount = savedItem.currentCount;
                 newSlotData.maxCount = savedItem.maxCount;
                 newSlotData.currencyType = savedItem.currencyType;
+                newSlotData.price = savedItem.price;
                 result.Add(newSlotData);
             }
             return result;

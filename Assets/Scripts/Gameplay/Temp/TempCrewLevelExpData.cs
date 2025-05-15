@@ -24,7 +24,11 @@ namespace SkyDragonHunter.Temp {
 
         public CrewTableData CrewData => crewData;
         public int Level => level;
-        public bool IsUnlocked => isUnlocked;
+        public bool IsUnlocked
+        {
+            get => isUnlocked;
+            set => isUnlocked = value;
+        }
         public int Rank => rank;
         public int Count => count;
         public BigNum AccumulatedExp => accumulatedExp;
