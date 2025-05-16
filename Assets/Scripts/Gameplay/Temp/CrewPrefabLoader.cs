@@ -7,7 +7,7 @@ public class CrewPrefabLoader : MonoBehaviour
 {
     private Dictionary<int, NewCrewControllerBT> prefabDictionary = new Dictionary<int, NewCrewControllerBT>();
 
-    private string prefabFilePath = "Prefabs/Crews/";
+    private string prefabFilePath = "Assets/Prefabs/Crews/";
 
     private void Awake()
     {

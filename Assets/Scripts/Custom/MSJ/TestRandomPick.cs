@@ -134,7 +134,7 @@ namespace SkyDragonHunter.test
             ApplyPickCrew(selectedCrew);
             SaveLoadMgr.GameData.savedCrewData.GetCrewData(selectedCrew).isUnlocked = true;
             CreatePickInfo(selectedCrew, 1);
-            SaveLoadMgr.CallSaveGameData();
+            // SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
         }
 

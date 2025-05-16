@@ -29,13 +29,20 @@ namespace SkyDragonHunter.SaveLoad
                 newSavedItem.type = (ItemType)i;
                 newSavedItem.count = 0;
                 items.Add(newSavedItem);
+
+                if (ItemType.CrewTicket == (ItemType)i)
+                {
+                    newSavedItem.count = 1;
+                }
             }
 
+            
             //RegisterEvent();
         }
 
         public void RegisterEvent()
         {
+            AccountMgr.RemoveItemCountChangedEvent(OnItemCountChangedEvent);
             AccountMgr.AddItemCountChangedEvent(OnItemCountChangedEvent);
         }
 

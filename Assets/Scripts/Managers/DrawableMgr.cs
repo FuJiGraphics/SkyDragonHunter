@@ -32,9 +32,9 @@ namespace SkyDragonHunter.Managers
         {
             //Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
             //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
-            s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIDamageMeter");
-            s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertDialog");
-            s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertArtifactInfo");
+            s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIDamageMeter.prefab");
+            s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIAlertDialog.prefab");
+            s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIAlertArtifactInfo.prefab");
         }
 
         private static void OnSceneUnloaded(Scene scene)

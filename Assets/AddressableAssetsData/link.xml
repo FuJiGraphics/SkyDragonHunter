@@ -1,0 +1,318 @@
+<linker>
+  <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="AFKRewardTest" preserve="all" />
+    <type fullname="CrewPrefabLoader" preserve="all" />
+    <type fullname="FloatingEffect" preserve="all" />
+    <type fullname="MonsterPrefabLoader" preserve="all" />
+    <type fullname="SkyDragonHunter.AilmentOnTaunt" preserve="all" />
+    <type fullname="SkyDragonHunter.AirshipTempDestructible" preserve="all" />
+    <type fullname="SkyDragonHunter.AttackTargetSelector" preserve="all" />
+    <type fullname="SkyDragonHunter.BossStats" preserve="all" />
+    <type fullname="SkyDragonHunter.CardGridResizer" preserve="all" />
+    <type fullname="SkyDragonHunter.CrewAnimationController" preserve="all" />
+    <type fullname="SkyDragonHunter.CrewDestructable" preserve="all" />
+    <type fullname="SkyDragonHunter.DamageReceiver" preserve="all" />
+    <type fullname="SkyDragonHunter.EnemySearchProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Entities.CrewStats" preserve="all" />
+    <type fullname="SkyDragonHunter.Entities.NewBossControllerBT" preserve="all" />
+    <type fullname="SkyDragonHunter.Entities.NewCrewControllerBT" preserve="all" />
+    <type fullname="SkyDragonHunter.FavorailityMgr" preserve="all" />
+    <type fullname="SkyDragonHunter.Game.BackGroundController" preserve="all" />
+    <type fullname="SkyDragonHunter.Game.BackGroundScrolling" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AccountStatProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentAffectable" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentBase" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentOnDamage" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentOnExposed" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentOnFreeze" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentOnSlow" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.AilmentOnStun" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.Attackable" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallBase" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallMovementLinear" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallOnDestructible" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallOnHitAilment" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallOnHitDamage" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BallOnHitDestroyImmediatly" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.BuffExecutor" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonAutoAttacker" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonBallPrefabProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonBase" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonDummyProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonExecutor" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonInfoProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CharacterInventory" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CharacterStatus" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CrewAccountStatProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CrewEquipmentController" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.CrewInfoProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.EquipAnchorProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.HitTriggerProjectile" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.MountableSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.ParticleFadeInOut" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.RangedAttackExecutor" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.RegisterObject" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.RepairExecutor" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillAnchorProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillAttackEndDestroy" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillBase" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillBuffApplier" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillExecutor" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillMovementLinear" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillMultishot" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnCastEffect" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnHitAilment" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnHitDestroyImmediatly" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnHitEnterEffect" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnHitGlobalDamage" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.SkillOnReceiverEffect" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.StateResetter" preserve="all" />
+    <type fullname="SkyDragonHunter.Gameplay.WeaponAnchorProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.GuidedProjectile" preserve="all" />
+    <type fullname="SkyDragonHunter.InDungeonCrewSpawner" preserve="all" />
+    <type fullname="SkyDragonHunter.LinearProjectile" preserve="all" />
+    <type fullname="SkyDragonHunter.LookAtable" preserve="all" />
+    <type fullname="SkyDragonHunter.MonsterDestructable" preserve="all" />
+    <type fullname="SkyDragonHunter.PickUpInfoUI" preserve="all" />
+    <type fullname="SkyDragonHunter.PlacementArrowAnimation" preserve="all" />
+    <type fullname="SkyDragonHunter.RerollShopLockConfirmPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.RerollShopSlotHandler" preserve="all" />
+    <type fullname="SkyDragonHunter.Scriptables.CanonDefinition" preserve="all" />
+    <type fullname="SkyDragonHunter.Scriptables.RangedAttackSC" preserve="all" />
+    <type fullname="SkyDragonHunter.Scriptables.SkillDefinition" preserve="all" />
+    <type fullname="SkyDragonHunter.ShopSlotHandler" preserve="all" />
+    <type fullname="SkyDragonHunter.SingleHoleMaskController" preserve="all" />
+    <type fullname="SkyDragonHunter.SingleRectRaycastFilter" preserve="all" />
+    <type fullname="SkyDragonHunter.SkillOnHitDamage" preserve="all" />
+    <type fullname="SkyDragonHunter.SkillOnHitExplosiveDamage" preserve="all" />
+    <type fullname="SkyDragonHunter.SquareGridResizer" preserve="all" />
+    <type fullname="SkyDragonHunter.Test.ColliderInfoProvider" preserve="all" />
+    <type fullname="SkyDragonHunter.Test.RightClickUnequipUI" preserve="all" />
+    <type fullname="SkyDragonHunter.Test.SampleExplosionEffect" preserve="all" />
+    <type fullname="SkyDragonHunter.Test.TempUserData" preserve="all" />
+    <type fullname="SkyDragonHunter.test.TestRandomPick" preserve="all" />
+    <type fullname="SkyDragonHunter.test.TestSafeAreaFitter" preserve="all" />
+    <type fullname="SkyDragonHunter.test.TestSafeAreaMask" preserve="all" />
+    <type fullname="SkyDragonHunter.Test.UiMgr" preserve="all" />
+    <type fullname="SkyDragonHunter.TestWaveController" preserve="all" />
+    <type fullname="SkyDragonHunter.TutorialButtonBlockActiveFalse" preserve="all" />
+    <type fullname="SkyDragonHunter.TutorialClickListener" preserve="all" />
+    <type fullname="SkyDragonHunter.TutorialController" preserve="all" />
+    <type fullname="SkyDragonHunter.TutorialMaskClickCatcher" preserve="all" />
+    <type fullname="SkyDragonHunter.TutorialMgr" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.DiamondShopController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.DungeonSceneController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.DungeonUIMgr" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.FacilityLevelUpPanelController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.FacilityPanelController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.FacilitySlotHandler" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.FacilitySystemMgr" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.FavorabilityUIController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.GoldShopController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.RerollShopController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.StatusBarFactory" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.TutorialDeleteController" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIAlertArtifactInfo" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIAlertDialog" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIAssignUnitTofortressPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UICanonEquipmentPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UICanonInfoPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UICanonSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIClearPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIClickButtonSetting" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIClickOnDestroy" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UICrewInfoNode" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UICrewInfoPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDebugElement" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonButtonsPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonClearedPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonEnteredMsgPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonEntryPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonFailedPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonInfosPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIDungeonPausedPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIFortressEquipmentPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIGrowthLevelUp" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIGrowthPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIHealthBar" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIInGameMainFramePanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIInventoryPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIItemNode" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIMasteryContent" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIMasteryNode" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIMasteryPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIMoneyRefresher" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIRepairEquipmentPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIRepairInfoPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIRepairSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UIShieldAndHealth" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UISkillButtons" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UISpeechBubble" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureEquipmentPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureEquipmentSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureEquipmentSlotPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureFusionPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureFusionResult" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureFusionSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureInfo" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureSelectPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UI.UITreasureSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.UiCrewLevelUpPanel" preserve="all" />
+    <type fullname="SkyDragonHunter.UIDamageMeter" preserve="all" />
+    <type fullname="SkyDragonHunter.UIDungeonStages" preserve="all" />
+    <type fullname="SkyDragonHunter.Utility.Billboard" preserve="all" />
+    <type fullname="SkyDragonHunter.WeaponSelector" preserve="all" />
+    <type fullname="Spine.Unity.Examples.MecanimToAnimationHandleExample" preserve="all" />
+    <type fullname="Spine.Unity.SkeletonAnimation" preserve="all" />
+    <type fullname="Spine.Unity.SkeletonDataAsset" preserve="all" />
+    <type fullname="Spine.Unity.SpineAtlasAsset" preserve="all" />
+    <type fullname="TemporaryFindTestRandomPick" preserve="all" />
+    <type fullname="TemporaryFindTestRandomPick2" preserve="all" />
+    <type fullname="TemporaryFindWaveController" preserve="all" />
+    <type fullname="TemporaryFindWaveController2" preserve="all" />
+    <type fullname="UIFacilityMaterialSlot" preserve="all" />
+    <type fullname="UIShopItemSlot" preserve="all" />
+    <type fullname="SkyDragonHunter.FavorailityMgr/FavorabilityData" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.Gameplay.CanonDummy" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.Gameplay.RepairDummy" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.Structs.BigNum" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.Test.SaveItemStorage" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.FacilitySystemMgr/FacilityData" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.ItemSlotData" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.SkillButtonSlot" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.UIEquipmentMountSlot" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.UIGrowthNode" preserve="nothing" serialized="true" />
+    <type fullname="SkyDragonHunter.UI.UIRewardSlot" preserve="nothing" serialized="true" />
+    <type fullname="Spine.Unity.BlendModeMaterials" preserve="nothing" serialized="true" />
+    <type fullname="Spine.Unity.SkeletonRenderer/SpriteMaskInteractionMaterials" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.InstanceProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="TMPro.TextMeshProUGUI" preserve="all" />
+    <type fullname="TMPro.TMP_Dropdown" preserve="all" />
+    <type fullname="TMPro.TMP_FontAsset" preserve="all" />
+    <type fullname="TMPro.TMP_InputField" preserve="all" />
+    <type fullname="TMPro.FaceInfo_Legacy" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.FontAssetCreationSettings" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.KerningTable" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_Character" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_Dropdown/DropdownEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_Dropdown/OptionData" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_Dropdown/OptionDataList" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_FontFeatureTable" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_FontWeightPair" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_GlyphAdjustmentRecord" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_GlyphPairAdjustmentRecord" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_GlyphValueRecord" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_InputField/OnChangeEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_InputField/SelectionEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_InputField/SubmitEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_InputField/TextSelectionEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.TMP_InputField/TouchScreenKeyboardEvent" preserve="nothing" serialized="true" />
+    <type fullname="TMPro.VertexGradient" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AnimationClip" preserve="all" />
+    <type fullname="UnityEngine.Animator" preserve="all" />
+    <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AudioClip" preserve="all" />
+    <type fullname="UnityEngine.AudioListener" preserve="all" />
+    <type fullname="UnityEngine.AudioSource" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Camera" preserve="all" />
+    <type fullname="UnityEngine.Cubemap" preserve="all" />
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.Light" preserve="all" />
+    <type fullname="UnityEngine.LightmapSettings" preserve="all" />
+    <type fullname="UnityEngine.Material" preserve="all" />
+    <type fullname="UnityEngine.MeshFilter" preserve="all" />
+    <type fullname="UnityEngine.MeshRenderer" preserve="all" />
+    <type fullname="UnityEngine.Object" preserve="all" />
+    <type fullname="UnityEngine.RectTransform" preserve="all" />
+    <type fullname="UnityEngine.Rendering.SortingGroup" preserve="all" />
+    <type fullname="UnityEngine.RenderSettings" preserve="all" />
+    <type fullname="UnityEngine.Shader" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
+    <type fullname="UnityEngine.TextAsset" preserve="all" />
+    <type fullname="UnityEngine.Texture2D" preserve="all" />
+    <type fullname="UnityEngine.Transform" preserve="all" />
+    <type fullname="UnityEngine.Events.ArgumentCache" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.Events.PersistentCallGroup" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.Events.PersistentListenerMode" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.Events.UnityEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.RectOffset" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.ParticleSystem" preserve="all" />
+    <type fullname="UnityEngine.ParticleSystemRenderer" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.BoxCollider2D" preserve="all" />
+    <type fullname="UnityEngine.CircleCollider2D" preserve="all" />
+    <type fullname="UnityEngine.Rigidbody2D" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Font" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.StandaloneInputModule" preserve="all" />
+    <type fullname="UnityEngine.UI.AspectRatioFitter" preserve="all" />
+    <type fullname="UnityEngine.UI.Button" preserve="all" />
+    <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
+    <type fullname="UnityEngine.UI.ContentSizeFitter" preserve="all" />
+    <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
+    <type fullname="UnityEngine.UI.GridLayoutGroup" preserve="all" />
+    <type fullname="UnityEngine.UI.HorizontalLayoutGroup" preserve="all" />
+    <type fullname="UnityEngine.UI.Image" preserve="all" />
+    <type fullname="UnityEngine.UI.LayoutElement" preserve="all" />
+    <type fullname="UnityEngine.UI.Mask" preserve="all" />
+    <type fullname="UnityEngine.UI.Outline" preserve="all" />
+    <type fullname="UnityEngine.UI.RectMask2D" preserve="all" />
+    <type fullname="UnityEngine.UI.Scrollbar" preserve="all" />
+    <type fullname="UnityEngine.UI.ScrollRect" preserve="all" />
+    <type fullname="UnityEngine.UI.Shadow" preserve="all" />
+    <type fullname="UnityEngine.UI.Slider" preserve="all" />
+    <type fullname="UnityEngine.UI.Text" preserve="all" />
+    <type fullname="UnityEngine.UI.Toggle" preserve="all" />
+    <type fullname="UnityEngine.UI.ToggleGroup" preserve="all" />
+    <type fullname="UnityEngine.UI.VerticalLayoutGroup" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger/Entry" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger/TriggerEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.AnimationTriggers" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Button/ButtonClickedEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.ColorBlock" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.FontData" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.MaskableGraphic/CullStateChangedEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Navigation" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.ScrollRect/ScrollRectEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Scrollbar/ScrollEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Slider/SliderEvent" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.SpriteState" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.UI.Toggle/ToggleEvent" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Canvas" preserve="all" />
+    <type fullname="UnityEngine.CanvasRenderer" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.TextCoreFontEngineModule">
+    <type fullname="UnityEngine.TextCore.FaceInfo" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.TextCore.Glyph" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.TextCore.GlyphMetrics" preserve="nothing" serialized="true" />
+    <type fullname="UnityEngine.TextCore.GlyphRect" preserve="nothing" serialized="true" />
+  </assembly>
+</linker>
