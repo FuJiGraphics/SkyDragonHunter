@@ -37,9 +37,9 @@ namespace SkyDragonHunter.Managers
             StartCoroutine(this.LoadSceneProcess());
         }
 
-        private IEnumerator Loading(string label, string text)
+        private IEnumerator Loading(string label, string title, string downText)
         {
-            textUI.text = text;
+            textUI.text = title;
             var fontSizeHandle = Addressables.GetDownloadSizeAsync(label);
             yield return fontSizeHandle;
 
@@ -53,7 +53,7 @@ namespace SkyDragonHunter.Managers
                     float downloadedKB = percent * fontTotalBytes / 1024f;
                     float totalKB = fontTotalBytes / 1024f;
 
-                    textUI.text = text + $" {downloadedKB:F1} KB / {totalKB:F1} KB";
+                    textUI.text = downText + $" {downloadedKB:F1} KB / {totalKB:F1} KB";
                     progressBar.value = percent;
                     yield return null;
                 }
@@ -81,17 +81,17 @@ namespace SkyDragonHunter.Managers
         {
             DataTableMgr.InitOnSceneLoaded(nextScene);
             // GameMgr.InitializeAddressablesIfNeeded();
-            yield return Addressables.InitializeAsync();
-            yield return Loading(fontLabel, "리소스 다운로드 중...");
-            yield return Loading(prefabLabel, "프리팹 다운로드 중...");
-            yield return Loading(soLabel, "스크립터블 오브젝트 다운로드 중...");
-            yield return Loading(textureLabel, "텍스처 다운로드 중...");
-            yield return Loading(soundLabel, "사운드 다운로드 중...");
-            yield return Loading(animLabel, "애니메이션 다운로드 중...");
-            yield return Loading(matLabel, "머티리얼 다운로드 중...");
-            yield return Loading(shaderLabel, "셰이더 다운로드 중...");
-            yield return Loading(sanctumLabel, "리소스 다운로드 중...");
-            yield return Loading(scenesLabel, "씬 다운로드 중...");
+            yield return Addressables.InitializeAsync(); 
+            yield return Loading(fontLabel, "Loading Fonts...", "Downloading Fonts...");
+            yield return Loading(prefabLabel, "Loading Prefabs...", "Downloading Prefabs...");
+            yield return Loading(soLabel, "Loading Scriptable Objects...", "Downloading Scriptable Objects...");
+            yield return Loading(textureLabel, "Loading Textures...", "Downloading Textures...");
+            yield return Loading(soundLabel, "Loading Sounds...", "Downloading Sounds...");
+            yield return Loading(animLabel, "Loading Animations...", "Downloading Animations...");
+            yield return Loading(matLabel, "Loading Materials...", "Downloading Materials...");
+            yield return Loading(shaderLabel, "Loading Shaders...", "Downloading Shaders...");
+            yield return Loading(sanctumLabel, "Loading Resources...", "Downloading Resources...");
+            yield return Loading(scenesLabel, "Loading Scenes...", "Downloading Scenes...");
 
             // Load scene
             AsyncOperationHandle<SceneInstance> loadHandle =

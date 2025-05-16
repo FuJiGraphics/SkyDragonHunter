@@ -14,6 +14,7 @@ namespace SkyDragonHunter.UI {
         public BigNum maxValue;
         public BigNum currentValue;
         [SerializeField] Slider m_Slider;
+        [SerializeField] Image m_FillImage;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -66,6 +67,11 @@ namespace SkyDragonHunter.UI {
                 currentValue = 0;
                 OnHealthDepleted.Invoke();
             }
+        }
+
+        public void SetColor(Color color)
+        {
+            m_FillImage.color = color;
         }
 
         public void UpdateSlider()
