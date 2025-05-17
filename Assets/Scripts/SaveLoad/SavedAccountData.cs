@@ -18,6 +18,7 @@ namespace SkyDragonHunter.SaveLoad
         public int crystalLevel;
         public int crystalLevelId;
         public DateTime lastOnlineTime;
+        public float summonExp;
 
         public void InitData()
         {
@@ -27,6 +28,7 @@ namespace SkyDragonHunter.SaveLoad
             userNickName = "DefaultUserName";
             accountCreatedTime = DateTime.UtcNow;
             crystalLevel = 1;
+            summonExp = 0;
         }
 
         public void UpdateSavedData()
@@ -35,6 +37,7 @@ namespace SkyDragonHunter.SaveLoad
             crystalLevel = AccountMgr.Crystal.CurrentLevel;
             crystalLevelId = AccountMgr.Crystal.CurrLevelId;
             lastOnlineTime = DateTime.UtcNow;
+            summonExp = GameMgr.FindObject<UISummonPanel>("UISummonPanel").Exp;
         }
 
         public void ApplySavedData()
@@ -50,7 +53,7 @@ namespace SkyDragonHunter.SaveLoad
                 inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
                 inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
             }
-
+            GameMgr.FindObject<UISummonPanel>("UISummonPanel").Exp = summonExp;
         }
 
     } // Scope by class SavedAccountData

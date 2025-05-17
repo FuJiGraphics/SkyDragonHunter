@@ -1,29 +1,56 @@
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
-using SkyDragonHunter.Scriptables;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Prefab = UnityEngine.GameObject;
 
 namespace SkyDragonHunter.Database {
 
+    public static class EnumExtensions
+    {
+        public static string GetDescription(this Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            if (fi != null)
+            {
+                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attributes != null && attributes.Length > 0)
+                    return attributes[0].Description;
+            }
+
+            return value.ToString();
+        }
+    }
+
     public enum CanonType
     {
+        [Description("일반 대포")]
         Normal,
+        [Description("연사 대포")]
         Repeater,
+        [Description("둔화 대포")]
         Slow,
+        [Description("화염 대포")]
         Burn,
+        [Description("빙결 대포")]
         Freeze,
     }
 
     public enum CanonGrade
     {
+        [Description("노말")]
         Normal,
+        [Description("레어")]
         Rare,
+        [Description("유니크")]
         Unique,
+        [Description("레전드")]
         Legend,
     }
 
@@ -67,6 +94,27 @@ namespace SkyDragonHunter.Database {
             // return s_Cache[type][grade];
             #endregion
         }
+
+        public static Sprite GetIcon(CanonType type)
+            => type switch
+            {
+                CanonType.Normal => ResourcesMgr.Load<Sprite>("NormalCannon"),
+                CanonType.Repeater => ResourcesMgr.Load<Sprite>("RapidFireCannon"),
+                CanonType.Slow => ResourcesMgr.Load<Sprite>("SlowCannon"),
+                CanonType.Burn => ResourcesMgr.Load<Sprite>("BurnCannon"),
+                CanonType.Freeze => ResourcesMgr.Load<Sprite>("FreezeCannon"),
+                _ => throw new NotImplementedException(),
+            };
+
+        public static Sprite GetGradeOutline(CanonGrade grade)
+            => grade switch
+            {
+                CanonGrade.Normal => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_108]"),
+                CanonGrade.Rare => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_98]"),
+                CanonGrade.Unique => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_93]"),
+                CanonGrade.Legend => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_103]"),
+                _ => throw new NotImplementedException(),
+            };
 
         public static CanonDummy[] GetAllCanonDummyTypes()
         {

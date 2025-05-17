@@ -3,6 +3,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,18 +12,27 @@ namespace SkyDragonHunter.Gameplay {
 
     public enum RepairType
     {
+        [Description("일반 수리공")]
         Normal,
+        [Description("엘리트 수리공")]
         Elite,
+        [Description("보호막 수리공")]
         Shield,     // 실드 부여 (Shield)
+        [Description("힐러 수리공")]
         Healer,
+        [Description("무적 수리공")]
         Divine,     // 무적 부여 (Invincibility)
     }
 
     public enum RepairGrade
     {
+        [Description("노말")]
         Normal,
+        [Description("레어")]
         Rare,
+        [Description("유니크")]
         Unique,
+        [Description("레전드")]
         Legend,
     }
 

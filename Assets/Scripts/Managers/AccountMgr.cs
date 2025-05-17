@@ -246,6 +246,16 @@ namespace SkyDragonHunter.Managers
             s_HeldItems[type] += count;
             onItemCountChangedEvents?.Invoke(type);
         }
+
+        public static void AddCannonCount(CanonType type, CanonGrade grade, int count)
+        {
+            s_HeldCanons[type][grade].Count += count;
+        }
+
+        public static void AddRepairCount(RepairType type, RepairGrade grade, int count)
+        {
+            s_HeldRepairs[type][grade].Count += count;
+        }
         
         public static void AddArtifact(ArtifactDummy dummy)
         {

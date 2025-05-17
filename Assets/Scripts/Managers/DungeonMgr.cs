@@ -1,38 +1,35 @@
-using Org.BouncyCastle.Security;
-using SkyDragonHunter.UI;
-using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace SkyDragonHunter.Managers 
-{    
+namespace SkyDragonHunter.Managers
+{
     public enum DungeonType
     {
-        Type1,
-        Type2,
-        Type3,
+        Wave,
+        Boss,
+        SandBag,
         Count,
     }
 
     public static class DungeonMgr
     {
         // Private Fields
-        private static DungeonType s_DungeonType = DungeonType.Type1;
+        private static DungeonType s_DungeonType = DungeonType.Wave;
         private static int s_StageIndex;
         private static List<int> s_CrewSlots;
         private static int[] s_ClearedStageIndex;
 
         // Public Fields
-        public static int[] m_DungeonStageCounts = { 5, 6, 7 };
+        public static readonly int[] m_DungeonStageCounts = { 10, 10, 10 };
 
         // Temp
-        private static int s_SlotCount = 4;
         public static int TicketCount;
 
         // Properties
-        public static List<int> CrewSlots => s_CrewSlots;
-        
+        public static DungeonType CurrentDungeonType => s_DungeonType;
+        public static int CurrentStageIndex => s_StageIndex;
+
         // Public Methods
         static DungeonMgr()
         {
@@ -41,7 +38,6 @@ namespace SkyDragonHunter.Managers
 
         public static void Init()
         {
-            s_CrewSlots = new List<int>(s_SlotCount);
             s_ClearedStageIndex = new int[3];
         }
 
@@ -49,8 +45,7 @@ namespace SkyDragonHunter.Managers
         {
             s_DungeonType = dungeonType;
             s_StageIndex = stageIndex;
-
-            SceneMgr.LoadScene("DungeonScene");
+            SceneChangeMgr.LoadScene("DungeonScene");
         }
 
         public static bool TryGetStageData(out DungeonType dungeonType, out int stageIndex)
@@ -62,7 +57,7 @@ namespace SkyDragonHunter.Managers
 
         public static void OnStageClear()
         {
-            if(s_ClearedStageIndex[(int)s_DungeonType] < s_StageIndex)
+            if (s_ClearedStageIndex[(int)s_DungeonType] < s_StageIndex)
             {
                 s_ClearedStageIndex[(int)s_DungeonType] = s_StageIndex;
             }

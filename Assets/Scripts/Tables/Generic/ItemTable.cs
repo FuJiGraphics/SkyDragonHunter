@@ -3,6 +3,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Tables.Generic;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,24 +13,24 @@ namespace SkyDragonHunter.Tables
     public enum ItemType
     {
         None = 0,
-        Coin,
-        Diamond,
-        Spoils,
-        CrewTicket,
-        CanonTicket,
-        RepairTicket,
-        Food,
-        Gear,
-        RepairExp,
-        WaveDungeonTicket,
-        BossDungeonTicket,
-        SandbagDungeonTicket,
-        Wood,
-        Brick,
-        Steel,
-        MasteryLevelUp,
-        ExpansionMaterial,      // 증축 재료
-        GrindingStone,          // 연마석
+        [Description("골드")]Coin,
+        [Description("다이아")]Diamond,
+        [Description("전리품")]Spoils,
+        [Description("단원 ")]CrewTicket,
+        [Description("단원 뽑기권")]CanonTicket,
+        [Description("수리공 뽑기권")]RepairTicket,
+        [Description("음식")]Food,
+        [Description("톱니바퀴")]Gear,
+        [Description("수리공 경험치")]RepairExp,
+        [Description("웨이브 던전 입장권")]WaveDungeonTicket,
+        [Description("보스 던전 입장권")]BossDungeonTicket,
+        [Description("샌드백 던전 입장권")]SandbagDungeonTicket,
+        [Description("목재")]Wood,
+        [Description("벽돌")]Brick,
+        [Description("철")]Steel,
+        [Description("마스터리 레벨 재료")]MasteryLevelUp,
+        [Description("증축 재료")]ExpansionMaterial,      // 증축 재료
+        [Description("연마석")]GrindingStone,          // 연마석
     };
 
     public enum ItemUnit

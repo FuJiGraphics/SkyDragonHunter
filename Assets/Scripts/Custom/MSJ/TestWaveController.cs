@@ -636,6 +636,8 @@ namespace SkyDragonHunter
             //isCanSpawn = false;
         }
 
+        bool m_IsRewardStart = false;
+
         public void OnDisableClearPanel()
         {
             GameMgr.FindObject<UiMgr>("UiMgr").OnInGamePanels();
@@ -648,6 +650,8 @@ namespace SkyDragonHunter
 
         private void OnActiveClearPanel()
         {
+            if (m_IsRewardStart)
+                return;
             if (clearPanel.activeSelf)
                 return;
             if (!GameMgr.FindObject<UiMgr>("UiMgr").inGameWaveInfoPanel.activeSelf)
@@ -676,6 +680,7 @@ namespace SkyDragonHunter
             m_RewardWaveDungeonTicketCount = 0;
             m_RewardGrindingStoneCount = 0;
             m_RewardRepairExpCount = 0;
+            m_IsRewardStart = true;
         }
 
         private void OnUnActiveClearPanel()
@@ -738,6 +743,7 @@ namespace SkyDragonHunter
                     }
                 }
             }
+            m_IsRewardStart = false;
         }
 
         private void SpwanAreaPositionSet()

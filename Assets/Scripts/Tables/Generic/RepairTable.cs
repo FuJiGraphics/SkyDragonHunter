@@ -4,6 +4,8 @@ using SkyDragonHunter.Tables.Generic;
 using System.Collections.Generic;
 using System;
 using System.Text;
+using UnityEngine;
+using SkyDragonHunter.Managers;
 
 namespace SkyDragonHunter.Tables
 {
@@ -31,6 +33,26 @@ namespace SkyDragonHunter.Tables
 
     public class RepairTableTemplate : DataTable<RepairTableData>
     {
+        public static Sprite GetIcon(RepairType type)
+            => type switch
+            {
+                RepairType.Normal => ResourcesMgr.Load<Sprite>("Repairer"),
+                RepairType.Elite => ResourcesMgr.Load<Sprite>("Repairer"),
+                RepairType.Shield => ResourcesMgr.Load<Sprite>("Repairer"),
+                RepairType.Healer => ResourcesMgr.Load<Sprite>("Repairer"),
+                RepairType.Divine => ResourcesMgr.Load<Sprite>("Repairer"),
+                _ => throw new NotImplementedException(),
+            };
+
+        public static Sprite GetGradeOutline(RepairGrade grade)
+            => grade switch
+            {
+                RepairGrade.Normal => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_108]"),
+                RepairGrade.Rare => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_98]"),
+                RepairGrade.Unique => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_93]"),
+                RepairGrade.Legend => ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_103]"),
+                _ => throw new NotImplementedException(),
+            };
 
         public static RepairDummy[] GetAllRepairDummyTypes()
         {

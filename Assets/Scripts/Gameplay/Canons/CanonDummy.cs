@@ -1,6 +1,7 @@
 using SkyDragonHunter.Database;
 using SkyDragonHunter.Managers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SkyDragonHunter.Gameplay {
@@ -15,7 +16,7 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private CanonGrade m_Grade;
         [SerializeField] private int m_Count = 0;
 
-        private GameObject m_Instance;
+        private Dictionary<CanonType, Dictionary<CanonGrade, GameObject>> m_InstanceMap = new();
         private bool m_IsUnlock = false;
 
         // 속성 (Properties)
@@ -24,6 +25,8 @@ namespace SkyDragonHunter.Gameplay {
             get => m_Id; 
             set => m_Id = value; 
         }
+
+        public string Name => m_Type.GetDescription();
 
         public int Level 
         {
@@ -88,15 +91,21 @@ namespace SkyDragonHunter.Gameplay {
 
         public GameObject GetCanonInstance()
         {
-            if (m_Instance == null)
+            if (!m_InstanceMap.ContainsKey(Type))
+            {
+                m_InstanceMap.Add(Type, new());
+            }
+
+            if (!m_InstanceMap[Type].ContainsKey(Grade))
             {
                 GameObject prefab = CanonTable.GetPrefab(Type, Grade);
                 if (prefab != null)
                 {
-                    m_Instance = GameObject.Instantiate(prefab);
+                    var instance = GameObject.Instantiate(prefab);
+                    m_InstanceMap[Type].Add(Grade, instance);
                 }
             }
-            return m_Instance;
+            return m_InstanceMap[Type][Grade];
         }
 
         // Private 메서드

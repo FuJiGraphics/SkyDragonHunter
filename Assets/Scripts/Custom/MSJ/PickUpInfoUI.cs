@@ -9,6 +9,7 @@ namespace SkyDragonHunter {
     public class PickUpInfoUI : MonoBehaviour
     {
         // 필드 (Fields)
+        [SerializeField] private Image panel;
         [SerializeField] private TextMeshProUGUI crewNameText;
         [SerializeField] private TextMeshProUGUI crewCountText;
         [SerializeField] private Image crewIcon;
@@ -23,6 +24,12 @@ namespace SkyDragonHunter {
             crewNameText.text = name;
             crewCountText.text = count.ToString();
         }
+
+        public void SetPanel(Sprite sprite)
+            => panel.sprite = sprite;
+
+        public void SetIcon(Sprite sprite)
+            => crewIcon.sprite = sprite;
 
         public void SetDataWithCrewID(int crewID, int count)
         {
