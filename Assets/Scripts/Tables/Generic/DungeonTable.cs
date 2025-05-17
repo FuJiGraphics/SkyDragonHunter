@@ -13,19 +13,19 @@ namespace SkyDragonHunter.Tables {
         public string Name { get; set; }
         public int Stage { get; set; }
         public int TicketID { get; set; }
+        public int MonsterWaveID { get; set; }
         public int BossID { get; set; }
-        public int KillCount { get; set; }
         public BigNum MultiplierHP { get; set; }
         public BigNum MultiplierATK { get; set; }
-        public int[] RewardIDs { get; set; }
-        public BigNum[] RewardCounts { get; set; }
+        public int KillCount { get; set; }
+        public int RewardItemID { get; set; }
+        public BigNum RewardCounts { get; set; }
     }
 
     public class DungeonTable : DataTable<DungeonTableData>
     {
         public int GetDungeonCount(DungeonType dungeonType)
-        {
-            
+        {            
 
 
             return 0;
@@ -33,15 +33,21 @@ namespace SkyDragonHunter.Tables {
 
         public DungeonTableData Get(DungeonType dungeonType, int stageIndex)
         {
-            return Get(GetIDfromDungeonData(dungeonType, stageIndex));
+            return Get(GetDungeonID(dungeonType, stageIndex));
         }
 
-        public int GetIDfromDungeonData(DungeonType dungeonType, int stageIndex)
+        public int GetDungeonID(DungeonType dungeonType, int stageIndex)
         {
-            int defaultIndex = 100000;
-            var dungeonTypeVal = ((int)dungeonType) * 10000;
-            defaultIndex += dungeonTypeVal + stageIndex;
-            return defaultIndex;
+            int defaultIndex = 3100000;
+            int addant = 100000;
+            int dungeonID = defaultIndex + addant * (int)dungeonType + stageIndex;
+            
+            return dungeonID;
+        }
+
+        public DungeonTableData GetCurrentDungeonData()
+        {
+            return Get(DungeonMgr.CurrentDungeonType, DungeonMgr.CurrentStageIndex);
         }
     }
 } // namespace Root

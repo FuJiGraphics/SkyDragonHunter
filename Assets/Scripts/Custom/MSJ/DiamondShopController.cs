@@ -213,7 +213,7 @@ namespace SkyDragonHunter.UI
             else
                 itemDataListDict.Add(refreshType, new());
 
-            itemDataListDict[refreshType] = SaveLoadMgr.GameData.savedShopItemData.GetItemSlotDataList(ShopType.Gold, refreshType);
+            itemDataListDict[refreshType] = SaveLoadMgr.GameData.savedShopItemData.GetItemSlotDataList(ShopType.Diamond, refreshType);
         }
 
         private void SetItemSlotData(ShopRefreshType refreshType)

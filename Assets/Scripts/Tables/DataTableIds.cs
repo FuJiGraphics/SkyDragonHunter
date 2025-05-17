@@ -37,6 +37,7 @@ namespace SkyDragonHunter.Tables {
         public static readonly string CannonPickUp = "CannonPickUpTable";
         public static readonly string RepairPickUp = "RepairPickUpTable";
         public static readonly string AffinityLevel = "AffinityLevelTable";
+        public static readonly string Dungeon = "DungeonTable";
 
     } // Scope by class DataTableIds
 

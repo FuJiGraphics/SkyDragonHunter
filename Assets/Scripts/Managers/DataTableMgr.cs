@@ -35,6 +35,7 @@ namespace SkyDragonHunter.Managers
         public static CannonPickUpTable CannonPickUpTable => Get<CannonPickUpTable>(DataTableIds.CannonPickUp);
         public static RepairPickUpTable RepairPickUpTable => Get<RepairPickUpTable>(DataTableIds.RepairPickUp);
         public static AffinityLevelTable AffinityLevelTable => Get<AffinityLevelTable>(DataTableIds.AffinityLevel);
+        public static DungeonTable DungeonTable => Get<DungeonTable>(DataTableIds.Dungeon);
 
         // Static Constructor
         static DataTableMgr()
@@ -93,6 +94,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<CannonPickUpTable>(DataTableIds.CannonPickUp);
             LoadTable<RepairPickUpTable>(DataTableIds.RepairPickUp);
             LoadTable<AffinityLevelTable>(DataTableIds.AffinityLevel);
+            LoadTable<DungeonTable>(DataTableIds.Dungeon);
         }
 
         private static void InitForDungeonScene()
@@ -125,6 +127,7 @@ namespace SkyDragonHunter.Managers
             LoadTable<CannonPickUpTable>(DataTableIds.CannonPickUp);
             LoadTable<RepairPickUpTable>(DataTableIds.RepairPickUp);
             LoadTable<AffinityLevelTable>(DataTableIds.AffinityLevel);
+            LoadTable<DungeonTable>(DataTableIds.Dungeon);
         }
 
         // Public 메서드
