@@ -1,4 +1,3 @@
-using SkyDragonHunter.Managers;
 using SkyDragonHunter.Utility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,7 +40,7 @@ namespace SkyDragonHunter.UI {
         private void OnClickExitButton()
         {
             Time.timeScale = 1f;
-            SceneMgr.LoadScene("GameScene");
+            SceneChangeMgr.LoadScene("GameScene");
         }
     } // Scope by class UIDungeonPausedPanel
 

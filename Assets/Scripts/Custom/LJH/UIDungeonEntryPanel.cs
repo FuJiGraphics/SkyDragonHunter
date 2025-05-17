@@ -1,8 +1,8 @@
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
-using System;
+using SkyDragonHunter.Tables;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +12,10 @@ namespace SkyDragonHunter.UI {
     {
         // Static Fields
         private const string StagePrefabName = "StagePrefab";
+        private static readonly int[] m_DungeonStageCounts = { 10, 10, 10 };
 
         // Fields
         [SerializeField] private Button[] m_DungeonTypeButtons;
-        [SerializeField] private int[] m_DungeonStageCounts = { 5, 6, 7 };
         [SerializeField] private DungeonType m_SelectedDungeonType;
         [SerializeField] private int m_SelectedDungeonIndex;
 
@@ -26,10 +26,22 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Button m_CloseButton;
         [SerializeField] private Button m_EnterButton;
 
+        [SerializeField] private TextMeshProUGUI attackTmp;
+        [SerializeField] private TextMeshProUGUI defTmp;
+        [SerializeField] private TextMeshProUGUI clearCondTmp;
+
+        [SerializeField] private UIStageInfoSlot infoPrefab;
+        [SerializeField] private Transform monstersContents;
+        [SerializeField] private Transform clearRewardContents;
+
         // Unity Methods
         private void Start()
         {
             Initiate();
+        }
+        private void OnEnable()
+        {
+            ResetUI();            
         }
 
         // Private Methods
@@ -37,6 +49,16 @@ namespace SkyDragonHunter.UI {
         {
             AddListeners();
             OnClickDungoenType(0);
+        }
+
+        private void ResetUI()
+        {
+            if (m_SelectedDungeonType == DungeonType.Wave)
+            {
+                OnClickDungoenType(0);
+            }
+            attackTmp.text = AccountMgr.AccountStats.MaxDamage.ToUnit();
+            defTmp.text = AccountMgr.AccountStats.MaxArmor.ToUnit();
         }
 
         private void AddListeners()
@@ -73,6 +95,18 @@ namespace SkyDragonHunter.UI {
         private void ChangeDungeonType(DungeonType dungeonType)
         {
             m_SelectedDungeonType = dungeonType;
+            switch (m_SelectedDungeonType)
+            {
+                case DungeonType.Wave:
+                    clearCondTmp.text = $"제한시간 안에 모든 적 격파";
+                    break;
+                case DungeonType.Boss:
+                    clearCondTmp.text = $"제한시간 안에 보스 격파";
+                    break;
+                case DungeonType.SandBag:
+                    clearCondTmp.text = $"제한시간 안에 샌드백 격파";
+                    break;               
+            }
         }
 
         private void InstantiateStagePrefabs()
@@ -114,15 +148,94 @@ namespace SkyDragonHunter.UI {
                 stage.OnSelectStage(m_SelectedDungeonIndex);
             }
 
-            if(AccountMgr.WaveDungeonTicket > 0)
+            m_EnterButton.interactable = true;
+            //switch (m_SelectedDungeonType)
+            //{
+            //    case DungeonType.Wave:
+            //        if (AccountMgr.ItemCount(ItemType.BossDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //    case DungeonType.Boss:
+            //        if (AccountMgr.ItemCount(ItemType.WaveDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //    case DungeonType.SandBag:
+            //        if (AccountMgr.ItemCount(ItemType.SandbagDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //}
+
+            SetStageInfoSlots();
+        }
+
+        private void ClearInfoSlots()
+        {
+            foreach (Transform child in monstersContents)
             {
-                m_EnterButton.interactable = true;
+                Destroy(child.gameObject);
             }
-            else
+            foreach (Transform child in clearRewardContents)
             {
-                m_EnterButton.interactable = false;
+                Destroy(child.gameObject);
             }
         }
-    } // Scope by class UIDungeonEntryPanel
 
-} // namespace Root
+        private void SetStageInfoSlots()
+        {
+            ClearInfoSlots();
+            var dungeonData = DataTableMgr.DungeonTable.Get(m_SelectedDungeonType, m_SelectedDungeonIndex);
+            SetMonsterInfoSlots(dungeonData);
+            SetRewardInfoSlots(dungeonData);
+        }
+
+        private void SetMonsterInfoSlots(DungeonTableData dungeonData)
+        {            
+            // TODO: LJH Assign icon to null
+            switch (m_SelectedDungeonType)
+            {
+                case DungeonType.Wave:                    
+                    var waveData = DataTableMgr.WaveTable.Get(dungeonData.MonsterWaveID);
+                    try
+                    {
+                        for (int i = 0; i < waveData.MonsterIDs.Length; ++i)
+                        {
+                            var waveMonsterSlot = Instantiate(infoPrefab, monstersContents);
+                            waveMonsterSlot.SetSlot(null, waveData.MonsterCounts[i]);
+                        }
+                    }
+                    catch
+                    {
+                        Debug.LogError($"monsterWaveID{dungeonData.MonsterWaveID}");
+                        if(waveData.MonsterIDs == null)
+                        {
+                            Debug.LogError($"monsterIDs null");
+                        }
+                        else
+                        {
+                            Debug.LogError($"MonsterIDS not null, {waveData.MonsterIDs.Length}");
+                        }
+                    }
+                    break;
+                case DungeonType.Boss:
+                    var bossSlot = Instantiate(infoPrefab, monstersContents);
+                    bossSlot.SetSlot(null, 0);
+                    break;
+                case DungeonType.SandBag:
+                    var sandbagSlot = Instantiate(infoPrefab, monstersContents);
+                    sandbagSlot.SetSlot(null, 0);
+                    break;
+            }
+        } 
+        private void SetRewardInfoSlots(DungeonTableData dungeonData)
+        {
+            var slot = Instantiate(infoPrefab, clearRewardContents);
+            slot.SetSlot(DataTableMgr.ItemTable.Get(dungeonData.RewardItemID).Icon, dungeonData.RewardCounts);
+        }
+    } // Scope by class UIDungeonEntryPanel
+}// namespace Root

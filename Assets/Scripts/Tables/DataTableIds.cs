@@ -34,7 +34,11 @@ namespace SkyDragonHunter.Tables {
         public static readonly string Tutorial = "TutorialTable";
         public static readonly string CrewLevel = "CrewLevelTable";
         public static readonly string Facility = "FacilityTable";
-
+        public static readonly string CannonPickUp = "CannonPickUpTable";
+        public static readonly string RepairPickUp = "RepairPickUpTable";
+        public static readonly string AffinityLevel = "AffinityLevelTable";
+        public static readonly string Dungeon = "DungeonTable";
+        public static readonly string AudioSource = "AudioSourceTable";
 
     } // Scope by class DataTableIds
 
