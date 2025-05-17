@@ -47,7 +47,7 @@ namespace SkyDragonHunter.Managers
         {
             s_DungeonType = dungeonType;
             s_StageIndex = stageIndex;
-            SceneChangeMgr.LoadScene((int)SceneIds.DungeonScene);
+            SceneChangeMgr.LoadScene("DungeonScene");
         }
 
         public static bool TryGetStageData(out DungeonType dungeonType, out int stageIndex)

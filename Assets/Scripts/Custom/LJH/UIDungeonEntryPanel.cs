@@ -148,27 +148,28 @@ namespace SkyDragonHunter.UI {
                 stage.OnSelectStage(m_SelectedDungeonIndex);
             }
 
-            switch (m_SelectedDungeonType)
-            {
-                case DungeonType.Wave:
-                    if (AccountMgr.ItemCount(ItemType.BossDungeonTicket) > 0)
-                        m_EnterButton.interactable = true;
-                    else
-                        m_EnterButton.interactable = false;
-                    break;
-                case DungeonType.Boss:
-                    if (AccountMgr.ItemCount(ItemType.WaveDungeonTicket) > 0)
-                        m_EnterButton.interactable = true;
-                    else
-                        m_EnterButton.interactable = false;
-                    break;
-                case DungeonType.SandBag:
-                    if (AccountMgr.ItemCount(ItemType.SandbagDungeonTicket) > 0)
-                        m_EnterButton.interactable = true;
-                    else
-                        m_EnterButton.interactable = false;
-                    break;
-            }
+            m_EnterButton.interactable = true;
+            //switch (m_SelectedDungeonType)
+            //{
+            //    case DungeonType.Wave:
+            //        if (AccountMgr.ItemCount(ItemType.BossDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //    case DungeonType.Boss:
+            //        if (AccountMgr.ItemCount(ItemType.WaveDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //    case DungeonType.SandBag:
+            //        if (AccountMgr.ItemCount(ItemType.SandbagDungeonTicket) > 0)
+            //            m_EnterButton.interactable = true;
+            //        else
+            //            m_EnterButton.interactable = false;
+            //        break;
+            //}
 
             SetStageInfoSlots();
         }

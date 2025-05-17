@@ -475,6 +475,7 @@ namespace SkyDragonHunter
             {
                 isInfiniteMode = false;
             }
+            PlayBGM();
             waveLevelText.text = string.Format("{0} - {1}", currentMissionLevel, currentZonelLevel);
             OnChangeBackGround(currentMissionLevel - 1);
         }
@@ -962,6 +963,17 @@ namespace SkyDragonHunter
             var sb = new StringBuilder();
             float hpPercentage = BigNum.GetPercentage(bossBT.HP, bossBT.MaxHP);
             bossSlider.value = hpPercentage;
+        }
+
+        private void PlayBGM()
+        {
+            if(currentMissionLevel < 1 || currentMissionLevel > 10)
+            {
+                Debug.LogError($"Invalid mission level {currentMissionLevel}");
+                return;
+            }
+            var stageBGM = (BGM)(currentMissionLevel + 1);
+            SoundMgr.Instance.PlayBGM(stageBGM);
         }
         // ~TODO
 

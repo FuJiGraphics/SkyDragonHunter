@@ -40,7 +40,7 @@ namespace SkyDragonHunter.UI {
         private void OnClickExitButton()
         {
             Time.timeScale = 1f;
-            SceneChangeMgr.LoadScene((int)SceneIds.GameScene);
+            SceneChangeMgr.LoadScene("GameScene");
         }
     } // Scope by class UIDungeonPausedPanel
 

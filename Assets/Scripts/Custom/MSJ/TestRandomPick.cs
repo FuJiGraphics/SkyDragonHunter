@@ -172,7 +172,7 @@ namespace SkyDragonHunter.test
                     pickUpCounts.Add(selected, 1);
                 }
             }
-
+            
             // 각 숫자마다 프리팹 생성
             foreach (var kvp in pickUpCounts)
             {
