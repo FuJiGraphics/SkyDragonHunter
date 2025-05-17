@@ -1,4 +1,5 @@
 using Org.BouncyCastle.Security;
+using SkyDragonHunter.UI;
 using SkyDragonHunter.Utility;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +49,8 @@ namespace SkyDragonHunter.Managers
         {
             s_DungeonType = dungeonType;
             s_StageIndex = stageIndex;
-            SceneChangeMgr.LoadScene((int)SceneIds.DungeonScene);
+
+            SceneMgr.LoadScene("DungeonScene");
         }
 
         public static bool TryGetStageData(out DungeonType dungeonType, out int stageIndex)

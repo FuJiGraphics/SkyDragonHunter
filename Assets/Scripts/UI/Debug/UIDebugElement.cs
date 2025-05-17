@@ -12,7 +12,7 @@ namespace SkyDragonHunter.UI
 {
     public enum IncreaseType
     {
-        Coin, Diamond, CrystalLevel, MasteryLevelUp
+        Coin, Diamond, CrystalLevel, MasteryLevelUp, CrewTicket, 
     }
 
     public class UIDebugElement : MonoBehaviour
@@ -69,6 +69,10 @@ namespace SkyDragonHunter.UI
                 case IncreaseType.MasteryLevelUp:
                     AccountMgr.SetItemCount(ItemType.MasteryLevelUp, coinValue);
                     DrawableMgr.Dialog("Alert", $"마스터리 재료가 {coinValue}만큼 설정되었습니다.");
+                    break;
+                case IncreaseType.CrewTicket:
+                    AccountMgr.SetItemCount(ItemType.CrewTicket, coinValue);
+                    DrawableMgr.Dialog("Alert", $"단원 티켓이 {coinValue}만큼 설정되었습니다.");
                     break;
             }            
         }

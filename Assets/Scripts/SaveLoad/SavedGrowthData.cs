@@ -62,6 +62,7 @@ namespace SkyDragonHunter.SaveLoad
                         var node = growthPanel.FindNode(targetNode.Value.id);
                         SavedGrowth saveData = targetNode.Value;
                         node?.LoadData(ref saveData);
+                        SetAirshipDefaultGrowthStats(saveData.type, saveData.stat);
                     }
                 }
             }
@@ -75,6 +76,7 @@ namespace SkyDragonHunter.SaveLoad
                     }
                 }
             }
+            AccountMgr.DirtyAccountAndAirshipStat();
         }
 
         // 던전 씬에서 스탯 적용 되도록 하기 위해서 사용함

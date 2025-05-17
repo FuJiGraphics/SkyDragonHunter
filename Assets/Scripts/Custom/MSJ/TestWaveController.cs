@@ -642,7 +642,7 @@ namespace SkyDragonHunter
             bossSlider.gameObject.SetActive(false);
             bossTimerSlider.gameObject.SetActive(false);
             clearPanel.SetActive(false);
-            currentOpenPanel = 5f;
+            currentOpenPanel = 0f;
         }
 
         private void OnActiveClearPanel()

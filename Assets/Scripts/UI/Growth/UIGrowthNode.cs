@@ -199,6 +199,7 @@ namespace SkyDragonHunter.UI{
             BasicCost = saveData.basicCost;
             StatIncrease = saveData.statIncrease;
             CostIncrease = saveData.costIncrease;
+            StatType = saveData.type;
             DirtyUI();
             UpdateLevelUpArrowState();
         }
@@ -214,6 +215,7 @@ namespace SkyDragonHunter.UI{
             dstSaveData.basicCost = BasicCost;
             dstSaveData.statIncrease = StatIncrease;
             dstSaveData.costIncrease = CostIncrease;
+            dstSaveData.type = StatType;
         }
 
         public void LevelUp(int increase)

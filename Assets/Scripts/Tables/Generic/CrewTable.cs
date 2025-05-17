@@ -71,15 +71,16 @@ namespace SkyDragonHunter.Tables
             return sb.ToString();
         }
 
-        private static GameObject m_Instance = null;
+        static private Dictionary<int, GameObject> m_InstanceMap = new();
 
         public GameObject GetInstance()
         {
-            if (m_Instance == null)
+            if (!m_InstanceMap.ContainsKey(base.ID))
             {
-                m_Instance = GameObject.Instantiate(GetPrefab());
+                var instance = GameObject.Instantiate(GetPrefab());
+                m_InstanceMap.Add(base.ID, instance);
             }
-            return m_Instance;
+            return m_InstanceMap[base.ID];
         }
 
         private GameObject GetPrefab()
