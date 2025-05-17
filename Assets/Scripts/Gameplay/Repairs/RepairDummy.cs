@@ -71,7 +71,16 @@ namespace SkyDragonHunter.Gameplay {
         // ¼Ó¼º (Properties)
         public int ID
         {
-            get => m_Id;
+            // TODO: LJH
+            //get => m_Id;
+            get
+            {
+                int defaultId = 61001;
+                int addant = 1000;
+                int result = defaultId + addant * (int)m_Grade + (int)m_Type;
+                return result;
+            }
+            // ~TODO
             set => m_Id = value;
         }
 

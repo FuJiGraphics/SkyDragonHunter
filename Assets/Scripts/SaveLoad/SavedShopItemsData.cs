@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SkyDragonHunter.SaveLoad {    
-   
+namespace SkyDragonHunter.SaveLoad
+{
+
     public class SavedShopItemList
     {
         public DateTime refreshedTime;
@@ -45,20 +46,30 @@ namespace SkyDragonHunter.SaveLoad {
     {
         // TODO: LJH
         public bool isFirstPickGiven;
+        public int crewPickUpExp;
+        public int cannonPickUpExp;
+        public int repairPickUpExp;
+        public int cannonAffinityLevel;
+        public int repairAffinityLevel;
         // ~TODO
         public int favorabilityLevel;
         public Dictionary<ShopType, Dictionary<ShopRefreshType, SavedShopItemList>> shopItemDict;
-        
+
         public void InitData()
         {
             isFirstPickGiven = false;
             favorabilityLevel = 1;
-            shopItemDict = new ();
-            foreach(ShopType shopType in Enum.GetValues(typeof(ShopType)))
+            crewPickUpExp = 0;
+            cannonPickUpExp = 0;
+            repairPickUpExp = 0;
+            cannonAffinityLevel = 1;
+            repairAffinityLevel = 1;
+            shopItemDict = new();
+            foreach (ShopType shopType in Enum.GetValues(typeof(ShopType)))
             {
                 if (!shopItemDict.ContainsKey(shopType))
                     shopItemDict.Add(shopType, new());
-                foreach(ShopRefreshType refreshType in Enum.GetValues(typeof(ShopRefreshType)))
+                foreach (ShopRefreshType refreshType in Enum.GetValues(typeof(ShopRefreshType)))
                 {
                     if (shopType != ShopType.Reroll)
                     {
@@ -85,7 +96,7 @@ namespace SkyDragonHunter.SaveLoad {
             var goldShopPanelGO = GameMgr.FindObject($"GoldShopPanel");
             var diamondShopPanelGO = GameMgr.FindObject($"DiamondShopPanel");
             var rerollShopPanelGO = GameMgr.FindObject($"RerollShopPanel");
-            if(goldShopPanelGO == null || diamondShopPanelGO == null || rerollShopPanelGO == null)
+            if (goldShopPanelGO == null || diamondShopPanelGO == null || rerollShopPanelGO == null)
             {
                 Debug.Log($"ShopItemData Update Failed, panelGO null");
                 return;
@@ -93,7 +104,7 @@ namespace SkyDragonHunter.SaveLoad {
             var goldShopController = goldShopPanelGO.GetComponent<GoldShopController>();
             var diamondShopController = diamondShopPanelGO.GetComponent<DiamondShopController>();
             var rerollShopController = rerollShopPanelGO.GetComponent<RerollShopController>();
-            if(goldShopController == null || diamondShopController == null || rerollShopController == null)
+            if (goldShopController == null || diamondShopController == null || rerollShopController == null)
             {
                 Debug.Log($"ShopItemData Update Failed, shop controller null");
                 return;
@@ -115,7 +126,7 @@ namespace SkyDragonHunter.SaveLoad {
 
 
                 if (diamondShopController.GetRefreshedTime(refreshType) != null)
-                {                    
+                {
                     shopItemDict[ShopType.Diamond][refreshType].refreshedTime = diamondShopController.GetRefreshedTime(refreshType).Value;
                 }
                 else
@@ -153,9 +164,9 @@ namespace SkyDragonHunter.SaveLoad {
             }
         }
 
-        public DateTime? GetRefreshedTime (ShopType category, ShopRefreshType refreshType)
+        public DateTime? GetRefreshedTime(ShopType category, ShopRefreshType refreshType)
         {
-            if(!shopItemDict.ContainsKey(category))
+            if (!shopItemDict.ContainsKey(category))
             {
                 Debug.LogError($"No data found with shop category {category}");
                 return null;
@@ -193,6 +204,59 @@ namespace SkyDragonHunter.SaveLoad {
             }
             return result;
         }
-    } // Scope by class SavedShopItemsData
 
-} // namespace Root
+        public int AddAffinityExp(AffinityLevelType affinType, int exp)
+        {
+            switch (affinType)
+            {
+                case AffinityLevelType.Cannon:
+                    return AddCannonAffinityExp(exp);
+                case AffinityLevelType.Repair:
+                    return AddRepairAffinityExp(exp);
+            }
+            return 0;
+        }
+
+        private int AddCannonAffinityExp(int exp)
+        {
+            var affinLevelData = DataTableMgr.AffinityLevelTable.GetAffinityLevelData(AffinityLevelType.Cannon, cannonAffinityLevel);
+            if (affinLevelData.IsMaxLevel)
+            {
+                Debug.Log($"Cannon Affinity Level Maxed");
+                cannonPickUpExp = 0;
+                return 0;
+            }
+
+            cannonPickUpExp += exp;
+            if (cannonPickUpExp >= affinLevelData.LvUpExp)
+            {
+                Debug.LogWarning($"Cannon Affin Level Up {cannonAffinityLevel} -> {cannonAffinityLevel + 1}");
+                cannonPickUpExp -= affinLevelData.LvUpExp;
+                cannonAffinityLevel++;
+                return affinLevelData.LvUpRewardID;
+            }
+            return 0;
+        }
+
+        private int AddRepairAffinityExp(int exp)
+        {
+            var affinLevelData = DataTableMgr.AffinityLevelTable.GetAffinityLevelData(AffinityLevelType.Repair, repairAffinityLevel);
+            if (affinLevelData.IsMaxLevel)
+            {
+                Debug.Log($"Cannon Affinity Level Maxed");
+                repairPickUpExp = 0;
+                return 0;
+            }
+
+            repairPickUpExp += exp;
+            if (repairPickUpExp >= affinLevelData.LvUpExp)
+            {
+                Debug.LogWarning($"Repair Affin Level Up {cannonAffinityLevel} -> {cannonAffinityLevel + 1}");
+                repairPickUpExp -= affinLevelData.LvUpExp;
+                repairAffinityLevel++;
+                return affinLevelData.LvUpRewardID;
+            }
+            return 0;
+        }
+    } // Scope by class SavedShopItemsData
+}// namespace Root
