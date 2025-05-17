@@ -11,6 +11,13 @@ using UnityEngine;
 
 namespace SkyDragonHunter.UI {
 
+    [System.Serializable]
+    public class RefreshSlot
+    {
+        public ItemType type;
+        public TextMeshProUGUI text;
+    }
+
     public class UIMoneyRefresher : MonoBehaviour
     {
         // 필드 (Fields)
@@ -19,6 +26,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private TextMeshProUGUI m_DiamondText;
         [SerializeField] private TextMeshProUGUI m_MasteryRewardText;
         [SerializeField] private TextMeshProUGUI m_RepairerLevelUpText;
+        [SerializeField] private RefreshSlot m_Custom;
 
         [Header("Stat Panel")]
         [SerializeField] private TextMeshProUGUI m_Damage;
@@ -58,6 +66,11 @@ namespace SkyDragonHunter.UI {
                     status.AddChangedEvent(StatusChangedEventType.MaxArmor, OnChangedArmor);
                 }
             }
+
+            if (m_Custom != null && m_Custom.type != ItemType.None)
+            {
+                SetItemCount(m_Custom.type, m_Custom.text);
+            }
         }
 
         private void OnEnable()
@@ -90,8 +103,29 @@ namespace SkyDragonHunter.UI {
             m_Armor.text = stat.ToUnit();
         }
 
+        public void OnChangedItemCountToUnit(BigNum stat)
+        {
+            if (m_Armor == null)
+                return;
+
+            m_Armor.text = stat.ToUnit();
+        }
+
+        public void OnChangedItemCountToString(BigNum stat)
+        {
+            if (m_Armor == null)
+                return;
+
+            m_Armor.text = stat.ToString();
+        }
+
         public void OnChangedItem(ItemType type)
         {
+            if (m_Custom != null && m_Custom.type == type && m_Custom.type != ItemType.None)
+            {
+                SetItemCount(m_Custom.type, m_Custom.text);
+            }
+
             switch (type)
             {
                 case ItemType.None:
@@ -140,6 +174,18 @@ namespace SkyDragonHunter.UI {
                     break;
                 case ItemType.GrindingStone:
                     break;
+            }
+        }
+
+        public void SetItemCount(ItemType type, TextMeshProUGUI target)
+        {
+            if (type == ItemType.Coin || type == ItemType.Diamond)
+            {
+                target.text = AccountMgr.ItemCount(type).ToUnit();
+            }
+            else
+            {
+                target.text = AccountMgr.ItemCount(type).ToString();
             }
         }
 

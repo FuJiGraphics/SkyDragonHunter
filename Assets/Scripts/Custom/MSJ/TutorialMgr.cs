@@ -134,7 +134,9 @@ namespace SkyDragonHunter
             // 패널 비활성화
             if (step <= 138)
             {
-                allButtonsBlockPanel.SetActive(true);
+                // TODO: 여길 왜 true로 바꾸지..
+                // allButtonsBlockPanel.SetActive(true);
+                allButtonsBlockPanel.SetActive(false);
             }
             
             tutorialPanel.SetActive(false);

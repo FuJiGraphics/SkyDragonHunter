@@ -15,6 +15,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private Transform m_SpawnAnchor;
         [SerializeField] private Vector2 m_Offset = Vector2.zero;
         [SerializeField] private Vector2 m_Scale = Vector2.one;
+        [SerializeField] private bool m_IsLeftToRight = true;
         [SerializeField] private CharacterStatus m_SyncStats;
 
         private UIShieldAndHealth m_StatusBarInstance = null;
@@ -90,7 +91,9 @@ namespace SkyDragonHunter.UI {
                 if (m_UIStatusBarPrefab != null)
                 {
                     m_StatusBarInstance = Instantiate(m_UIStatusBarPrefab);
-                    m_StatusBarInstance.GetComponent<UIShieldAndHealth>().SetHealthColor(m_UIHealthColor);
+                    var uibar = m_StatusBarInstance.GetComponent<UIShieldAndHealth>();
+                    uibar.SetHealthColor(m_UIHealthColor);
+                    uibar.SetDirection(m_IsLeftToRight);
                 }
                 else
                 {

@@ -62,14 +62,7 @@ namespace SkyDragonHunter.test
 
         public void ApplyPickCrew(SavedCrew crew)
         {
-            GameObject prefab = crew.crewData.GetPrefab();
-            if (prefab == null)
-            {
-                Debug.LogWarning($"단원 삽입 실패 : {crew.crewData.UnitName}");
-                return;
-            }
-
-            var instance = GameObject.Instantiate(prefab);
+            GameObject instance = crew.crewData.GetInstance();
             if (instance != null)
             {
                 if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))

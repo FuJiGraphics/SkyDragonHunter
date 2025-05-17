@@ -71,7 +71,18 @@ namespace SkyDragonHunter.Tables
             return sb.ToString();
         }
 
-        public GameObject GetPrefab()
+        private static GameObject m_Instance = null;
+
+        public GameObject GetInstance()
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = GameObject.Instantiate(GetPrefab());
+            }
+            return m_Instance;
+        }
+
+        private GameObject GetPrefab()
         {
             int id = base.ID;
             return s_PrefabStringTable.TryGetValue(id, out var prefab) ? prefab : null;

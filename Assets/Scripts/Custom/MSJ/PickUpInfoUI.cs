@@ -1,3 +1,4 @@
+using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,11 @@ namespace SkyDragonHunter {
         public void SetDataWithCrewID(int crewID, int count)
         {
             crewNameText.text = DataTableMgr.CrewTable.Get(crewID).UnitName;
+            var instance = DataTableMgr.CrewTable.Get(crewID).GetInstance();
+            if (instance != null && instance.TryGetComponent<CrewInfoProvider>(out var provider))
+            {
+                crewIcon.sprite = provider.Icon;
+            }
             // Need to assign crew Icon
             //DataTableMgr.CrewTable.Get(crewID).
             crewCountText.text = $"신규 획득!";            

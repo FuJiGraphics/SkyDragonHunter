@@ -130,8 +130,7 @@ namespace SkyDragonHunter.Gameplay {
             {
                 m_Status.Health = (m_Status.Health + m_Status.MaxResilient);
 
-                // TODO: 테스트 용
-                DrawableMgr.Text(transform.position, "Recover " + m_Status.MaxResilient.ToUnit() + "++", Color.green);
+                DrawableMgr.TopText(transform.position, "Recover " + m_Status.MaxResilient.ToUnit() + "++", Color.green);
             }
 
             m_RecoverCoroutine = null;

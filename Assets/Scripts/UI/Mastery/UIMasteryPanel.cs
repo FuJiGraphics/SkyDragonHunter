@@ -5,6 +5,8 @@ using UnityEngine;
 using TMPro;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Structs;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 namespace SkyDragonHunter.UI {
 
@@ -17,7 +19,7 @@ namespace SkyDragonHunter.UI {
         [SerializeField] private UIMasterySocket[] m_SocketPrefabs;
 
         [Header("Mastery Node Infomations")]
-        [SerializeField] private SpriteRenderer m_Icon;
+        [SerializeField] private Image m_Icon;
         [SerializeField] private SpriteRenderer m_NextNodeInfoArrowIcon;
         [SerializeField] private TextMeshProUGUI m_UiPrevNodeInfo;
         [SerializeField] private TextMeshProUGUI m_UiNextNodeInfo;
@@ -115,6 +117,7 @@ namespace SkyDragonHunter.UI {
         public void ShowNodeInfo(UIMasteryNode clickedNode)
         {
             m_CilckedNode = clickedNode;
+            m_Icon.sprite = m_CilckedNode.Icon;
             var currSocketInfo = clickedNode.CurrentSocket;
             if (clickedNode.CurrentLevel > 0)
             {

@@ -30,7 +30,7 @@ namespace SkyDragonHunter.Gameplay {
                 if (repairExecutor.IsActiveDivineShield)
                 {
                     repairExecutor.IsActiveDivineShield = false;
-                    DrawableMgr.Text(transform.position, "Immue!" + attack.damage.ToUnit(), Color.black);
+                    DrawableMgr.TopText(transform.position, "Immue!" + attack.damage.ToUnit(), Color.black);
 
                     return;
                 }
@@ -38,7 +38,8 @@ namespace SkyDragonHunter.Gameplay {
 
             if (attack.isCritical)
             {
-                DrawableMgr.Text(transform.position, "Cri:" + attack.damage.ToUnit(), Color.red);
+                DrawableMgr.TopText(transform.position, "Critical!", Color.red);
+                DrawableMgr.Text(transform.position, attack.damage.ToUnit(), Color.red);
             }
             else
             {

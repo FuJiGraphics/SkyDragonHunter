@@ -1,3 +1,4 @@
+using DamageNumbersPro;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,12 +8,7 @@ namespace SkyDragonHunter {
     public class UIDamageMeter : MonoBehaviour
     {
         // 필드 (Fields)
-        [SerializeField] private string m_Text;
-        [SerializeField] private TextMeshProUGUI m_TextComponent;
-        [SerializeField] private Vector3 m_Offset;
-
-        private Vector3 m_LastPosition;
-        private bool m_IsFirstUpdate = false;
+        [SerializeField] private DamageNumberMesh m_TextComponent;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -20,32 +16,22 @@ namespace SkyDragonHunter {
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Awake()
         {
-            m_TextComponent = GetComponentInChildren<TextMeshProUGUI>();
-            m_TextComponent.text = m_Text;
+            m_TextComponent = GetComponentInChildren<DamageNumberMesh>();
         }
 
-        private void Update()
+        public void SetTopText(string text, Color color)
         {
-            if (!m_IsFirstUpdate)
-            {
-                m_IsFirstUpdate = true;
-                m_LastPosition = transform.position;
-            }
-            transform.position = m_LastPosition + m_Offset;
+            m_TextComponent.SetColor(color);
+            m_TextComponent.topText = text;
         }
 
-        public void SetText(string text)
-            => m_TextComponent.text = text;
-
-        public void SetColor(Color color)
-            => m_TextComponent.color = color;
+        public void SetText(string text, Color color)
+        {
+            m_TextComponent.SetColor(color);
+            m_TextComponent.leftText = text;
+        }
 
         // Public 메서드
-        public void OnAnimationEnd()
-        {
-            GameObject.Destroy(gameObject);
-        }
-
         // Private 메서드
         // Others
 

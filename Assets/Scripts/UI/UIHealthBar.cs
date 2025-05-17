@@ -17,6 +17,8 @@ namespace SkyDragonHunter.UI {
         [SerializeField] Image m_FillImage;
 
         // 속성 (Properties)
+        public Slider Slider => m_Slider;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         [Tooltip("CurrentHealth가 0f가 되었을 때 호출되는 이벤트")]

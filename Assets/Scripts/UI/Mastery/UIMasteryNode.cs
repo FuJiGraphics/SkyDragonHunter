@@ -23,6 +23,7 @@ namespace SkyDragonHunter.UI {
         private UIMasterySocket m_SocketInstance;
 
         // ¼Ó¼º (Properties)
+        public Sprite Icon => m_Icon.sprite;
         public int LevelGroup { get; set; }
         public bool IsMaxLevel => (m_SocketInstance != null) ? m_SocketInstance.IsMaxLevel : false;
         public bool IsActiveNode { get; private set; } = false;
@@ -69,6 +70,7 @@ namespace SkyDragonHunter.UI {
             m_SocketInstance = new UIMasterySocket(nodeData.SocketID);
             m_Text.text = m_SocketInstance.SlotCountString;
             m_StatTempText.text = m_SocketInstance.SocketName;
+            m_Icon.sprite = m_SocketInstance.Icon;
         }
 
         public void SocketLevelUp()

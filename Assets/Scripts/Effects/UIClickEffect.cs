@@ -15,7 +15,7 @@ namespace SkyDragonHunter.UI {
         // 유니티 (MonoBehaviour 기본 메서드)
         private void Update()
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount > 0 && Time.timeScale > 0f)
             {
                 Touch touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Began)

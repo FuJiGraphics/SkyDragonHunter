@@ -30,8 +30,11 @@ namespace SkyDragonHunter.UI {
         private int m_MaxLevelCount = 0;
         private int m_CurrentCount = 0;
 
+        private string m_IconName;
+
         // ¼Ó¼º (Properties)
         public int ID { get; private set; }
+        public Sprite Icon => ResourcesMgr.Load<Sprite>(m_IconName);
         public string SocketName { get; private set; }
         public string Description { get; private set; }
         public MasterySocketType Type { get; private set; } = MasterySocketType.Damage;
@@ -88,6 +91,7 @@ namespace SkyDragonHunter.UI {
                 Stat = new BigNum(newData.Stat);
                 Multiplier = newData.Multiplier;
                 NextID = newData.NextSocketID;
+                m_IconName = newData.SocketIconName;
                 result = true;
                 m_CurrentCount++;
                 ResetSlotCountString();
@@ -108,6 +112,7 @@ namespace SkyDragonHunter.UI {
             Type = (MasterySocketType)newData.StatType;
             Stat = new BigNum(newData.Stat);
             NextID = newData.NextSocketID;
+            m_IconName = newData.SocketIconName;
             m_MaxLevelCount = CalculateNextLevelCount();
             m_CurrentCount = 0;
             ResetSlotCountString();

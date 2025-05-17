@@ -71,7 +71,8 @@ namespace SkyDragonHunter.Managers
         {
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
-            damageMeterUI.GetComponent<UIDamageMeter>().SetText(str);
+            damageMeterUI.GetComponent<UIDamageMeter>().SetText(str, Color.white);
+            GameObject.Destroy(damageMeterUI, 1f);
         }
 
         public static void Text(Vector2 position, string str, Color color)
@@ -79,8 +80,17 @@ namespace SkyDragonHunter.Managers
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
             var meter = damageMeterUI.GetComponent<UIDamageMeter>();
-            meter.SetText(str);
-            meter.SetColor(color);
+            meter.SetText(str, color);
+            GameObject.Destroy(damageMeterUI, 1f);
+        }
+
+        public static void TopText(Vector2 position, string str, Color color)
+        {
+            GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
+            damageMeterUI.transform.position = position;
+            var meter = damageMeterUI.GetComponent<UIDamageMeter>();
+            meter.SetTopText(str, color);
+            GameObject.Destroy(damageMeterUI, 1f);
         }
 
         public static void DialogWithArtifactInfo(string title, ArtifactDummy artifact)
