@@ -24,7 +24,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             m_Receiver = receiver;
 
-            DrawableMgr.Text(receiver.transform.position, "Stun!!!!!", Color.cyan);
+            DrawableMgr.TopText(receiver.transform.position, "Stun!!!!!", Color.cyan);
 
             m_ComponentsToDisable = receiver.GetComponents<MonoBehaviour>();
             m_AffactableComp = receiver.GetComponent<AilmentAffectable>();

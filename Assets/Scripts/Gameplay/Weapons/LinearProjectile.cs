@@ -12,6 +12,7 @@ namespace SkyDragonHunter {
         // 필드 (Fields)
         public float speed = 1f;
         public Vector2 direction = Vector2.right;
+        public GameObject fireProjectileGo;
 
         private HitTriggerProjectile m_HitTrigger;
         private bool m_HasFired = false;
@@ -36,6 +37,12 @@ namespace SkyDragonHunter {
             this.transform.position = position;
             this.speed = projectileSpeed;
             this.direction = direction;
+            if (fireProjectileGo != null)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                angle -= 90f; // 스프라이트가 '위쪽'을 기본 방향으로 그려졌다면 -90도 보정
+                fireProjectileGo.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            }
             if (m_HitTrigger != null)
             {
                 m_HitTrigger.attackInfo = attack;

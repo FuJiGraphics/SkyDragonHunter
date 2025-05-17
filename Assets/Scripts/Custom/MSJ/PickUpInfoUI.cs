@@ -1,6 +1,3 @@
-using NPOI.SS.Formula.Functions;
-using SkyDragonHunter;
-using SkyDragonHunter.Database;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
 using TMPro;
@@ -30,6 +27,11 @@ namespace SkyDragonHunter {
         public void SetDataWithCrewID(int crewID, int count)
         {
             crewNameText.text = DataTableMgr.CrewTable.Get(crewID).UnitName;
+            var instance = DataTableMgr.CrewTable.Get(crewID).GetInstance();
+            if (instance != null && instance.TryGetComponent<CrewInfoProvider>(out var provider))
+            {
+                crewIcon.sprite = provider.Icon;
+            }
             // Need to assign crew Icon
             //DataTableMgr.CrewTable.Get(crewID).
             crewCountText.text = $"신규 획득!";            
@@ -39,59 +41,6 @@ namespace SkyDragonHunter {
         {
             crewNameText.text = $"마스터리 재화";
             crewCountText.text = count.ToString();
-        }
-
-        public void SetDataWithCannonId(CanonGrade grade, CanonType type, int count = 0)
-        {
-            crewNameText.text = $"{grade} / {type}";
-            switch (grade)
-            {
-                case CanonGrade.Normal:
-                    crewNameText.color = Color.green;
-                    break;
-                case CanonGrade.Rare:
-                    crewNameText.color = Color.blue;
-                    break;
-                case CanonGrade.Unique:
-                    crewNameText.color = Color.magenta;
-                    break;
-                case CanonGrade.Legend:
-                    crewNameText.color = Color.yellow;
-                    break;
-            }
-            if (count == 0)
-                crewCountText.text = "";
-            else
-                crewCountText.text = count.ToString();
-        }
-
-        public void SetDataWithRepairId(RepairGrade grade, RepairType type, int count = 0)
-        {
-            crewNameText.text = $"{grade} / {type}";
-            switch (grade)
-            {
-                case RepairGrade.Normal:
-                    crewNameText.color = Color.green;
-                    break;
-                case RepairGrade.Rare:
-                    crewNameText.color = Color.blue;
-                    break;
-                case RepairGrade.Unique:
-                    crewNameText.color = Color.magenta;
-                    break;
-                case RepairGrade.Legend:
-                    crewNameText.color = Color.yellow;
-                    break;
-            }
-            if (count == 0)
-                crewCountText.text = "";
-            else
-                crewCountText.text = count.ToString();
-        }
-
-        public void SetDataWithRepairId(int repairId)
-        {
-
         }
         // Private 메서드
         // Others

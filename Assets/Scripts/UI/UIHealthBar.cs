@@ -14,8 +14,11 @@ namespace SkyDragonHunter.UI {
         public BigNum maxValue;
         public BigNum currentValue;
         [SerializeField] Slider m_Slider;
+        [SerializeField] Image m_FillImage;
 
         // 속성 (Properties)
+        public Slider Slider => m_Slider;
+
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
         [Tooltip("CurrentHealth가 0f가 되었을 때 호출되는 이벤트")]
@@ -66,6 +69,11 @@ namespace SkyDragonHunter.UI {
                 currentValue = 0;
                 OnHealthDepleted.Invoke();
             }
+        }
+
+        public void SetColor(Color color)
+        {
+            m_FillImage.color = color;
         }
 
         public void UpdateSlider()

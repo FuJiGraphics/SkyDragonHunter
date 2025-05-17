@@ -45,11 +45,6 @@ namespace SkyDragonHunter.SaveLoad {
     {
         // TODO: LJH
         public bool isFirstPickGiven;
-        public int crewPickUpExp;
-        public int cannonPickUpExp;
-        public int repairPickUpExp;
-        public int cannonAffinityLevel;
-        public int repairAffinityLevel;
         // ~TODO
         public int favorabilityLevel;
         public Dictionary<ShopType, Dictionary<ShopRefreshType, SavedShopItemList>> shopItemDict;
@@ -58,11 +53,6 @@ namespace SkyDragonHunter.SaveLoad {
         {
             isFirstPickGiven = false;
             favorabilityLevel = 1;
-            crewPickUpExp = 0;
-            cannonPickUpExp = 0;
-            repairPickUpExp = 0;
-            cannonAffinityLevel = 1;
-            repairAffinityLevel = 1;
             shopItemDict = new ();
             foreach(ShopType shopType in Enum.GetValues(typeof(ShopType)))
             {
@@ -203,59 +193,6 @@ namespace SkyDragonHunter.SaveLoad {
             }
             return result;
         }
-
-        public int AddAffinityExp(AffinityLevelType affinType, int exp)
-        {
-            switch (affinType)
-            {
-                case AffinityLevelType.Cannon:
-                    return AddCannonAffinityExp(exp);                    
-                case AffinityLevelType.Repair:
-                    return AddRepairAffinityExp(exp);
-            }
-            return 0;
-        } 
-
-        private int AddCannonAffinityExp(int exp)
-        {
-            var affinLevelData = DataTableMgr.AffinityLevelTable.GetAffinityLevelData(AffinityLevelType.Cannon, cannonAffinityLevel);
-            if (affinLevelData.IsMaxLevel)
-            {
-                Debug.Log($"Cannon Affinity Level Maxed");
-                cannonPickUpExp = 0;
-                return 0;
-            }
-
-            cannonPickUpExp += exp;
-            if(cannonPickUpExp >= affinLevelData.LvUpExp)
-            {
-                Debug.LogWarning($"Cannon Affin Level Up {cannonAffinityLevel} -> {cannonAffinityLevel + 1}");
-                cannonPickUpExp -= affinLevelData.LvUpExp;
-                cannonAffinityLevel++;
-                return affinLevelData.LvUpRewardID;
-            }
-            return 0;
-        }
-
-        private int AddRepairAffinityExp(int exp)
-        {
-            var affinLevelData = DataTableMgr.AffinityLevelTable.GetAffinityLevelData(AffinityLevelType.Repair, repairAffinityLevel);
-            if (affinLevelData.IsMaxLevel)
-            {
-                Debug.Log($"Cannon Affinity Level Maxed");
-                repairPickUpExp = 0;
-                return 0;
-            }
-
-            repairPickUpExp += exp;
-            if (repairPickUpExp >= affinLevelData.LvUpExp)
-            {
-                Debug.LogWarning($"Repair Affin Level Up {cannonAffinityLevel} -> {cannonAffinityLevel + 1}");
-                repairPickUpExp -= affinLevelData.LvUpExp;
-                repairAffinityLevel++;
-                return affinLevelData.LvUpRewardID;
-            }
-            return 0;
-        }
     } // Scope by class SavedShopItemsData
-}// namespace Root
+
+} // namespace Root

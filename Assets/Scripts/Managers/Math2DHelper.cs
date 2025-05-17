@@ -1,6 +1,7 @@
 using SkyDragonHunter.Structs;
 using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace SkyDragonHunter.Managers
 {
@@ -37,6 +38,13 @@ namespace SkyDragonHunter.Managers
             UnityEngine.Vector3 direction = (end.position - start.position);
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             dst.rotation = UnityEngine.Quaternion.Euler(0, 0, angle);
+        }
+
+        public static Quaternion GetLookAtRotation(UnityEngine.Vector3 start, UnityEngine.Vector3 end)
+        {
+            UnityEngine.Vector3 direction = end - start;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            return Quaternion.Euler(0, 0, angle);
         }
 
     } // static class Math2DHelper

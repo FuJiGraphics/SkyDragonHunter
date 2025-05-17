@@ -26,7 +26,6 @@ namespace SkyDragonHunter.SaveLoad
             userId = "DefaultID";
             userNickName = "DefaultUserName";
             accountCreatedTime = DateTime.UtcNow;
-
             crystalLevel = 1;
         }
 

@@ -141,17 +141,10 @@ namespace SkyDragonHunter.SaveLoad
                     continue;
                 }
 
-                GameObject crewPrefab = crew.crewData.GetPrefab();
-                if (crewPrefab == null)
-                {
-                    Debug.LogWarning($"[ApplySavedData]: crewPrefab is null");
-                    continue;
-                }
-
                 TempCrewLevelExpContainer.ApplyLoadedCrewData(crew);
                 if (crew.isUnlocked)
                 {
-                    var instance = GameObject.Instantiate(crewPrefab);
+                    var instance = crew.crewData.GetInstance();
                     if (instance != null)
                     {
                         if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))

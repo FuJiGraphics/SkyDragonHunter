@@ -32,9 +32,9 @@ namespace SkyDragonHunter.Managers
         {
             //Debug.Log($"[DrawableMgr] ¾À ·ÎµåµÊ: {scene.name}");
             //Debug.Log($"[DrawableMgr] UIDamageMeter Prefab »ý¼ºÁß");
-            s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIDamageMeter");
-            s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertDialog");
-            s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("Prefabs/UI/UIAlertArtifactInfo");
+            s_UIDamageMeterPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIDamageMeter.prefab");
+            s_UIAlertDialogPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIAlertDialog.prefab");
+            s_UIAlertArtifactInfoPrefab = ResourcesMgr.Load<GameObject>("Assets/Prefabs/UI/UIAlertArtifactInfo.prefab");
         }
 
         private static void OnSceneUnloaded(Scene scene)
@@ -71,7 +71,8 @@ namespace SkyDragonHunter.Managers
         {
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
-            damageMeterUI.GetComponent<UIDamageMeter>().SetText(str);
+            damageMeterUI.GetComponent<UIDamageMeter>().SetText(str, Color.white);
+            GameObject.Destroy(damageMeterUI, 1f);
         }
 
         public static void Text(Vector2 position, string str, Color color)
@@ -79,8 +80,17 @@ namespace SkyDragonHunter.Managers
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
             var meter = damageMeterUI.GetComponent<UIDamageMeter>();
-            meter.SetText(str);
-            meter.SetColor(color);
+            meter.SetText(str, color);
+            GameObject.Destroy(damageMeterUI, 1f);
+        }
+
+        public static void TopText(Vector2 position, string str, Color color)
+        {
+            GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
+            damageMeterUI.transform.position = position;
+            var meter = damageMeterUI.GetComponent<UIDamageMeter>();
+            meter.SetTopText(str, color);
+            GameObject.Destroy(damageMeterUI, 1f);
         }
 
         public static void DialogWithArtifactInfo(string title, ArtifactDummy artifact)

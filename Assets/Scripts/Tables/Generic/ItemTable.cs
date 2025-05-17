@@ -63,11 +63,15 @@ namespace SkyDragonHunter.Tables
         {
             get
             {
-                if (m_CacheIconImage == null)
-                {
-                    m_CacheIconImage = ResourcesMgr.Load<GameObject>(IconName)?.GetComponent<Image>();
-                }
-                return m_CacheIconImage.sprite;
+                #region Resources Only
+                // if (m_CacheIconImage == null)
+                // {
+                //     m_CacheIconImage = ResourcesMgr.Load<GameObject>(IconName)?.GetComponent<Image>();
+                // }
+                // return m_CacheIconImage.sprite;
+                #endregion
+
+                return ResourcesMgr.Load<Sprite>(IconName);
             }
         }
     }

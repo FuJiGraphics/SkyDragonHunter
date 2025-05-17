@@ -11,11 +11,15 @@ namespace SkyDragonHunter.UI {
     {
         // 필드 (Fields)
         [SerializeField] private UIShieldAndHealth m_UIStatusBarPrefab;
+        [SerializeField] private Color m_UIHealthColor = Color.green;
         [SerializeField] private Transform m_SpawnAnchor;
+        [SerializeField] private Vector2 m_Offset = Vector2.zero;
         [SerializeField] private Vector2 m_Scale = Vector2.one;
+        [SerializeField] private bool m_IsLeftToRight = true;
         [SerializeField] private CharacterStatus m_SyncStats;
 
         private UIShieldAndHealth m_StatusBarInstance = null;
+        private Color m_StatusBarColor = Color.green;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -87,6 +91,9 @@ namespace SkyDragonHunter.UI {
                 if (m_UIStatusBarPrefab != null)
                 {
                     m_StatusBarInstance = Instantiate(m_UIStatusBarPrefab);
+                    var uibar = m_StatusBarInstance.GetComponent<UIShieldAndHealth>();
+                    uibar.SetHealthColor(m_UIHealthColor);
+                    uibar.SetDirection(m_IsLeftToRight);
                 }
                 else
                 {
@@ -112,7 +119,7 @@ namespace SkyDragonHunter.UI {
                 m_StatusBarInstance.transform.SetParent(transform);
             }
 
-            m_StatusBarInstance.transform.localPosition = new Vector3(0, 0, -7);
+            m_StatusBarInstance.transform.localPosition = new Vector3(m_Offset.x, m_Offset.y, -7);
             m_StatusBarInstance.transform.localScale = m_Scale;
         }
 

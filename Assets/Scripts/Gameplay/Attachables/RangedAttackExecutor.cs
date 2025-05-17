@@ -14,6 +14,7 @@ namespace SkyDragonHunter.Gameplay {
         // ÇÊµå (Fields)
         public bool isSkipDistanceCheck = false;
         public bool isSkipCooldownCheck = false;
+        public Vector2 fireOffset = Vector2.zero;
 
         private RangedAttackSC m_Def;
         private ObjectPool<GameObject> m_ProjectilePool;
@@ -129,7 +130,7 @@ namespace SkyDragonHunter.Gameplay {
                 instance.GetComponent<HitTriggerProjectile>().targetTags = attackTargetProvider.AllowedTargetTags;
                 Attack attack = m_Def.CreateAttack(aStats, dStats);
 
-                Vector2 atkPos = firePos;
+                Vector2 atkPos = firePos + fireOffset;
                 Vector2 defPos = defender.transform.position;
                 Vector2 tarDir = (defPos - atkPos).normalized;
                 projectile.Fire(atkPos, tarDir, m_Def.projectileSpeed, attack, attacker, m_ProjectilePool);

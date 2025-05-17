@@ -34,7 +34,7 @@ namespace SkyDragonHunter.Gameplay {
         public void OnStay()
         {
             BigNum damage = m_DamageNum;
-            DrawableMgr.Text(m_Receiver.transform.position, damage.ToUnit(), Color.red);
+            DrawableMgr.TopText(m_Receiver.transform.position, damage.ToUnit(), Color.red);
             m_Receiver.TakeDamage(m_Caster, m_DamageNum);
         }
 

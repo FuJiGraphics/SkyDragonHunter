@@ -1,4 +1,3 @@
-using SkyDragonHunter.Database;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Managers;
@@ -6,22 +5,13 @@ using SkyDragonHunter.SaveLoad;
 using SkyDragonHunter.Tables;
 using SkyDragonHunter.Temp;
 using SkyDragonHunter.Test;
-using SkyDraonHunter.Utility;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SkyDragonHunter.test
 {
-    public enum PickUpType
-    {
-        Crew,
-        Cannon,
-        Repairer
-    }
 
     public class TestRandomPick : MonoBehaviour
     {
@@ -30,18 +20,7 @@ namespace SkyDragonHunter.test
         public GameObject pickUpInfoPrefab;
         public Transform crewAndMoonStone;
         private int[] crewIds;
-        private PickUpType currentPickUpType;
-
-        [SerializeField] private Button crewOnePickButton;
-        [SerializeField] private Button crewTenPickButton;
-        [SerializeField] private Button cannonOnePickButton;
-        [SerializeField] private Button cannonTenPickButton;
-        [SerializeField] private Button repairOnePickButton;
-        [SerializeField] private Button repairTenPickButton;
-
-        [SerializeField] private Button onePickButton;
-        [SerializeField] private Button tenPickButton;
-
+        private int count = 17;
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)
@@ -72,9 +51,6 @@ namespace SkyDragonHunter.test
             {
                 crewIds[index++] = crewId;
             }
-
-            currentPickUpType = PickUpType.Crew;
-            AddListeners();
         }
 
         // Public 메서드
@@ -86,14 +62,7 @@ namespace SkyDragonHunter.test
 
         public void ApplyPickCrew(SavedCrew crew)
         {
-            GameObject prefab = crew.crewData.GetPrefab();
-            if (prefab == null)
-            {
-                Debug.LogWarning($"단원 삽입 실패 : {crew.crewData.UnitName}");
-                return;
-            }
-
-            var instance = GameObject.Instantiate(prefab);
+            GameObject instance = crew.crewData.GetInstance();
             if (instance != null)
             {
                 if (instance.TryGetComponent<NewCrewControllerBT>(out var btComp))
@@ -141,13 +110,11 @@ namespace SkyDragonHunter.test
                 ApplyPickCrew(selectedCrew);
                 SaveLoadMgr.GameData.savedCrewData.GetCrewData(selectedCrew).isUnlocked = true;
                 CreatePickInfo(selectedCrew, 1);
-                SaveLoadMgr.GameData.savedShopItemData.crewPickUpExp += 1;
             }
             var crewTicketCount = AccountMgr.ItemCount(ItemType.CrewTicket);
             crewTicketCount -= 1;
             AccountMgr.SetItemCount(ItemType.CrewTicket, crewTicketCount);
             SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Crew;
             uiMgr.OnOffRandomCrewPickUpInfo();
         }
 
@@ -160,8 +127,7 @@ namespace SkyDragonHunter.test
             ApplyPickCrew(selectedCrew);
             SaveLoadMgr.GameData.savedCrewData.GetCrewData(selectedCrew).isUnlocked = true;
             CreatePickInfo(selectedCrew, 1);
-            SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Crew;
+            // SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
         }
 
@@ -222,7 +188,6 @@ namespace SkyDragonHunter.test
                     ApplyPickCrew(crewData);
                     crewData.isUnlocked = true;
                     CreatePickInfo(DataTableMgr.CrewTable.Get(kvp.Key).UnitName, 1);
-                    SaveLoadMgr.GameData.savedShopItemData.crewPickUpExp += 1;
                 }
             }
 
@@ -235,7 +200,6 @@ namespace SkyDragonHunter.test
             crewTicketCount -= 10;
             AccountMgr.SetItemCount(ItemType.CrewTicket, crewTicketCount);
             SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Crew;
             uiMgr.OnOffRandomCrewPickUpInfo();
         }
 
@@ -270,27 +234,6 @@ namespace SkyDragonHunter.test
             }
         }
 
-        private void CreatePickInfo(CanonGrade grade, CanonType type, int count = 0)
-        {
-            GameObject instance = Instantiate(pickUpInfoPrefab, crewAndMoonStone);
-            var ui = instance.GetComponent<PickUpInfoUI>();
-
-            if (ui != null)
-            {
-                ui.SetDataWithCannonId(grade, type, count);
-            }
-        }
-        private void CreatePickInfo(RepairGrade grade, RepairType type, int count = 0)
-        {
-            GameObject instance = Instantiate(pickUpInfoPrefab, crewAndMoonStone);
-            var ui = instance.GetComponent<PickUpInfoUI>();
-
-            if (ui != null)
-            {
-                ui.SetDataWithRepairId(grade, type, count);
-            }
-        }
-
         private void CreateMateryResourcePickInfo(int count)
         {
             // 프리팹 생성 및 부모 오브젝트 지정
@@ -306,329 +249,6 @@ namespace SkyDragonHunter.test
         }
         // Others
 
-        private void AddListeners()
-        {
-            crewOnePickButton.onClick.AddListener(RandomPick);
-            crewTenPickButton.onClick.AddListener(RandomTenPick);
-            cannonOnePickButton.onClick.AddListener(OnClickCannonOnePick);
-            cannonTenPickButton.onClick.AddListener(OnClickCannonTenPick);
-            repairOnePickButton.onClick.AddListener(OnClickReapirOnePick);
-            repairTenPickButton.onClick.AddListener(OnClickReapirTenPick);
-            onePickButton.onClick.AddListener(OnClickPickUpOne);
-            tenPickButton.onClick.AddListener(OnClickPickUpTen);
-        }
+    } // Scope by class TestRandomPick
 
-        private void OnClickCannonOnePick()
-        {
-            //if (AccountMgr.ItemCount(ItemType.CanonTicket) < 1)
-            //{
-            //    DrawableMgr.Dialog($"안내", $"캐논 소환 티켓이 부족합니다");
-            //    return;
-            //}
-            
-            foreach (Transform child in crewAndMoonStone)
-            {
-                Destroy(child.gameObject);
-            }
-
-            // 1개 랜덤 선택
-            var cannonAffinLv = SaveLoadMgr.GameData.savedShopItemData.cannonAffinityLevel;
-            var currentAffinId = DataTableMgr.AffinityLevelTable.GetAffinityLevelID(AffinityLevelType.Cannon, cannonAffinLv);
-            var pickUpDatas = DataTableMgr.CannonPickUpTable.GetCannonPickUpDatasWithAffinID(currentAffinId);
-            (CannonPickUpData data, float weight)[] tuples = new (CannonPickUpData data, float weight)[pickUpDatas.Count];
-            for(int i = 0; i < pickUpDatas.Count; ++i)
-            {
-                tuples[i].data = pickUpDatas[i];
-                tuples[i].weight = pickUpDatas[i].DrawRate * 0.01f;
-            }
-            var randPicked = RandomMgr.RandomWithWeights<CannonPickUpData>(tuples);
-
-            var allCannons = CanonTable.GetAllCanonDummyTypes();
-            CanonDummy selected = new();
-            foreach(var cannon in allCannons)
-            {
-                if (cannon.ID == randPicked.CannonID)
-                { 
-                    selected = cannon;
-                    break;
-                }
-            }
-
-            var saved = SaveLoadMgr.GameData.savedCannonData.GetSavedCannon(selected.Grade, selected.Type);
-            //selected.Count += 1;
-            saved.count += 1;
-            saved.isUnlocked = true;
-
-            CreatePickInfo(selected.Grade, selected.Type);
-
-            var cannonTicketCount = AccountMgr.ItemCount(ItemType.CanonTicket);
-            cannonTicketCount -= 1;
-            AccountMgr.SetItemCount(ItemType.CanonTicket, cannonTicketCount);
-            if(SaveLoadMgr.GameData.savedShopItemData.AddAffinityExp(AffinityLevelType.Cannon, 1) != 0)
-            {
-
-            }
-            SaveLoadMgr.ApplySavedData(SaveDataTypes.Cannon);
-            SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Cannon;
-            uiMgr.OnOffRandomCrewPickUpInfo();
-        }
-
-        private void OnClickCannonTenPick()
-        {
-            //if (AccountMgr.ItemCount(ItemType.CrewTicket) < 10)
-            //{
-            //    DrawableMgr.Dialog($"안내", $"캐논 소환 티켓이 부족합니다");
-            //    return;
-            //}
-            
-            foreach (Transform child in crewAndMoonStone)
-            {
-                Destroy(child.gameObject);
-            }
-
-            // 각 숫자의 등장 횟수를 기록할 Dictionary
-            Dictionary<CanonDummy, int> pickUpCounts = new();
-            var allCannons = CanonTable.GetAllCanonDummyTypes();
-
-            var cannonAffinLv = SaveLoadMgr.GameData.savedShopItemData.cannonAffinityLevel;
-            var currentAffinId = DataTableMgr.AffinityLevelTable.GetAffinityLevelID(AffinityLevelType.Cannon, cannonAffinLv);
-            var pickUpDatas = DataTableMgr.CannonPickUpTable.GetCannonPickUpDatasWithAffinID(currentAffinId);
-            (CannonPickUpData data, float weight)[] tuples = new (CannonPickUpData data, float weight)[pickUpDatas.Count];
-            for (int i = 0; i < pickUpDatas.Count; ++i)
-            {
-                tuples[i].data = pickUpDatas[i];
-                tuples[i].weight = pickUpDatas[i].DrawRate * 0.01f;
-            }
-
-            // 10번 랜덤 추출 (중복 허용)
-            for (int i = 0; i < 10; i++)
-            {
-                var randPicked = RandomMgr.RandomWithWeights<CannonPickUpData>(tuples);
-                CanonDummy selected = new();
-                foreach (var cannon in allCannons)
-                {
-                    if (cannon.ID == randPicked.CannonID)
-                    {
-                        selected = cannon;
-                        break;
-                    }
-                }
-
-                // 이미 등장한 숫자면 +1, 아니면 1로 시작
-                if (pickUpCounts.ContainsKey(selected))
-                {
-                    pickUpCounts[selected]++;                    
-                }
-                else
-                {
-                    pickUpCounts.Add(selected, 1);
-                }
-            }
-
-            // 각 숫자마다 프리팹 생성
-            foreach (var kvp in pickUpCounts)
-            {
-                // kvp.Key: 숫자, kvp.Value: 횟수
-                var cannonDummy = kvp.Key;
-                var savedCannon = SaveLoadMgr.GameData.savedCannonData.GetSavedCannon(cannonDummy.Grade, cannonDummy.Type);
-                //cannonDummy.Count += 1;
-                savedCannon.count += 1;
-                savedCannon.isUnlocked = true;
-
-                CreatePickInfo(cannonDummy.Grade, cannonDummy.Type, kvp.Value);
-            }
-
-            var cannonTicketCount = AccountMgr.ItemCount(ItemType.CanonTicket);
-            cannonTicketCount -= 10;
-            AccountMgr.SetItemCount(ItemType.CanonTicket, cannonTicketCount);
-            if (SaveLoadMgr.GameData.savedShopItemData.AddAffinityExp(AffinityLevelType.Cannon, 10) != 0)
-            { 
-
-            }
-            SaveLoadMgr.ApplySavedData(SaveDataTypes.Cannon);
-            SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Cannon;
-            uiMgr.OnOffRandomCrewPickUpInfo();
-        }
-
-        private void OnClickReapirOnePick()
-        {
-            //if (AccountMgr.ItemCount(ItemType.RepairTicket) < 1)
-            //{
-            //    DrawableMgr.Dialog($"안내", $"수리공 소환 티켓이 부족합니다");
-            //    return;
-            //}
-            
-            foreach (Transform child in crewAndMoonStone)
-            {
-                Destroy(child.gameObject);
-            }
-
-            // 1개 랜덤 선택
-            var repairAffinLv = SaveLoadMgr.GameData.savedShopItemData.repairAffinityLevel;
-            var currentAffinId = DataTableMgr.AffinityLevelTable.GetAffinityLevelID(AffinityLevelType.Repair, repairAffinLv);
-            var pickUpDatas = DataTableMgr.RepairPickUpTable.GetRepairPickUpDatasWithAffinID(currentAffinId);
-            (RepairPickUpData data, float weight)[] tuples = new (RepairPickUpData data, float weight)[pickUpDatas.Count];
-            for (int i = 0; i < pickUpDatas.Count; ++i)
-            {
-                tuples[i].data = pickUpDatas[i];
-                tuples[i].weight = pickUpDatas[i].RepDrawRate * 0.01f;
-            }
-            var randPicked = RandomMgr.RandomWithWeights<RepairPickUpData>(tuples);
-
-            var allReps = RepairTableTemplate.GetAllRepairDummyTypes();
-            RepairDummy selected = new();
-            foreach (var rep in allReps)
-            {
-                if (rep.ID == randPicked.ItemID)
-                {
-                    selected = rep;
-                    break;
-                }
-            }
-
-            var saved = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(selected.Grade, selected.Type);
-            //selected.Count += 1;
-            saved.count += 1;
-            saved.isUnlocked = true;
-
-            CreatePickInfo(selected.Grade, selected.Type);
-
-            var cannonTicketCount = AccountMgr.ItemCount(ItemType.RepairTicket);
-            cannonTicketCount -= 1;
-            AccountMgr.SetItemCount(ItemType.RepairTicket, cannonTicketCount);
-            if(SaveLoadMgr.GameData.savedShopItemData.AddAffinityExp(AffinityLevelType.Repair, 1) != 0)
-            {
-
-            }
-            SaveLoadMgr.ApplySavedData(SaveDataTypes.Repairer);
-            SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Repairer;
-            uiMgr.OnOffRandomCrewPickUpInfo();
-        }
-
-        private void OnClickReapirTenPick()
-        {
-            //if (AccountMgr.ItemCount(ItemType.RepairTicket) < 10)
-            //{
-            //    DrawableMgr.Dialog($"안내", $"수리공 소환 티켓이 부족합니다");
-            //    return;
-            //}
-
-            foreach (Transform child in crewAndMoonStone)
-            {
-                Destroy(child.gameObject);
-            }
-
-            // 각 숫자의 등장 횟수를 기록할 Dictionary
-            var repairAffinLv = SaveLoadMgr.GameData.savedShopItemData.repairAffinityLevel;
-            var currentAffinId = DataTableMgr.AffinityLevelTable.GetAffinityLevelID(AffinityLevelType.Repair, repairAffinLv);
-            var pickUpDatas = DataTableMgr.RepairPickUpTable.GetRepairPickUpDatasWithAffinID(currentAffinId);
-            (RepairPickUpData data, float weight)[] tuples = new (RepairPickUpData data, float weight)[pickUpDatas.Count];
-            for (int i = 0; i < pickUpDatas.Count; ++i)
-            {
-                tuples[i].data = pickUpDatas[i];
-                tuples[i].weight = pickUpDatas[i].RepDrawRate * 0.01f;
-            }
-
-            Dictionary<RepairDummy, int> pickUpCounts = new();
-            var allRepairers = RepairTableTemplate.GetAllRepairDummyTypes();
-
-            // 10번 랜덤 추출 (중복 허용)
-            for (int i = 0; i < 10; i++)
-            {
-                var randPicked = RandomMgr.RandomWithWeights<RepairPickUpData>(tuples);
-                var allReps = RepairTableTemplate.GetAllRepairDummyTypes();
-                RepairDummy selected = new();
-                foreach (var rep in allReps)
-                {
-                    if (rep.ID == randPicked.ItemID)
-                    {
-                        selected = rep;
-                        break;
-                    }
-                }
-                // 이미 등장한 숫자면 +1, 아니면 1로 시작
-                if (pickUpCounts.ContainsKey(selected))
-                {
-                    pickUpCounts[selected]++;
-                }
-                else
-                {
-                    pickUpCounts.Add(selected, 1);
-                }
-            }
-
-            // 각 숫자마다 프리팹 생성
-            foreach (var kvp in pickUpCounts)
-            {
-                // kvp.Key: 숫자, kvp.Value: 횟수
-                var repairerDummy = kvp.Key;
-                var savedRepairer = SaveLoadMgr.GameData.savedRepairerData.GetSavedRepairer(repairerDummy.Grade, repairerDummy.Type);
-                //repairerDummy.Count += 1;
-                savedRepairer.count += 1;
-                savedRepairer.isUnlocked = true;
-
-                CreatePickInfo(repairerDummy.Grade, repairerDummy.Type, kvp.Value);
-            }
-
-            var repairerTicketCount = AccountMgr.ItemCount(ItemType.RepairTicket);
-            repairerTicketCount -= 10;
-            AccountMgr.SetItemCount(ItemType.RepairTicket, repairerTicketCount);
-            if(SaveLoadMgr.GameData.savedShopItemData.AddAffinityExp(AffinityLevelType.Repair, 10) != 0)
-            {
-
-            }
-            SaveLoadMgr.ApplySavedData(SaveDataTypes.Repairer);
-            SaveLoadMgr.CallSaveGameData();
-            currentPickUpType = PickUpType.Repairer;
-            uiMgr.OnOffRandomCrewPickUpInfo();
-        }
-
-        public void SetPickUpTypeCrew()
-        {
-
-        }
-        public void SetPickUpTypeCannon()
-        {
-
-        }
-        public void SetPickUpTypeRepairer()
-        {
-
-        }
-
-        public void OnClickPickUpOne()
-        {
-            switch (currentPickUpType)
-            {
-                case PickUpType.Crew:
-                    RandomPick();
-                    break;
-                case PickUpType.Cannon:
-                    OnClickCannonOnePick();
-                    break;
-                case PickUpType.Repairer:
-                    OnClickReapirOnePick();
-                    break;
-            }
-        }
-        public void OnClickPickUpTen()
-        {
-            switch (currentPickUpType)
-            {
-                case PickUpType.Crew:
-                    RandomTenPick();
-                    break;
-                case PickUpType.Cannon:
-                    OnClickCannonTenPick();
-                    break;
-                case PickUpType.Repairer:
-                    OnClickReapirTenPick();
-                    break;
-            }
-        } // Scope by class TestRandomPick
-
-    } // namespace Root
-}
+} // namespace Root

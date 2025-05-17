@@ -155,6 +155,10 @@ namespace SkyDragonHunter.Gameplay {
             if (m_EquipAnchorInstance.TryGetComponent<LookAtable>(out var lookAtable))
             {
                 lookAtable.LookAt(target);
+                if (!lookAtable.IsTargetLook)
+                {
+                    return;
+                }
             }
 
             if (m_FireCoroutine == null)

@@ -27,7 +27,7 @@ namespace SkyDragonHunter.Gameplay {
         {
             m_Receiver = receiver;
 
-            DrawableMgr.Text(receiver.transform.position, "Freeze!!!!!", Color.blue);
+            DrawableMgr.TopText(receiver.transform.position, "Freeze!!!!!", Color.blue);
             receiver.GetComponent<SpriteRenderer>().color = Color.blue;
             
             m_ComponentsToDisable = receiver.GetComponents<MonoBehaviour>();

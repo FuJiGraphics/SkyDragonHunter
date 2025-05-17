@@ -23,7 +23,7 @@ namespace SkyDragonHunter.Gameplay{
         // Public 메서드
         public void OnEnter(GameObject receiver)
         {
-            DrawableMgr.Text(receiver.transform.position, "Slow!!!!!", Color.yellow);
+            DrawableMgr.TopText(receiver.transform.position, "Slow!!!!!", Color.yellow);
             m_Slowables = receiver.GetComponentsInChildren<ISlowable>();
             foreach (var slowable in m_Slowables)
             {
