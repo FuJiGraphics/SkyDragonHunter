@@ -49,6 +49,8 @@ namespace SkyDragonHunter.UI {
         {
             AddListeners();
             OnClickDungoenType(0);
+            int clampedStage = Mathf.Clamp(SaveLoadMgr.GameData.savedDungeonData.GetClearedStage(m_SelectedDungeonType), 0, 10);
+            OnSelectLevel(clampedStage + 1);
         }
 
         private void ResetUI()
@@ -128,10 +130,11 @@ namespace SkyDragonHunter.UI {
                 sb.Append(i + 1);
                 stageButton.name = sb.ToString();
                 stageButton.SetLevel(m_SelectedDungeonType, i + 1);
+                int captured = i + 1;
                 stageButton.AddListener(() =>
                 {
                     m_SelectedDungeonIndex = stageButton.Level;
-                    OnSelectLevel();
+                    OnSelectLevel(captured);
                 });
                 stageButton.OnSelectStage(0);
                 m_StageList.Add(stageButton);
@@ -141,8 +144,10 @@ namespace SkyDragonHunter.UI {
             m_ScrollViewContent.position = pos;
         }
 
-        private void OnSelectLevel()
+        private void OnSelectLevel(int level)
         {
+            m_SelectedDungeonIndex = level;
+
             foreach (var stage in m_StageList)
             {
                 stage.OnSelectStage(m_SelectedDungeonIndex);
@@ -206,7 +211,8 @@ namespace SkyDragonHunter.UI {
                         for (int i = 0; i < waveData.MonsterIDs.Length; ++i)
                         {
                             var waveMonsterSlot = Instantiate(infoPrefab, monstersContents);
-                            waveMonsterSlot.SetSlot(null, waveData.MonsterCounts[i]);
+                            var monsterIcon = DataTableMgr.MonsterTable.Get(waveData.MonsterIDs[i]).Icon;
+                            waveMonsterSlot.SetSlot(monsterIcon, waveData.MonsterCounts[i]);
                         }
                     }
                     catch
@@ -224,11 +230,13 @@ namespace SkyDragonHunter.UI {
                     break;
                 case DungeonType.Boss:
                     var bossSlot = Instantiate(infoPrefab, monstersContents);
-                    bossSlot.SetSlot(null, 0);
+                    var bossIcon = DataTableMgr.BossTable.Get(dungeonData.BossID).Icon;
+                    bossSlot.SetSlot(bossIcon, 0);
                     break;
                 case DungeonType.SandBag:
                     var sandbagSlot = Instantiate(infoPrefab, monstersContents);
-                    sandbagSlot.SetSlot(null, 0);
+                    var sandbagIcon = DataTableMgr.BossTable.Get(dungeonData.BossID).Icon;
+                    sandbagSlot.SetSlot(sandbagIcon, 0);
                     break;
             }
         } 

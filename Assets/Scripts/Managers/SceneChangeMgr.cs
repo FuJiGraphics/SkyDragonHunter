@@ -1,6 +1,7 @@
 using SkyDragonHunter.Managers;
 using SkyDragonHunter.Utility;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -35,7 +36,8 @@ namespace SkyDragonHunter
                 beforeSceneUnloaded?.Invoke();
                 SaveLoadMgr.ResetLoaded();
             }
-            SceneManager.LoadScene(sceneName, mode);
+            //SceneManager.LoadScene(sceneName, mode);
+            Addressables.LoadSceneAsync(sceneName, mode);
         }
 
         public static void LoadScene(int sceneBuildIndex, LoadSceneMode mode = LoadSceneMode.Single)

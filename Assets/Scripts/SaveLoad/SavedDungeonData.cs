@@ -17,6 +17,18 @@ namespace SkyDragonHunter.SaveLoad
     {
         public List<SavedDungeon> dungeons;
 
+        public int GetClearedStage(DungeonType dungeonType)
+        {
+            foreach(var dungeon in dungeons)
+            {
+                if(dungeon.dungeonType == dungeonType)
+                {
+                    return dungeon.clearedStage;
+                }
+            }
+            return 0;
+        }
+
         public void InitData()
         {
             dungeons = new List<SavedDungeon>();
