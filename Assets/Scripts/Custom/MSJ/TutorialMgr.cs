@@ -80,6 +80,9 @@ namespace SkyDragonHunter
             {
                 AttachClickListeners(); // 수정됨: 클릭 리스너 연결 메서드 호출
                 ApplyStep(); // 첫 스텝 적용
+
+                // 튜토리얼 시작 전 대포 뽑기 권 1개 추가
+                AccountMgr.AddItemCount(ItemType.CanonTicket, 1);
             }
             else
             {

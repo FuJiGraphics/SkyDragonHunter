@@ -5,6 +5,7 @@ using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SkyDragonHunter.SaveLoad
 {
