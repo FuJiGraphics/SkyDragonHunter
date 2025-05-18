@@ -148,6 +148,7 @@ namespace SkyDragonHunter.UI {
             DirtyCanonEffectState(canonDummy, true);
             DirtyCanonEffectState(canonDummy, false);
             DirtyCannonLevelUpNeedCost(canonDummy);
+            SaveLoadMgr.CallSaveGameData();
         }
 
         private void DirtyCanonTitleAndIconState(CanonDummy canonDummy)

@@ -190,7 +190,12 @@ namespace SkyDragonHunter.Managers
             }
             GameData = gameData as GameSaveDataVC;
 
-            ApplySavedData();
+            // TODO: ccj -> 로드 중간에 세이브가 섞이지 않게 막음
+            {
+                GameData.IsLoadedDone = false;
+                ApplySavedData();
+                GameData.IsLoadedDone = true;
+            }
 
             // Debug.LogWarning($"LoadGameData Completed");
 

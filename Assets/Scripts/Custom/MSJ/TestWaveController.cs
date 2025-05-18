@@ -253,7 +253,7 @@ namespace SkyDragonHunter
         {
             if (misson > lastTriedMissionLevel)
             {
-                Debug.Log("들린적이 없는 미션입니다!!");
+                DrawableMgr.Dialog("Alert", "들린적이 없는 미션입니다!!");
                 return;
             }
             else
@@ -263,7 +263,7 @@ namespace SkyDragonHunter
 
             if (zone > lastTriedZonelLevel)
             {
-                Debug.Log("들린적이 없는 존입니다!!");
+                DrawableMgr.Dialog("Alert", "들린적이 없는 지역입니다!!");
                 return;
             }
             else
@@ -272,6 +272,7 @@ namespace SkyDragonHunter
             }
             SaveLoadMgr.CallSaveGameData();
             OnGoSelectCurrentWave();
+            stageData = DataTableMgr.StageTable.Get(currentMissionLevel, currentZonelLevel);
         }
 
         public void OnOffInfiniteMod()
@@ -299,6 +300,11 @@ namespace SkyDragonHunter
         public void OnTestWaveFailedActive()
         {            
             feildPanel.SetActive(true);
+            var panel = feildPanel.GetComponent<UIFailedPanel>();
+            panel.StageName = "스테이지";
+            panel.StageNumber = stageInfo.missionLevel.ToString() + "-" + stageInfo.zoneLevel.ToString();
+            currentMissionLevel = stageInfo.missionLevel;
+            currentZonelLevel = stageInfo.zoneLevel;
             isInfiniteMode = true;
             OnSetCurrentWave();
         }
@@ -308,17 +314,18 @@ namespace SkyDragonHunter
             feildPanel.SetActive(false);
         }
 
-        //public void ReStartAll()
-        //{
-        //    Debug.Log("리스타트.");
-        //    OnDisableClearPanel();
-        //    currentZonelLevel = 1;
-        //    currentMissionLevel = 1;
-        //    currentWaveTime = 0f;
-        //    backGroundIndex = 0;
-        //    OnSetCurrentWave();
-        //    OnTestWaveFailedUnActive();
-        //}
+        public void ReStartAll()
+        {
+            OnDisableClearPanel();
+            currentZonelLevel = 1;
+            currentMissionLevel = 1;
+            currentWaveTime = 0f;
+            backGroundIndex = 0;
+            OnSetCurrentWave();
+            OnTestWaveFailedUnActive();
+            var airshipReset = GameMgr.FindObject<StateResetter>("Airship");
+            airshipReset.ResetAllState();
+        }
 
         // Private 메서드
         private void OnClearMonster()
@@ -637,6 +644,12 @@ namespace SkyDragonHunter
         }
 
         bool m_IsRewardStart = false;
+
+        public void OnClickClearPanel()
+        {
+            OnDisableClearPanel();
+            currentOpenPanel = 100f;
+        }
 
         public void OnDisableClearPanel()
         {

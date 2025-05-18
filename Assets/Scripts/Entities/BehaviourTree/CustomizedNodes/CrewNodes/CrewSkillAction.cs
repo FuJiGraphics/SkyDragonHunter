@@ -45,6 +45,10 @@ namespace SkyDragonHunter
 
                 return NodeStatus.Success;
             }
+
+            if (m_Context.skillExecutor.IsChaseMode)
+                return NodeStatus.Failure;
+
             return NodeStatus.Running;
         }
         protected override void OnEnd()

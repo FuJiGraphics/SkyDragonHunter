@@ -123,7 +123,10 @@ namespace SkyDragonHunter.test
             var crewTicketCount = AccountMgr.ItemCount(ItemType.CrewTicket);
             crewTicketCount -= 1;
             AccountMgr.SetItemCount(ItemType.CrewTicket, crewTicketCount);
-            SaveLoadMgr.CallSaveGameData();
+
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto.TutorialEnd)
+                SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
 
             var rewardPanel = GameMgr.FindObject<UIRandomPickCrewInfo>("UIRandomPickCrewInfo");
@@ -207,7 +210,10 @@ namespace SkyDragonHunter.test
             var crewTicketCount = AccountMgr.ItemCount(ItemType.CrewTicket);
             crewTicketCount -= 10;
             AccountMgr.SetItemCount(ItemType.CrewTicket, crewTicketCount);
-            SaveLoadMgr.CallSaveGameData();
+
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto.TutorialEnd)
+                SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
 
             var ui = GameMgr.FindObject<UIRandomPickCrewInfo>("UIRandomPickCrewInfo");
@@ -249,7 +255,10 @@ namespace SkyDragonHunter.test
                 CreatePickInfo(selectedCrew, 1);
             }
 
-            SaveLoadMgr.CallSaveGameData();
+
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto.TutorialEnd)
+                SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
 
             var rewardPanel = GameMgr.FindObject<UIRandomPickCrewInfo>("UIRandomPickCrewInfo");
@@ -294,7 +303,11 @@ namespace SkyDragonHunter.test
             Sprite icon = CanonTable.GetIcon(ranType);
             var ui = CreatePickInfo(name, 1, icon);
             ui.SetPanel(CanonTable.GetGradeOutline(ranGrade));
-            SaveLoadMgr.CallSaveGameData();
+
+
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto.TutorialEnd)
+                SaveLoadMgr.CallSaveGameData();
             uiMgr.OnOffRandomCrewPickUpInfo();
 
             var rewardPanel = GameMgr.FindObject<UIRandomPickCrewInfo>("UIRandomPickCrewInfo");

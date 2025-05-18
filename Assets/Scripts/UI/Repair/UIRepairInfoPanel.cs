@@ -147,6 +147,7 @@ namespace SkyDragonHunter.UI {
             DirtyRepairEffectState(RepairDummy, true);
             DirtyRepairEffectState(RepairDummy, false);
             DirtyCannonLevelUpNeedCost(RepairDummy);
+            SaveLoadMgr.CallSaveGameData();
         }
 
         private void DirtyRepairTitleAndIconState(RepairDummy RepairDummy)

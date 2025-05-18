@@ -177,6 +177,7 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedCanonInfo.Clear();
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void OnUnequip()
@@ -206,6 +207,7 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedCanonInfo.Clear();
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void OnClickedOtherPanel()

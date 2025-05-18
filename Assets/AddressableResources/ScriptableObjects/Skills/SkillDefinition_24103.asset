@@ -13,16 +13,23 @@ MonoBehaviour:
   m_Name: SkillDefinition_24103
   m_EditorClassIdentifier: 
   ID: 24103
-  skillName: "\uC2EC\uD310"
+  skillActiveName: "\uC2EC\uD310"
+  skillActiveIcon: Judgment
+  skillActiveDesc: "\uC801\uC5D0\uAC8C \uBE60\uB974\uAC8C \uB3CC\uC9C4\uD574 \uAD11\uC5ED
+    \uD53C\uD574\uB97C \uC785\uD799\uB2C8\uB2E4.  "
+  skillPassiveName: "\uBCF5\uC218"
+  skillPassiveIcon: Vengeance
+  skillPassiveDesc: "\uC801\uC5D0\uAC8C \uC785\uD78C \uD53C\uD574\uC758 100%\uB9CC\uD07C
+    \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4.  "
   skillType: 1
   skillEffect: red
   projectileName: 
   projectileSpeed: 0
-  explosionEffect: blood
+  explosionEffect: BloodEffect
   skillArea: 1
-  skillMultiplier: 3
+  skillMultiplier: 5
   skillHitCount: 1
-  skillHitDuration: 1
+  skillHitDuration: 0
   buffID: 0
   buffTarget: 0
   ailmentID: 0

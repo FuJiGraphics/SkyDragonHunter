@@ -23,6 +23,7 @@ namespace SkyDragonHunter.Gameplay {
         // 속성 (Properties)
         public float CooldownProgress => Mathf.Clamp01(m_CooldownTimer / m_SkillCooldown);
         public bool IsCooldownComplete => m_CooldownTimer >= m_SkillCooldown;
+        public bool IsChaseMode => m_Skill.IsInstantCast;
 
         public bool IsAutoExecute
         {

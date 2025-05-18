@@ -15,11 +15,14 @@ namespace SkyDragonHunter.Gameplay {
     {
         // 필드 (Fields)
         [SerializeField] private SkillType m_SkillType;
+        [SerializeField] private bool m_IsInstant = false;
         [SerializeField] private SkillDefinition m_SkillData;
-        [SerializeField] private float m_Lifetime = 5f;
+        [SerializeField] private float m_Lifetime = 5f; 
+        [SerializeField] private GameObject m_HitEffectPrefab;
 
         // 속성 (Properties)
         public SkillDefinition SkillData => m_SkillData;
+        public bool IsInstantCast => m_IsInstant;
         public float LifeTime => m_Lifetime;
         public GameObject Caster { get; set; }
         public GameObject Receiver { get; set; }
@@ -62,6 +65,8 @@ namespace SkyDragonHunter.Gameplay {
             OnHitBefore();
             OnHitEnter(collision.gameObject);
             OnHitEnterEffect(Caster, collision.gameObject);
+
+            PlayHitEffect(collision.GetContact(0).point);
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -90,6 +95,8 @@ namespace SkyDragonHunter.Gameplay {
             OnHitBefore();
             OnHitEnter(collider.gameObject);
             OnHitEnterEffect(Caster, collider.gameObject);
+
+            PlayHitEffect(collider.ClosestPoint(transform.position));
         }
 
         private void OnTriggerStay2D(Collider2D collider)
@@ -187,6 +194,23 @@ namespace SkyDragonHunter.Gameplay {
             foreach (var handler in m_Handlers)
             {
                 handler.OnSkillEnd(Caster);
+            }
+        }
+
+        private void PlayHitEffect(Vector3 position)
+        {
+            if (m_HitEffectPrefab == null)
+                return;
+
+            GameObject effect = Instantiate(m_HitEffectPrefab, position, Quaternion.identity);
+            var ps = effect.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                Destroy(effect, ps.main.duration + ps.main.startLifetime.constantMax);
+            }
+            else
+            {
+                Destroy(effect, 2f); // fallback
             }
         }
 

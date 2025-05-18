@@ -175,6 +175,7 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedRepairInfo.Clear();
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void OnUnequip()
@@ -207,6 +208,7 @@ namespace SkyDragonHunter.UI {
             }
 
             m_ClickedRepairInfo.Clear();
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void OnClickedOtherPanel()

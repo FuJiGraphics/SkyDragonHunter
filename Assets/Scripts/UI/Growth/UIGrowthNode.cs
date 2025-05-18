@@ -252,6 +252,7 @@ namespace SkyDragonHunter.UI{
 
             DirtyUI();
             UpdateLevelUpArrowState();
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void UpdateLevelUpArrowState()

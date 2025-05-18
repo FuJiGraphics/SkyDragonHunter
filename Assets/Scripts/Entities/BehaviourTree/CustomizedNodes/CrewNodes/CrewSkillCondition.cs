@@ -21,6 +21,9 @@ namespace SkyDragonHunter {
             if (!m_Context.skillExecutor.IsAutoExecute)
                 return NodeStatus.Failure;
 
+            if (!m_Context.skillExecutor.IsChaseMode)
+                return NodeStatus.Failure;
+
             if (m_Context.IsTargetRequiredForSkill && !m_Context.IsTargetAllocated)
                 return NodeStatus.Failure;
 

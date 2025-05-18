@@ -26,10 +26,15 @@ namespace SkyDragonHunter.Tables
         {
             { 14101, ResourcesMgr.Load<GameObject>("Eliya") },
             { 14102, ResourcesMgr.Load<GameObject>("Sigmund") },
+            { 14103, ResourcesMgr.Load<GameObject>("Nox") },
+            { 14201, ResourcesMgr.Load<GameObject>("Ranea") },
             { 14202, ResourcesMgr.Load<GameObject>("Isabella") },
             { 14203, ResourcesMgr.Load<GameObject>("Omega") },
             { 14204, ResourcesMgr.Load<GameObject>("Elena") },
+            { 14205, ResourcesMgr.Load<GameObject>("Karna") },
             { 14302, ResourcesMgr.Load<GameObject>("Iris") },
+            { 14303, ResourcesMgr.Load<GameObject>("Carlo") },
+            { 14304, ResourcesMgr.Load<GameObject>("Valentine") },
             // 다른 ID와 프리팹 추가 가능
         };
 

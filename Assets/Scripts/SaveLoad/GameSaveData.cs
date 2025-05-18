@@ -37,6 +37,8 @@ namespace SkyDragonHunter.SaveLoad
         // Temp SaveDatas
         public SavedQuestProgresses savedQuestProgresses;
 
+        public bool IsLoadedDone { get; set; } = false;
+
         public GameSaveDataV0()
         {
             MajorVersion = 0;
@@ -83,6 +85,9 @@ namespace SkyDragonHunter.SaveLoad
 
         public override void UpdateData(SaveDataTypes saveDataType)
         {
+            if (!IsLoadedDone)
+                return;
+
             switch (saveDataType)
             {
                 case SaveDataTypes.Account:

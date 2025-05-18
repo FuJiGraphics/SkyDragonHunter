@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!114 &-5846870160307235085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44bd7dcf298f70c409938cf67f92a1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Id: 14205
+  m_Id: 14303
   m_CrewType: 0
   m_Target: {fileID: 0}
   isMounted: 0
@@ -411,7 +412,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554245367007407822}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 898d19ed766f375419cd4ddee6fba629, type: 3}
   m_Name: 
@@ -421,6 +422,7 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 818110397874735517}
   m_Offset: {x: 0, y: 0}
   m_Scale: {x: 0.3, y: 0.45}
+  m_IsLeftToRight: 1
   m_SyncStats: {fileID: 0}
 --- !u!114 &-8210656881272519520
 MonoBehaviour:
@@ -671,7 +673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7369445710043048750, guid: 1f03898bfa61d9041bd024b7a15bb23b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7369445710043048750, guid: 1f03898bfa61d9041bd024b7a15bb23b, type: 3}
       propertyPath: m_LocalRotation.w

@@ -86,6 +86,7 @@ namespace SkyDragonHunter.Gameplay {
             {
                 Debug.LogError("[CrewEquipmentController]: 알 수 없는 오류. CrewInfoProvider를 찾을 수 없습니다.");
             }
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void UnequipSlot(int slot)
@@ -129,6 +130,7 @@ namespace SkyDragonHunter.Gameplay {
             {
                 Debug.LogError("[CrewEquipmentController]: 알 수 없는 오류. CrewInfoProvider를 찾을 수 없습니다.");
             }
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public void UnequipSlot(GameObject crewInstance)
@@ -141,6 +143,7 @@ namespace SkyDragonHunter.Gameplay {
                     break;
                 }
             }
+            SaveLoadMgr.CallSaveGameData();
         }
 
         public GameObject GetSlotCrew(int slot)

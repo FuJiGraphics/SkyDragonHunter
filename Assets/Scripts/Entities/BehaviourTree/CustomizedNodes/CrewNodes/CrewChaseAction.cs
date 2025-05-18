@@ -18,6 +18,7 @@ namespace SkyDragonHunter {
             if (m_Context.skillExecutor != null &&
                 m_Context.skillExecutor.IsAutoExecute &&
                 m_Context.skillExecutor.SkillType == SkillType.Damage &&
+                !m_Context.skillExecutor.IsChaseMode &&
                 m_Context.skillExecutor.IsCooldownComplete)
                 return NodeStatus.Failure;
             if (!m_Context.IsTargetAllocated)

@@ -107,6 +107,7 @@ namespace SkyDragonHunter.UI
             ArtifactDummy newArtifact = new ArtifactDummy(nextGrade);
             AccountMgr.AddArtifact(newArtifact);
             DrawableMgr.DialogWithArtifactInfo("합성 결과", newArtifact);
+            SaveLoadMgr.CallSaveGameData();
         }
 
         // Private 메서드

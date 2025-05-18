@@ -20,6 +20,8 @@ namespace SkyDragonHunter.SaveLoad
         public DateTime lastOnlineTime;
         public float summonExp;
 
+        private bool m_IsFirstLoaded = false;
+
         public void InitData()
         {
             isGuest = true;

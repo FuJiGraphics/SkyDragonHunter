@@ -77,6 +77,7 @@ namespace SkyDragonHunter.UI {
                     IsMaxLevel = true;
                 AccountMgr.RegisterMasterySocket(this);
                 onLevelupEvents?.Invoke();
+                SaveLoadMgr.CallSaveGameData();
                 return true;
             }
 
@@ -99,6 +100,8 @@ namespace SkyDragonHunter.UI {
             }
             if (m_CurrentCount >= m_MaxLevelCount)
                 IsMaxLevel = true;
+
+            SaveLoadMgr.CallSaveGameData();
             return result;
         }
 

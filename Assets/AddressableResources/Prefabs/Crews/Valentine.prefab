@@ -328,6 +328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!114 &-5846870160307235085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +412,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554245367007407822}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 898d19ed766f375419cd4ddee6fba629, type: 3}
   m_Name: 
@@ -421,6 +422,7 @@ MonoBehaviour:
   m_SpawnAnchor: {fileID: 818110397874735517}
   m_Offset: {x: 0, y: 0}
   m_Scale: {x: 0.3, y: 0.45}
+  m_IsLeftToRight: 1
   m_SyncStats: {fileID: 0}
 --- !u!114 &-8210656881272519520
 MonoBehaviour:
@@ -536,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2d97fb1e814e441bd3272348cce4a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Skill: {fileID: 6604629084805187784, guid: 71be29256a312834b966ad32b435f143, type: 3}
+  m_Skill: {fileID: 6311727942934268204, guid: 3477c916ca2bf1d4bae7e0cbcb020edb, type: 3}
   m_TargetTags:
   - Monster
   - Boss
@@ -679,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475796415609690467, guid: 8e152a9aec172f14fa379c15097ab1e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4475796415609690467, guid: 8e152a9aec172f14fa379c15097ab1e7, type: 3}
       propertyPath: m_LocalRotation.w
