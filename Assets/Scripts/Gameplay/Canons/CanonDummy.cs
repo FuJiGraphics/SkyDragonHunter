@@ -16,7 +16,6 @@ namespace SkyDragonHunter.Gameplay {
         [SerializeField] private CanonGrade m_Grade;
         [SerializeField] private int m_Count = 0;
 
-        private Dictionary<CanonType, Dictionary<CanonGrade, GameObject>> m_InstanceMap = new();
         private bool m_IsUnlock = false;
 
         // 속성 (Properties)
@@ -90,23 +89,7 @@ namespace SkyDragonHunter.Gameplay {
             => m_OnLevelChangedEvents += action;
 
         public GameObject GetCanonInstance()
-        {
-            if (!m_InstanceMap.ContainsKey(Type))
-            {
-                m_InstanceMap.Add(Type, new());
-            }
-
-            if (!m_InstanceMap[Type].ContainsKey(Grade))
-            {
-                GameObject prefab = CanonTable.GetPrefab(Type, Grade);
-                if (prefab != null)
-                {
-                    var instance = GameObject.Instantiate(prefab);
-                    m_InstanceMap[Type].Add(Grade, instance);
-                }
-            }
-            return m_InstanceMap[Type][Grade];
-        }
+            => CanonTable.GetInstance(m_Type, m_Grade);
 
         // Private 메서드
         // Others

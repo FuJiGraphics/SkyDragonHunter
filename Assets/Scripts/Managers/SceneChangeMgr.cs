@@ -35,7 +35,7 @@ namespace SkyDragonHunter
                 beforeSceneUnloaded?.Invoke();
                 SaveLoadMgr.ResetLoaded();
             }
-            SceneManager.LoadScene(sceneName, mode);
+            SceneMgr.LoadScene(sceneName);
         }
 
         public static void LoadScene(int sceneBuildIndex, LoadSceneMode mode = LoadSceneMode.Single)
@@ -46,7 +46,7 @@ namespace SkyDragonHunter
                 beforeSceneUnloaded?.Invoke();
                 SaveLoadMgr.ResetLoaded();
             }
-            SceneManager.LoadScene(sceneBuildIndex, mode);
+            // SceneMgr.LoadScene(sceneName);
         }
 
     } // Scope by class SceneChangeMgr
