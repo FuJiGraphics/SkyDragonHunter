@@ -22,6 +22,8 @@ namespace SkyDragonHunter.SaveLoad
         public LocalSettingSaveDataV0()
         {
             MajorVersion = 0;
+            sfxVolume = 1f;
+            bgmVolume = 1f;
         }
         public override LocalSettingSaveData VersionUp()
         {

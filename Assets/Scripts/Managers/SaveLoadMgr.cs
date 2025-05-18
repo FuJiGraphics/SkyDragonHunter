@@ -302,6 +302,7 @@ namespace SkyDragonHunter.Managers
         {
             // Debug.LogError($"called SaveGameData");
             SaveGameData();
+            SaveLocalSettings();
         }
 
         private static void InitializeGameData()

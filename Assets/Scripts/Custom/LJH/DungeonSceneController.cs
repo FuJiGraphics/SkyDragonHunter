@@ -222,6 +222,7 @@ namespace SkyDragonHunter.UI {
         private void SetDungeon()
         {
             SetAirshipInDungeonDestructableEvent();
+            SoundMgr.Instance.PlayBGM(BGM.Dungeon);
             switch (m_DungeonType)
             {
                 case DungeonType.Wave:
