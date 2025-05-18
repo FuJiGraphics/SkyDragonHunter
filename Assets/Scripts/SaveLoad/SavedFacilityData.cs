@@ -67,7 +67,7 @@ namespace SkyDragonHunter.SaveLoad
                     savedFacility.upgradeStartTime = DateTime.UtcNow;
                 }
                 savedFacility.lastAcquiredTime = facility.lastAccquiredTime;
-                Debug.LogWarning($"facility {facility.type} saved!");
+                //Debug.LogWarning($"facility {facility.type} saved!");
             }
         }
 
@@ -103,7 +103,7 @@ namespace SkyDragonHunter.SaveLoad
                     facility.upgradeStartedTime = DateTime.UtcNow;
                 }
                 facility.lastAccquiredTime = savedFacility.lastAcquiredTime;
-                Debug.LogWarning($"facility {facility.type} applied!");
+                //Debug.LogWarning($"facility {facility.type} applied!");
             }
         }       
 

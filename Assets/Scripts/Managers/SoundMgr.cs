@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace SkyDragonHunter.Managers {
 
@@ -31,7 +33,7 @@ namespace SkyDragonHunter.Managers {
 
     public enum SFX
     {
-        Attack,
+        Click,
         None,
     }
 
@@ -75,11 +77,26 @@ namespace SkyDragonHunter.Managers {
             }
 
             InitSources();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            foreach (var btn in FindObjectsOfType<Button>())
+            {
+                btn.onClick.RemoveListener(CallPlayClickSFX);
+                btn.onClick.AddListener(CallPlayClickSFX);
+            }
+        }
+
+        private void CallPlayClickSFX()
+        {
+            PlaySFX(SFX.Click);
         }
 
         private void InitSources()
         {
-
             bgmSource = gameObject.AddComponent<AudioSource>();
             bgmSource.loop = true;
             sfxSource = gameObject.AddComponent<AudioSource>();
