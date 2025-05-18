@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SkyDragonHunter.Managers {
 
@@ -75,18 +76,26 @@ namespace SkyDragonHunter.Managers {
             }
 
             InitSources();
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void InitSources()
         {
-
             bgmSource = gameObject.AddComponent<AudioSource>();
             bgmSource.loop = true;
             sfxSource = gameObject.AddComponent<AudioSource>();
             sfxSource.loop = false;
 
-            SetVolume(SoundType.BGM, 1f);
-            SetVolume(SoundType.SFX, 1f);
+            var bgmVol = SaveLoadMgr.GameData.savedAccountData.bgmVol;
+            var sfxVol = SaveLoadMgr.GameData.savedAccountData.sfxVol;
+
+            SetVolume(SoundType.BGM, bgmVol);
+            SetVolume(SoundType.SFX, sfxVol);
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            foreach(var)
         }
 
         public void SetVolume(SoundType soundType, float newVol)
@@ -97,10 +106,12 @@ namespace SkyDragonHunter.Managers {
                 case SoundType.BGM:
                     BgmVol = newVol;
                     bgmSource.volume = BgmVol;
+                    SaveLoadMgr.GameData.savedAccountData.bgmVol = BgmVol;
                     break;
                 case SoundType.SFX:
                     SfxVol = newVol;
                     sfxSource.volume = SfxVol;
+                    SaveLoadMgr.GameData.savedAccountData.sfxVol = SfxVol;
                     break;
             }
         } // Scope by class SoundMgr

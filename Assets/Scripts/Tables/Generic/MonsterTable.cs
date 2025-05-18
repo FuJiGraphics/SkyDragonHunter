@@ -1,6 +1,8 @@
 using SkyDragonHunter.Entities;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SkyDragonHunter.Tables
 {    
@@ -19,6 +21,14 @@ namespace SkyDragonHunter.Tables
 
         public int[] AilmentImmunity { get; set; }
 
+
+        public Sprite Icon
+        {
+            get
+            {
+                return ResourcesMgr.Load<Sprite>(ID.ToString());
+            }
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

@@ -20,6 +20,10 @@ namespace SkyDragonHunter.SaveLoad
         public DateTime lastOnlineTime;
         public float summonExp;
 
+        public float bgmVol;
+        public float sfxVol;
+        public bool isDisplayDmg;
+        public int autoPowerSavingMins = 0;
         private bool m_IsFirstLoaded = false;
 
         public void InitData()
@@ -31,6 +35,8 @@ namespace SkyDragonHunter.SaveLoad
             accountCreatedTime = DateTime.UtcNow;
             crystalLevel = 1;
             summonExp = 0;
+            bgmVol = 0.5f;
+            sfxVol = 0.5f;
         }
 
         public void UpdateSavedData()

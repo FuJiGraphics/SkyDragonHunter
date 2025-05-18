@@ -55,7 +55,7 @@ namespace SkyDragonHunter.Test
         public GameObject[] rewardSlots;
         public GameObject[] ShopPanels;
         // TODO: LJH
-        //private 
+        public GameObject settingPanel;
         // ~TODO
         private TestWaveController waveControlerScript;
         private RectTransform rectTransform;
@@ -738,6 +738,10 @@ namespace SkyDragonHunter.Test
             }
         }
 
+        public void OnOpenSettingsPanel()
+        {
+            settingPanel.SetActive(true);
+        }
     } // Scope by class PanelHide
 
 } // namespace Root

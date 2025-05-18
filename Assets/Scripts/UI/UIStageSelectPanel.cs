@@ -145,21 +145,24 @@ namespace SkyDragonHunter {
             for(int i = 0; i < monsterIDs.Length; ++i)
             {
                 var monsterSlot = Instantiate(prefab, monsterContents);
-                monsterSlot.SetSlot(null, waveData.MonsterCounts[i]);
+                var monsterIcon = DataTableMgr.MonsterTable.Get(monsterIDs[i]).Icon;
+                monsterSlot.SetSlot(monsterIcon, waveData.MonsterCounts[i]);
             }
             var bossSlot = Instantiate(prefab, monsterContents);
-            bossSlot.SetSlot(null, 0);
+            var bossIcon = DataTableMgr.BossTable.Get(stageData.ChallengeBossID).Icon;
+            bossSlot.SetSlot(bossIcon, 0);
 
             var goldSlot = Instantiate(prefab, monsterRewardContents);
-            var expSlot = Instantiate(prefab, monsterRewardContents);
             goldSlot.SetSlot(DataTableMgr.ItemTable.Get(ItemType.Coin).Icon, stageData.MonsterGOLD);
-            expSlot.SetSlot(null, stageData.MonsterEXP);
+            var expSlot = Instantiate(prefab, monsterRewardContents);
+            var expIcon = ResourcesMgr.Load<Sprite>("UI_Atlas[UI_Atlas_198]");
+            expSlot.SetSlot(expIcon, stageData.MonsterEXP);
 
             var clearGoldSlot = Instantiate(prefab, clearRewardContents);
+            clearGoldSlot.SetSlot(DataTableMgr.ItemTable.Get(ItemType.Coin).Icon, stageData.ClearRewardGold);
             var clearExpSlot = Instantiate(prefab, clearRewardContents);
+            clearExpSlot.SetSlot(expIcon, stageData.ClearRewardEXP);
             var clearDiaSlot = Instantiate(prefab, clearRewardContents);
-            goldSlot.SetSlot(DataTableMgr.ItemTable.Get(ItemType.Coin).Icon, stageData.ClearRewardGold);
-            clearExpSlot.SetSlot(null, stageData.ClearRewardEXP);
             clearDiaSlot.SetSlot(DataTableMgr.ItemTable.Get(ItemType.Diamond).Icon, stageData.ClearRewardDiamond);
 
             var contentsRect = clearRewardContents.GetComponent<RectTransform>();
