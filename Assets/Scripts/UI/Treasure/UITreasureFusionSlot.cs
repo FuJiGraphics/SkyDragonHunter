@@ -1,4 +1,5 @@
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using SkyDragonHunter.Tables;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,8 +53,7 @@ namespace SkyDragonHunter.UI
             var slot = UITreasureSlot.FindSlot(ArtifactDummy);
             slot.RemoveSelectedState();
             slot.SetClickedIcon(false);
-            m_Icon.enabled = false;
-            m_Icon.sprite = null;
+            m_Icon.sprite = ResourcesMgr.EmptySprite;
             ArtifactDummy = null;
             if (IsAllEmpty())
             {

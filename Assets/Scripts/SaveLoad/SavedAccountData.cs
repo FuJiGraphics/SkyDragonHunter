@@ -37,7 +37,11 @@ namespace SkyDragonHunter.SaveLoad
             crystalLevel = AccountMgr.Crystal.CurrentLevel;
             crystalLevelId = AccountMgr.Crystal.CurrLevelId;
             lastOnlineTime = DateTime.UtcNow;
-            summonExp = GameMgr.FindObject<UISummonPanel>("UISummonPanel").Exp;
+            var summonUi = GameMgr.FindObject<UISummonPanel>("UISummonPanel");
+            if (summonUi != null)
+            {
+                summonExp = summonUi.Exp;
+            }
         }
 
         public void ApplySavedData()
@@ -53,7 +57,11 @@ namespace SkyDragonHunter.SaveLoad
                 inGameMainFramePanel.AtkText = AccountMgr.Crystal.IncreaseDamage.ToUnit();
                 inGameMainFramePanel.HpText = AccountMgr.Crystal.IncreaseHealth.ToUnit();
             }
-            GameMgr.FindObject<UISummonPanel>("UISummonPanel").Exp = summonExp;
+            var summonUi = GameMgr.FindObject<UISummonPanel>("UISummonPanel");
+            if (summonUi != null)
+            {
+                summonUi.Exp = summonExp;
+            }
         }
 
     } // Scope by class SavedAccountData

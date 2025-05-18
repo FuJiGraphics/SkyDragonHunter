@@ -109,6 +109,8 @@ namespace SkyDragonHunter.Managers
             {
                 Debug.LogError($"[DrawableMgr]: {s_PrevGenDialogInstance}에서 UIAlertDialog를 찾을 수 없습니다.");
             }
+
+            GameObject.Destroy(s_PrevGenDialogInstance, 8f);
         }
 
         // Private 메서드

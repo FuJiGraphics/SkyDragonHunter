@@ -41,7 +41,6 @@ namespace SkyDragonHunter.UI {
         {
             m_Button = GetComponent<Button>();
             m_Icon = GetComponent<Image>();
-            m_Text = GetComponentInChildren<TextMeshProUGUI>(true);
             m_Button.onClick.AddListener(() => { onClickedEvent?.Invoke(); } );
         }
 

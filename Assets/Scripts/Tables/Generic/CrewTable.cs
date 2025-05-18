@@ -72,7 +72,7 @@ namespace SkyDragonHunter.Tables
             return sb.ToString();
         }
 
-        static private Dictionary<int, GameObject> m_InstanceMap = new();
+        private Dictionary<int, GameObject> m_InstanceMap = new();
 
         public GameObject GetInstance()
         {

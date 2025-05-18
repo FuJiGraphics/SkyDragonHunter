@@ -60,8 +60,6 @@ namespace SkyDragonHunter.Database {
         private static readonly string s_CanonPrefabPath = "Prefabs/Canons/";
         private static readonly string s_CanonPrefabFileName = "Canon";
 
-        static private Dictionary<CanonType, Dictionary<CanonGrade, GameObject>> s_InstanceMap = new();
-
         #region Resources Only
         // private static Dictionary<CanonType, Dictionary<CanonGrade, GameObject>> s_Cache;
         #endregion
@@ -136,24 +134,9 @@ namespace SkyDragonHunter.Database {
                     allCanonDummys.Add(newCanonDummy);
                 }
             }
+
             return allCanonDummys.ToArray();
         }
-
-        public static Prefab GetInstance(CanonType type, CanonGrade grade)
-        {
-            if (!s_InstanceMap.ContainsKey(type))
-            {
-                s_InstanceMap.Add(type, new());
-            }
-
-            if (!s_InstanceMap[type].ContainsKey(grade))
-            {
-                s_InstanceMap[type].Add(grade, GetPrefab(type, grade));
-            }
-
-            return s_InstanceMap[type][grade];
-        }
-
 
         // Private ¸Þ¼­µå
         // Others
