@@ -6,7 +6,6 @@ using SkyDragonHunter.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -154,13 +153,6 @@ namespace SkyDragonHunter.Test
                     waveControlerScript.tutorialController.OnSeventhActive();
                 }
             }
-        }
-
-        public void OnTreasureCodexPanel()
-        {
-            AllPanelsOff();
-            SetTreasureCodexPanel();
-            panelBackGroundImage.SetActive(false);
         }
 
         public void OnOffAddToCodexInfo()

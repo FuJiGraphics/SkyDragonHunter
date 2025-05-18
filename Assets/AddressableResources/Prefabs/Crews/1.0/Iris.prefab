@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 8704439894108480857}
   - component: {fileID: 5071079570537247195}
   - component: {fileID: 6991635358427696570}
+  - component: {fileID: -1709490103922524204}
   m_Layer: 0
   m_Name: Iris
   m_TagString: Crew
@@ -556,6 +557,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7cfaf27a6eed2d4b9f8c7f6e540398b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1709490103922524204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3
 --- !u!1 &4740260921299608317
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4389738471416677928}
   - component: {fileID: -6240420464492288053}
   - component: {fileID: 4868943546017827912}
+  - component: {fileID: -6817196147922038541}
   m_Layer: 0
   m_Name: Valentine
   m_TagString: Crew
@@ -558,6 +559,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7cfaf27a6eed2d4b9f8c7f6e540398b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6817196147922038541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554245367007407822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3
 --- !u!1 &2833702163455001388
 GameObject:
   m_ObjectHideFlags: 0

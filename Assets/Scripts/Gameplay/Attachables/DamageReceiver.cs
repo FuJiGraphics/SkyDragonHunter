@@ -29,6 +29,11 @@ namespace SkyDragonHunter {
                 return;
             //// ~TODO
 
+            if (TryGetComponent<DamageBlink>(out var blinkComp))
+            {
+                blinkComp.OnHit();
+            }
+
             // TODO: AlphaUnit Convert
             if (m_Stats.Shield >= damage)
             {

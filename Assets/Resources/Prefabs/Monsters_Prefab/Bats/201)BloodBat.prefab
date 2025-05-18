@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 7747133519061056844}
   - component: {fileID: 6034097482187032024}
   - component: {fileID: -4054143148639785874}
+  - component: {fileID: 3511049452097312038}
   m_Layer: 0
   m_Name: 201)BloodBat
   m_TagString: Monster
@@ -403,3 +404,17 @@ MonoBehaviour:
   m_Scale: {x: 0.3, y: 0.45}
   m_IsLeftToRight: 0
   m_SyncStats: {fileID: 0}
+--- !u!114 &3511049452097312038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4762154880935020625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3

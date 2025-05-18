@@ -18,14 +18,19 @@ public class UISettingPanel : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button outerPanelArea;
 
+    public bool IsDrawDamage => damageDisplayToggle.isOn;
+
     private void Awake()
     {
         AddListeners();
     }
 
-    private void OnEnable()
+    public void InitSettingDisplay()
     {
-        InitSettingDisplay();
+        bgmSlider.value = SoundMgr.Instance.BgmVol;
+        sfxSlider.value = SoundMgr.Instance.SfxVol;
+        damageDisplayToggle.isOn = true;
+        autoPowerSavingToggles[0].isOn = true;
         OnToggledDamageDisplay(SaveLoadMgr.GameData.savedAccountData.isDisplayDmg);
     }
 
@@ -41,13 +46,6 @@ public class UISettingPanel : MonoBehaviour
         dataInitButton.onClick.AddListener(OnClickedDataInit);
         closeButton.onClick.AddListener(OnClickedClose);
         outerPanelArea.onClick.AddListener(OnClickedClose);
-    }
-    private void InitSettingDisplay()
-    {
-        bgmSlider.value = SoundMgr.Instance.BgmVol;
-        sfxSlider.value = SoundMgr.Instance.SfxVol;
-        damageDisplayToggle.isOn = true;
-        autoPowerSavingToggles[0].isOn = true;
     }
     
     private void OnBgmSliderChange(float val)

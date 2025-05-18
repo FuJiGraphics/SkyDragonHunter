@@ -69,6 +69,10 @@ namespace SkyDragonHunter.Managers
 
         public static void Text(Vector2 position, string str)
         {
+            var uiSetting = GameMgr.FindObject<UISettingPanel>("UISettingPanel");
+            if (uiSetting != null && !uiSetting.IsDrawDamage)
+                return;
+
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
             damageMeterUI.GetComponent<UIDamageMeter>().SetText(str, Color.white);
@@ -77,6 +81,10 @@ namespace SkyDragonHunter.Managers
 
         public static void Text(Vector2 position, string str, Color color)
         {
+            var uiSetting = GameMgr.FindObject<UISettingPanel>("UISettingPanel");
+            if (uiSetting != null && !uiSetting.IsDrawDamage)
+                return;
+
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
             var meter = damageMeterUI.GetComponent<UIDamageMeter>();
@@ -86,6 +94,10 @@ namespace SkyDragonHunter.Managers
 
         public static void TopText(Vector2 position, string str, Color color)
         {
+            var uiSetting = GameMgr.FindObject<UISettingPanel>("UISettingPanel");
+            if (uiSetting != null && !uiSetting.IsDrawDamage)
+                return;
+
             GameObject damageMeterUI = GameObject.Instantiate(s_UIDamageMeterPrefab);
             damageMeterUI.transform.position = position;
             var meter = damageMeterUI.GetComponent<UIDamageMeter>();

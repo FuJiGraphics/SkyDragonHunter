@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: -8301473335462679127}
   - component: {fileID: 5020416940392964433}
   - component: {fileID: -442273163525291652}
+  - component: {fileID: 562674168965159450}
   m_Layer: 0
   m_Name: 403)BrownLight
   m_TagString: Monster
@@ -403,3 +404,17 @@ MonoBehaviour:
   m_Scale: {x: 0.3, y: 0.45}
   m_IsLeftToRight: 0
   m_SyncStats: {fileID: 0}
+--- !u!114 &562674168965159450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901002408819274173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3
