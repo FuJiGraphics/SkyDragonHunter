@@ -1,5 +1,6 @@
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
+using SkyDragonHunter.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -138,7 +139,10 @@ namespace SkyDragonHunter.UI {
         }
 
         public void OnAutoButton()
-            => m_IsAllAutoExecute = !m_IsAllAutoExecute;
+        {
+            m_IsAllAutoExecute = !m_IsAllAutoExecute;
+            GameMgr.FindObject("AutoSkillRunEffect").SetActive(m_IsAllAutoExecute);
+        }
 
         public bool Validate(int index)
             => m_ButtonSlots != null && index >= 0 && index < m_ButtonSlots.Length;

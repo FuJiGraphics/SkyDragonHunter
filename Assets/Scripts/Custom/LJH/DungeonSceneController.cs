@@ -4,9 +4,7 @@ using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
 using SkyDragonHunter.Tables;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Unity.VisualScripting;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 namespace SkyDragonHunter.UI {
