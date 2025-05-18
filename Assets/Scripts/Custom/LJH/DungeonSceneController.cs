@@ -301,8 +301,7 @@ namespace SkyDragonHunter.UI {
 
         private void SetWaveDungeon()
         {
-            var dungeonData = DataTableMgr.DungeonTable.GetCurrentDungeonData();
-                        
+            var dungeonData = DataTableMgr.DungeonTable.GetCurrentDungeonData();                        
 
             atkMultiplier = dungeonData.MultiplierATK;
             hpMultiplier = dungeonData.MultiplierHP;
@@ -389,7 +388,6 @@ namespace SkyDragonHunter.UI {
             m_UIMgr.InfoPanel.SetDungeonProgress(m_Dungeon2KillCount, m_Dungeon2KillGoal);
             if (m_Dungeon2KillCount >= m_Dungeon2KillGoal && !(m_Failed || m_Cleared))
             {
-                AccountMgr.Diamond += 500;
                 OnStageClear();
             }
         }
