@@ -19,7 +19,6 @@ namespace SkyDragonHunter.Test
         public GameObject codexTreasureInfo;
         public GameObject rankTab;
         public GameObject addToCodexInfo;
-        public GameObject treasureCodexPanel;
         public GameObject treasureEquipmentSlot;
         public GameObject treasureFusion;
         public GameObject treasureInfo;
@@ -159,7 +158,6 @@ namespace SkyDragonHunter.Test
         public void OnTreasureCodexPanel()
         {
             AllPanelsOff();
-            treasureCodexPanel.SetActive(true);
             SetTreasureCodexPanel();
             panelBackGroundImage.SetActive(false);
         }
@@ -495,7 +493,7 @@ namespace SkyDragonHunter.Test
             fortressPickPanels[1].SetActive(false);
             fortressPickPanels[2].SetActive(false);
             fortressPickPanels[4].SetActive(false);
-            panelBackGroundImage.SetActive(true);
+            panelBackGroundImage.SetActive(false);
         }
         public void OnFortressPickPanel4()
         {
@@ -692,7 +690,6 @@ namespace SkyDragonHunter.Test
             masteryPanelPicks.SetActive(false);
             facilityPanelPanel.SetActive(false);
             inventoryPanel.SetActive(false);
-            treasureCodexPanel.SetActive(false);
             dungeonEntryPanel.SetActive(false);
             isHideDungeonEntryPanel = true;
             foreach (var panel in pickPanels)
