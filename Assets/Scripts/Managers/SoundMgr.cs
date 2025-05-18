@@ -95,7 +95,7 @@ namespace SkyDragonHunter.Managers {
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            foreach(var)
+            // foreach(var)
         }
 
         public void SetVolume(SoundType soundType, float newVol)
