@@ -78,6 +78,7 @@ namespace SkyDragonHunter.UI {
             {
                 m_Text.text = m_SocketInstance.SlotCountString;
                 onLevelup?.Invoke();
+                SaveLoadMgr.CallSaveGameData();
             }
         }
 
