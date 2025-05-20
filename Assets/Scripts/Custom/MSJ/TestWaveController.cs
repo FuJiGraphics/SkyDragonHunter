@@ -609,7 +609,12 @@ namespace SkyDragonHunter
                 isBossCleared = true;
                 bossSlider.value = 0;
                 AccountMgr.Diamond += 200;
-                AccountMgr.AddArtifact(new ArtifactDummy(ArtifactGrade.Rare));
+
+                // 보물 개수 제한 30개
+                if (AccountMgr.ArtifactCount <= 30)
+                {
+                    AccountMgr.AddArtifact(new ArtifactDummy(ArtifactGrade.Rare));
+                }
 
             });
             currentEnemy.Add(spawned.gameObject);

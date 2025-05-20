@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: -1657029501723380685}
   - component: {fileID: 3908696824059641132}
   - component: {fileID: 6328773287872825225}
+  - component: {fileID: 4499257577886827743}
   m_Layer: 0
   m_Name: 4102)DummySandbag
   m_TagString: Monster
@@ -238,6 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!58 &1679395427575130513
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -331,3 +333,17 @@ MonoBehaviour:
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
   m_SkillExecutor: {fileID: 0}
+--- !u!114 &4499257577886827743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7899349636707251207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3

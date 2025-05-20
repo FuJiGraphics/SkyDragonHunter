@@ -1,4 +1,5 @@
 using NPOI.SS.Formula.Functions;
+using SixLabors.ImageSharp;
 using SkyDragonHunter.Database;
 using SkyDragonHunter.Entities;
 using SkyDragonHunter.Gameplay;
@@ -269,6 +270,8 @@ namespace SkyDragonHunter.Managers
             // 보물 UI에 등록하기
             s_TreasureEquipmentPanel?.AddSlot(dummy);
         }
+
+        public static int ArtifactCount => s_HeldArtifacts.Count;
 
         public static void RemoveArtifact(ArtifactDummy dummy, bool updateUI = true)
         {

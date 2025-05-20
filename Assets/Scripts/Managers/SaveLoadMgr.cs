@@ -306,6 +306,10 @@ namespace SkyDragonHunter.Managers
         public static void CallSaveGameData()
         {
             // Debug.LogError($"called SaveGameData");
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (!tuto.TutorialEnd)
+                return;
+
             SaveGameData();
             SaveLocalSettings();
         }

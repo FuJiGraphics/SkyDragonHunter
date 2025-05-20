@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: -7013480281994304631}
   - component: {fileID: 9194605681371685505}
   - component: {fileID: 3601781092697712762}
+  - component: {fileID: -4503427914802505251}
   m_Layer: 0
   m_Name: 4003)GoldenDragon
   m_TagString: Monster
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!114 &-2012039165939006709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,3 +399,17 @@ MonoBehaviour:
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
   m_SkillExecutor: {fileID: 0}
+--- !u!114 &-4503427914802505251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6653714433895794889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3

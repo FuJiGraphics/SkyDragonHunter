@@ -9,7 +9,9 @@ namespace SkyDragonHunter.Gameplay {
         // Protected 메서드
         protected ActionNode(T context) : base(context)
         {
+
         }
+
     } // Scope by class ActionNode
 
 } // namespace Root

@@ -297,6 +297,11 @@ namespace SkyDragonHunter.test
                             (CanonGrade.Unique,  0.04f),
                             (CanonGrade.Legend,  0.01f));
 
+            if (!SaveLoadMgr.GameData.savedTutorialData.tutorialCleared)
+            {
+                ranType = CanonType.Normal;
+                ranGrade = CanonGrade.Normal;
+            }
             AccountMgr.AddCannonCount(ranType, ranGrade, 1);
 
             string name = ranType.GetDescription() + "/" + ranGrade.GetDescription();

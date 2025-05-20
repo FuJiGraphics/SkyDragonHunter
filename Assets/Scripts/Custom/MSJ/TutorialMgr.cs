@@ -58,6 +58,8 @@ namespace SkyDragonHunter
                 if (m_TutorialEnd)
                 {
                    m_TutorialEvents?.Invoke();
+                   allButtonsBlockPanel.SetActive(false);
+                    SaveLoadMgr.CallSaveGameData();
                 }
             }
         } // 튜토리얼 종료 여부
@@ -138,8 +140,7 @@ namespace SkyDragonHunter
             if (step <= 138)
             {
                 // TODO: 여길 왜 true로 바꾸지..
-                // allButtonsBlockPanel.SetActive(true);
-                allButtonsBlockPanel.SetActive(false);
+                allButtonsBlockPanel.SetActive(true);
             }
             
             tutorialPanel.SetActive(false);

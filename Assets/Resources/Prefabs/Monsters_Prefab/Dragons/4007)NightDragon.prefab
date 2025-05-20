@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: -4044457548078806759}
   - component: {fileID: 5596839326743360736}
   - component: {fileID: -447182893902236232}
+  - component: {fileID: -6556827819319451103}
   m_Layer: 0
   m_Name: 4007)NightDragon
   m_TagString: Monster
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!114 &3871633319436850204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,3 +399,17 @@ MonoBehaviour:
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
   m_SkillExecutor: {fileID: 0}
+--- !u!114 &-6556827819319451103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2944457378029283123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3

@@ -1,11 +1,8 @@
-using SkyDragonHunter.Gameplay;
 using SkyDragonHunter.Interfaces;
-using SkyDragonHunter.Managers;
 using SkyDragonHunter.Structs;
-using System.Numerics;
 using UnityEngine;
 
-namespace SkyDragonHunter {
+namespace SkyDragonHunter.Gameplay {
 
     public class DamageReceiver : MonoBehaviour
     {

@@ -29,7 +29,7 @@ namespace SkyDragonHunter.Managers
         public static void LoadScene(string sceneName)
         {
             nextScene = sceneName;
-            SceneManager.LoadScene("LoadingScene");
+            SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
         }
 
         private void Start()

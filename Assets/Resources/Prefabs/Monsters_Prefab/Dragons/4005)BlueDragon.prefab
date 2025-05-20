@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: -2151155994008334504}
   - component: {fileID: 3604173892875270878}
   - component: {fileID: 5712814218127548702}
+  - component: {fileID: -8588646220185238637}
   m_Layer: 0
   m_Name: 4005)BlueDragon
   m_TagString: Monster
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkipDistanceCheck: 1
   isSkipCooldownCheck: 1
+  fireOffset: {x: 0, y: 0}
 --- !u!114 &170129926737549280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,3 +399,17 @@ MonoBehaviour:
   m_BuffEffectAnchor: {fileID: 0}
   m_Status: {fileID: 0}
   m_SkillExecutor: {fileID: 0}
+--- !u!114 &-8588646220185238637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208459174989581692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76de85be48d917244876d2baf143414b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BlinkDuration: 0.02
+  m_BlinkCount: 3
