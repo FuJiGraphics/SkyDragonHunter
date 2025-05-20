@@ -307,7 +307,7 @@ namespace SkyDragonHunter.Managers
         {
             // Debug.LogError($"called SaveGameData");
             var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
-            if (!tuto.TutorialEnd)
+            if (tuto != null && !tuto.TutorialEnd)
                 return;
 
             SaveGameData();

@@ -3,6 +3,7 @@ using SkyDragonHunter.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SkyDragonHunter.UI {
 
@@ -11,6 +12,7 @@ namespace SkyDragonHunter.UI {
         // 필드 (Fields)
         [SerializeField] private GameObject[] m_DeleteList;
         [SerializeField] private GameObject[] m_DisableList;
+        [SerializeField] private Button[] m_DeleteEvents;
 
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
@@ -29,6 +31,10 @@ namespace SkyDragonHunter.UI {
         // Public 메서드
         public void Delete()
         {
+            foreach (var button in m_DeleteEvents)
+            {
+                button.onClick?.RemoveAllListeners();
+            }
             foreach (var node in m_DeleteList)
             {
                 GameObject.Destroy(node, 1f);

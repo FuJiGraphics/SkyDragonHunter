@@ -19,12 +19,20 @@ namespace SkyDragonHunter.SaveLoad
 
         public void UpdateSavedData()
         {
-
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto != null)
+            {
+                tutorialCleared = GameMgr.FindObject<TutorialMgr>("TutorialMgr").TutorialEnd;
+            }
         }
 
         public void ApplySavedData()
         {
-
+            var tuto = GameMgr.FindObject<TutorialMgr>("TutorialMgr");
+            if (tuto != null)
+            {
+                GameMgr.FindObject<TutorialMgr>("TutorialMgr").TutorialEnd = tutorialCleared;
+            }
         }
 
     } // Scope by class SavedItemData

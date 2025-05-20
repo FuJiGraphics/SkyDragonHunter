@@ -1,43 +1,19 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace SkyDragonHunter.Managers
 {
-    public class CoroutineHost : MonoBehaviour
-    {
-        private static CoroutineHost _instance;
-
-        public static CoroutineHost Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<CoroutineHost>();
-                    if (_instance == null)
-                    {
-                        var go = new GameObject("[CoroutineHost]");
-                        _instance = go.AddComponent<CoroutineHost>();
-                        DontDestroyOnLoad(go);
-                    }
-                }
-                return _instance;
-            }
-        }
-    }
-
     public class SceneMgr : MonoBehaviour
     {
-        static string nextScene = "GameScene";
-        static string currentScene;
-        static bool isFirstStart = true;
+        static string s_NextScene = "GameScene";
+        static bool s_IsFirstStart = true;
+        private bool m_IsStartedScene = false;
 
         [SerializeField] private TextMeshProUGUI textUI;
         [SerializeField] private Slider progressBar;
@@ -52,145 +28,62 @@ namespace SkyDragonHunter.Managers
         [SerializeField] private string sanctumLabel = "sanctum_pixel";
         [SerializeField] private string scenesLabel = "Scenes";
 
-        private float m_StartDelay = 1f;
-
         public static void LoadScene(string sceneName)
         {
-            nextScene = sceneName;
-            currentScene = SceneManager.GetActiveScene().name;
-            CoroutineHost.Instance.StartCoroutine(LoadLoadingSceneAsync());
-        }
-
-        public void StartScene(string sceneName)
-        {
-            nextScene = sceneName;
-            currentScene = SceneManager.GetActiveScene().name;
-            isFirstStart = false;
-            StartCoroutine(DelayedStart());
-        }
-
-        private static IEnumerator LoadLoadingSceneAsync()
-        {
-            AsyncOperation handle = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
-            while (!handle.isDone)
-            {
-                yield return null;
-            }
-            if (currentScene != "LoadingScene")
-            {
-                SceneManager.UnloadSceneAsync(currentScene);
-            }
+            s_NextScene = sceneName;
+            SceneManager.LoadScene("LoadingScene");
         }
 
         private void Start()
         {
-            if (!isFirstStart)
+            if (!s_IsFirstStart)
             {
-                StartCoroutine(DelayedStart());
+                StartCoroutine(this.LoadSceneProcess());
             }
         }
-
-        private IEnumerator DelayedStart()
+        
+        public void StartScene(string sceneName)
         {
-            isFirstStart = false;
-            yield return null;
+            if (m_IsStartedScene)
+                return;
 
-            textUI.text = "Preparing to Load...";
-            progressBar.value = 0;
-
-            yield return new WaitForSecondsRealtime(0.5f);
-
-            var initHandle = Addressables.InitializeAsync();
-            while (!initHandle.IsDone)
-            {
-                textUI.text = $"Initializing... {(initHandle.PercentComplete * 100f):F0}%";
-                progressBar.value = initHandle.PercentComplete;
-                yield return null;
-            }
-
-            yield return new WaitForSecondsRealtime(m_StartDelay);
-            StartCoroutine(LoadSceneProcess());
+            m_IsStartedScene = true;
+            StartCoroutine(this.LoadSceneProcess());
         }
 
         private IEnumerator Loading(string label, string title, string downText)
         {
             textUI.text = title;
-            var sizeHandle = Addressables.GetDownloadSizeAsync(label);
-            yield return sizeHandle;
+            var fontSizeHandle = Addressables.GetDownloadSizeAsync(label);
+            yield return fontSizeHandle;
 
-            long totalBytes = sizeHandle.Result;
-            if (totalBytes > 0)
+            long fontTotalBytes = fontSizeHandle.Result;
+            if (fontTotalBytes > 0)
             {
-                var downloadHandle = Addressables.DownloadDependenciesAsync(label);
-                while (!downloadHandle.IsDone)
+                var fontDownloadHandle = Addressables.DownloadDependenciesAsync(label);
+                while (!fontDownloadHandle.IsDone)
                 {
-                    float percent = downloadHandle.PercentComplete;
-                    float downloadedKB = percent * totalBytes / 1024f;
-                    float totalKB = totalBytes / 1024f;
+                    float percent = fontDownloadHandle.PercentComplete;
+                    float downloadedKB = percent * fontTotalBytes / 1024f;
+                    float totalKB = fontTotalBytes / 1024f;
 
                     textUI.text = downText + $" {downloadedKB:F1} KB / {totalKB:F1} KB";
                     progressBar.value = percent;
                     yield return null;
                 }
-                Addressables.Release(downloadHandle);
+                Addressables.Release(fontDownloadHandle);
             }
         }
 
-        private IEnumerator LoadAllLabelsInParallel()
+        private IEnumerator LoadMemory<T>(string label)
+            where T : UnityEngine.Object
         {
-            var labels = new[]
+            var fontHandle = Addressables.LoadAssetAsync<T>(fontLabel);
+            yield return fontHandle;
+
+            if (fontHandle.Status == AsyncOperationStatus.Succeeded)
             {
-                fontLabel, prefabLabel, soLabel, textureLabel,
-                soundLabel, animLabel, matLabel, shaderLabel,
-                sanctumLabel, scenesLabel
-            };
-
-            List<AsyncOperationHandle> downloadHandles = new();
-
-            foreach (string label in labels)
-            {
-                var sizeHandle = Addressables.GetDownloadSizeAsync(label);
-                yield return sizeHandle;
-
-                if (sizeHandle.Result > 0)
-                {
-                    var handle = Addressables.DownloadDependenciesAsync(label);
-                    downloadHandles.Add(handle);
-                }
-            }
-
-            while (!downloadHandles.All(h => h.IsDone))
-            {
-                float total = downloadHandles.Count;
-                float progress = downloadHandles.Sum(h => h.PercentComplete) / total;
-                progressBar.value = progress;
-                textUI.text = $"Downloading... {(progress * 100f):F0}%";
-                yield return null;
-            }
-
-            foreach (var handle in downloadHandles)
-            {
-                Addressables.Release(handle);
-            }
-        }
-
-        private IEnumerator LoadSceneProcess()
-        {
-            DataTableMgr.InitOnSceneLoaded(nextScene);
-
-            yield return LoadAllLabelsInParallel();
-            yield return LoadTargetScene();
-        }
-
-        private IEnumerator LoadMemory<T>(string label) where T : UnityEngine.Object
-        {
-            var handle = Addressables.LoadAssetAsync<T>(label);
-            yield return handle;
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                T loaded = handle.Result;
-                // You can store/use loaded if needed
+                T loadedFont = fontHandle.Result;
             }
             else
             {
@@ -198,23 +91,37 @@ namespace SkyDragonHunter.Managers
             }
         }
 
-        private IEnumerator LoadTargetScene()
+        private IEnumerator LoadSceneProcess()
         {
-            var loadHandle = Addressables.LoadSceneAsync(nextScene, LoadSceneMode.Single, false);
+            s_IsFirstStart = false;
 
-            float lastProgress = -1f;
+            DataTableMgr.InitOnSceneLoaded(s_NextScene);
+            // GameMgr.InitializeAddressablesIfNeeded();
+            yield return Addressables.InitializeAsync();
+            yield return Loading(fontLabel, "Loading Fonts...", "Downloading Fonts...");
+            yield return Loading(prefabLabel, "Loading Prefabs...", "Downloading Prefabs...");
+            yield return Loading(soLabel, "Loading Scriptable Objects...", "Downloading Scriptable Objects...");
+            yield return Loading(textureLabel, "Loading Textures...", "Downloading Textures...");
+            yield return Loading(soundLabel, "Loading Sounds...", "Downloading Sounds...");
+            yield return Loading(animLabel, "Loading Animations...", "Downloading Animations...");
+            yield return Loading(matLabel, "Loading Materials...", "Downloading Materials...");
+            yield return Loading(shaderLabel, "Loading Shaders...", "Downloading Shaders...");
+            yield return Loading(sanctumLabel, "Loading Resources...", "Downloading Resources...");
+            yield return Loading(scenesLabel, "Loading Scenes...", "Downloading Scenes...");
+
+            // Load scene
+            AsyncOperationHandle<SceneInstance> loadHandle =
+                Addressables.LoadSceneAsync(s_NextScene, LoadSceneMode.Single, activateOnLoad: false);
+
             while (!loadHandle.IsDone && loadHandle.PercentComplete < 0.9f)
             {
-                float progress = loadHandle.PercentComplete;
-                if (Mathf.Abs(progress - lastProgress) > 0.01f)
-                {
-                    progressBar.value = progress;
-                    textUI.text = $"Loading Scene {(progress * 100f):F0}%";
-                    lastProgress = progress;
-                }
+                float percent = loadHandle.PercentComplete;
+                textUI.text = $"Loading Scene {percent * 100f:F0}%";
+                progressBar.value = percent;
                 yield return null;
             }
 
+            // Smooth finish to 100%
             float timer = 0f;
             while (timer < 1f)
             {
@@ -236,6 +143,8 @@ namespace SkyDragonHunter.Managers
                 Debug.LogError($"씬 로드 실패: {loadHandle.OperationException}");
                 textUI.text = "Failed!";
             }
+
+            m_IsStartedScene = false;
         }
     }
 }
