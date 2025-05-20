@@ -594,6 +594,7 @@ namespace SkyDragonHunter
             bossTimer = c_InitialBossTimer;
             waveSlider.gameObject.SetActive(false);
             bossSlider.gameObject.SetActive(true);
+            bossTimerSlider.gameObject.SetActive(true);
             RestoreBossSliderColors();
 
             int bossId = stageData.ChallengeBossID;
