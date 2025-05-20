@@ -11,6 +11,7 @@ namespace SkyDragonHunter.Gameplay
         [SerializeField] private int m_BlinkCount = 3;
 
         private Renderer[] m_Renderers;
+        private List<Color[]> m_OriginalColors;
 
         private Coroutine m_Coroutine = null;
 
@@ -22,6 +23,18 @@ namespace SkyDragonHunter.Gameplay
         {
             // 자신과 모든 자식의 Renderer를 가져옴 (MeshRenderer, SpriteRenderer 포함)
             m_Renderers = GetComponentsInChildren<Renderer>();
+            m_OriginalColors = new List<Color[]>();
+
+            // 머티리얼 색상을 저장
+            foreach (var r in m_Renderers)
+            {
+                var colors = new Color[r.materials.Length];
+                for (int i = 0; i < r.materials.Length; i++)
+                {
+                    colors[i] = r.materials[i].color;
+                }
+                m_OriginalColors.Add(colors);
+            }
         }
 
         private void OnDisable()
@@ -44,19 +57,23 @@ namespace SkyDragonHunter.Gameplay
         {
             for (int i = 0; i < m_BlinkCount; i++)
             {
-                SetRenderersVisible(false);
+                SetRenderersRed(true);
                 yield return new WaitForSeconds(m_BlinkDuration);
-                SetRenderersVisible(true);
+                SetRenderersRed(false);
                 yield return new WaitForSeconds(m_BlinkDuration);
             }
             m_Coroutine = null;
         }
 
-        private void SetRenderersVisible(bool visible)
+        private void SetRenderersRed(bool red)
         {
-            foreach (var r in m_Renderers)
+            for (int i = 0; i < m_Renderers.Length; i++)
             {
-                r.enabled = visible;
+                var renderer = m_Renderers[i];
+                for (int j = 0; j < renderer.materials.Length; j++)
+                {
+                    renderer.materials[j].color = red ? Color.red : m_OriginalColors[i][j];
+                }
             }
         }
 
