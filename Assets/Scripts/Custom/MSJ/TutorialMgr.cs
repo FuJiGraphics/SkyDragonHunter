@@ -57,8 +57,8 @@ namespace SkyDragonHunter
                 m_TutorialEnd = value;
                 if (m_TutorialEnd)
                 {
-                   m_TutorialEvents?.Invoke();
-                   allButtonsBlockPanel.SetActive(false);
+                    m_TutorialEvents?.Invoke();
+                    allButtonsBlockPanel.SetActive(false);
                     SaveLoadMgr.CallSaveGameData();
                 }
             }
