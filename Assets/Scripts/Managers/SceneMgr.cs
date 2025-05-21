@@ -47,6 +47,7 @@ namespace SkyDragonHunter.Managers
             if (m_IsStartedScene)
                 return;
 
+            s_NextScene = sceneName;
             m_IsStartedScene = true;
             StartCoroutine(this.LoadSceneProcess());
         }
@@ -93,11 +94,16 @@ namespace SkyDragonHunter.Managers
 
         private IEnumerator LoadSceneProcess()
         {
+            yield return new WaitForSeconds(1);
+
             s_IsFirstStart = false;
 
             DataTableMgr.InitOnSceneLoaded(s_NextScene);
             // GameMgr.InitializeAddressablesIfNeeded();
+
+            textUI.text = "Initialize ...";
             yield return Addressables.InitializeAsync();
+            
             yield return Loading(fontLabel, "Loading Fonts...", "Downloading Fonts...");
             yield return Loading(prefabLabel, "Loading Prefabs...", "Downloading Prefabs...");
             yield return Loading(soLabel, "Loading Scriptable Objects...", "Downloading Scriptable Objects...");

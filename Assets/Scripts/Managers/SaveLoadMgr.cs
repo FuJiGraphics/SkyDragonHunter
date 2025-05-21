@@ -43,8 +43,8 @@ namespace SkyDragonHunter.Managers
         private static string SaveDirectory = $"{Application.persistentDataPath}/Save";
         private static readonly string[] SaveFileName =
         {
-            "SDH_SavedGameData.json",
-            "SDH_SavedLocalSettingData.json",
+            "SDH_SavedGameDataV3.json",
+            "SDH_SavedLocalSettingDataV3.json",
         };
                 
         private static JsonSerializerSettings jsonSettings;
