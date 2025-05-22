@@ -24,7 +24,6 @@ namespace SkyDragonHunter.SaveLoad
         public float sfxVol;
         public bool isDisplayDmg;
         public int autoPowerSavingMins = 0;
-        private bool m_IsFirstLoaded = false;
 
         public void InitData()
         {

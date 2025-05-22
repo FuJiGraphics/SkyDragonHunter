@@ -26,7 +26,7 @@ namespace SkyDragonHunter.test
         public GameObject pickUpInfoPrefab;
         public Transform crewAndMoonStone;
         private int[] crewIds;
-        private int count = 17;
+
         // 속성 (Properties)
         // 외부 종속성 필드 (External dependencies field)
         // 이벤트 (Events)

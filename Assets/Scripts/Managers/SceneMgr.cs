@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -94,16 +95,22 @@ namespace SkyDragonHunter.Managers
 
         private IEnumerator LoadSceneProcess()
         {
+            textUI.text = "Initialize ...";
             yield return new WaitForSeconds(1);
 
             s_IsFirstStart = false;
 
             DataTableMgr.InitOnSceneLoaded(s_NextScene);
-            // GameMgr.InitializeAddressablesIfNeeded();
 
-            textUI.text = "Initialize ...";
-            yield return Addressables.InitializeAsync();
-            
+            // GameMgr.InitializeAddressablesIfNeeded();
+            var initHandle = Addressables.InitializeAsync();
+            if (initHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogError("Addressables 초기화 실패!");
+                textUI.text = $"Initialization Failed! : {initHandle.OperationException}";
+                yield break;
+            }
+
             yield return Loading(fontLabel, "Loading Fonts...", "Downloading Fonts...");
             yield return Loading(prefabLabel, "Loading Prefabs...", "Downloading Prefabs...");
             yield return Loading(soLabel, "Loading Scriptable Objects...", "Downloading Scriptable Objects...");
@@ -147,7 +154,7 @@ namespace SkyDragonHunter.Managers
             else
             {
                 Debug.LogError($"씬 로드 실패: {loadHandle.OperationException}");
-                textUI.text = "Failed!";
+                textUI.text = $"Failed! : {loadHandle.OperationException}";
             }
 
             m_IsStartedScene = false;

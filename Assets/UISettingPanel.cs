@@ -1,6 +1,4 @@
 using SkyDragonHunter.Managers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +9,6 @@ public class UISettingPanel : MonoBehaviour
 
     [SerializeField] private Toggle damageDisplayToggle;
     [SerializeField] private Toggle[] autoPowerSavingToggles;
-    private int toggleIndex = 0;
 
     [SerializeField] private Button dataInitButton;
 
