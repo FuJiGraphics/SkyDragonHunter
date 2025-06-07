@@ -1,30 +1,43 @@
-# 🐉 스카이 드래곤 헌터 (Sky Dragon Hunter)
+# Sky Dragon Hunter - 2D Idle Game
 
-> **하늘을 나는 드래곤을 사냥하며 성장하는 2D 방치형 RPG 게임** 
+Sky Dragon Hunter는 2D 방치형 RPG 게임으로, 자동 전투를 기반으로 한 캐릭터 성장, 스킬 조합, 마스터리 트리 시스템을 제공합니다.  
+게임 클라이언트는 Unity로 개발되었으며, 리소스는 원격 서버 AWS S3와 연동되어 있습니다.
 
----
+## 링크
 
-## 🎮 게임 특징
+- Nakama 공식 문서: https://heroiclabs.com/docs
 
-- **방치형 성장 시스템**  
-  플레이하지 않아도 자동으로 전투와 자원을 획득합니다.
+## 주요 기능
 
-- **드래곤과의 전투**  
-  다양한 패턴과 능력을 가진 드래곤 보스를 공략하세요.
+- 자동 전투 및 능력치 성장 시스템
+- 스킬 조합 및 마스터리 트리
+- 원격 서버 연동 (AWS S3 기반)
+- ScriptableObject + CSV 기반 데이터 설계
+- Spine 애니메이션 연동
+- Addressables 기반 리소스 관리
+- 기획/디자이너를 위한 커스텀 Unity 에디터 툴 제공
 
-- **스킬과 유닛 조합**  
-  다양한 유닛과 스킬을 조합해 전략적인 전투를 즐기세요.
+## 기술 스택
 
----
+- Unity 2022 LTS
+- C#
+- Spine
+- TextMeshPro
+- CSV Helper
 
-## 🔧 사용 기술
-
-- **Unity (2022.3 이상)** – 2D 게임 개발
-- **C#** – 스크립트 작성
-- **Addressables** – 리소스 관리 및 최적화
-- **CsvHelper** – 게임 데이터(csv) 파싱
-  **AmazonS3** - 아마존 서버 연동 리소스 다운로드
-
----
-
-
+## 프로젝트 구조
+SkyDragonHunter/
+├── Assets/
+│ ├── Scripts/
+│ │ ├── Managers/
+│ │ ├── Gameplay/
+│ │ ├── UI/
+│ │ ├── Network/
+│ ├── Resources/
+│ │ ├── ScriptableObjects/
+│ ├── Spine/
+│ ├── TextMeshPro/
+├── Plugins/
+│ └── Nakama/
+├── ProjectSettings/
+└── README.md
