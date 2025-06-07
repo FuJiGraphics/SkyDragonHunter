@@ -4,8 +4,7 @@ Sky Dragon Hunter는 2D 방치형 RPG 게임으로, 자동 전투를 기반으�
 게임 클라이언트는 Unity로 개발되었으며, 리소스는 원격 서버 AWS S3와 연동되어 있습니다.
 
 ## 링크
-
-- Nakama 공식 문서: https://heroiclabs.com/docs
+- 안드로이드 출시 페이지: [Google Play Store에서 다운로드]([https://play.google.com/store/apps/details?id=com.yourcompany.skydragonhunter](https://play.google.com/store/apps/details?id=com.Kyungil.SkyDragonHunter))
 
 ## 주요 기능
 
@@ -24,20 +23,5 @@ Sky Dragon Hunter는 2D 방치형 RPG 게임으로, 자동 전투를 기반으�
 - Spine
 - TextMeshPro
 - CSV Helper
-
-## 프로젝트 구조
-SkyDragonHunter/
-├── Assets/
-│ ├── Scripts/
-│ │ ├── Managers/
-│ │ ├── Gameplay/
-│ │ ├── UI/
-│ │ ├── Network/
-│ ├── Resources/
-│ │ ├── ScriptableObjects/
-│ ├── Spine/
-│ ├── TextMeshPro/
-├── Plugins/
-│ └── Nakama/
-├── ProjectSettings/
-└── README.md
+- AWS S3
+- Addressable
