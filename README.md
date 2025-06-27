@@ -1,4 +1,5 @@
 # Sky Dragon Hunter - 2D Idle Game
+![SkyDragonHunter](TitleImage.png)
 
 Sky Dragon Hunter는 2D 방치형 RPG 게임으로, 자동 전투를 기반으로 한 <br>
 캐릭터 성장, 스킬 조합, 마스터리 트리 시스템을 제공합니다.  <br>
