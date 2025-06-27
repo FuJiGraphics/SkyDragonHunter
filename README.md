@@ -5,7 +5,9 @@ Sky Dragon Hunter는 2D 방치형 RPG 게임으로, 자동 전투를 기반으�
 게임 클라이언트는 Unity로 개발되었으며, 리소스는 원격 서버 AWS S3와 연동되어 있습니다.<br><br>
 
 ## 링크
+- 시연 영상: https://youtu.be/TrX15abwHQg
 - 안드로이드 출시 페이지: https://play.google.com/store/apps/details?id=com.Kyungil.SkyDragonHunter
+- 협업 노션 페이지: https://www.notion.so/1fa34146edba80cb8a5eebf5f23a23b8?source=copy_link (ReadOnly)
 
 ## 담당 역할
 - 전투 시스템 및 캐릭터 성장 시스템 구축
